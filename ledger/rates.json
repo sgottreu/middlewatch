@@ -1,0 +1,82 @@
+{
+  "_comment": "Rates in USD. Update rates_verified whenever you check the pricing pages. report.py warns when this is more than 90 days old. Model keys must match the strings in config.yaml exactly -- price() raises on an unknown model rather than recording zero, so a drifted key fails at the first billed call.",
+  "rates_verified": "2026-08-29",
+  "sources": {
+    "anthropic": "https://platform.claude.com/docs/en/about-claude/pricing",
+    "polly": "https://aws.amazon.com/polly/pricing/",
+    "gemini": "https://ai.google.dev/gemini-api/docs/pricing",
+    "elevenlabs": "https://elevenlabs.io/pricing"
+  },
+  "providers": {
+    "anthropic": {
+      "_comment": "Per million tokens. cache_write_tokens is the 5-minute write (1.25x base input); record_anthropic maps cache_creation_input_tokens onto it. The 1-hour write is 2x base and is not used.",
+      "unit_scale": 1000000,
+      "models": {
+        "claude-opus-5": {
+          "input_tokens": 5.0,
+          "output_tokens": 25.0,
+          "cache_write_tokens": 6.25,
+          "cache_read_tokens": 0.5
+        },
+        "claude-sonnet-5": {
+          "input_tokens": 2.0,
+          "output_tokens": 10.0,
+          "cache_write_tokens": 2.5,
+          "cache_read_tokens": 0.2
+        },
+        "claude-haiku-4-5": {
+          "input_tokens": 1.0,
+          "output_tokens": 5.0,
+          "cache_write_tokens": 1.25,
+          "cache_read_tokens": 0.1
+        },
+        "claude-opus-4-6": {
+          "input_tokens": 5.0,
+          "output_tokens": 25.0,
+          "cache_write_tokens": 6.25,
+          "cache_read_tokens": 0.5
+        },
+        "claude-sonnet-4-6": {
+          "input_tokens": 3.0,
+          "output_tokens": 15.0,
+          "cache_write_tokens": 3.75,
+          "cache_read_tokens": 0.3
+        }
+      }
+    },
+    "polly": {
+      "unit_scale": 1000000,
+      "models": {
+        "neural": { "characters": 16.0 },
+        "generative": { "characters": 30.0 },
+        "standard": { "characters": 4.0 }
+      }
+    },
+    "gemini": {
+      "_comment": "Per image, at the image_size set in config.yaml. Images are billed by output tokens, so the price moves with resolution: 3.1 Flash Image is 0.022 (0.5K) / 0.034 (1K) / 0.050 (2K) / 0.076 (4K). The figure below is 2K, matching gemini.image_size. Google's own footnote on that page quotes double these rates against a $60/1M token figure while the table states $30/1M -- the table is self-consistent and is what is used here. Check an invoice before trusting a total. Character reference images are billed as input at $0.25/1M and are not recorded at all; at four refs per call that is a small but real undercount.",
+      "unit_scale": 1,
+      "models": {
+        "gemini-3.1-flash-image": { "images": 0.050 },
+        "gemini-3.1-flash-lite-image": { "images": 0.0336 },
+        "gemini-2.5-flash-image": { "images": 0.039 }
+      }
+    },
+    "elevenlabs": {
+      "_comment": "Credits are the billing unit and every product draws on one pool, so record credits and let the ledger convert. Text to speech on eleven_multilingual_v2 bills 1 credit per character; turbo and flash bill half. Sound effects bill a flat ~200 credits per generation regardless of length. The rate below must agree with elevenlabs.usd_per_1k_credits in config.yaml, which drives the dry-run estimate -- these are two views of one number and both need changing if your plan changes.",
+      "unit_scale": 1000,
+      "models": {
+        "eleven_multilingual_v2": { "credits": 0.22 },
+        "eleven_turbo_v2_5": { "credits": 0.22 },
+        "eleven_flash_v2_5": { "credits": 0.22 },
+        "sound_effects": { "credits": 0.22 }
+      }
+    }
+  },
+  "free_tier": {
+    "_comment": "Informational only. The ledger records gross cost. Free tier is applied in the report so you can see both.",
+    "polly": {
+      "neural": { "characters_per_month": 1000000, "expires": "unknown" },
+      "generative": { "characters_per_month": 100000, "expires": "unknown" }
+    }
+  }
+}

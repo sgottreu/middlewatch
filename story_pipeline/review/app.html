@@ -1,0 +1,924 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Middle Watch — review</title>
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon-180.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#14140f">
+<style>
+  :root {
+    --bg: #14140f; --panel: #1c1c16; --line: #2e2e24; --ink: #e8e4d8;
+    --dim: #97917f; --accent: #c9a227; --danger: #d4674a; --ok: #7ea05a;
+    --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#f7f5ef; --panel:#fff; --line:#e0dccf; --ink:#20201a;
+            --dim:#6b6656; --accent:#8a6d1f; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; height:100vh; display:flex; background:var(--bg); color:var(--ink);
+         font: 15px/1.55 Charter, Georgia, serif; }
+  h1,h2,h3 { font-weight:600; line-height:1.25; }
+
+  /* queue -------------------------------------------------------------- */
+  #queue { width:300px; flex:none; border-right:1px solid var(--line);
+           overflow-y:auto; background:var(--panel); }
+  #queue header { padding:14px 16px; border-bottom:1px solid var(--line); }
+  #queue header b { display:block; font-size:15px; }
+  #queue header span { color:var(--dim); font-size:12px; font-family:var(--mono); }
+  .group > h3 { margin:0; padding:10px 16px 6px; font-size:11px; letter-spacing:.09em;
+                text-transform:uppercase; color:var(--dim); font-family:var(--mono); }
+  .row { padding:9px 16px; border-left:3px solid transparent; cursor:pointer; }
+  .row:hover { background:rgba(201,162,39,.07); }
+  .row[aria-selected="true"] { background:rgba(201,162,39,.14);
+                               border-left-color:var(--accent); }
+  .row .t { display:block; }
+  .row .m { font-family:var(--mono); font-size:11px; color:var(--dim); }
+  .dot { display:inline-block; width:6px; height:6px; border-radius:50%;
+         vertical-align:middle; margin-left:6px; }
+  .dot.danger { background:var(--danger); } .dot.warn { background:var(--accent); }
+
+  /* document ----------------------------------------------------------- */
+  #doc { flex:1; display:flex; flex-direction:column; min-width:0; }
+  #docbody { flex:1; overflow-y:auto; padding:26px 34px; max-width:78ch; }
+  #docbody h1 { margin:0 0 2px; font-size:26px; }
+  .sub { color:var(--dim); font-family:var(--mono); font-size:12px; margin-bottom:18px; }
+  .logline { font-size:17px; font-style:italic; border-left:3px solid var(--accent);
+             padding-left:14px; margin:16px 0 22px; }
+  .flag { border-radius:5px; padding:9px 12px; margin:9px 0; font-size:14px;
+          border:1px solid; }
+  .flag.danger { border-color:var(--danger); background:rgba(212,103,74,.1); }
+  .flag.warn { border-color:var(--accent); background:rgba(201,162,39,.09); }
+  .flag .n { display:block; color:var(--dim); font-size:13px; margin-top:2px; }
+  .ch { border-top:1px solid var(--line); padding:14px 0; }
+  .ch h3 { margin:0 0 4px; font-size:15px; }
+  .ch .m { font-family:var(--mono); font-size:11px; color:var(--dim); }
+  .ch ul { margin:7px 0 0 18px; padding:0; }
+  /* Per-chapter approval. The left border is the at-a-glance answer to "how
+     far did I get" when scrolling a story you are reading across two sittings. */
+  .ch h3 { display:flex; align-items:center; gap:10px; }
+  .chapok { margin-left:auto; font-size:12px; padding:3px 10px; flex:none; }
+  .ch.approved { border-left:3px solid var(--ok); padding-left:12px; }
+  .ch.approved .chapok { border-color:var(--ok); color:var(--ok); }
+  .ch.lapsed { border-left:3px solid var(--accent); padding-left:12px; }
+
+  /* Chapter editing. One block per segment, so the thing on screen and the
+     thing on disk are the same shape and nothing has to be parsed back out. */
+  .seg { display:flex; gap:10px; align-items:flex-start; margin:0 0 10px; }
+  .seg select { font:inherit; font-size:12px; font-family:var(--mono); width:130px;
+                flex:none; margin-top:3px; background:var(--bg); color:var(--ink);
+                border:1px solid var(--line); border-radius:5px; padding:3px 4px; }
+  .seg textarea { flex:1; font:inherit; font-size:15px; line-height:1.55;
+                  background:transparent; color:var(--ink); border:1px solid transparent;
+                  border-radius:5px; padding:4px 7px; resize:none; overflow:hidden; }
+  .seg textarea:hover { border-color:var(--line); }
+  .seg textarea:focus { border-color:var(--accent); outline:none;
+                        background:rgba(201,162,39,.05); }
+  .seg.dialogue textarea { font-style:italic; }
+  .seg .kill { flex:none; margin-top:2px; padding:2px 8px; font-size:12px;
+               color:var(--dim); border-color:transparent; }
+  .seg .kill:hover { color:var(--danger); border-color:var(--danger); }
+  .editbar { display:flex; align-items:center; gap:10px; margin:12px 0 4px;
+             font-family:var(--mono); font-size:11px; color:var(--dim); }
+  .editbar .count { margin-left:auto; }
+  .editbar .over { color:var(--danger); }
+  .ch li { margin:2px 0; }
+  table { border-collapse:collapse; width:100%; font-size:13px; margin:10px 0; }
+  th,td { text-align:left; padding:5px 9px; border-bottom:1px solid var(--line); }
+  th { color:var(--dim); font-family:var(--mono); font-size:11px; font-weight:400;
+       text-transform:uppercase; letter-spacing:.06em; }
+  td.num { font-family:var(--mono); text-align:right; }
+  .arrow { color:var(--accent); }
+  pre.prose { white-space:pre-wrap; font:inherit; margin:0; }
+
+  /* action bar --------------------------------------------------------- */
+  #bar { flex:none; border-top:1px solid var(--line); background:var(--panel);
+         padding:12px 34px; display:flex; align-items:center; gap:10px; }
+  #bar .facts { flex:1; font-family:var(--mono); font-size:11px; color:var(--dim); }
+  button { font:inherit; font-size:14px; padding:7px 15px; border-radius:5px;
+           border:1px solid var(--line); background:transparent; color:var(--ink);
+           cursor:pointer; }
+  button:hover:not(:disabled) { border-color:var(--accent); }
+  button:disabled { opacity:.35; cursor:default; }
+  button.primary { background:var(--ok); border-color:var(--ok); color:#0f120b; }
+  button.danger { border-color:var(--danger); color:var(--danger); }
+  kbd { font-family:var(--mono); font-size:10px; border:1px solid var(--line);
+        border-radius:3px; padding:0 4px; color:var(--dim); margin-left:5px; }
+  .empty { color:var(--dim); padding:40px 34px; }
+  /* revise dialog ------------------------------------------------------ */
+  #scrim, #wscrim { position:fixed; inset:0; background:rgba(0,0,0,.55);
+                    display:none; align-items:center; justify-content:center;
+                    z-index:10; }
+  #scrim.show, #wscrim.show { display:flex; }
+  #revise { background:var(--panel); border:1px solid var(--line); border-radius:8px;
+            width:min(560px, 92vw); max-height:88vh; overflow-y:auto; padding:22px 24px; }
+  #revise h2 { margin:0 0 4px; font-size:19px; }
+  #revise .lede { color:var(--dim); font-size:13px; margin:0 0 16px; }
+  #revise fieldset { border:1px solid var(--line); border-radius:6px; margin:0 0 14px;
+                     padding:12px 14px; }
+  #revise legend { font-family:var(--mono); font-size:11px; text-transform:uppercase;
+                   letter-spacing:.08em; color:var(--dim); padding:0 6px; }
+  #revise label { display:flex; gap:9px; align-items:flex-start; padding:4px 0;
+                  cursor:pointer; font-size:14px; }
+  #revise label input { margin-top:4px; flex:none; }
+  #revise label.replacing { color:var(--dim); }
+  #revise label.replacing .w { text-decoration:line-through; }
+  #revise textarea { width:100%; min-height:70px; font:inherit; font-size:14px;
+                     background:transparent; color:var(--ink); border:1px solid var(--line);
+                     border-radius:6px; padding:9px 11px; resize:vertical; }
+  #revise .cost { border:1px solid var(--accent); background:rgba(201,162,39,.09);
+                  border-radius:6px; padding:9px 12px; font-size:13px; margin:14px 0; }
+  #revise .warn2 { color:var(--danger); font-size:13px; margin:8px 0 0; }
+  #status { display:none; border-radius:6px; padding:10px 13px; margin:14px 0 0;
+            font-size:14px; border:1px solid var(--line); }
+  #status.working { display:block; border-color:var(--accent); }
+  #status.ok { display:block; border-color:var(--ok); background:rgba(126,160,90,.12); }
+  #status.bad { display:block; border-color:var(--danger);
+                background:rgba(212,103,74,.12); white-space:pre-wrap; }
+  #status.bad b { display:block; margin-bottom:4px; }
+  #status .m2 { display:block; font-family:var(--mono); font-size:12px;
+                color:var(--dim); margin-top:3px; }
+  @keyframes pulse { 0%,100% { opacity:.55 } 50% { opacity:1 } }
+  #status.working { animation: pulse 1.4s ease-in-out infinite; }
+  #revise .row2, #write .row2 { display:flex; gap:9px; justify-content:flex-end;
+                                margin-top:16px; }
+  #write { background:var(--panel); border:1px solid var(--line); border-radius:8px;
+           width:min(520px, 92vw); max-height:88vh; overflow-y:auto; padding:22px 24px; }
+  #write h2 { margin:0 0 4px; font-size:19px; }
+  #write .lede { color:var(--dim); font-size:13px; margin:0 0 16px; }
+  #write .cost { border:1px solid var(--accent); background:rgba(201,162,39,.09);
+                 border-radius:6px; padding:12px 14px; margin:0 0 14px; }
+  #write .big { font-size:22px; display:block; margin-bottom:2px; }
+  #write .m2 { font-family:var(--mono); font-size:12px; color:var(--dim); display:block; }
+  #write ul { margin:10px 0 0 18px; padding:0; font-size:14px; color:var(--dim); }
+  /* The one control in this dialog that costs more money, so it reads as a
+     choice rather than as another line of prose. */
+  .redo { display:flex; gap:8px; align-items:center; cursor:pointer;
+          color:var(--ink); margin:2px 0 2px -18px; }
+  #write li { margin:3px 0; }
+  #prog { display:none; margin:14px 0 0; }
+  #prog.show { display:block; }
+  #bar2 { height:6px; border-radius:3px; background:var(--line); overflow:hidden; }
+  #bar2 i { display:block; height:100%; background:var(--ok); width:0;
+            transition:width .3s; }
+  #proglog { font-family:var(--mono); font-size:12px; color:var(--dim);
+             margin-top:8px; max-height:140px; overflow-y:auto; }
+  #toast { position:fixed; bottom:74px; right:34px; background:var(--panel);
+           border:1px solid var(--line); border-left:3px solid var(--accent);
+           padding:10px 15px; border-radius:5px; font-size:14px; opacity:0;
+           transition:opacity .18s; pointer-events:none; max-width:44ch; z-index:20; }
+  #toast.show { opacity:1; }
+</style>
+</head>
+<body>
+  <nav id="queue"><header><b>Review</b><span id="count">loading…</span></header>
+    <div id="groups"></div></nav>
+  <main id="doc">
+    <div id="docbody"><p class="empty">Select a story.</p></div>
+    <div id="bar">
+      <span class="facts" id="facts"></span>
+      <button type="button" id="approve" class="primary" disabled>Approve<kbd>a</kbd></button>
+      <button type="button" id="reviseBtn" disabled>Revise…<kbd>e</kbd></button>
+      <button type="button" id="writeBtn" disabled>Write…<kbd>w</kbd></button>
+      <button type="button" id="reject" class="danger" disabled>Reject<kbd>r</kbd></button>
+    </div>
+  </main>
+  <div id="scrim"><form id="revise">
+    <h2>Revise this outline</h2>
+    <p class="lede">The ideator rewrites it. Anything you keep is held word for
+      word; anything else is replaced wholesale, not nudged.</p>
+    <fieldset><legend>Keep</legend><div id="keeps"></div></fieldset>
+    <fieldset><legend>Anything else to tell it</legend>
+      <textarea id="note" placeholder="Optional. e.g. give the antagonist a reason to be sympathetic."></textarea>
+    </fieldset>
+    <p class="warn2" id="combo" hidden></p>
+    <div id="status"></div>
+    <div class="cost"><b>This spends about $0.07.</b> The outline it replaces is
+      saved to <code>drafts/</code>, so a worse revision is recoverable.</div>
+    <div class="row2">
+      <button type="button" id="cancel">Cancel</button>
+      <button type="submit" id="go" class="primary">Revise</button>
+    </div>
+  </form></div>
+  <div id="wscrim" class="scrimlike"><form id="write">
+    <h2>Write every chapter</h2>
+    <p class="lede">The writer drafts each chapter and the editor judges it,
+      revising up to the limit. This is the most expensive thing here.</p>
+    <div class="cost" id="wcost"></div>
+    <ul id="wfacts"></ul>
+    <div id="prog"><div id="bar2"><i></i></div><div id="proglog"></div></div>
+    <div class="row2">
+      <button type="button" id="wcancel">Cancel</button>
+      <button type="submit" id="wgo" class="primary">Write it</button>
+    </div>
+  </form></div>
+  <div id="toast"></div>
+
+<script>
+const GROUPS = [
+  ["outlines", "Outlines awaiting review"],
+  ["approved", "Approved — waiting to be written"],
+  ["chapters", "Chapters awaiting review"],
+  ["failed",   "Failed editor review"],
+  ["stale",    "Narration out of date"],
+  ["done",     "Written and approved"],
+];
+let state = { rows: [], sel: null, detail: null, keepable: [], editing: null,
+              anchor: null };
+
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c =>
+  ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+
+function toast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2600);
+}
+
+async function loadQueue(keep) {
+  const q = await (await fetch("/api/queue")).json();
+  const box = document.getElementById("groups");
+  box.innerHTML = ""; state.rows = [];
+  let waiting = 0;
+  for (const [key, label] of GROUPS) {
+    const rows = q.groups[key] || [];
+    if (!rows.length) continue;
+    if (key !== "done") waiting += rows.length;
+    const el = document.createElement("div");
+    el.className = "group";
+    el.innerHTML = `<h3>${label} (${rows.length})</h3>`;
+    for (const r of rows) {
+      state.rows.push(r.slug);
+      const worst = r.flags.some(f => f.level === "danger") ? "danger"
+                  : r.flags.length ? "warn" : "";
+      const d = document.createElement("div");
+      d.className = "row"; d.dataset.slug = r.slug;
+      d.setAttribute("aria-selected", r.slug === state.sel);
+      d.innerHTML = `<span class="t">${esc(r.title)}` +
+        (worst ? `<span class="dot ${worst}"></span>` : "") + `</span>` +
+        `<span class="m">${r.length}m · ${esc(r.subgenre || r.genre)}` +
+        (r.unpassed.length ? ` · ${r.unpassed.length} failed` : "") +
+        (r.stale.length ? ` · ${r.stale.length} stale` : "") + `</span>`;
+      d.onclick = () => select(r.slug);
+      el.appendChild(d);
+    }
+    box.appendChild(el);
+  }
+  document.getElementById("count").textContent =
+    `${waiting} waiting · ${q.total} total`;
+  if (keep && state.rows.includes(keep)) await select(keep);
+  else if (!state.rows.includes(state.sel)) {
+    state.sel = null; state.detail = null;
+    document.getElementById("docbody").innerHTML =
+      `<p class="empty">${waiting ? "Select a story." : "Nothing waiting. All clear."}</p>`;
+    setActions(null);
+  }
+}
+
+async function select(slug) {
+  // An open editor belongs to one chapter of one story. Carrying it across a
+  // selection would put someone else's chapter number on the save button.
+  const same = slug === state.sel;
+  if (!same) state.editing = null;
+  state.sel = slug;
+  document.querySelectorAll(".row").forEach(r =>
+    r.setAttribute("aria-selected", r.dataset.slug === slug));
+  const d = await (await fetch("/api/story/" + encodeURIComponent(slug))).json();
+  if (d.error) { toast(d.error); return; }
+
+  // Re-rendering replaces the whole document, which resets the scroll. Reading
+  // a story is the normal case and every action refetches it, so the position
+  // has to survive — otherwise approving chapter 6 returns you to the title.
+  const body = document.getElementById("docbody");
+  const was = body.scrollTop;
+  state.detail = d; render(d); setActions(d);
+  // A different story is a different document — start at the top. The same
+  // story means an action on what you are already reading, so stay put.
+  if (!same) body.scrollTop = 0;
+  else if (state.anchor != null) scrollToChapter(state.anchor);
+  else body.scrollTop = was;
+  state.anchor = null;
+}
+
+// Anchoring on the chapter rather than restoring a pixel offset, because an
+// edit changes the height of everything above it and the offset would drift.
+function scrollToChapter(n) {
+  const body = document.getElementById("docbody");
+  const el = document.getElementById("ch-" + n);
+  if (!el) return;
+  body.scrollTop += el.getBoundingClientRect().top
+                  - body.getBoundingClientRect().top - 8;
+}
+
+function render(d) {
+  const o = d.outline;
+  let h = `<h1>${esc(d.title)}</h1><div class="sub">${esc(d.genre)} / ${esc(d.subgenre)}` +
+    (d.series ? ` · ${esc(d.series)}` : "") + ` · ${d.length} min</div>`;
+
+  for (const f of d.flags)
+    h += `<div class="flag ${f.level}">${esc(f.text)}` +
+         (f.note ? `<span class="n">${esc(f.note)}</span>` : "") + `</div>`;
+
+  if (o.logline) h += `<div class="logline">${esc(o.logline)}</div>`;
+  if (o.promise) h += `<p><b>Promise.</b> ${esc(o.promise)}</p>`;
+  if (o.setting) h += `<p><b>Setting.</b> ${esc(o.setting)}</p>`;
+  h += `<p><b>Tropes.</b> ${o.tropes.map(esc).join(" · ")}</p>`;
+
+  h += `<h2>Cast</h2><table><tr><th>name</th><th>age</th><th>role</th><th>wants</th></tr>`;
+  for (const c of o.cast || [])
+    h += `<tr><td>${esc(c.name)}${c.recurring ? " <span class='m'>(recurring)</span>" : ""}` +
+         `</td><td class="num">${esc(c.age)}</td><td>${esc(c.role)}</td>` +
+         `<td>${esc(c.want)}</td></tr>`;
+  h += `</table>`;
+
+  // Approving changes the odds for the next story. That is otherwise invisible.
+  if (d.impact && d.impact.tropes.length) {
+    h += `<h2>If you approve this</h2>`;
+    h += `<p class="m">${d.impact.stories} approved so far in this series. ` +
+         `Approving shifts how likely these tropes are to be offered next time.</p>`;
+    h += `<table><tr><th>trope</th><th>used</th><th>now</th><th></th><th>after</th></tr>`;
+    for (const t of d.impact.tropes)
+      h += `<tr><td>${esc(t.trope)}</td><td class="num">${t.used}</td>` +
+           `<td class="num">${t.weight_now.toFixed(2)}</td>` +
+           `<td class="arrow">&rarr;</td>` +
+           `<td class="num">${t.weight_after.toFixed(2)}</td></tr>`;
+    h += `</table>`;
+    if (d.impact.leader && d.impact.leader[1] > 1)
+      h += `<p class="m">${esc(d.impact.leader[0])} has led ${d.impact.leader[1]} ` +
+           `of them.</p>`;
+  }
+
+  h += `<h2>Chapters</h2>`;
+  for (const c of d.chapter_detail) {
+    const r = c.review;
+    const st = c.approved ? "approved" : (c.approval_lapsed ? "lapsed" : "");
+    h += `<div class="ch${st ? " " + st : ""}" id="ch-${c.n}">` +
+      `<h3>${c.n}. ${esc(c.title)}` +
+      (c.words && state.editing !== c.n
+        ? `<button type="button" class="chapedit" data-n="${c.n}">Edit</button>` +
+          `<button type="button" class="chapok" data-n="${c.n}" data-on="${c.approved ? 1 : 0}">` +
+          `${c.approved ? "✓ approved" : "Approve chapter"}</button>`
+        : ``) +
+      `</h3><span class="m">` +
+      `${c.beats.length} beats · target ${c.target_words}w` +
+      (c.words ? ` · written ${c.words}w` : " · not written") +
+      (c.drafts.length > 1 ? ` · ${c.drafts.length} drafts` : "") +
+      (c.stale ? ` · <b style="color:var(--danger)">narration stale</b>` : "") +
+      (c.approval_lapsed
+        ? ` · <b style="color:var(--accent)">rewritten since you approved it</b>` : "") +
+      (c.review_stale
+        ? ` · <b style="color:var(--accent)">edited since the editor read it</b>` : "") +
+      (r ? ` · ${r.pass ? "passed" : "FAILED"}${r.score ? " (" + r.score + ")" : ""}` +
+           (r.exhausted ? ", revisions exhausted" : "") : "") + `</span>`;
+    if (state.editing === c.n) h += segmentEditor(c, d);
+    else if (c.markdown) h += `<pre class="prose">${esc(c.markdown)}</pre>`;
+    else h += `<ul>` + c.beats.map(b => `<li>${esc(b)}</li>`).join("") + `</ul>`;
+    if (r && !r.pass) {
+      for (const [label, items] of [["Fixes", r.fixes], ["Continuity", r.continuity],
+           ["Anachronisms", r.anachronisms], ["Listenability", r.listenability],
+           ["Boundaries", r.boundary_breaches]])
+        if (items && items.length)
+          h += `<p class="m">${label}</p><ul>` +
+               items.map(x => `<li>${esc(typeof x === "string" ? x : JSON.stringify(x))}</li>`)
+               .join("") + `</ul>`;
+      if (r.generic_prose && r.generic_prose.length)
+        h += `<p class="m">Generic prose</p><ul>` + r.generic_prose.map(g =>
+          `<li>${esc(g.quote)}<span class="m"> → ${esc(g.replace_with)}</span></li>`)
+          .join("") + `</ul>`;
+    }
+    h += `</div>`;
+  }
+  document.getElementById("docbody").innerHTML = h;
+
+  // Size every editor block to its content, and keep the count live.
+  document.querySelectorAll("#segs textarea").forEach(segAutosize);
+  segCount();
+
+  const body = document.getElementById("docbody");
+  body.oninput = e => {
+    if (!e.target.matches("#segs textarea")) return;
+    segAutosize(e.target); segCount();
+  };
+
+  // One listener on the container rather than one per chapter, so re-rendering
+  // the document does not leak handlers.
+  body.onclick = async e => {
+    const ed = e.target.closest(".chapedit");
+    if (ed) {
+      state.editing = Number(ed.dataset.n);
+      render(state.detail); setActions(state.detail);
+      scrollToChapter(state.editing);
+      return;
+    }
+
+    if (e.target.id === "segcancel") {
+      const was = state.editing;
+      state.editing = null;
+      render(state.detail); setActions(state.detail);
+      scrollToChapter(was);
+      return;
+    }
+
+    if (e.target.closest(".seg .kill")) {
+      e.target.closest(".seg").remove(); segCount(); return; }
+
+    if (e.target.id === "segadd") {
+      const cast = ["narrator", ...(state.detail.outline.cast || []).map(x => x.name)];
+      document.getElementById("segs").insertAdjacentHTML("beforeend",
+        segRow({ speaker: "narrator", text: "" }, cast));
+      const last = document.querySelector("#segs .seg:last-child textarea");
+      segAutosize(last); last.focus(); segCount(); return;
+    }
+
+    if (e.target.id === "segsave") {
+      const box = document.getElementById("segs");
+      const n = Number(box.dataset.n);
+      state.anchor = n;
+      e.target.disabled = true; e.target.textContent = "Saving…";
+      const res = await (await fetch("/api/chapter", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug: state.sel, n, segments: segRead() })
+      })).json();
+      if (res.error) {
+        e.target.disabled = false; e.target.textContent = "Save chapter";
+        toast(res.error); return;
+      }
+      state.editing = null;
+      // Everything that was decided about the old prose lapses on its own,
+      // because all three are stamped with the chapter hash. Say which.
+      const lapsed = [
+        res.approval_lapsed ? "approval withdrawn" : null,
+        res.review_stale ? "editor verdict now stale" : null,
+        res.narration_stale ? "narration out of date" : null,
+      ].filter(Boolean);
+      toast(`Chapter ${n} saved — ${res.words.toLocaleString()} words` +
+            (res.dropped_empty_segments
+              ? ` · ${res.dropped_empty_segments} empty segment(s) dropped` : ``) +
+            (lapsed.length ? ` · ${lapsed.join(", ")}` : ``));
+      await loadQueue(state.sel);
+      return;
+    }
+
+    const btn = e.target.closest(".chapok");
+    if (!btn) return;
+    const n = Number(btn.dataset.n), undo = btn.dataset.on === "1";
+    state.anchor = n;
+    btn.disabled = true;
+    const res = await (await fetch("/api/approve", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ slug: state.sel, what: "chapters",
+                             chapters: [n], undo })
+    })).json();
+    if (res.error) { btn.disabled = false; toast(res.error); return; }
+    toast(res.all_approved
+      ? `All ${res.written} chapters approved — recording is unlocked`
+      : `${res.approved.length} of ${res.written} approved` +
+        (undo ? ` · chapter ${n} withdrawn` : ``));
+    await loadQueue(state.sel);
+  };
+}
+
+// One editable block per segment. The speaker stays a field rather than
+// becoming words in the text, which is the whole reason editing here is safe:
+// nothing has to be parsed back out to know who says a line, so the voice
+// casting cannot be lost to a typo in a label.
+function segmentEditor(c, d) {
+  const cast = ["narrator", ...(d.outline.cast || []).map(x => x.name)];
+  const band = [Math.round(c.target_words * 0.8), Math.round(c.target_words * 1.2)];
+  let h = `<div class="editbar">` +
+    `<button type="button" id="segsave" class="primary">Save chapter</button>` +
+    `<button type="button" id="segcancel">Cancel</button>` +
+    `<button type="button" id="segadd">+ segment</button>` +
+    `<span class="count" id="segcount"></span></div>` +
+    `<div id="segs" data-n="${c.n}" data-target="${c.target_words}" ` +
+         `data-lo="${band[0]}" data-hi="${band[1]}">`;
+  for (const seg of c.segments || []) h += segRow(seg, cast);
+  return h + `</div>`;
+}
+
+function segRow(seg, cast) {
+  const dial = seg.speaker !== "narrator";
+  return `<div class="seg${dial ? " dialogue" : ""}">` +
+    `<select>` + cast.map(name =>
+      `<option${name === seg.speaker ? " selected" : ""}>${esc(name)}</option>`
+    ).join("") +
+    // A speaker the outline no longer casts would otherwise vanish from the
+    // list and be silently reassigned to whatever sits first.
+    (cast.includes(seg.speaker) ? `` :
+      `<option selected>${esc(seg.speaker)}</option>`) +
+    `</select>` +
+    `<textarea rows="1">${esc(seg.text)}</textarea>` +
+    `<button type="button" class="kill" title="delete this segment">×</button></div>`;
+}
+
+function segAutosize(t) { t.style.height = "auto"; t.style.height = t.scrollHeight + "px"; }
+
+function segCount() {
+  const box = document.getElementById("segs");
+  if (!box) return;
+  const words = [...box.querySelectorAll("textarea")]
+    .reduce((n, t) => n + (t.value.trim() ? t.value.trim().split(/\s+/).length : 0), 0);
+  const lo = +box.dataset.lo, hi = +box.dataset.hi;
+  const el = document.getElementById("segcount");
+  // The band the length check enforces, shown while you are editing rather
+  // than after a save — trimming by hand is the one case where knowing the
+  // number as you go actually changes what you cut.
+  el.textContent = `${words.toLocaleString()} words · target ${box.dataset.target} ` +
+                   `· band ${lo}–${hi}`;
+  el.className = "count" + (words > hi || words < lo ? " over" : "");
+}
+
+function segRead() {
+  const box = document.getElementById("segs");
+  return [...box.querySelectorAll(".seg")].map(row => ({
+    speaker: row.querySelector("select").value,
+    text: row.querySelector("textarea").value,
+  }));
+}
+
+function setActions(d) {
+  const ap = document.getElementById("approve"), rj = document.getElementById("reject");
+  const facts = document.getElementById("facts");
+  const rv = document.getElementById("reviseBtn");
+  const wr = document.getElementById("writeBtn");
+  if (!d) {
+    ap.disabled = rj.disabled = rv.disabled = wr.disabled = true;
+    facts.textContent = ""; return; }
+
+  // Derive from the real stage pair, not from "not awaiting an outline".
+  // An approved outline that has not been written yet has nothing to approve —
+  // offering "Approve chapters" there invites unlocking `record` for a story
+  // with no chapters on disk.
+  const ideate = d.stages.ideate, edit = d.stages.edit;
+  let what = null;
+  if (ideate === "awaiting_review") what = "outline";
+  else if (edit === "awaiting_review") what = "chapters";
+
+  const chs = d.chapter_detail || [];
+  const written = chs.filter(c => c.words).length;
+  const okd = chs.filter(c => c.approved).length;
+
+  ap.disabled = !what;
+  ap.innerHTML = !what ? `Nothing to approve`
+    : what === "chapters"
+      ? `Approve ${written - okd === written ? "all " : ""}` +
+        `${written - okd} chapter${written - okd === 1 ? "" : "s"}<kbd>a</kbd>`
+      : `Approve outline<kbd>a</kbd>`;
+  ap.dataset.what = what || "";
+  rj.disabled = false;
+
+  // Revising regenerates the outline, so it is safe only while no chapters have
+  // been written against it — which includes an outline you approved and then
+  // thought better of.
+  rv.disabled = !(ideate === "awaiting_review" ||
+                  (ideate === "approved" && edit === "pending"));
+
+  // Write is the step between the two gates: the outline is approved and no
+  // chapters exist yet. A run already in flight keeps it disabled.
+  const writing = (d.job || {}).state === "running";
+  wr.disabled = writing ||
+                !(ideate === "approved" && (edit === "pending" || edit === "running"));
+  wr.innerHTML = writing ? `Writing…` : `Write…<kbd>w</kbd>`;
+  const lapsed = chs.filter(c => c.approval_lapsed).length;
+  facts.textContent =
+    `${d.chapters} chapters · ${d.beats} beats · ${d.per_beat} w/beat · ` +
+    `${d.words.toLocaleString()} words` +
+    // Only once there is something to count. Before `write` this would read
+    // "0 of 0 approved", which is noise.
+    (written ? ` · ${okd} of ${written} approved` : ``) +
+    (lapsed ? ` · ${lapsed} rewritten since approval` : ``) +
+    (d.spend.usd ? ` · $${d.spend.usd.toFixed(2)} spent` : " · nothing spent yet");
+}
+
+async function act(kind) {
+  if (!state.sel) return;
+  const d = state.detail;
+  if (kind === "reject" &&
+      !confirm(`Delete "${d.title}" and everything in its bundle?\n\n` +
+               `Free to regenerate, and rejected outlines are deliberately not ` +
+               `counted in the history weights.`)) return;
+  const body = { slug: state.sel };
+  if (kind === "approve") {
+    body.what = document.getElementById("approve").dataset.what;
+    if (!body.what) { toast("Nothing to approve at this stage."); return; }
+  }
+  const idx = state.rows.indexOf(state.sel);
+  const res = await (await fetch("/api/" + kind, {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body) })).json();
+  if (res.error) { toast(res.error); return; }
+  toast(kind === "approve" ? `Approved ${res.what}: ${d.title}` : `Deleted ${d.title}`);
+  // Land on the next item so a queue can be worked straight through.
+  const next = state.rows[idx + 1] || state.rows[idx - 1] || null;
+  state.sel = null;
+  await loadQueue(next);
+}
+
+// --- revise dialog -------------------------------------------------------
+const scrim = document.getElementById("scrim");
+
+async function openRevise() {
+  if (!state.detail) return;
+  if (!state.keepable.length)
+    state.keepable = await (await fetch("/api/keepable")).json();
+
+  // Default: keep the premise, replace the execution. That is the case this
+  // form exists for; anything else is two clicks away.
+  const DEFAULT_KEEP = ["logline", "promise", "setting", "tropes", "title"];
+  document.getElementById("keeps").innerHTML = state.keepable.map(k =>
+    `<label data-key="${k.key}">` +
+    `<input type="checkbox" value="${esc(k.key)}"` +
+    `${DEFAULT_KEEP.includes(k.key) ? " checked" : ""}>` +
+    `<span class="w">${esc(k.label)}</span></label>`).join("");
+  document.getElementById("note").value = "";
+  // Reset anything left from a previous run, so a stale success line cannot
+  // greet you on the next open.
+  const st = document.getElementById("status");
+  st.className = ""; st.innerHTML = "";
+  document.getElementById("go").textContent = "Revise";
+  document.getElementById("cancel").disabled = false;
+  syncRevise();
+  scrim.classList.add("show");
+  document.getElementById("note").focus();
+}
+
+function keepChecked() {
+  return [...document.querySelectorAll("#keeps input:checked")].map(i => i.value);
+}
+
+function syncRevise() {
+  const keep = keepChecked();
+  document.querySelectorAll("#keeps label").forEach(l =>
+    l.classList.toggle("replacing", !keep.includes(l.dataset.key)));
+
+  // Keeping everything means there is nothing to ask for, unless the free-text
+  // note says something.
+  const nothingToDo = keep.length === state.keepable.length &&
+                      !document.getElementById("note").value.trim();
+  document.getElementById("go").disabled = nothingToDo;
+
+  const combo = document.getElementById("combo");
+  if (keep.includes("chapters") && !keep.includes("cast")) {
+    combo.hidden = false;
+    combo.textContent = "Keeping the chapters while replacing the cast means " +
+      "beats that name the old characters get rewritten around the new ones. " +
+      "Usually you want to replace both.";
+  } else if (nothingToDo) {
+    combo.hidden = false;
+    combo.textContent = "Nothing is being replaced and there is no note, so " +
+      "there is nothing to revise.";
+  } else { combo.hidden = true; }
+}
+
+document.getElementById("keeps").addEventListener("change", syncRevise);
+document.getElementById("note").addEventListener("input", syncRevise);
+document.getElementById("cancel").onclick = () => scrim.classList.remove("show");
+scrim.onclick = e => { if (e.target === scrim) scrim.classList.remove("show"); };
+
+document.getElementById("revise").onsubmit = async e => {
+  e.preventDefault();
+  const go = document.getElementById("go"), cancel = document.getElementById("cancel");
+  const status = document.getElementById("status");
+
+  // The call takes ten to twenty seconds. Say so in the dialog rather than
+  // leaving a dead button, and lock the form so a second click cannot spend
+  // twice.
+  go.disabled = cancel.disabled = true;
+  go.textContent = "Revising…";
+  status.className = "working";
+  status.innerHTML = `Asking the ideator to rewrite it…` +
+    `<span class="m2">ten to twenty seconds</span>`;
+
+  let res;
+  try {
+    res = await (await fetch("/api/revise", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ slug: state.sel, keep: keepChecked(),
+                             note: document.getElementById("note").value }) })).json();
+  } catch (err) {
+    res = { error: String(err) };
+  }
+
+  if (res.error) {
+    // In the dialog, not behind it. A toast raised while the scrim is up is the
+    // one message you most need to read and the easiest to miss.
+    status.className = "bad";
+    status.innerHTML = `<b>That didn't run.</b>${esc(res.error)}`;
+    go.textContent = "Try again";
+    go.disabled = cancel.disabled = false;
+    return;
+  }
+
+  // Confirm where the eye already is — in the dialog — before taking it away.
+  status.className = "ok";
+  status.innerHTML = `Rewritten as <b>${esc(res.title)}</b>` +
+    `<span class="m2">revision ${res.revision} · ${res.chapters} chapters · ` +
+    `${res.beats} beats · ${res.per_beat} words per beat · ` +
+    `previous saved to drafts/</span>`;
+  go.textContent = "Revise";
+
+  await new Promise(r => setTimeout(r, 1100));
+  scrim.classList.remove("show");
+  go.disabled = cancel.disabled = false;
+  status.className = "";
+  toast(`Revised: ${res.title}`);
+  await loadQueue(state.sel);
+};
+
+// --- write dialog --------------------------------------------------------
+const wscrim = document.getElementById("wscrim");
+let pollTimer = null;
+
+// The dialog holds both prices — resuming, and rewriting everything — so
+// ticking the box re-prices without a round trip.
+function refreshEstimate(restart) {
+  const d = state.detail; if (!d) return;
+  const e = (restart ? d.write_estimate_restart : d.write_estimate) || {};
+  const cost = document.getElementById("wcost");
+
+  // The figure is the point of the dialog. State it plainly, and say what it
+  // does not include rather than implying a precision it does not have.
+  cost.innerHTML = !e.known
+    ? `<span class="big">cost unknown</span>` +
+      `<span class="m2">ledger/rates.json has no price for these models</span>`
+    : e.to_write === 0
+    ? `<span class="big">nothing to write</span>` +
+      `<span class="m2">every chapter has been through the editor already</span>`
+    : `<span class="big">about $${e.low.toFixed(2)} – $${e.high.toFixed(2)}</span>` +
+      `<span class="m2">estimate · the range spans no revisions to one per chapter` +
+      (e.already_written && !restart
+        ? ` · for the ${e.to_write} chapter${e.to_write === 1 ? "" : "s"} still to write`
+        : ``) + `</span>`;
+  return e;
+}
+
+function openWrite() {
+  const d = state.detail;
+  if (!d) return;
+  const e = refreshEstimate(false) || {};
+
+  // Say what is actually going to be written. A part-written story resumes,
+  // and quoting the whole-story figure for a run that writes two chapters
+  // would misstate the one number this dialog exists to give.
+  const done = e.already_written || 0;
+  document.getElementById("wfacts").innerHTML = [
+    done && !e.restart
+      ? `<b>${e.to_write} of ${d.chapters} chapters</b> — ${done} already written, ` +
+        `loaded from disk and not paid for again`
+      : `${d.chapters} chapters, ${d.words.toLocaleString()} words planned`,
+    done
+      ? `<label class="redo"><input type="checkbox" id="wrestart"> ` +
+        `rewrite the ${done} already written too</label>`
+      : null,
+    e.known ? `writer ${esc(e.writer)}, editor ${esc(e.editor)}, ` +
+              `up to ${e.max_edit_passes} revisions per chapter` : null,
+    `takes a few minutes — you can keep using the page`,
+    `every chapter is written to disk as it finishes, so a failure part-way ` +
+      `keeps what completed`,
+  ].filter(Boolean).map(t => `<li>${t}</li>`).join("");
+
+  // Re-price when the box is ticked: rewriting everything is a different bill.
+  const box = document.getElementById("wrestart");
+  if (box) box.onchange = () => refreshEstimate(box.checked);
+
+  document.getElementById("prog").className = "";
+  document.getElementById("proglog").innerHTML = "";
+  document.querySelector("#bar2 i").style.width = "0";
+  const go = document.getElementById("wgo");
+  go.disabled = false; go.textContent = "Write it";
+  document.getElementById("wcancel").textContent = "Cancel";
+  wscrim.classList.add("show");
+}
+
+function renderProgress(j) {
+  const prog = document.getElementById("prog");
+  prog.className = "show";
+  const pct = j.total ? Math.round((j.done || 0) / j.total * 100) : 0;
+  document.querySelector("#bar2 i").style.width = pct + "%";
+  const lines = (j.chapters || []).map(c =>
+    `chapter ${c.n}: ` +
+    // A resumed chapter was read off disk, not written. Saying "passed" for it
+    // is what made a resumed run look like a full rewrite.
+    (c.resumed ? "already written, kept"
+               : (c.pass ? "passed" : "FAILED") +
+                 (c.score ? ` (${c.score})` : "") +
+                 (c.exhausted ? ", revisions exhausted" : "")));
+  if (j.state === "running")
+    lines.push(`chapter ${(j.done || 0) + 1} of ${j.total}: writing…`);
+  document.getElementById("proglog").innerHTML =
+    lines.map(l => esc(l)).join("<br>");
+}
+
+async function pollJob() {
+  const j = await (await fetch("/api/job/" + encodeURIComponent(state.sel))).json();
+  renderProgress(j);
+  if (j.state === "running") return;
+
+  clearInterval(pollTimer); pollTimer = null;
+  const go = document.getElementById("wgo");
+  if (j.state === "failed") {
+    go.textContent = "Try again"; go.disabled = false;
+    document.getElementById("proglog").innerHTML +=
+      `<br><span style="color:var(--danger)">${esc(j.error || "failed")}</span>`;
+    return;
+  }
+  go.textContent = "Done";
+  document.getElementById("wcancel").textContent = "Close";
+  const bad = (j.unpassed || []).length;
+
+  // A toast fades and the log just stopped, so a finished run looked the same
+  // as an abandoned one. Say plainly that it is finished, what came out, and
+  // what the next gate is — this line stays on screen.
+  const over = j.target_minutes
+    ? Math.round((j.minutes / j.target_minutes - 1) * 100) : 0;
+  const lines = [
+    `<b>Done.</b> ${j.chapters_written} chapters, ` +
+      `${(j.words || 0).toLocaleString()} words` +
+      (j.minutes ? ` — about ${j.minutes} min read aloud` : ``),
+    j.target_minutes
+      ? `Target was ${j.target_minutes} min` +
+        (Math.abs(over) >= 15
+          ? `, so this is <b style="color:var(--accent)">${over > 0 ? "+" : ""}${over}% ` +
+            `over</b> — cheaper to fix now than after narration`
+          : ` (${over > 0 ? "+" : ""}${over}%)`)
+      : null,
+    bad
+      ? `<b style="color:var(--danger)">${bad} chapter(s) failed review</b> — ` +
+        `read them before approving`
+      : `All chapters passed. Waiting on you: <b>approve the chapters</b> to ` +
+        `unlock recording.`,
+  ].filter(Boolean);
+  document.getElementById("proglog").innerHTML +=
+    `<br><br>` + lines.join("<br>");
+
+  toast(`Written: ${(j.words || 0).toLocaleString()} words` +
+        (bad ? ` · ${bad} failed review` : " · all passed"));
+  await loadQueue(state.sel);
+}
+
+document.getElementById("wcancel").onclick = () => {
+  // Cancel only closes the dialog. The job is a thread and keeps going — say so
+  // rather than implying a stop button that does not exist.
+  if (pollTimer) toast("Still writing in the background.");
+  wscrim.classList.remove("show");
+};
+wscrim.onclick = e => { if (e.target === wscrim) document.getElementById("wcancel").click(); };
+
+document.getElementById("write").onsubmit = async e => {
+  e.preventDefault();
+  const go = document.getElementById("wgo");
+  if (go.textContent === "Done") { document.getElementById("wcancel").click(); return; }
+  go.disabled = true; go.textContent = "Writing…";
+  const res = await (await fetch("/api/write", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ slug: state.sel,
+                           restart: !!(document.getElementById("wrestart") || {}).checked })
+  })).json();
+  if (res.error) {
+    go.disabled = false; go.textContent = "Write it";
+    document.getElementById("prog").className = "show";
+    document.getElementById("proglog").innerHTML =
+      `<span style="color:var(--danger)">${esc(res.error)}</span>`;
+    return;
+  }
+  renderProgress(res);
+  pollTimer = setInterval(pollJob, 1500);
+};
+
+document.getElementById("writeBtn").onclick = openWrite;
+document.getElementById("reviseBtn").onclick = openRevise;
+document.getElementById("approve").onclick = () => act("approve");
+document.getElementById("reject").onclick = () => act("reject");
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") {
+    if (wscrim.classList.contains("show")) {
+      document.getElementById("wcancel").click(); return; }
+    if (scrim.classList.contains("show")) {
+      scrim.classList.remove("show"); return; }
+  }
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if (scrim.classList.contains("show") || wscrim.classList.contains("show")) return;
+  if (/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) return;
+  const i = state.rows.indexOf(state.sel);
+  if (e.key === "j" || e.key === "ArrowDown") {
+    e.preventDefault(); if (state.rows.length) select(state.rows[Math.min(i + 1, state.rows.length - 1)] || state.rows[0]);
+  } else if (e.key === "k" || e.key === "ArrowUp") {
+    e.preventDefault(); if (state.rows.length) select(state.rows[Math.max(i - 1, 0)]);
+  } else if (e.key === "a") { e.preventDefault(); act("approve"); }
+  else if (e.key === "r") { e.preventDefault(); act("reject"); }
+  else if (e.key === "e") { e.preventDefault(); openRevise(); }
+  else if (e.key === "w") {
+    e.preventDefault();
+    if (!document.getElementById("writeBtn").disabled) openWrite();
+  }
+  else if (e.key === "?") {
+    toast("j/k move · a approve · e revise · w write · r reject"); }
+});
+
+loadQueue();
+</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+stories_dir: stories
+bibles_dir: bibles
+
+# Target runtime in minutes: 15 or 30. Overridden per story by --length on
+# `new`, and whichever wins is pinned into the manifest, so re-rendering an
+# old story later keeps the shape it was written to.
+length_min: 15
+
+# Who to credit in bible changelog entries. Falls back to `git config user.name`,
+# then your login name. --author on `bible log` overrides it.
+# author: "Scott Gottreu"
+
+models:
+  ideator: claude-sonnet-5
+  writer: claude-opus-5      # the one place model choice shows in the output
+  editor: claude-sonnet-5
+  designer: claude-sonnet-5
+
+max_edit_passes: 2
+trope_sample: 8        # tropes shown to the ideator per run, of ~15 per genre
+
+# Fallback art direction. Every story pins its own at creation, from the series
+# bible or the genre frontmatter, so this is only reached by a bundle that has
+# none — and the designer raises a readable error instead. Set a string to give
+# such bundles a house look rather than a failure.
+art_style: null
+
+tts_provider: elevenlabs     # elevenlabs | polly
+
+casting:                     # genre files override narrator / character_voices
+  narrator: Charlotte
+  character_voices: [Daniel, Alice, George, Lily]
+  max_named_voices: 3
+  gap_ms: 400
+
+elevenlabs:
+  model: eleven_multilingual_v2   # turbo/flash bill at half a credit per char
+  output_format: pcm_24000        # pcm_44100 needs a Pro plan
+  seed: null                      # set an int for deterministic re-records
+  usd_per_1k_credits: 0.22        # verify against your plan
+  voice_library:                  # run `cli voices` to get your real IDs
+    Charlotte: XB0fDUnXU5powFXDhCwa
+    Daniel: onwK4e9ZLuTAKqWW03F9
+    Alice: Xb7hH8MzeJPuXlfP81I8
+    George: JBFqnCBsd6RMkjVDRZzb
+    Lily: pFZP5JQG7iQjIQuC4Bku
+    Brian: nPczCjzI2devNBz1zQrb
+
+polly:                       # kept working; not the default
+  engine: generative
+  region: us-east-1
+  profile: null
+  sample_rate: 16000
+
+gemini:
+  model: gemini-3.1-flash-image
+  aspect_ratio: "16:9"
+  image_size: 2K
+  thinking_level: high
+  # null derives this from length_min — 3 at 15 minutes, 4 at 30 — which holds
+  # the cadence at roughly one image a minute. An integer overrides that.
+  scenes_per_chapter: null
+  max_character_refs: 4
+
+video:
+  width: 1920
+  height: 1080
+  fps: 30
+  ken_burns: true
+  crossfade_ms: 800
+  burn_subtitles: false      # false ships an .srt to upload separately

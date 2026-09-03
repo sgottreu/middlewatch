@@ -1,0 +1,17 @@
+anthropic>=0.40
+google-genai>=1.0
+requests>=2.31
+PyYAML>=6.0
+
+# only needed if tts_provider is set to polly
+boto3>=1.35
+
+# ambience_pipeline: procedural audio synthesis
+#
+# No soundfile / librosa here on purpose. ffmpeg is already a hard dependency
+# and handles FLAC, encoding and loudness measurement, so the only thing left to
+# write natively is 16-bit PCM wav — which the stdlib `wave` module does without
+# pulling in libsndfile. One fewer C library to have installed correctly on two
+# machines.
+numpy>=1.26
+scipy>=1.11

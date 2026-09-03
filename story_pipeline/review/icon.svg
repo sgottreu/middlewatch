@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img"
+     aria-label="Middle Watch">
+  <title>Middle Watch</title>
+  <!--
+    The master mark. The middle watch is the watch from midnight to four, and
+    that is what this is: a watch face with both hands struck, one at twelve and
+    one at four. Equal length on purpose — neither is an hour hand pointing at a
+    time, they are the two ends of a span.
+
+    Palette is the review app's own: near-black #14140f, gold #c9a227.
+
+    Everything here is sized for 16 pixels, because that is where a favicon
+    actually lives and every other size takes care of itself. Three earlier
+    attempts did not survive it. A filled twelve-to-four wedge became a gold
+    blob; an arc struck on the rim disappeared into the ring; a crescent read
+    beautifully and said nothing about a watch. Weights this heavy look coarse
+    at 512 and are the reason the thing is legible in a tab.
+
+    If you edit it: keep the stroke weights in proportion, and check 16px before
+    anything else.
+  -->
+  <rect width="512" height="512" rx="112" fill="#14140f"/>
+  <circle cx="256" cy="256" r="162" fill="none" stroke="#c9a227" stroke-width="46"/>
+  <!-- Midnight. -->
+  <path d="M256 256 L256 135" stroke="#c9a227" stroke-width="52" stroke-linecap="round"/>
+  <!-- Four o'clock. -->
+  <path d="M256 256 L361 316" stroke="#c9a227" stroke-width="52" stroke-linecap="round"/>
+  <circle cx="256" cy="256" r="38" fill="#c9a227"/>
+</svg>
