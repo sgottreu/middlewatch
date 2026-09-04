@@ -1,6 +1,6 @@
 stories/
 ambience/
-
+sweep*.log
 # Generated SFX, keyed by prompt hash and reused across every project. Ignored
 # deliberately, not by oversight: it is unbounded binary that git cannot forget
 # once committed, and every entry is regenerable from the prompt in concept.json.
