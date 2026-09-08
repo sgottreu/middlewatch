@@ -1,0 +1,67 @@
+{
+  "n": 6,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Owen asks Rowe plainly what his intentions are, since his sister's name is now in every kitchen in Amberlight.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Rowe, startled into honesty, admits he does not know what to call his feeling, only that it is slower and better than the gossip allows.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Word arrives that Louisa's uncle has agreed to fit the old east wing of Amberlight House as a schoolroom at the estate's expense, needing no subscription at all.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Rowe realizes that with the money settled, he has no more useful reason to marry, only whatever reason is left over, which is Judith herself.",
+      "covered": true,
+      "note": "The Judith-as-remaining-reason link is implied through the preceding paragraph rather than stated outright, but the sequence makes it unambiguous."
+    },
+    {
+      "beat": "He sets out to find her and meets her already on the road to his lodging, come to settle the matter of the gossip herself.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Judith's arrival, insisting she will settle the matter herself rather than be settled between the two men, redirects the story from Owen's confrontation to Judith's own agency in chapter 7."
+  },
+  "continuity": [
+    "Chapter 6 places Rowe's lodging 'over Mrs Copp's', while chapters 3 and 5 refer to a 'Mrs Copp'/'Sarah Copp' associated with the gatehouse and village gossip about Rowe being refused; if this is meant to be the same woman, her role as both landlady and gatehouse gossip needs a clarifying word, and if not, the name collision risks confusing a listener."
+  ],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [
+    {
+      "quote": "with the look of a woman who has spent an hour deciding something and does not mean to be talked out of it in the road",
+      "replace_with": "replace with a concrete physical detail \u2014 how she is walking, what she is carrying, a specific set of the jaw or hand \u2014 rather than naming the state of her resolve"
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Serves the chaperone's-absence fallout directly through Owen's confrontation, and clears the meddling matchmaker's engine (the subscription) out of the way so the enemies-of-manner pair can move on their own footing; no fourth trope introduced.",
+  "length_note": null,
+  "fixes": [
+    "Trim the paragraph beginning 'Rowe stood with his hand flat on the subscription book. Fifteen pounds. He had carried the figure into Hollis's yard and Mrs Yardley's parlour...' \u2014 it recaps beats already dramatized in chapters 1 and 3 and can be cut to a sentence or two.",
+    "Clarify whether the Mrs Copp who lets Rowe his rooms is the same Mrs Copp referenced in chapters 3 and 5, with a single identifying phrase, so the name does not read as a collision.",
+    "Consider replacing 'with the look of a woman who has spent an hour deciding something' with a concrete visual \u2014 a set mouth, a fast stride, hands gripping her skirt \u2014 to keep the moment as specific as the rest of the chapter."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  }
+}

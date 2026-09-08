@@ -1,0 +1,59 @@
+{
+  "n": 1,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Rowe and the sexton find the cracked beam, repair costs fifteen pounds against four in the poor box.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Rowe goes to the library above the draper's, Judith is minding the counter.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Judith offers to keep the subscription book and suggests naming parishioners; Rowe calls it parish politics dressed as advice; she withdraws the offer.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mrs Pike arrives with news of Miss Marchmont's fortnight at the gatehouse.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mrs Pike declares this the answer to everything and lists what Rowe must wear, ignoring his protest.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Mrs Pike's flat refusal to be dissuaded ('you shall have both') commits the parish to a matchmaking scheme Rowe has explicitly rejected, setting up the dinner in chapter two."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Enemies of manner and the meddling matchmaker are both live on the page; the chaperone's absence is not yet relevant and rightly withheld.",
+  "length_note": null,
+  "fixes": [
+    "Consider trimming the Mrs Yardley/Hollis sentence slightly for ear-parsing, as it stacks two clauses of financial reasoning back to back.",
+    "The 'lid that fits the pot' simile is good but is the chapter's one indulgence in figurative flourish; keep future Pike scenes plainer to avoid it becoming a tic."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "pipeline": "story",
+  "slug": "the-cracked-beam",
+  "created": "2026-08-29T16:33:55",
+  "stages": {
+    "ideate": "approved",
+    "write": "done",
+    "edit": "awaiting_review",
+    "record": "pending",
+    "design": "pending",
+    "direct": "pending"
+  },
+  "spend": {},
+  "pinned": {
+    "art_style": "Romantic-era English watercolour and ink illustration, in the manner of early nineteenth-century hand-coloured aquatint book plates. Soft muted palette of sage, dove grey, cream and dusty rose. Visible paper tooth. Gentle diffused daylight.",
+    "genre": "regency",
+    "flavor": "slice_of_life",
+    "title": "The Cracked Beam",
+    "series": "Middle Watch: Amberlight",
+    "length_min": 30,
+    "scenes_per_chapter": 4,
+    "genre_voices": {
+      "narrator": "Charlotte",
+      "character_voices": {
+        "female": [
+          "Alice",
+          "Lily",
+          "Matilda"
+        ],
+        "male": [
+          "Daniel",
+          "George",
+          "Brian"
+        ]
+      }
+    },
+    "bible": "amberlight"
+  },
+  "stage_info": {
+    "edit": {
+      "unpassed": []
+    }
+  },
+  "chapter_approvals": {
+    "1": "c620dbc51deaf897",
+    "2": "0dbacd556dc12427"
+  }
+}

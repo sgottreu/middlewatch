@@ -1,4 +1,4 @@
-stories/
+#stories/
 ambience/
 sweep*.log
 # Generated SFX, keyed by prompt hash and reused across every project. Ignored

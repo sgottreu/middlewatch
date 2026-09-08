@@ -1,0 +1,39 @@
+{
+  "pipeline": "story",
+  "slug": "the-lit-windows-of-amberlight",
+  "created": "2026-08-29T15:53:48",
+  "stages": {
+    "ideate": "approved",
+    "write": "pending",
+    "edit": "pending",
+    "record": "pending",
+    "design": "pending",
+    "direct": "pending"
+  },
+  "spend": {},
+  "pinned": {
+    "art_style": "Romantic-era English watercolour and ink illustration, in the manner of early nineteenth-century hand-coloured aquatint book plates. Soft muted palette of sage, dove grey, cream and dusty rose. Visible paper tooth. Gentle diffused daylight.",
+    "genre": "regency",
+    "flavor": "gothic",
+    "title": "The Lit Windows of Amberlight",
+    "series": "Middle Watch: Amberlight",
+    "length_min": 15,
+    "scenes_per_chapter": 3,
+    "genre_voices": {
+      "narrator": "Charlotte",
+      "character_voices": {
+        "female": [
+          "Alice",
+          "Lily",
+          "Matilda"
+        ],
+        "male": [
+          "Daniel",
+          "George",
+          "Brian"
+        ]
+      }
+    },
+    "bible": "amberlight"
+  }
+}

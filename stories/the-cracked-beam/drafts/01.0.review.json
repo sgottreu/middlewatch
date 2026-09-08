@@ -1,0 +1,69 @@
+{
+  "n": 1,
+  "pass": false,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Mr Rowe and the sexton find the main beam of the schoolroom cracked through with spring damp, and the repair will cost fifteen pounds against four in the poor box.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Rowe goes to the library above the draper's to post a subscription notice, where Miss Judith Vane is minding the counter for her brother.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Judith offers to keep the subscription book herself and suggests he ask certain parishioners by name rather than post a general notice; Rowe, harried, calls it parish politics dressed as advice, and she withdraws the offer at once.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mrs Pike arrives with the news that Miss Louisa Marchmont, niece to the family holding the living, is to stay a fortnight at the gatehouse of the empty Amberlight House.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mrs Pike declares this is the answer to everything and begins listing what Rowe must wear to be presented to her, ignoring his protest that he wants subscriptions, not a wife.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Mrs Pike's closing line overrides Rowe's refusal and commits him to a courtship scheme he did not ask for, setting the next chapter's action in motion."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [
+    {
+      "quote": "There was a silence of the kind that a man afterwards spends a fortnight regretting.",
+      "replace_with": "A concrete beat instead of a named feeling \u2014 Rowe fumbling his hat, or biting back a further word, would show the regret rather than announce it."
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Establishes enemies-of-manner friction cleanly through the sermon/counter exchange and introduces the meddling matchmaker at full throttle; the chaperone's-absence trope is correctly left for a later chapter.",
+  "length_note": null,
+  "fixes": [
+    "Cut 'It barely stretches to coal.' \u2014 it restates the sentence before it and adds nothing the reader doesn't already have.",
+    "Trim 'She read it through before she answered, which took longer than he expected, and she read it twice.' to a single clause; the repetition of 'read' twice within one sentence is padding.",
+    "Cut or replace 'There was a silence of the kind that a man afterwards spends a fortnight regretting' with a physical action showing Rowe's discomfort rather than narrating the abstract feeling.",
+    "Tighten the poor-box paragraph \u2014 the Ludd family detail and the Easter illness can share one sentence instead of two to save words without losing the specific figures.",
+    "Consider trimming Mrs Pike's gatehouse speech; the maid and 'two-and-twenty' can be delivered in fewer clauses without losing the gossip texture."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "length_over": 726,
+  "length_target": 570
+}

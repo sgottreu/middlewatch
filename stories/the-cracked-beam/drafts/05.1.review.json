@@ -1,0 +1,65 @@
+{
+  "n": 5,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Mrs Hale, at the draper's window, sees Rowe and Judith return together at dusk, unchaperoned and laughing, and has the whole parish informed by morning.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mrs Pike hears it first as triumph, assuming it confirms an attachment, then realizes with horror it is Judith spoken of, and not Louisa.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Flustered, Mrs Pike tells three separate people it was nothing at all, which naturally convinces everyone it was something.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Judith hears an invented version of the story, that she was seen weeping on Rowe's arm, from a girl at the library counter, and goes home changed in temper.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Owen Vane hears it from a customer, closes his shop early, and walks straight to the curate's lodging.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Owen sets out to demand Rowe's intentions before he 'comes home,' which is exactly what Chapter 6 opens on."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": [
+      "Opening paragraph shifts into present tense ('The library window looks north up the lane') against the past-tense narration of the rest of the chapter.",
+      "'She saw no maid, no Mrs Pike, and no daylight' is a triple negative list that edges toward the banned negative-parallelism pattern even though it is not the exact 'not X, just Y' form."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [
+    "Sarah Copp (the gossip's source) and Mrs Copp (the gatehouse maid named in Chapter 3) are close enough in name and unexplained in relation that a listener may conflate them."
+  ],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Serves the chaperone's-absence trope directly through its consequences and shows the meddling matchmaker undone by her own scheme; no fourth trope introduced.",
+  "length_note": null,
+  "fixes": [
+    "Correct the tense in the opening paragraph: 'looks north' and 'takes in' should be 'looked north' and 'took in' to match the surrounding past tense.",
+    "Clarify whether Sarah Copp is kin to Mrs Copp from Chapter 3, or use a different surname to avoid ear-confusion.",
+    "If the chapter needs trimming to hit the target length, the Nye's-cart description in the opening paragraph and the 'Before noon...entirely satisfied' sentence are the most compressible, since both restate the gossip mechanism already dramatized in dialogue."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  }
+}

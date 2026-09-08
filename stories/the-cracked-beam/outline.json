@@ -1,0 +1,190 @@
+{
+  "title": "The Cracked Beam",
+  "genre": "regency",
+  "subgenre": "slice_of_life",
+  "tropes": [
+    "Enemies of manner",
+    "The meddling matchmaker",
+    "The chaperone's absence"
+  ],
+  "logline": "A curate and a shopkeeper's sister, each certain the other is proud, are thrown together by a broken cart wheel and a well-meaning widow's scheme to marry money into the parish, only to discover that the money was never the point.",
+  "promise": "A misjudged first impression will be corrected, a meddling matchmaker will be wrong about her own plan and right about her own instinct, and an hour unchaperoned will cost a reputation before it mends one.",
+  "setting": "Amberlight, Hampshire, in the early summer of 1817",
+  "target_words": 4500,
+  "cast": [
+    {
+      "name": "Mr Silas Rowe",
+      "role": "protagonist",
+      "age": 34,
+      "gender": "male",
+      "station": "curate of Amberlight; eighty a year and no expectations",
+      "want": "to raise fifteen pounds to mend the schoolroom roof without embarrassing himself or anyone else",
+      "appearance": "Tall and thin, dark hair worn slightly too long, with the stoop of a man used to low doorways and a face that gives away more than he intends.",
+      "dress": "Worn black coat, carefully brushed, and linen that has been turned at the cuffs.",
+      "voice_note": "earnest, apt to say too little when it matters and too much when it doesn't",
+      "voice": "Daniel",
+      "recurring": true
+    },
+    {
+      "name": "Miss Judith Vane",
+      "role": "love_interest",
+      "age": 27,
+      "gender": "female",
+      "station": "keeps house for her brother, the apothecary; no fortune of her own",
+      "want": "to be taken seriously by someone in the parish, for once, before she is taken for granted",
+      "appearance": "Fair, freckled, of middling height, with reddish hair she cannot keep pinned and a habit of looking directly at whoever is speaking.",
+      "dress": "Sprigged muslin in summer, a grey wool pelisse in winter, both mended with more thrift than skill.",
+      "voice_note": "reads everything, says less than she thinks, and every word she does say is exact",
+      "voice": "Alice",
+      "recurring": true
+    },
+    {
+      "name": "Mrs Honoria Pike",
+      "role": "supporting",
+      "age": 58,
+      "gender": "female",
+      "station": "widow of a naval surgeon; three hundred a year and a house on the green",
+      "want": "to arrange a marriage that solves everyone's problems at once, and to be thanked for it",
+      "appearance": "Short and broad, with grey hair pinned severely under a lace cap, and small quick eyes set in a round weathered face.",
+      "dress": "Black bombazine with a plain white fichu, ten years out of fashion and immaculately kept.",
+      "voice_note": "warm, talks too much, states rumour and fact in exactly the same confident tone",
+      "voice": "Matilda",
+      "recurring": true
+    },
+    {
+      "name": "Miss Louisa Marchmont",
+      "role": "supporting",
+      "age": 22,
+      "gender": "female",
+      "station": "niece of the family that holds the Amberlight living; visiting the empty house on family business",
+      "want": "to persuade her uncle to give the old house a use, rather than let it stand shut",
+      "appearance": "fair, freckled across the nose, with a quick way of walking that outpaces whoever she is with",
+      "dress": "sensible travelling brown, unadorned, more suited to a farm inspection than a parlour",
+      "voice_note": "brisk and direct, answers questions no one has quite asked yet"
+    },
+    {
+      "name": "Mr Owen Vane",
+      "role": "supporting",
+      "age": 30,
+      "gender": "male",
+      "station": "apothecary of Amberlight, modest trade income, Judith's brother and only guardian",
+      "want": "to see his sister settled somewhere she will not be talked about",
+      "appearance": "broad-shouldered with his sister's dark colouring, sleeves always rolled to the elbow from the dispensary",
+      "dress": "a brown workaday coat and an apron dusted with chalk and powders",
+      "voice_note": "plain-spoken, dry, says the blunt thing his sister only thinks"
+    },
+    {
+      "name": "Mrs Hale",
+      "role": "supporting",
+      "age": 45,
+      "gender": "female",
+      "station": "draper's wife, keeps the counter of the circulating library above the shop",
+      "want": "to be the first person in Amberlight to know anything",
+      "appearance": "round-faced and pink, with spectacles pushed up into hair the colour of weak tea",
+      "dress": "a striped apron over her gown, never removed even to serve customers upstairs",
+      "voice_note": "chatty, reports gossip as news and news as gossip, no malice, no filter"
+    }
+  ],
+  "chapters": [
+    {
+      "n": 1,
+      "title": "The Cracked Beam",
+      "beats": [
+        "Mr Rowe and the sexton find the main beam of the schoolroom cracked through with spring damp, and the repair will cost fifteen pounds against four in the poor box.",
+        "Rowe goes to the library above the draper's to post a subscription notice, where Miss Judith Vane is minding the counter for her brother.",
+        "Judith offers to keep the subscription book herself and suggests he ask certain parishioners by name rather than post a general notice; Rowe, harried, calls it parish politics dressed as advice, and she withdraws the offer at once.",
+        "Mrs Pike arrives with the news that Miss Louisa Marchmont, niece to the family holding the living, is to stay a fortnight at the gatehouse of the empty Amberlight House.",
+        "Mrs Pike declares this is the answer to everything and begins listing what Rowe must wear to be presented to her, ignoring his protest that he wants subscriptions, not a wife."
+      ],
+      "target_words": 570
+    },
+    {
+      "n": 2,
+      "title": "Old Grievances",
+      "beats": [
+        "The narrator lays out Rowe's private grievance: last winter Judith corrected a misquoted verse in his sermon aloud, in front of Mrs Hale and two customers.",
+        "Judith's own grievance is aired: she once offered Rowe a list of novels for a sick parishioner, and he waved it away as circulating trash without having read one.",
+        "Mrs Pike calls on Judith and asks her to arrange a dinner introducing Rowe to Miss Marchmont, since Judith is so practical and unlikely to mind the trouble.",
+        "Judith agrees, partly from want of occupation and partly from curiosity about this Miss Marchmont, and finds herself and Rowe thrown together over flowers and menus, trading clipped, correct sentences neither means.",
+        "Owen Vane teases his sister that she seems very taken up with the curate's dinner for someone who cannot abide him, and she has no answer ready."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 3,
+      "title": "An Evening Arranged",
+      "beats": [
+        "At Mrs Pike's dinner, Miss Marchmont arrives plainly dressed and more curious about the old house's library than about being introduced to anyone.",
+        "Rowe, coached beforehand, is stiff and overpraises everything within reach, and Louisa remains polite but plainly unmoved.",
+        "Louisa and Judith fall into easy talk about a book both have read, and Mrs Pike, watching them laugh, decides this proves Louisa charmed by the evening, and therefore by Rowe.",
+        "Alone with Judith afterward, Louisa admits she has come to persuade her uncle to give the empty house a use, not to be courted by anyone, and asks what the parish truly needs.",
+        "Judith answers plainly: a schoolroom, since the old one is falling in, and watches an idea take hold in Louisa's face."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 4,
+      "title": "The Bramdean Road",
+      "beats": [
+        "Mrs Pike arranges for Louisa to ride with Rowe to Bramdean to fetch the mason's estimate, meaning further matchmaking, but Louisa is occupied writing to her uncle and sends word she cannot go.",
+        "Judith, already walking to the draper's for thread, is asked to carry the errand instead, and Mrs Pike, absorbed in Louisa's letter, waves her off without thinking of a chaperone.",
+        "A mile past the mill the donkey cart's wheel splits, and Rowe and Judith are left stranded on the verge waiting for someone to pass.",
+        "Sitting together the better part of an hour, they finally say aloud what each believed of the other, the sermon and the novels, and find both accounts had grown larger with telling.",
+        "A farmer's cart takes them up at last, but by the time they reach Amberlight the light is failing, and the green is not empty."
+      ],
+      "target_words": 570
+    },
+    {
+      "n": 5,
+      "title": "What Was Seen",
+      "beats": [
+        "Mrs Hale, at the draper's window, sees Rowe and Judith return together at dusk, unchaperoned and laughing, and has the whole parish informed by morning.",
+        "Mrs Pike hears it first as triumph, assuming it confirms an attachment, then realizes with horror it is Judith spoken of, and not Louisa.",
+        "Flustered, Mrs Pike tells three separate people it was nothing at all, which naturally convinces everyone it was something.",
+        "Judith hears an invented version of the story, that she was seen weeping on Rowe's arm, from a girl at the library counter, and goes home changed in temper.",
+        "Owen Vane hears it from a customer, closes his shop early, and walks straight to the curate's lodging."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 6,
+      "title": "The Apothecary's Question",
+      "beats": [
+        "Owen asks Rowe plainly what his intentions are, since his sister's name is now in every kitchen in Amberlight.",
+        "Rowe, startled into honesty, admits he does not know what to call his feeling, only that it is slower and better than the gossip allows.",
+        "Word arrives that Louisa's uncle has agreed to fit the old east wing of Amberlight House as a schoolroom at the estate's expense, needing no subscription at all.",
+        "Rowe realizes that with the money settled, he has no more useful reason to marry, only whatever reason is left over, which is Judith herself.",
+        "He sets out to find her and meets her already on the road to his lodging, come to settle the matter of the gossip herself."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 7,
+      "title": "A Proposal Not Required",
+      "beats": [
+        "Judith tells Rowe she means to correct the story to the whole parish, whatever it costs her pride to explain a cracked wheel to fools.",
+        "Rowe says he does not want the rumour corrected so much as made true, and asks her, without any of Mrs Pike's staging, whether she would have him.",
+        "Wary of being a convenience to a story rather than a choice, Judith asks whether he asks from feeling or from wanting to stop tongues.",
+        "He answers with the sermon and the novels, admitting he has thought of her correcting him at the counter far more often than a man ought to think of someone he claims to dislike, and she laughs and lets it settle the matter.",
+        "They walk back into Amberlight together in full daylight this time, meaning to be seen."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 8,
+      "title": "Subscriptions Closed",
+      "beats": [
+        "News of the schoolroom's rescue by the Marchmont estate reaches the parish the same week as news of the engagement, and Mrs Hale cannot decide which to tell first.",
+        "Mrs Pike claims full credit for both, insisting the dinner was always meant to end this way, and nobody troubles to correct her.",
+        "Louisa Marchmont, her errand accomplished, returns to town, having secured her uncle's promise and gained a correspondent in Judith.",
+        "Owen gives his blessing over the shop counter, on condition Rowe never again send his sister out on a cracked wheel without him.",
+        "The story closes with the schoolroom roof going up the same week the banns are read, and Amberlight satisfied that the right things happened, whatever the wrong reasons given for them."
+      ],
+      "target_words": 560
+    }
+  ],
+  "length_min": 30,
+  "bible": "amberlight",
+  "series": "Middle Watch: Amberlight",
+  "slug": "the-cracked-beam"
+}

@@ -1,0 +1,64 @@
+{
+  "n": 8,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Before Whitlow and Rowe as witnesses, Farr and Judith lay out the dispensing book, the housekeeper's account, and the recovered letter.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Hartwell cannot account for the letter's date, nor explain why it never left the house.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "With the attorney's authority behind them, Hartwell quits Oakmere before nightfall rather than face a suit.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mrs Pike carries the whole affair through the parish within a day, casting herself as the one who first doubted the will.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Confirmed at last in his inheritance, Farr asks Judith what he could not honestly have asked her with nothing to his name, and she accepts.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "As the final chapter it closes on the proposal and acceptance rather than opening a new thread, which is the correct shape for a last chapter."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [
+    {
+      "quote": "He asked, in a lighter voice, what was wanted.",
+      "replace_with": "Give Hartwell a concrete tell instead of a vague vocal quality \u2014 he sets down the napkin, or reaches for his watch-chain, before he asks."
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Delivers the disputed inheritance and returning officer straight to their promised conclusion, and the proposal pays off the forced-proximity revelation from chapter six without introducing anything new.",
+  "length_note": null,
+  "fixes": [
+    "Replace 'in a lighter voice' with a specific physical action so Hartwell's unease is shown rather than named.",
+    "Consider one more beat of Hartwell's own voice before he quits \u2014 a single line of self-justification would sharpen the antagonist's exit without adding length."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  }
+}

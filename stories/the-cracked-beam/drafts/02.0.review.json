@@ -1,0 +1,78 @@
+{
+  "n": 2,
+  "pass": true,
+  "score": 7,
+  "beats": [
+    {
+      "beat": "The narrator lays out Rowe's private grievance: last winter Judith corrected a misquoted verse in his sermon aloud, in front of Mrs Hale and two customers.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Judith's own grievance is aired: she once offered Rowe a list of novels for a sick parishioner, and he waved it away as circulating trash without having read one.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mrs Pike calls on Judith and asks her to arrange a dinner introducing Rowe to Miss Marchmont, since Judith is so practical and unlikely to mind the trouble.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Judith agrees, partly from want of occupation and partly from curiosity about this Miss Marchmont, and finds herself and Rowe thrown together over flowers and menus, trading clipped, correct sentences neither means.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Owen Vane teases his sister that she seems very taken up with the curate's dinner for someone who cannot abide him, and she has no answer ready.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Owen's tease leaves Judith without a reply, a modest but genuine turn into the dinner and its consequences rather than a mere continuation."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [
+    {
+      "quote": "Every sentence was correct and none of them was meant, and each of them went away certain that the other had been the more disagreeable of the two.",
+      "replace_with": "Cut the summary and let the flower/ham exchange stand alone as the proof; the reader has already seen the correctness and can supply the rest."
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Serves Enemies of manner directly (verse and novels grievances, the clipped dinner exchange) and sets up the meddling matchmaker's scheme; the chaperone's absence is not yet in play, which is correct for this point in the outline.",
+  "length_note": null,
+  "fixes": [
+    "Chapter runs well over its 560-word target; trim to restore pace before narration.",
+    "Cut or shorten 'They were perfectly civil. Every sentence was correct and none of them was meant, and each of them went away certain that the other had been the more disagreeable of the two.' \u2014 the preceding dialogue already shows this.",
+    "Tighten 'Judith said she would. She told herself it was for the want of anything else to do between Thursday and Wednesday. It was also because she wished to see for herself what a Marchmont looked like, since the family had held the living since her grandfather's time and had never once been in it.' to one or two sentences.",
+    "Split the sentence 'Old Nan Corbin at the mill cottages had been laid up with her hip and could not sew or stand, and Rowe went to her every Thursday and read her improving matter until she fell asleep out of self-defence' \u2014 it shifts subject from Nan to Rowe mid-sentence across the 'and'; break after 'stand.'",
+    "Consider trimming one of the two Mrs Pike-relayed-question exchanges (flowers or ham/pigeons) to reduce the middle section without losing the beat."
+  ],
+  "lint": {
+    "total": 1,
+    "errors": 0,
+    "by_rule": {
+      "clause_chain": 1
+    },
+    "findings": [
+      {
+        "rule": "clause_chain",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "I shall have Miss Marchmont, and Mr Rowe, and your brother if he will leave off his powders, and eight is a reasonable number for my table.",
+        "note": "4 clauses coordinated in 27 words. Heard once, the last one lands with the subject of the first already gone. Split after the first clause, or make every member the same grammatical shape so the ear can follow the pattern."
+      }
+    ]
+  },
+  "chapter_hash": "0dbacd556dc12427"
+}

@@ -1,0 +1,73 @@
+{
+  "n": 4,
+  "pass": true,
+  "score": 7,
+  "beats": [
+    {
+      "beat": "Judith and Mr Rowe call at Oakmere under pretence of parish almsgiving, and are received stiffly by Hartwell in the hall.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Alone with Whitlow in the kitchen, Judith learns the housekeeper was told exactly what account to give of the day of the signing.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Whitlow admits, her voice dropping, that months before the death she wrote herself to Farr's regiment warning that his great-uncle was failing.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "She recalls handing that letter to Hartwell to go with the rest of the post, since he had by then taken charge of it.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Frightened at having said so much, Whitlow cannot say whether the letter was ever sent at all.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "The chapter ends on genuine uncertainty about the letter's fate, which drives the search that occupies the following chapters."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": [
+      "\"which is a thing that keeps a frightened woman standing for only about a minute\" is narratorial editorializing about human behaviour in general rather than a specific observation of Whitlow.",
+      "\"He looked at the alms book for rather longer than a man looks at a thing he means to read\" tells the reader Hartwell is suspicious rather than showing it through a concrete action."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [
+    {
+      "quote": "which is a thing that keeps a frightened woman standing for only about a minute",
+      "replace_with": "Show Whitlow's posture change concretely \u2014 she sits, or her hand stops working the pan \u2014 rather than a generalized claim about frightened women."
+    },
+    {
+      "quote": "He looked at the alms book for rather longer than a man looks at a thing he means to read",
+      "replace_with": "Give Hartwell a specific tell \u2014 turning it over, checking the date, glancing at the door \u2014 instead of a comparative generalization."
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Advances the disputed inheritance directly through Whitlow's testimony; the returning officer and forced proximity tropes sit outside this chapter's scope, which is acceptable since Farr does not appear.",
+  "length_note": "Counted roughly 722 words against a 560 target, about 29% over; the overage comes from Rowe's nervous almsgiving rationale and scene-setting rather than padding, so it reads as generous coverage rather than a skipped beat.",
+  "fixes": [
+    "Trim Rowe's opening almsgiving speech and the narrator's alms-book paragraph by a third; the point (a pretext, and Rowe's discomfort with it) lands in fewer words.",
+    "Replace \"which is a thing that keeps a frightened woman standing for only about a minute\" with a physical beat specific to Whitlow.",
+    "Replace \"He looked at the alms book for rather longer than a man looks at a thing he means to read\" with a concrete, visible action.",
+    "Consider cutting one of the three 'never' clauses in Whitlow's final speech (\"I never saw it after. I never saw it in the bag and I never saw it burnt\") to avoid the rule-of-three cadence."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  }
+}

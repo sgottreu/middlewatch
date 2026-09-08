@@ -1,0 +1,202 @@
+{
+  "title": "The Letter at the Bell",
+  "genre": "regency",
+  "subgenre": "mystery",
+  "tropes": [
+    "The disputed inheritance",
+    "The secret benefactor",
+    "The fortune hunter"
+  ],
+  "bible_conflict": "omit",
+  "logline": "When old Mr Hale dies without a will that anyone can find, the quiet woman who reads everyone else's letters before they do discovers his was never lost at all, only never opened.",
+  "promise": "A missing will is found honestly, a fortune hunter is exposed by his own haste, and the person quietly thanked for a kindness turns out not to be the one who did it.",
+  "setting": "Amberlight and the neighbouring farm at Hale's Bottom, autumn 1816",
+  "target_words": 4500,
+  "cast": [
+    {
+      "name": "Miss Judith Vane",
+      "role": "protagonist",
+      "age": 27,
+      "gender": "female",
+      "station": "keeps house for her brother, the apothecary; no fortune of her own",
+      "want": "to see the true will found before Constance Wray is married out of her own inheritance",
+      "appearance": "Fair, freckled, of middling height, with reddish hair she cannot keep pinned and a habit of looking directly at whoever is speaking.",
+      "dress": "Sprigged muslin in summer, a grey wool pelisse in winter, both mended with more thrift than skill.",
+      "voice_note": "quiet, precise, waits a beat before answering",
+      "voice": "Alice",
+      "recurring": true
+    },
+    {
+      "name": "Mr Edward Sorrel",
+      "role": "love_interest",
+      "age": 30,
+      "gender": "male",
+      "station": "clerk to a Winchester firm of solicitors, sent to settle the Hale estate; salary modest but a partnership expected",
+      "want": "to close the estate correctly, whatever it costs him with the family that pays his firm",
+      "appearance": "tall, sandy-haired, ink permanently at the side of one finger, spectacles he forgets he is wearing",
+      "dress": "a serviceable brown coat, always slightly travel-creased",
+      "voice_note": "formal at first meeting, dryly funny once he trusts you"
+    },
+    {
+      "name": "Mr Peter Hale",
+      "role": "antagonist",
+      "age": 29,
+      "gender": "male",
+      "station": "nephew of the late Josiah Hale; gentleman of no settled income and considerable debt",
+      "want": "to secure Hale's Bottom farm by marriage or by default before any will can surface",
+      "appearance": "handsome in an obvious way, well-fed, fair curls kept a little too fashionably long",
+      "dress": "a blue coat cut better than his circumstances warrant",
+      "voice_note": "charming, quick to laugh, quicker to change the subject"
+    },
+    {
+      "name": "Miss Constance Wray",
+      "role": "supporting",
+      "age": 24,
+      "gender": "female",
+      "station": "ward and niece by marriage to the late Josiah Hale; raised in his house, no independent fortune",
+      "want": "to keep the farm and the life she has always known without being married for it",
+      "appearance": "small and fair, with a stillness that some mistake for meekness",
+      "dress": "unrelieved mourning black, plainly made",
+      "voice_note": "soft-spoken, says exactly what she means and no more"
+    },
+    {
+      "name": "Mrs Honoria Pike",
+      "role": "supporting",
+      "age": 58,
+      "gender": "female",
+      "station": "widow of a naval surgeon; three hundred a year and a house on the green",
+      "want": "to know everything before anyone else does",
+      "appearance": "Short and broad, with grey hair pinned severely under a lace cap, and small quick eyes set in a round weathered face.",
+      "dress": "Black bombazine with a plain white fichu, ten years out of fashion and immaculately kept.",
+      "voice_note": "brisk, talks over people cheerfully, certain of things she has half-heard",
+      "voice": "Matilda",
+      "recurring": true
+    },
+    {
+      "name": "Mr Silas Rowe",
+      "role": "supporting",
+      "age": 34,
+      "gender": "male",
+      "station": "curate of Amberlight; eighty a year and no expectations",
+      "want": "to have done his duty by a dying parishioner, once he can remember exactly what that duty was",
+      "appearance": "Tall and thin, dark hair worn slightly too long, with the stoop of a man used to low doorways and a face that gives away more than he intends.",
+      "dress": "Worn black coat, carefully brushed, and linen that has been turned at the cuffs.",
+      "voice_note": "earnest, apologetic, loses the thread mid-sentence",
+      "voice": "Daniel",
+      "recurring": true
+    },
+    {
+      "name": "Mrs Eliza Thorne",
+      "role": "supporting",
+      "age": 52,
+      "gender": "female",
+      "station": "former housekeeper to Josiah Hale, now living alone on a small annuity",
+      "want": "to be believed, since no one has troubled to ask her anything until now",
+      "appearance": "broad, red-knuckled hands, grey hair scraped back, a face used to being overlooked",
+      "dress": "a faded print gown and a housekeeper's apron kept from long habit",
+      "voice_note": "flat, guarded, warms slowly once taken seriously"
+    }
+  ],
+  "chapters": [
+    {
+      "n": 1,
+      "title": "The Farm Without a Will",
+      "beats": [
+        "Old Mr Josiah Hale of Hale's Bottom farm dies after a short illness, attended in his last days by Judith Vane's brother the apothecary.",
+        "Mrs Pike declares over tea that no will has been found, and that the farm, worth some hundred and fifty a year, must therefore pass to the nephew, Mr Peter Hale.",
+        "Constance Wray, Hale's grieving ward of four-and-twenty, is seen at church in mourning black, uncertain whether she will keep her home past Michaelmas.",
+        "Peter Hale is already telling neighbours he means to 'keep the farm in the family,' with a warm look toward Constance that Judith finds too quick for grief.",
+        "A clerk from the Winchester solicitors, Mr Edward Sorrel, arrives at the Bell to settle the estate and admits, pressed by Mrs Pike, that Hale told his lawyers years ago he had left everything in order \u2014 and that no such document can be found."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 2,
+      "title": "A Man in a Hurry",
+      "beats": [
+        "Judith meets Sorrel at the circulating library, both there ostensibly for other business, and compares what each has heard.",
+        "Sorrel confirms that under the law, if no will is found, the farm goes to Peter as next of kin, and that he has one fortnight before he must report the estate settled.",
+        "Judith recalls her brother mentioning that old Hale, in his last week, spoke of a letter he meant to send to his solicitor and asked after the coach days.",
+        "Peter Hale, overhearing part of this in the shop, laughs it off as an old man's confusion and steers the conversation to his own plans for the farm.",
+        "Judith decides to ask her brother exactly what Hale said, and finds, when she does, that Hale named no solicitor at all but only said the letter was 'given already.'"
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 3,
+      "title": "The Housekeeper's Drawer",
+      "beats": [
+        "Judith and Sorrel call on Mrs Thorne, Hale's former housekeeper, now living alone at the edge of the parish.",
+        "Mrs Thorne recalls a letter arriving for her, oddly, in the week before Hale's death, sealed and heavy, which she set aside unread, thinking it none of her business.",
+        "She goes to the kitchen drawer to produce it and finds the drawer disturbed, the letter gone.",
+        "She admits Peter Hale called on her only three days past, alone, on some pretext of settling her annuity, and was left waiting in that very kitchen.",
+        "Sorrel points out that a stolen letter proves nothing was destroyed that mattered, only that someone believed it did \u2014 which means the true document may exist elsewhere still."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 4,
+      "title": "A Proposal in Church",
+      "beats": [
+        "Peter Hale, before the fortnight is out, proposes to Constance publicly after Sunday service, framing it as securing her future and the farm together.",
+        "Constance, cornered by the audience of the whole parish, asks only for time to consider, which Peter grants with visible impatience.",
+        "Mrs Pike is seen delivering a basket to Constance's door and is thanked warmly for her continued kindness, which she accepts without correcting anyone.",
+        "Judith notices the basket contains more than charity usually allows \u2014 good linen, coin wrapped in paper \u2014 and wonders where a widow of three hundred a year finds such generosity twice a month.",
+        "Mr Rowe, asked in passing whether Hale left anything with him before he died, goes pale and says he believes there may have been 'something in the vestry papers' he never got round to sorting."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 5,
+      "title": "What the Curate Forgot",
+      "beats": [
+        "Judith and Sorrel search the vestry with Rowe, who apologises repeatedly for the state of his correspondence.",
+        "Among unanswered parish letters they find a sealed envelope addressed not to any solicitor but to Mrs Thorne, in Hale's own hand.",
+        "Rowe remembers now: Hale came to him privately, distrusting the post after a parcel once went astray, and asked him to hold the letter until Mrs Thorne could be sent for it \u2014 then Rowe forgot entirely.",
+        "With Mrs Thorne and Constance both fetched as witnesses, Sorrel opens the seal.",
+        "The letter is Hale's true will, naming Constance sole heir of Hale's Bottom, and stating plainly that Peter's portion was already given him years before, in full, as settlement of his gambling debts."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 6,
+      "title": "The Nephew's Portion",
+      "beats": [
+        "Word of the will spreads within the hour, and Peter Hale arrives at the Bell demanding to see it himself.",
+        "Sorrel reads aloud the passage naming the sum Hale paid to clear Peter's debts, which matches almost exactly the sum Peter has always claimed he raised 'on his own credit.'",
+        "Peter, cornered, insists the letter is a forgery, got up by Judith and the clerk to rob him of what is his.",
+        "It emerges that the basket money Mrs Pike has been delivering to Constance these past weeks was in fact never hers to give \u2014 she was only asked, by Rowe, to pass along sums Hale had left for that purpose before his death, and never thought to say so.",
+        "Mrs Pike, mortified at being thanked for someone else's kindness these many weeks, declares she will get to the bottom of this before nightfall \u2014 and marches straight for Mr Rowe."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 7,
+      "title": "The Handwriting",
+      "beats": [
+        "Peter demands proof the will is genuinely Hale's hand and not some clerk's imitation.",
+        "Judith's brother produces old prescription notes in his shop bearing Hale's signature from years back, matched letter for letter against the will by Sorrel.",
+        "Mrs Thorne confirms the seal as Hale's own, the one he always used, kept in a particular drawer she alone dusted.",
+        "Rowe, gaining courage, states plainly before the assembled parish that Hale gave him the letter with his own hands and his own instructions, which Rowe is ashamed only to have forgotten so long.",
+        "Peter, seeing the room turn against him, tells Constance sharply that she was always meant to marry him regardless, and Constance answers, quietly and for everyone to hear, that she is not."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 8,
+      "title": "What Was Settled",
+      "beats": [
+        "Peter Hale leaves Amberlight within the week, his debts and his disappointment both now common knowledge.",
+        "Constance takes possession of Hale's Bottom and keeps Mrs Thorne on as housekeeper, this time properly paid.",
+        "Constance tries to thank Mrs Pike once more for her kindness, and Mrs Pike, laughing at herself now, insists the thanks belong to a dead man and a forgetful curate, not to her \u2014 though she allows she delivered the baskets very well.",
+        "Sorrel, his business concluded, calls on Judith to say his firm will want a resident agent to oversee such small estates hereabouts, and asks, with more hesitation than his profession usually allows, whether Amberlight might suit him permanently.",
+        "Judith says it might suit them both, and the parish settles back into its usual business of watching the coach come in on Tuesdays and Fridays, with one fewer thing left unresolved."
+      ],
+      "target_words": 560
+    }
+  ],
+  "length_min": 30,
+  "bible": "amberlight",
+  "series": "Middle Watch: Amberlight",
+  "slug": "the-letter-at-the-bell"
+}

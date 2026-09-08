@@ -1,0 +1,82 @@
+{
+  "n": 1,
+  "pass": true,
+  "score": 7,
+  "beats": [
+    {
+      "beat": "Mr Rowe and the sexton find the main beam of the schoolroom cracked through with spring damp, and the repair will cost fifteen pounds against four in the poor box.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Rowe goes to the library above the draper's to post a subscription notice, where Miss Judith Vane is minding the counter for her brother.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Judith offers to keep the subscription book herself and suggests he ask certain parishioners by name rather than post a general notice; Rowe, harried, calls it parish politics dressed as advice, and she withdraws the offer at once.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mrs Pike arrives with the news that Miss Louisa Marchmont, niece to the family holding the living, is to stay a fortnight at the gatehouse of the empty Amberlight House.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mrs Pike declares this is the answer to everything and begins listing what Rowe must wear to be presented to her, ignoring his protest that he wants subscriptions, not a wife.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Mrs Pike's closing line commits Rowe to a courtship scheme he has just explicitly refused, which is what chapter 2 must now deal with."
+  },
+  "continuity": [
+    "The chapter gives Rowe's curtness toward Judith two separate causes in the same breath: her habit of 'looking up at him directly, which she always did, and which he had never learned to like' and, four paragraphs later, 'He had been under a broken roof since seven, and doing sums the whole way up the hill.' This is the exact doubled-motive pattern the house style guide names as its worst-case example almost verbatim. Keep only one \u2014 the situational tiredness reads better here since it excuses a single outburst rather than casting a standing dislike that then has to be walked back for a romance plot."
+  ],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": [
+      "Two stated reasons for the same moment of harshness (see continuity) reads as the narrator hedging rather than a single character choice."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Enemies of manner and the meddling matchmaker are both live and delivered straight here; the chaperone's absence is not due yet and correctly absent.",
+  "length_note": null,
+  "fixes": [
+    "Cut one of the two explanations for Rowe's curtness: either 'which she always did, and which he had never learned to like' or 'He had been under a broken roof since seven, and doing sums the whole way up the hill.' Keep the situational one.",
+    "The chapter runs long against its 570-word target; trim the opening narrator paragraph about the rector's death and the sexton's grievance, which restates the same fact (nobody has fixed this roof in years) twice before Rowe even speaks.",
+    "Mrs Pike's opening speech ('Miss Vane. Mr Rowe. The gatehouse...') could lose a clause \u2014 'come down a fortnight on the family's business' and 'two-and-twenty' land the same information as her age and errand; one can go without loss."
+  ],
+  "lint": {
+    "total": 2,
+    "errors": 0,
+    "by_rule": {
+      "clause_chain": 2
+    },
+    "findings": [
+      {
+        "rule": "clause_chain",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "Miss Judith Vane was at the counter, and she looked up at him directly, which she always did, and which he had never learned to like.",
+        "note": "3 clauses coordinated in 26 words. Heard once, the last one lands with the subject of the first already gone. Split after the first clause, or make every member the same grammatical shape so the ear can follow the pattern."
+      },
+      {
+        "rule": "clause_chain",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "The black coat will do if the cuffs are seen to, and you must have a new neckcloth, and you are not to wear those buckles.",
+        "note": "3 clauses coordinated in 26 words. Heard once, the last one lands with the subject of the first already gone. Split after the first clause, or make every member the same grammatical shape so the ear can follow the pattern."
+      }
+    ]
+  },
+  "chapter_hash": "c620dbc51deaf897"
+}

@@ -1,0 +1,136 @@
+{
+  "title": "The Thatcher's Bill",
+  "genre": "regency",
+  "subgenre": "comedy_of_manners",
+  "tropes": [
+    "The secret benefactor",
+    "Enemies of manner",
+    "The misdirected letter"
+  ],
+  "logline": "When a curate's debt is quietly paid off, the parish thanks the wrong man for it, and the woman who truly gave the money must decide whether her good name is worth more than the truth.",
+  "promise": "A secret act of generosity is traced back to its real source, and the two people who thought poorly of each other are made to think better.",
+  "setting": "Amberlight, Hampshire, an autumn some three years after old Sir Edward Marchmont's death",
+  "target_words": 2250,
+  "cast": [
+    {
+      "name": "Silas Rowe",
+      "role": "protagonist",
+      "age": 34,
+      "gender": "male",
+      "station": "curate of Amberlight, eighty pounds a year and no expectations",
+      "want": "to serve his parish well without the shame of owing money he cannot pay",
+      "appearance": "tall and narrow-shouldered, brown hair always a fortnight past needing a trim, ink permanently at the fingertips",
+      "dress": "a black coat gone rusty at the seams, a plain white neckcloth tied without vanity",
+      "voice_note": "earnest, talks quickly when embarrassed"
+    },
+    {
+      "name": "Miss Judith Vane",
+      "role": "love_interest",
+      "age": 27,
+      "gender": "female",
+      "station": "keeps house for her brother, the apothecary; no fortune of her own",
+      "want": "to do real good in the parish without ever being thanked for it",
+      "appearance": "Fair, freckled, of middling height, with reddish hair she cannot keep pinned and a habit of looking directly at whoever is speaking.",
+      "dress": "Sprigged muslin in summer, a grey wool pelisse in winter, both mended with more thrift than skill.",
+      "voice_note": "says little, precise when she does speak",
+      "voice": "Alice",
+      "recurring": true
+    },
+    {
+      "name": "Mrs Honoria Pike",
+      "role": "supporting",
+      "age": 58,
+      "gender": "female",
+      "station": "widow of a naval surgeon; three hundred a year and a house on the green",
+      "want": "to be first in Amberlight to know anything, and last to admit she had it wrong",
+      "appearance": "Short and broad, with grey hair pinned severely under a lace cap, and small quick eyes set in a round weathered face.",
+      "dress": "Black bombazine with a plain white fichu, ten years out of fashion and immaculately kept.",
+      "voice_note": "warm, talks too much, trails off",
+      "voice": "Matilda",
+      "recurring": true
+    },
+    {
+      "name": "Mr Aldous Finch",
+      "role": "antagonist",
+      "age": 33,
+      "gender": "male",
+      "station": "cousin to the Marchmont family, considering his interest in the living and the empty house, some eight hundred a year",
+      "want": "to be thought generous and well-connected without the trouble of actually being either",
+      "appearance": "fair and well-fed, dressed a shade too fashionably for a country parish",
+      "dress": "a green superfine coat and an embroidered waistcoat well beyond what any occasion in Amberlight requires",
+      "voice_note": "smooth, over-polite, rarely answers a question directly"
+    },
+    {
+      "name": "Mr Edmund Vane",
+      "role": "supporting",
+      "age": 30,
+      "gender": "male",
+      "station": "apothecary of Amberlight, Judith's brother",
+      "want": "to keep his sister's secret and his shop's accounts equally in order",
+      "appearance": "sandy-haired, spectacled, ink and herb stains at the cuffs",
+      "dress": "a brown coat with a leather apron worn over it behind the counter",
+      "voice_note": "brisk, practical, uneasy with secrets"
+    }
+  ],
+  "chapters": [
+    {
+      "n": 1,
+      "title": "The Parsonage Roof",
+      "beats": [
+        "Silas Rowe is confronted in the lane by the thatcher over an unpaid bill for mending the parsonage roof, a scene several passers-by witness.",
+        "Mrs Pike carries the story around the green by evening, considerably enlarged, hinting Rowe is one step from distraint.",
+        "At the circulating library, Judith Vane overhears the account and privately judges Rowe careless with money, recalling also a curt note he once sent returning a borrowed book, which she took as proof of his pride.",
+        "A letter arrives for Rowe from a Winchester solicitor stating the thatcher's bill has already been settled by 'a friend to the parish who wishes to remain unnamed.'"
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 2,
+      "title": "The Wrong Gratitude",
+      "beats": [
+        "At a parish tea at Mrs Pike's house, talk turns entirely to the mysterious payment and who could have made it.",
+        "Mr Aldous Finch, visiting to weigh his interest in the empty house and the living, is asked pointed questions and, flattered, lets the assumption of his generosity stand unchallenged.",
+        "Mrs Pike loudly credits Finch before the room; Rowe, mortified and grateful in equal measure, tries to thank him properly but gets only vague, slippery answers in return.",
+        "Rowe notices Judith exchange a private look with her brother Edmund and overhears her ask quietly whether 'it arrived safely,' a phrase that does not fit Finch's story at all."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 3,
+      "title": "A Letter Meant for Vane",
+      "beats": [
+        "Two days later the Tuesday coach guard, in haste, presses a bundle of letters meant for the apothecary's shop into Rowe's hands by mistake.",
+        "Among them Rowe finds a solicitor's letter confirming receipt of funds 'per Miss Vane's instruction' and realises Judith paid the debt herself, out of her own small savings, arranged quietly through her brother.",
+        "Rowe is torn between respecting her wish to remain unknown and the fact that Finch is being publicly credited for a kindness he never did.",
+        "Mrs Pike arrives at the parsonage to announce that Saturday's assembly at the Bell will include a formal public thanks to Finch, and that Finch has confided he means to propose to Judith that same evening."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 4,
+      "title": "The Assembly at the Bell",
+      "beats": [
+        "At the assembly, Mrs Pike prepares to deliver her toast thanking Finch before the assembled parish.",
+        "Rowe draws Finch aside beforehand and tells him plainly that he knows the money did not come from him.",
+        "Finch, cornered, admits his vanity got the better of him, and confesses he had hoped the credit would incline Judith favourably toward his proposal.",
+        "Rowe crosses the room and tells Judith, away from the crowd, that he knows what she did, and the two speak honestly for the first time about the wrong opinions each had formed of the other."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 5,
+      "title": "What the Parish Never Knew",
+      "beats": [
+        "Judith explains she paid the bill out of respect for his work with the parish school and a wish that he never feel beholden to her for it; Rowe admits he mistook her reserve for pride.",
+        "Finch quietly withdraws his suit and announces business elsewhere, taking the Friday coach rather than face the assembly's questions.",
+        "Mrs Pike, never quite recovering the true thread of the story, settles on an entirely new and wrong version crediting Rowe's own modesty, which both Rowe and Judith let stand for the sake of peace.",
+        "The story closes with Rowe returning a book to the library for Judith with a proper note this time, a small settled beginning between them."
+      ],
+      "target_words": 450
+    }
+  ],
+  "length_min": 15,
+  "bible": "amberlight",
+  "series": "Middle Watch: Amberlight",
+  "slug": "the-thatcher-s-bill"
+}

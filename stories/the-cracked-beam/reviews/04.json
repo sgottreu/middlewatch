@@ -1,0 +1,59 @@
+{
+  "n": 4,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Mrs Pike arranges for Louisa to ride with Rowe to Bramdean; Louisa cannot go",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Judith asked to carry the errand instead, no chaperone considered",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Wheel splits a mile past the mill, stranded on the verge",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "They air the sermon and novels grievances, find both accounts inflated with telling",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Farmer's cart takes them up, light failing, green not empty on return",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Ends on the green being full and Mrs Hale watching from the lit library window, setting up the gossip chapter directly."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Serves all three declared tropes directly: the enemies' clipped exchange resolves into honesty, Mrs Pike's scheme misfires by omission, and the unchaperoned hour is staged as the pivot the promise requires.",
+  "length_note": null,
+  "fixes": [
+    "Consider trimming the two-beat wheel description ('sat down on its axle' / 'nothing to do but wait for somebody to come along the road') to one clause, as the chapter runs a touch over target.",
+    "The narrator's closing sentence about the coach and Mrs Hale could be tightened by cutting 'with its lamps lit and half the parish about it' to one detail, since the next chapter will unpack the seeing in full."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  }
+}

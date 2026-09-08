@@ -1,0 +1,149 @@
+{
+  "title": "The Letter at Fenwick Cottage",
+  "genre": "regency",
+  "subgenre": "mystery",
+  "tropes": [
+    "The misdirected letter",
+    "The fortune hunter",
+    "Second chance"
+  ],
+  "logline": "When a solicitor's letter about a dead widow's disputed will lands in the wrong hands, a parish curate and the woman who once refused him must decide whether the cousin who stands to inherit is a villain or merely a fool in debt.",
+  "promise": "A tangled inheritance untangles into both a cleared name and a second proposal, long overdue.",
+  "setting": "Amberlight parish, Hampshire, early autumn, 1816",
+  "target_words": 2250,
+  "cast": [
+    {
+      "name": "Mrs Honoria Pike",
+      "role": "supporting",
+      "age": 58,
+      "gender": "female",
+      "station": "widow of a naval surgeon; three hundred a year and a house on the green",
+      "want": "to be the first in Amberlight to know anything, and to be seen knowing it",
+      "appearance": "Short and broad, with grey hair pinned severely under a lace cap, and small quick eyes set in a round weathered face.",
+      "dress": "Black bombazine with a plain white fichu, ten years out of fashion and immaculately kept.",
+      "voice_note": "warm, talks too much, never malicious",
+      "voice": "Matilda",
+      "recurring": true
+    },
+    {
+      "name": "Mr Silas Rowe",
+      "role": "love_interest",
+      "age": 34,
+      "gender": "male",
+      "station": "curate of Amberlight; eighty a year and no expectations",
+      "want": "to be given a second chance he has stopped believing he deserves",
+      "appearance": "Tall and thin, dark hair worn slightly too long, with the stoop of a man used to low doorways and a face that gives away more than he intends.",
+      "dress": "Worn black coat, carefully brushed, and linen that has been turned at the cuffs.",
+      "voice_note": "earnest, careful, better with other people's troubles than his own",
+      "voice": "Daniel",
+      "recurring": true
+    },
+    {
+      "name": "Miss Judith Vane",
+      "role": "protagonist",
+      "age": 27,
+      "gender": "female",
+      "station": "keeps house for her brother, the apothecary; no fortune of her own",
+      "want": "to see a plain injustice corrected without pretending she has no stake in it",
+      "appearance": "Fair, freckled, of middling height, with reddish hair she cannot keep pinned and a habit of looking directly at whoever is speaking.",
+      "dress": "Sprigged muslin in summer, a grey wool pelisse in winter, both mended with more thrift than skill.",
+      "voice_note": "says less than she thinks, and checks a story before repeating it",
+      "voice": "Alice",
+      "recurring": true
+    },
+    {
+      "name": "Mr Gerald Ashby",
+      "role": "antagonist",
+      "age": 32,
+      "gender": "male",
+      "station": "gentleman of Winchester, cousin to the late Mrs Fenwick, encumbered with gaming debts",
+      "want": "to secure the legacy before his creditors do",
+      "appearance": "fair, well-formed, an easy smile, dressed a shade too fashionably for country company",
+      "dress": "a blue coat with bright buttons and an elaborately tied cravat",
+      "voice_note": "charming, quick with an answer, slower with the truth"
+    },
+    {
+      "name": "Miss Eleanor Fenwick",
+      "role": "supporting",
+      "age": 22,
+      "gender": "female",
+      "station": "orphaned niece of the late Mrs Fenwick; expects the cottage and three hundred pounds",
+      "want": "to know whether Ashby's regard for her was ever real",
+      "appearance": "small and fair-haired, quick to colour",
+      "dress": "mourning grey muslin with a black ribbon at the throat",
+      "voice_note": "gentle, quick to doubt herself, quicker to defend those she loves"
+    },
+    {
+      "name": "Sally Prewitt",
+      "role": "supporting",
+      "age": 24,
+      "gender": "female",
+      "station": "housemaid at Fenwick cottage, seeking a character reference for her next place",
+      "want": "to tell what she saw without losing her situation for it",
+      "appearance": "round-faced, red-handed from work, brown hair under a plain cap",
+      "dress": "a dark stuff gown and apron",
+      "voice_note": "plain-spoken once pressed, otherwise cautious"
+    }
+  ],
+  "chapters": [
+    {
+      "n": 1,
+      "title": "A Letter on the Mantel",
+      "beats": [
+        "The parish has just buried old Mrs Fenwick, and Mr Gerald Ashby, her cousin from Winchester, is already saying she left him the cottage by a codicil made days before her death.",
+        "Mrs Pike admits, not at all ashamed, that the solicitor's letter confirming the codicil was left at her door by the carrier's mistake four days ago, and that she has read it to half the green since.",
+        "Eleanor Fenwick, who expected the cottage and three hundred pounds as her aunt's only heir, learns of the codicil the same afternoon everyone else does.",
+        "Turn: the letter names two witnesses to the signing, Thomas Yarrow and one other, and nobody in Amberlight has ever heard either name."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 2,
+      "title": "The Apothecary's Ledger",
+      "beats": [
+        "Eleanor comes to Judith Vane, asking her to make sense of the solicitor's dense phrasing, since Judith reads everything the library holds.",
+        "Judith remembers her brother's ledger, kept for every visit he makes as apothecary, and that he was called to the widow's bedside on the very evening the codicil claims she signed it.",
+        "Judith asks Mr Rowe, as curate, to help her question the housemaid Sally Prewitt discreetly, since a clergyman may call at a house of mourning without remark.",
+        "Turn: Sally tells them plainly that Mr Ashby left the cottage before nine that evening and did not return until past midnight, though the codicil is dated at ten o'clock."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 3,
+      "title": "The Lychgate",
+      "beats": [
+        "Caught by rain walking back from the cottage, Judith and Silas shelter under the churchyard lychgate, and old unfinished business between them surfaces at last, unspoken for seven years.",
+        "They agree to write to the Winchester solicitor asking who truly witnessed the codicil, since the names are strangers to the parish.",
+        "Mrs Pike, delighted to be consulted, recognises one witness's name, Thomas Yarrow, as a man to whom Mr Ashby owes money at cards.",
+        "Turn: before the solicitor can answer, a reply comes on the Friday coach directly from Yarrow himself, denying he ever witnessed any such paper."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 4,
+      "title": "What the Ledger Shows",
+      "beats": [
+        "Judith and Silas confront Mr Ashby at the Bell with Yarrow's letter, and he admits the witnessing was arranged afterward, in his own hand, though he insists the widow truly meant him to have the property.",
+        "Eleanor, present, cannot decide whether this makes him a fraud or only a desperate man who believed himself wronged.",
+        "Judith's brother produces his ledger, showing the widow was too weak to hold a pen by the hour the codicil claims she signed it, which settles the legal question against Mr Ashby entirely.",
+        "Turn: rather than flee in disgrace, Mr Ashby quietly withdraws his claim and asks Eleanor's forgiveness, revealing debts that are real and desperate, and a regard for her that was not invented."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 5,
+      "title": "The Coach on Tuesday",
+      "beats": [
+        "The true will stands, Eleanor keeps the cottage and her three hundred pounds, and she offers Mr Ashby a small, sensible introduction toward honest employment in Winchester rather than his ruin.",
+        "Mrs Pike, briefly contrite about the misdirected letter, redeems herself by carrying the true news round the parish with unusual accuracy.",
+        "Walking Judith home past the empty gates of Amberlight House, Silas asks plainly whether her answer would be different now, and she tells him his living is still eighty pounds and his prospects no better than before.",
+        "Turn: he says he no longer needs her fortune, only her word, and she gives it, though Mrs Pike, watching from her window, has already told two neighbours before the banns are read."
+      ],
+      "target_words": 450
+    }
+  ],
+  "length_min": 15,
+  "bible": "amberlight",
+  "series": "Middle Watch: Amberlight",
+  "slug": "the-letter-at-fenwick-cottage"
+}

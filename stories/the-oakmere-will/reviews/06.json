@@ -1,0 +1,67 @@
+{
+  "n": 6,
+  "pass": true,
+  "score": 7,
+  "beats": [
+    {
+      "beat": "Stranded at a farmhouse by the road while a wheelwright is fetched, Farr tells Judith what became of him after the battle that was reported his death.",
+      "covered": true,
+      "note": "Delivered as extended dialogue by the fire, with the driver gone to Itchen Vale and the farmer's wife asleep."
+    },
+    {
+      "beat": "He describes a year in a foreign hospital, and letters gone astray once his regiment moved on without a fixed direction for him.",
+      "covered": true,
+      "note": "The Lisbon hospital, thirteen months, and the lost letters via a commissary are all given directly."
+    },
+    {
+      "beat": "Judith admits, for the first time, that she had heard him reported dead and grieved it more than she let the parish see.",
+      "covered": true,
+      "note": "The Anson volume kept eleven months under her bed is a strong, specific confession."
+    },
+    {
+      "beat": "Working through the dates together by the fire, they realize Whitlow's letter, if it was ever sent, would have passed through Hartwell's own hands first.",
+      "covered": true,
+      "note": "April/lambing versus March post-taking is walked through explicitly."
+    },
+    {
+      "beat": "They agree that Hartwell alone had both the means and the reason to see that letter never leave the house.",
+      "covered": true,
+      "note": "\"One man in England lost everything by that letter arriving. He was holding it.\""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Ends on Judith's decision to ask Cobbold in the morning about a shelf where an undelivered letter might sit, which sets up the next chapter's search of the attorney's office."
+  },
+  "continuity": [
+    "Chapter 5 has Farr say 'I was at Lisbon in April doing nothing whatever but learning to walk again' in direct response to Whitlow's April letter (written shortly before the September will and thus April 1816). Chapter 6 has Farr describe a single continuous account \u2014 ford accident, reported dead by November of 'the year thirteen' (1813), then thirteen months in the Lisbon hospital \u2014 which would place his hospital stay ending around late 1814, not April 1816. The chapter does not reconcile the roughly eighteen-month gap between the 1813 report of his death and the ford incident it appears to describe, nor does it clarify whether the 'April' in chapter 5 and the hospital stay described here are the same spring. Worth a line clarifying which year is meant, since the plot's evidence depends on precise dating."
+  ],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": false,
+    "problems": [
+      "The chapter leans entirely on earnest, declarative confession (both the war account and Judith's grief) with almost none of the ironic register the series otherwise favours \u2014 reasonable for the content, but two chapters running on straight sentiment in a row would flatten the house voice.",
+      "\"and was asleep over within the half hour\" is an awkward, slightly unclear construction and should be tightened."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Forced proximity is served directly and well by the broken wheel and overnight stranding. The disputed inheritance advances through concrete evidence-work (the April/March dating). The returning officer trope deepens here with Farr's own account of his disappearance. No fourth trope has crept in.",
+  "length_note": "Draft runs to roughly 940 words against a 560-word target, about 68% over \u2014 well past the one-fifth tolerance. The overage is mostly incident-bearing dialogue rather than pure padding, but several exchanges (the ford account, the Anson confession, the final deduction) each restate their point twice before moving on and can be cut by a third without losing any beat.",
+  "fixes": [
+    "Cut the chapter toward 650-700 words by tightening Farr's account of the ford and hospital \u2014 e.g. the line 'I could not tell you its name; I never learnt it' and 'what I chiefly remember is being angry about the horse' can be trimmed to one clean image rather than two.",
+    "Tighten Judith's Anson-book confession; the beat lands on 'I could not have worn black for you, Captain' and the sentences after it restate the same point rather than adding new information.",
+    "Reconcile the timeline: either state explicitly that the ford accident was a later, separate injury from whatever caused the 1813 report of death, or adjust chapter 5's 'I was at Lisbon in April' so it doesn't imply the same spring as Whitlow's letter if the thirteen-month hospital stay is meant to end in 1814.",
+    "Rewrite 'and was asleep over within the half hour' to something clearer, such as 'and asleep over it within the half hour.'",
+    "Consider giving Judith one dry, ironic line amid the confession \u2014 in keeping with her established voice_note of saying less than she thinks \u2014 to keep the chapter from reading as pure sentiment against the series' usual register."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  }
+}

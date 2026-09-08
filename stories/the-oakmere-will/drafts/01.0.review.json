@@ -1,0 +1,58 @@
+{
+  "n": 1,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Mrs Pike brings word to the circulating library that old Mr Aldous Fenner of Oakmere Farm has died a fortnight since.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "She reports that his cousin's son, Mr Vernon Hartwell, has already moved into the farmhouse under a will drawn up only weeks before Fenner's death.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Judith Vane observes that the will cuts out Fenner's great-nephew, Captain Nathaniel Farr, believed killed abroad three years since.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mrs Pike declares the captain certainly dead, since no letter has come from him in all that time.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "The Friday coach draws up at the Bell, and a sun-browned stranger steps down asking the way to Oakmere Farm \u2014 Captain Farr himself, very much alive.",
+      "covered": true,
+      "note": "His identity is unnamed but unmistakable through matched description and context, which works as the chapter's turn rather than undercutting it."
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "A man matching the dead captain's description arrives asking for his own farm, immediately after Mrs Pike declares him certainly dead."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Introduces the disputed inheritance cleanly and sets up the returning officer for the turn; forced proximity is not yet in play, which is correct for chapter one.",
+  "length_note": null,
+  "fixes": [
+    "Consider one more concrete physical marker in the final description (the scar on his hand, per his outline appearance) so the listener's identification of the stranger as Farr is airtight without naming him outright."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  }
+}

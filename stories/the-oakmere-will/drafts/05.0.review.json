@@ -1,0 +1,86 @@
+{
+  "n": 5,
+  "pass": false,
+  "score": 5,
+  "beats": [
+    {
+      "beat": "Judith carries Owen's dispensing book and Whitlow's account to Farr at the Bell.",
+      "covered": true,
+      "note": "Present but compressed into a fragmentary summary rather than a played scene."
+    },
+    {
+      "beat": "Farr resolves to lay the evidence before the Winchester attorney who holds Fenner's papers.",
+      "covered": true,
+      "note": "Cobbold named, motive given."
+    },
+    {
+      "beat": "Mr Rowe warns that Farr alone would be taken for a fortune hunter telling a convenient story, and proposes Judith go too, with the book in her own keeping.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Judith agrees, over Mrs Pike's loud objections about a lady travelling with a strange captain.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "A few miles short of Winchester a wheel gives way on their hired chaise, and the driver says no other conveyance will pass before morning.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "The driver's statement that nothing will pass until morning sets up the forced-proximity stranding of chapter 6 cleanly."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": [
+      "One spaced em dash ('and will swear to it \u2014 that is not a man's convenient story') where the house style calls for unspaced dashes; only one instance so within tolerance but should be corrected.",
+      "The retroactive misdirection ('It was not Mr Rowe, of course...') is a prose trick that reads cleverly on the page but is a structural defect for audio narration, see listenability."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [
+    "The line 'Nothing, sir.' is attributed to speaker 'Mr Silas Rowe', but the following narrator segment reveals it was actually spoken by the driver. Since 'speaker' selects the TTS voice for this production, the listener will hear Rowe's assigned voice deliver a line that belongs to an unnamed driver, and will then hear the narrator explicitly contradict what they just heard. This is not a page-only ambiguity resolved by re-reading; it is an unfixable audio error as drafted. The line must be attributed correctly (to the narrator reporting the driver's words, or to a distinct 'driver' speaker) with no misdirection built on the wrong voice tag."
+  ],
+  "generic_prose": [
+    {
+      "quote": "The man laughed, briefly, without any pleasure in it.",
+      "replace_with": "Name the actual sound or gesture \u2014 a short bark of a laugh, a shake of the head, spitting into the ditch \u2014 something a listener can picture rather than an adjective about the absence of pleasure."
+    },
+    {
+      "quote": "Captain Farr heard her through without once interrupting, which was not a thing she was used to.",
+      "replace_with": "Could apply to any two characters in any story; give a concrete detail of how he listened \u2014 did not sit, kept his eyes on the road, turned the letter's fold over in his fingers \u2014 rather than a general statement about her expectations."
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Serves the returning officer (Farr pressing his claim through proper channels) and the disputed inheritance (evidence-gathering toward the attorney) straightforwardly, and plants forced proximity cleanly with the chaise breakdown as the chapter's turn. No fourth trope introduced.",
+  "length_note": "Drafted at approximately 764 words against a 560-word target, about 36% over. Some of the excess is earned incident (Mrs Pike's objection scene, the breakdown), but the retroactive misdirection paragraph about Mr Rowe is pure padding and should be the first cut.",
+  "fixes": [
+    "Fix the speaker attribution error: 'Nothing, sir.' must not be tagged as spoken by Mr Silas Rowe when the text belongs to the driver. Either fold the line into narration ('The driver only said there was nothing.') or give it a plain unnamed attribution that maps to the narrator voice, and cut the correcting paragraph 'It was not Mr Rowe, of course...' entirely \u2014 it exists only to patch an attribution error that should not exist in the first place.",
+    "Trim the chapter toward 560\u2013620 words by cutting the misdirection paragraph above and tightening Mr Rowe's speech in segment 8, which runs long relative to his usual over-explaining trait without adding new information.",
+    "Replace 'The man laughed, briefly, without any pleasure in it' with a concrete physical beat \u2014 what he actually does with his hands, his face, or the reins \u2014 rather than naming the absent emotion.",
+    "Convert the spaced em dash in Rowe's line ('will swear to it \u2014 that is not') to an unspaced dash per house style.",
+    "Consider dramatizing the opening exchange between Judith and Farr (currently the fragmentary 'The letter to the regiment. April. The lambing.') with at least one line of actual dialogue from Farr reacting to hearing it, so the beat lands as a scene rather than a recap."
+  ],
+  "lint": {
+    "total": 1,
+    "errors": 0,
+    "by_rule": {
+      "spaced_em_dash": 1
+    },
+    "findings": [
+      {
+        "rule": "spaced_em_dash",
+        "severity": "warn",
+        "segment": 9,
+        "quote": "...this line and will swear to it \u2014 that is not a man's convenient...",
+        "note": "Spaced dash reads as modern punch-up. Close it up or use a comma."
+      }
+    ]
+  }
+}

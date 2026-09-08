@@ -1,0 +1,67 @@
+{
+  "n": 8,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "News of the schoolroom's rescue by the Marchmont estate reaches the parish the same week as news of the engagement, and Mrs Hale cannot decide which to tell first.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mrs Pike claims full credit for both, insisting the dinner was always meant to end this way, and nobody troubles to correct her.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Louisa Marchmont, her errand accomplished, returns to town, having secured her uncle's promise and gained a correspondent in Judith.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Owen gives his blessing over the shop counter, on condition Rowe never again send his sister out on a cracked wheel without him.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "The story closes with the schoolroom roof going up the same week the banns are read, and Amberlight satisfied that the right things happened, whatever the wrong reasons given for them.",
+      "covered": true,
+      "note": "The 'wrong reasons' theme is shown through Mrs Pike's uncorrected credit-claiming rather than stated outright, which is the right technique but leaves the closing sentiment slightly implicit."
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Mrs Pike's closing line, 'And I am not finished,' lands as a comic button that confirms she will go on meddling, an appropriate close for the final chapter of a standalone story."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [
+    {
+      "quote": "which pleased nobody, since a parish likes to be astonished twice",
+      "replace_with": "cut the aphorism and show a specific listener's dissatisfied reaction instead, e.g. one of the Barrow girls demanding to know which came first"
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Serves the meddling matchmaker straight and satisfyingly: Mrs Pike is wrong about how it happened and right that it happened, and her final line keeps the trope alive rather than closing it off; the other two tropes were resolved in earlier chapters and are correctly left alone here.",
+  "length_note": null,
+  "fixes": [
+    "Trim Mrs Hale's recitation, 'Floor, glazing and a stove, and a man coming from Alresford on the twentieth to measure it' \u2014 these details were already given in full in Chapter 6 and can be compressed to a phrase.",
+    "Trim 'the list of six books that had been made out for Mrs Cobbe in October, copied fair, with the shelf numbers against them' \u2014 'made out for Mrs Cobbe in October' restates Chapter 2/4 material the listener already has.",
+    "Cut or replace 'which pleased nobody, since a parish likes to be astonished twice' with a concrete beat rather than a general aphorism.",
+    "Consider trimming 'and she had got it in a fortnight' from the Louisa passage, since the fortnight was established as her visit's length in Chapter 1 and does not need repeating here.",
+    "The final beat's 'whatever the wrong reasons given for them' could land harder with one more concrete line \u2014 e.g. someone flatly stating the school and the wedding happened for reasons nobody quite agrees on \u2014 rather than leaving it entirely to inference."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "title": "The Lit Windows of Amberlight",
+  "genre": "regency",
+  "subgenre": "gothic",
+  "tropes": [
+    "The secret benefactor",
+    "The meddling matchmaker",
+    "Enemies of manner"
+  ],
+  "logline": "When Amberlight House lights its windows again after ten years empty, the parish decides its new master is hiding a madwoman, when in truth he is hiding his own kindness.",
+  "promise": "A shuttered house, a family that will not explain itself, and a perfectly ordinary reason for all of it, arrived at only after the whole parish has guessed wrong.",
+  "setting": "Amberlight parish, Hampshire, late autumn 1816",
+  "target_words": 2250,
+  "cast": [
+    {
+      "name": "Miss Judith Vane",
+      "role": "protagonist",
+      "age": 27,
+      "gender": "female",
+      "station": "keeps house for her brother, the apothecary; no fortune of her own",
+      "want": "to be trusted to judge for herself, rather than carried along by everyone else's certainty",
+      "appearance": "Fair, freckled, of middling height, with reddish hair she cannot keep pinned and a habit of looking directly at whoever is speaking.",
+      "dress": "Sprigged muslin in summer, a grey wool pelisse in winter, both mended with more thrift than skill.",
+      "voice_note": "reads everything, says less than she thinks, dry when pressed",
+      "voice": "Alice",
+      "recurring": true
+    },
+    {
+      "name": "Mr Gideon Ashworth",
+      "role": "love_interest",
+      "age": 33,
+      "gender": "male",
+      "station": "trustee and cousin to the Marchmont estate, no title, comfortable independence",
+      "want": "to shield his ward from gossip without having to explain himself to a parish that has already decided",
+      "appearance": "tall, angular, with sharp dark brows and a scar at one temple from a childhood fall",
+      "dress": "a black riding coat, unfashionably plain, boots that have seen a good deal of walking",
+      "voice_note": "clipped and guarded, softens only when speaking of Flora"
+    },
+    {
+      "name": "Miss Flora Marchmont",
+      "role": "supporting",
+      "age": 19,
+      "gender": "female",
+      "station": "orphaned niece of the late Sir Edward Marchmont, heiress to Amberlight House",
+      "want": "to be well again, and to be let alone until she is",
+      "appearance": "fair and very thin, with pale gold hair often loosely pinned, and shadows under her eyes",
+      "dress": "a white muslin morning gown, a shawl kept always close about her shoulders",
+      "voice_note": "quiet, careful, apologises before she speaks"
+    },
+    {
+      "name": "Mrs Honoria Pike",
+      "role": "supporting",
+      "age": 58,
+      "gender": "female",
+      "station": "widow of a naval surgeon; three hundred a year and a house on the green",
+      "want": "to be first with the news, and proven right about it",
+      "appearance": "Short and broad, with grey hair pinned severely under a lace cap, and small quick eyes set in a round weathered face.",
+      "dress": "Black bombazine with a plain white fichu, ten years out of fashion and immaculately kept.",
+      "voice_note": "warm, talks too much, never doubts herself",
+      "voice": "Matilda",
+      "recurring": true
+    },
+    {
+      "name": "Mr Silas Rowe",
+      "role": "supporting",
+      "age": 34,
+      "gender": "male",
+      "station": "curate of Amberlight; eighty a year and no expectations",
+      "want": "to be paid what he is owed without having to ask anyone for it",
+      "appearance": "Tall and thin, dark hair worn slightly too long, with the stoop of a man used to low doorways and a face that gives away more than he intends.",
+      "dress": "Worn black coat, carefully brushed, and linen that has been turned at the cuffs.",
+      "voice_note": "earnest, apologises for existing, brightens easily",
+      "voice": "Daniel",
+      "recurring": true
+    }
+  ],
+  "chapters": [
+    {
+      "n": 1,
+      "title": "Lights at Amberlight",
+      "beats": [
+        "Mrs Pike arrives at the circulating library breathless with the news that Amberlight House has lit its windows for the first time in ten years, a Mr Gideon Ashworth having come to take it up as trustee for a niece of the old baronet.",
+        "Judith Vane, fetching a book for her brother, is dragged into the report and learns the tenant has already refused three tradesmen entry past the hall, giving no reason.",
+        "A pale young woman, Flora Marchmont, is glimpsed once at an upstairs window by the sexton's boy, then never again, and the servants will say nothing about her.",
+        "Mrs Pike declares the household is hiding something shameful, and announces that she and Judith shall pay a charitable call to find out what."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 2,
+      "title": "The Charitable Call",
+      "beats": [
+        "Judith and Mrs Pike are received by Mr Ashworth, who is civil but immovable, and refuses to let Miss Marchmont come down, saying only that she is not well enough for company.",
+        "Judith notices, unremarked by Mrs Pike, a nurse's cap on a hook, fresh medicine bottles on a side table, and a chair drawn close to a fire \u2014 the ordinary furniture of a sickroom, not a prison.",
+        "Mrs Pike, undeterred by anything she has actually seen, leaves convinced the niece is kept against her will for her fortune, and repeats the tale at the Bell before nightfall.",
+        "Ashworth, overhearing the gossip in the village the next morning, seeks out Judith directly and accuses her of having spread it, and the two part on sharp words neither is willing to soften."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 3,
+      "title": "A Debt Repaid",
+      "beats": [
+        "Mr Rowe tells Judith, delighted, that two years of arrears owed him from the Marchmont living have been paid in full, anonymously, and that he has thanked Mrs Pike, assuming her kindness lay behind it.",
+        "Mrs Pike, flattered, does not correct him, and by evening the parish credits her with the whole sum, a story she does nothing to discourage.",
+        "Judith, turning the matter over, recalls a phrase on the note that came with the payment \u2014 'in trust for the living' \u2014 that sounds nothing like Mrs Pike and everything like an estate's own trustee.",
+        "She returns to Amberlight House alone, meaning only to return a forgotten prayer book and settle the question, and finds the front door standing open and a lamp overturned in the hall."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 4,
+      "title": "The Fallen Shelf",
+      "beats": [
+        "Judith finds Flora fainted on the stair beneath a collapsed bookshelf, and Ashworth working urgently and without pretence to revive her, all coldness gone.",
+        "While the two women tend Flora together, Judith learns the truth plainly: a broken engagement the previous year, made worse by a dispute over her inheritance, left Flora too ashamed and unwell to face the parish, and Ashworth has been sheltering her from talk rather than imprisoning her.",
+        "Ashworth admits, without being asked twice, that he paid Mr Rowe's arrears himself, an old obligation of Sir Edward's he found among the estate papers, and let Mrs Pike take the credit because any kindness of his own would only feed the story already told of him.",
+        "Flora, recovering, thanks Judith by name and asks to be allowed downstairs properly at last \u2014 but Mrs Pike, unaware of any of this, is already at the Bell describing the 'prisoner of Amberlight' to a full room."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 5,
+      "title": "The Parish Corrected",
+      "beats": [
+        "Judith and Ashworth arrive together at the Bell in time to hear Mrs Pike mid-tale, and between them lay out the truth plainly enough that even she cannot argue with it.",
+        "Mrs Pike, rather than embarrassed, recovers instantly by declaring she always knew Judith and Mr Ashworth were suited, and takes credit for an understanding neither of them has yet spoken aloud.",
+        "Flora is brought properly into the parish for the first time, pale still but steady, and Mr Rowe secures her promise of a subscription toward mending the church roof, arrears now settled.",
+        "Judith and Ashworth, walking home in the last of the daylight, allow between them a quieter and more honest understanding than any Mrs Pike could have arranged, while Amberlight House stands behind them with every window lit."
+      ],
+      "target_words": 450
+    }
+  ],
+  "length_min": 15,
+  "bible": "amberlight",
+  "series": "Middle Watch: Amberlight",
+  "slug": "the-lit-windows-of-amberlight"
+}

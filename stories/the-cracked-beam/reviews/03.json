@@ -1,0 +1,72 @@
+{
+  "n": 3,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "At Mrs Pike's dinner, Miss Marchmont arrives plainly dressed and more curious about the old house's library than about being introduced to anyone.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Rowe, coached beforehand, is stiff and overpraises everything within reach, and Louisa remains polite but plainly unmoved.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Louisa and Judith fall into easy talk about a book both have read, and Mrs Pike, watching them laugh, decides this proves Louisa charmed by the evening, and therefore by Rowe.",
+      "covered": true,
+      "note": "Mrs Pike's leap to Rowe is implied through his seating rather than stated, which is defensible but slightly thin."
+    },
+    {
+      "beat": "Alone with Judith afterward, Louisa admits she has come to persuade her uncle to give the empty house a use, not to be courted by anyone, and asks what the parish truly needs.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Judith answers plainly: a schoolroom, since the old one is falling in, and watches an idea take hold in Louisa's face.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Louisa's stillness and 'How many children?' signal a plan forming, redirecting the story toward the house's use before the cart-wheel chapter."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": [
+      "The coached-praise catalogue stacks five objects of overpraise (ham, roses, gatehouse prospect, green prospect, weather), longer than the joke needs and slower than the rest of the chapter's pace."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [
+    {
+      "quote": "was less polite and a great deal better company",
+      "replace_with": "a concrete instance of the impoliteness itself, shown through one blunt line, rather than a summarising label"
+    },
+    {
+      "quote": "Miss Marchmont stood quite still on the step.",
+      "replace_with": "a specific physical detail \u2014 her hand on the rail, her boot in the gravel \u2014 to anchor the stillness in the body"
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Delivers the meddling matchmaker straight through Mrs Pike's misread conclusion; enemies of manner is present only as backdrop via Rowe's stiffness, with the direct friction between the two leads deferred to later chapters as the outline intends.",
+  "length_note": null,
+  "fixes": [
+    "Trim the overpraise list in the dinner paragraph from five items to two or three to tighten the joke and cut length.",
+    "Replace 'was less polite and a great deal better company' with a shown moment rather than a narrated verdict.",
+    "Give 'Miss Marchmont stood quite still on the step' one concrete physical anchor.",
+    "Consider making Mrs Pike's conclusion about Rowe specifically more explicit, since the beat calls for her crediting him by name, not just by seating."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  }
+}

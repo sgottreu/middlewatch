@@ -1,0 +1,190 @@
+{
+  "title": "The Shuttered Wing",
+  "genre": "regency",
+  "subgenre": "gothic",
+  "tropes": [
+    "The disputed inheritance",
+    "Class across the table",
+    "The compromising situation"
+  ],
+  "logline": "When a widow and her silent niece finally open the doors of Amberlight House after twelve empty years, the parish decides at once that it must be haunted, and the apothecary's sister is the only person calm enough to ask what is actually being hidden, and from whom.",
+  "promise": "A viewer who came for a gothic mystery gets a real inheritance to fight for, an advantageous proposal that must be refused, and a scandal that resolves in a marriage nobody arranged for money.",
+  "setting": "Amberlight, Hampshire, autumn 1817",
+  "target_words": 4500,
+  "cast": [
+    {
+      "name": "Miss Judith Vane",
+      "role": "protagonist",
+      "age": 27,
+      "gender": "female",
+      "station": "keeps house for her brother, the apothecary; no fortune of her own",
+      "want": "To be trusted for her own judgement, not suspected of angling for her own advantage",
+      "appearance": "Fair, freckled, of middling height, with reddish hair she cannot keep pinned and a habit of looking directly at whoever is speaking.",
+      "dress": "Sprigged muslin in summer, a grey wool pelisse in winter, both mended with more thrift than skill.",
+      "voice_note": "quiet, precise, says less than she thinks",
+      "voice": "Alice",
+      "recurring": true
+    },
+    {
+      "name": "Mr Silas Rowe",
+      "role": "love_interest",
+      "age": 34,
+      "gender": "male",
+      "station": "curate of Amberlight; eighty a year and no expectations",
+      "want": "To do right by his parishioners and be chosen for himself rather than his prospects",
+      "appearance": "Tall and thin, dark hair worn slightly too long, with the stoop of a man used to low doorways and a face that gives away more than he intends.",
+      "dress": "Worn black coat, carefully brushed, and linen that has been turned at the cuffs.",
+      "voice_note": "sincere, awkward with anything outside the parish",
+      "voice": "Daniel",
+      "recurring": true
+    },
+    {
+      "name": "Mrs Honoria Pike",
+      "role": "supporting",
+      "age": 58,
+      "gender": "female",
+      "station": "widow of a naval surgeon; three hundred a year and a house on the green",
+      "want": "To be the first to know everything, and to arrange what she has heard into a story",
+      "appearance": "Short and broad, with grey hair pinned severely under a lace cap, and small quick eyes set in a round weathered face.",
+      "dress": "Black bombazine with a plain white fichu, ten years out of fashion and immaculately kept.",
+      "voice_note": "brisk, talks over people, certain of everything",
+      "voice": "Matilda",
+      "recurring": true
+    },
+    {
+      "name": "Mrs Averil Thorne",
+      "role": "supporting",
+      "age": 45,
+      "gender": "female",
+      "station": "widow; guardian to her niece and current tenant of Amberlight House",
+      "want": "To secure her niece's inheritance without the parish's help or its gossip",
+      "appearance": "Tall and austere, hair scraped back under a widow's cap, eyes tired from want of sleep.",
+      "dress": "A plain grey gown with a single black shawl, kept correct rather than fashionable.",
+      "voice_note": "guarded, chooses words as though paying for them"
+    },
+    {
+      "name": "Miss Cassandra Wren",
+      "role": "supporting",
+      "age": 19,
+      "gender": "female",
+      "station": "granddaughter of the late Sir Edward Marchmont; heiress presumptive to Amberlight House",
+      "want": "To walk her own grounds openly instead of being kept behind shutters",
+      "appearance": "Slight and fair, pale from weeks kept indoors, with restless quick movements.",
+      "dress": "A plain muslin gown, a little outgrown, with no jewellery at all.",
+      "voice_note": "hushed and quick, used to being overheard"
+    },
+    {
+      "name": "Mr Rafe Hale",
+      "role": "antagonist",
+      "age": 32,
+      "gender": "male",
+      "station": "distant cousin to the late Sir Edward Marchmont; a gentleman of modest independent means, next heir to the house should the marriage in question go unproven",
+      "want": "To secure the house and its income by whatever means the law allows",
+      "appearance": "Compact and dark-haired, oiled smooth, dressed a shade finer than his means suggest.",
+      "dress": "A well-cut but slightly dated blue coat and a watch chain he checks too often.",
+      "voice_note": "smooth, charming, never quite answers the question asked"
+    }
+  ],
+  "chapters": [
+    {
+      "n": 1,
+      "title": "Lights at Amberlight",
+      "beats": [
+        "Amberlight House, empty since 1812, shows lit windows one autumn evening, and Mrs Pike is the first on the green to see them.",
+        "A closed carriage arrives bringing Mrs Averil Thorne and her niece, Miss Cassandra Wren; the parish learns only that the house has passed to the family at last.",
+        "Mr Silas Rowe calls in his curate's duty to welcome the household and is received briefly and politely by Mrs Thorne, who keeps Cassandra from the room.",
+        "Rowe mentions to Judith Vane, when he stops at the apothecary for a headache powder, that the east wing's shutters stayed closed the whole visit.",
+        "That night, walking home from the shop, Judith sees a light moving behind those same shuttered windows, though Mrs Thorne told Rowe the wing was locked and unused."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 2,
+      "title": "The Cousin at the Bell",
+      "beats": [
+        "Gossip at the circulating library grows by the day; Mrs Pike proposes a mad relation, a curse, and the ghost of old Sir Edward, in that order.",
+        "Judith checks the parish register herself and finds the house's ownership has stood unsettled since Sir Edward's death, with no clear heir named since.",
+        "A stranger, Mr Rafe Hale, takes rooms at the Bell and asks pointed questions about the new family at Amberlight House.",
+        "Hale introduces himself to Judith as a distant cousin of Sir Edward with his own claim to the house, and asks her, since her brother's trade brings her there, to report what she sees.",
+        "Judith refuses to spy for him, but Hale remarks, almost carelessly, that the house cannot lawfully pass to anyone until a certain marriage is proven or disproven, and that he means to see it settled soon."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 3,
+      "title": "The Light in the East Wing",
+      "beats": [
+        "Judith's brother sends her to deliver a remedy to Amberlight House, Cassandra being reported unwell.",
+        "Mrs Thorne, anxious and evasive, admits only to 'a legal matter pending' that keeps her wakeful at night.",
+        "Judith glimpses Cassandra on the stair, pale but not sickly, who whispers urgently, 'Have you found the paper,' before Mrs Thorne calls her back.",
+        "Leaving in broad afternoon, Judith looks up and sees the same moving light behind the shuttered wing, though no one should be there.",
+        "That evening Judith tells Silas Rowe everything, and the two agree the house is hiding something managed out of fear rather than malice, and that someone ought to help rather than merely watch."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 4,
+      "title": "The Missing Lines",
+      "beats": [
+        "Rowe, searching old parish papers, learns Sir Edward's will left the house to his granddaughter only if her parents' hasty marriage abroad could be proven, otherwise to the next male heir.",
+        "Judith realises Cassandra must be that granddaughter, and that Mrs Thorne has been searching the house at night for the marriage lines, said to have been hidden rather than destroyed.",
+        "Mrs Pike, delighted with new material, tells Judith that Mr Hale has been asking after her and declares him, unprompted, a very suitable match.",
+        "Hale calls at the apothecary shop and hints that if Judith would help him find 'certain papers' first, he would see her very comfortably placed.",
+        "Judith refuses him plainly, offended, and resolves to help Mrs Thorne find the document before Hale can arrange for it never to be found at all."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 5,
+      "title": "The Sealed Room",
+      "beats": [
+        "Judith calls on Mrs Thorne, admits what she has seen and guessed, and offers help; Mrs Thorne, relieved, confesses the truth and her nightly, fruitless searches.",
+        "Rowe joins them that evening with Mrs Thorne's permission, and Cassandra is allowed, for the first time in weeks, to help search her own house.",
+        "In the shuttered library they find a false-backed cabinet built by Sir Edward himself; a portrait crashes down as Cassandra reaches behind it, revealing a locked strongbox.",
+        "The strongbox holds only old letters, and a note in Sir Edward's own hand suggesting he moved the real proof somewhere 'safer than any lock.'",
+        "It is very late when Judith and Rowe step out of the dark house together to fetch a smith, and Mrs Pike, out checking on a feverish neighbour, sees them leave alone with no chaperone in sight."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 6,
+      "title": "What Mrs Pike Saw",
+      "beats": [
+        "By morning the story has travelled the parish whole: the curate and the apothecary's sister, alone in the empty house past midnight.",
+        "Judith's brother is embarrassed before his customers, and a parish elder speaks to Rowe, gently but firmly, about appearances befitting his position.",
+        "Hale, hearing the gossip, calls on Judith and offers marriage, correct and generous, framing it as rescue from scandal and his fortune as the answer to every difficulty.",
+        "Judith asks for a day to answer, aware that refusal looks like folly and acceptance would abandon Cassandra's cause, since Hale's whole interest depends on the marriage lines never being found.",
+        "Unable to sleep that night, Judith recalls Cassandra's whisper on the stair was not 'the paper' but 'the prayer,' and realises where a man who never missed a Sunday would have hidden something he wanted kept safe."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 7,
+      "title": "Between Two Boards",
+      "beats": [
+        "At first light Judith brings her guess to Rowe: the church itself, where Sir Edward held a private pew with a locked kneeling-desk no one had thought to open.",
+        "Rowe, Judith, Mrs Thorne and Cassandra meet at the church and find, folded flat between the boards of a small prayer book, the marriage lines from a chapel abroad, signed and witnessed.",
+        "Hale arrives, having heard where they went, to argue the papers false or forged, but Mrs Thorne calmly produces a witness's letter, kept separately for years, confirming the same marriage.",
+        "Faced with two proofs he cannot discredit, Hale's claim collapses in front of the very people he had hoped to use.",
+        "Cold but not ungracious in defeat, Hale withdraws both his claim to the house and his offer of marriage to Judith, and leaves to arrange his departure on the next coach."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 8,
+      "title": "The House Unshuttered",
+      "beats": [
+        "Within days the east wing's shutters are opened for the first time in years, and Cassandra, secure now as her grandfather's heir, walks the grounds openly.",
+        "Mrs Thorne, grateful, tells Judith and Rowe the house will not stand empty again, and offers the parish the use of its long-closed chapel for services.",
+        "Mrs Pike, still faintly guilty over the gossip she spread, insists she always knew the two of them were suited and begins planning a wedding breakfast unasked.",
+        "With nothing left standing between them but his own uncertain income, Rowe asks Judith plainly whether eighty pounds a year and a curate's cottage might do for a life, and she says they might do very well.",
+        "The parish settles the whole matter over its own teacups within the week, deciding, correctly for once, that Amberlight House had never been haunted by anything worse than an old man's caution and a young woman's patience."
+      ],
+      "target_words": 580
+    }
+  ],
+  "length_min": 30,
+  "bible": "amberlight",
+  "series": "Middle Watch: Amberlight",
+  "slug": "the-shuttered-wing"
+}

@@ -1,0 +1,72 @@
+{
+  "n": 2,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Farr walks the mile to Oakmere and finds smoke rising from the chimney and unfamiliar curtains in windows he remembers as his great-uncle's.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Hartwell greets him civilly from the doorstep but does not ask him in, calling his arrival a surprise rather than a homecoming.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Hartwell produces the later will, drawn weeks before Fenner's death and witnessed by two of the farm's own servants, leaving everything to himself.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Farr states that his great-uncle promised him the farm by word before he went for a soldier, and has no paper to prove it.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Turned from his own door, Farr walks back toward the village, watched from an upstairs window by the housekeeper, Mrs Whitlow, who says nothing.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Whitlow's silent, watchful presence at the window plants the question of what she knows and why she won't say, which the mystery needs to move forward."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": [
+      "The door shut. Not hard; that was the worst of it. \u2014 states a judgment about feeling rather than showing it."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [
+    {
+      "quote": "Not hard; that was the worst of it.",
+      "replace_with": "Give a physical detail of the shutting \u2014 the click of the latch, or Farr's hand still half-raised as if to knock again."
+    },
+    {
+      "quote": "There was a pause of some length.",
+      "replace_with": "Name the pause with something concrete \u2014 Hartwell turning the watch-chain, or the dog settling back on its haunches."
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Serves the disputed inheritance directly through the will's production, and sets up the returning officer's disbelieved claim; forced proximity is not yet in play, which is correct for this chapter.",
+  "length_note": "Chapter runs to roughly 719 words against a 560-word target, about 28% over \u2014 the dialogue is earning its keep rather than padding, but it should be trimmed toward the target.",
+  "fixes": [
+    "Cut the chapter down toward 600-650 words by tightening the Hartwell/Farr exchange, which currently runs longer than the beat requires.",
+    "Rewrite 'Not hard; that was the worst of it.' with a concrete physical beat instead of a stated judgment.",
+    "Rewrite 'There was a pause of some length.' with a specific, hearable detail of what fills the silence.",
+    "Consider trimming the opening description (hedges, crab tree) by a sentence to recover word count without losing the specific detail."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  }
+}

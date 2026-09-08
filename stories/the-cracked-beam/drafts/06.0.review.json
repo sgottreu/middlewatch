@@ -1,0 +1,67 @@
+{
+  "n": 6,
+  "pass": false,
+  "score": 7,
+  "beats": [
+    {
+      "beat": "Owen asks Rowe plainly what his intentions are, since his sister's name is now in every kitchen in Amberlight.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Rowe, startled into honesty, admits he does not know what to call his feeling, only that it is slower and better than the gossip allows.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Word arrives that Louisa's uncle has agreed to fit the old east wing of Amberlight House as a schoolroom at the estate's expense, needing no subscription at all.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Rowe realizes that with the money settled, he has no more useful reason to marry, only whatever reason is left over, which is Judith herself.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "He sets out to find her and meets her already on the road to his lodging, come to settle the matter of the gossip herself.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Judith's declaration that she has come to settle the matter herself, and is not a thing to be settled between the two men, reframes chapter 7 as her scene rather than his."
+  },
+  "continuity": [
+    "Owen's confrontation begins immediately from Chapter 5's Monday afternoon ('half past three'), but Louisa then arrives having just read a letter she calls 'Tuesday's post' -- the bible states the coach runs only Tuesdays and Fridays, so a Tuesday delivery cannot have reached her on the same Monday scene."
+  ],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Serves the chaperone's-absence trope directly as fallout (Owen's confrontation, the gossip) and keeps the enemies-of-manner banter alive through the schoolroom exchange; no fourth trope is introduced.",
+  "length_note": null,
+  "fixes": [
+    "Cut the repetition of 'black coat' and 'neckcloth' across two consecutive narrator paragraphs (segments 16 and 17) -- keep it in one place.",
+    "Shorten the opening tally of subscription sums (nine shillings, straw, four shillings) since the fifteen-pound figure and its shortfall were already established in Chapters 1 and 3.",
+    "Fix the timeline: either move Louisa's letter to the following day or change 'Tuesday's post' to match the same-day continuation from Owen's Monday visit.",
+    "Trim the ambient description of the green in 'It was not raining... nothing better to look at' -- the coach-and-crowd image was already used to close Chapter 4.",
+    "Condense the description of Judith at the lych gate ('bonnet on straight and her chin up...') to fewer clauses; the point can be made in one image.",
+    "Remove the doubled spaces after 'his neck.' and 'open the shop.' -- likely stray formatting, not intended emphasis."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "length_over": 786,
+  "length_target": 560
+}

@@ -1,0 +1,71 @@
+{
+  "n": 7,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "In Winchester the next morning, the attorney confirms that the earlier will naming Farr was never formally revoked, only set aside as superseded.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "He permits Judith and Farr to search a shelf of unclaimed correspondence kept at his office for want of a clear direction.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Among the letters they find Whitlow's own, misdirected there through a clerk's error rather than destroyed.",
+      "covered": true,
+      "note": "The draft explains the misdirection as routine office procedure rather than an explicit clerk's mistake, a slight loosening of the beat's wording but the same narrative fact."
+    },
+    {
+      "beat": "Its date proves that Fenner was already failing months before Hartwell's will was ever drawn up.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "The attorney agrees to summon Hartwell to account, and Farr and Judith hurry back toward Amberlight before he can sell off the farm's stock.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "The auction bill for Thursday's sale forces immediate action, ending on Judith's order to ride back that night rather than wait on the attorney's letter."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [
+    {
+      "quote": "he was too old to be surprised by a farm",
+      "replace_with": "give Cobbold a specific, small habit instead \u2014 e.g., him not looking up from the paper he's already reading, or naming the exact prior scandal he compares it to"
+    },
+    {
+      "quote": "which Judith thought said a great deal about thirty years of practice",
+      "replace_with": "cut the interpretive tag and show one concrete tell instead \u2014 a specific gesture, or nothing at all, and let the reader supply the judgement"
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "The disputed inheritance is the whole engine of the chapter and lands cleanly; the returning officer is present through Farr's stake but not foregrounded here; forced proximity is absent this chapter, which is appropriate since it belongs to the previous one.",
+  "length_note": "Draft runs to roughly 768 words against a 560-word target, about 37% over, though the excess is mostly incident and evidentiary detail rather than padding.",
+  "fixes": [
+    "Trim the Cobbold introduction paragraph (the fire, the clerk who writes standing, the buried-three-clients aside) by a third; it is atmosphere doing double duty as characterisation and can be cut to the single detail that earns its place.",
+    "Replace 'he was too old to be surprised by a farm' with something concrete to Cobbold specifically, not a stock lawyer trait.",
+    "Cut 'which Judith thought said a great deal about thirty years of practice' and let his stillness stand unglossed.",
+    "Tighten the dead-letter-office explanation paragraph; it can be delivered in two sentences instead of the current four.",
+    "Consider trimming the will-history paragraph in segment one, which restates the same fact (never revoked, only superseded) three times in slightly different words."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  }
+}

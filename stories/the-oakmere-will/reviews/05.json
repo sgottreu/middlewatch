@@ -1,0 +1,62 @@
+{
+  "n": 5,
+  "pass": true,
+  "score": 7,
+  "beats": [
+    {
+      "beat": "Judith carries Owen's dispensing book and Whitlow's account to Farr at the Bell.",
+      "covered": true,
+      "note": "Opens the chapter; Owen's conditions on the book and Judith's report to Farr are both shown."
+    },
+    {
+      "beat": "Farr resolves to lay the evidence before the Winchester attorney who holds Fenner's papers.",
+      "covered": true,
+      "note": "\"Then I want Cobbold... I shall walk in Tuesday.\""
+    },
+    {
+      "beat": "Mr Rowe warns that Farr alone would be taken for a fortune hunter telling a convenient story, and proposes Judith go too, with the book in her own keeping.",
+      "covered": true,
+      "note": "Rowe's speech covers both the warning and the proposal in full."
+    },
+    {
+      "beat": "Judith agrees, over Mrs Pike's loud objections about a lady travelling with a strange captain.",
+      "covered": true,
+      "note": "Pike's yard scene and Judith's rebuttal are both present."
+    },
+    {
+      "beat": "A few miles short of Winchester a wheel gives way on their hired chaise, and the driver says no other conveyance will pass before morning.",
+      "covered": true,
+      "note": "Wheel breaks three miles short of the city; driver confirms nothing passes before the morning carts."
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "The chapter ends stranded at dusk with no conveyance until morning, which sets up the forced-proximity beat of chapter six directly."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": [
+      "Segment 12 (Rowe's line) verges on negative parallelism (\"that is not a convenient story. That is a ledger...\") but stays within the one-per-story allowance and the contrast is the actual point of the line, so it is not counted as a fault."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Serves the disputed inheritance directly (Farr's plan to reach the attorney) and sets up forced proximity cleanly with the wheel breaking at dusk. The returning officer trope is carried forward through Farr's continued outsider status but isn't the focus of this chapter, which is appropriate since it was established earlier.",
+  "length_note": "Draft runs to roughly 759 words against a 560-word target, about 35% over. The overage comes mostly from dialogue exchanges (Mrs Pike's objection scene, Rowe's rambling warning, the driver exchange) rather than beats being padded with unearned material, but it should be trimmed \u2014 particularly the Pike scene and the driver's final lines, which restate information already clear from the wheel breaking.",
+  "fixes": [
+    "Tighten the Mrs Pike objection scene (segments 15-19): the exchange restates the same objection twice (parcel gossip, then the yard speech, then Judith's rebuttal) and can lose a line or two without losing the beat.",
+    "Trim the driver's closing dialogue (segments 22-26): 'Can it be got on again?' and 'Then what passes this road tonight?' could be combined into fewer exchanges, since the outcome (nothing until morning, wheelwright too far to fetch at night) is the only information needed.",
+    "Rowe's warning speech (segment 10) is strong but runs long for his stammering voice; consider breaking it with a half-finished clause consistent with his 'trails off when he loses his nerve' voice note, which would also shave words."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  }
+}

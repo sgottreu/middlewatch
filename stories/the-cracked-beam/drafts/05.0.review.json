@@ -1,0 +1,81 @@
+{
+  "n": 5,
+  "pass": false,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Mrs Hale, at the draper's window, sees Rowe and Judith return together at dusk, unchaperoned and laughing, and has the whole parish informed by morning.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mrs Pike hears it first as triumph, assuming it confirms an attachment, then realizes with horror it is Judith spoken of, and not Louisa.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Flustered, Mrs Pike tells three separate people it was nothing at all, which naturally convinces everyone it was something.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Judith hears an invented version of the story, that she was seen weeping on Rowe's arm, from a girl at the library counter, and goes home changed in temper.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Owen Vane hears it from a customer, closes his shop early, and walks straight to the curate's lodging.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Owen's declaration that he means to ask Rowe plainly and wants an answer before he comes home sets the whole of chapter six in motion."
+  },
+  "continuity": [
+    "Chapter 3 names a gossiping 'Mrs Copp' associated with the house; this chapter introduces 'Sarah Copp' with the same surname in a different context. Not a contradiction, but worth confirming it is meant to be the same person, or renaming one of them to avoid confusion by ear."
+  ],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": [
+      "The clause 'which was what made it so hard afterwards to fix on anybody as the inventor of the rest' is narratorial interpretation rather than a shown fact, and slows a chapter that otherwise moves briskly."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [
+    {
+      "quote": "which was what made it so hard afterwards to fix on anybody as the inventor of the rest",
+      "replace_with": "name the specific detail that got added on retelling, e.g. that nobody could say who first mentioned the weeping"
+    },
+    {
+      "quote": "By four o'clock the parish was entirely satisfied that there was a great deal in it",
+      "replace_with": "state what specific rumour had taken hold by four o'clock rather than the vague 'a great deal'"
+    },
+    {
+      "quote": "asked him where he was going, though she knew",
+      "replace_with": "cut 'though she knew' or replace with a concrete gesture showing she already guessed"
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "This chapter is the engine of the chaperone's-absence trope paying off in reputation damage, and it uses the meddling matchmaker's error (Louisa/Judith confusion) to comic and consequential effect; enemies-of-manner is quiet here but still present in Judith's brisk exit lines.",
+  "length_note": null,
+  "fixes": [
+    "The chapter runs well over target (roughly 730 words against 560). Trim the opening gossip-chain sentence ('By eight the next morning she had told the ostler at the Bell, both the Barrow girls, and a woman from Ropley...') to two listeners instead of three and drop the trailing analytic clause.",
+    "Cut the callback 'and told the girl that thread would keep' in the Mrs Pike paragraph \u2014 it restates a line already delivered in Chapter 4 and can be dropped without losing meaning.",
+    "Trim the Owen paragraph describing lozenges, fourpence, the apron and the nail \u2014 keep one or two concrete actions (shutting the door, turning the sign) rather than the full sequence.",
+    "Cut 'though she knew' from the final narrator line; the gesture of taking down his hat already tells the reader where he is going.",
+    "Consider shortening the triple 'nothing at all, nothing whatever, a wheel and a mason and no more in it than that' to two elements to tighten Mrs Pike's panic without losing the joke."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "length_over": 721,
+  "length_target": 560
+}

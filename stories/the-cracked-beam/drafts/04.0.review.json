@@ -1,0 +1,69 @@
+{
+  "n": 4,
+  "pass": false,
+  "score": 7,
+  "beats": [
+    {
+      "beat": "Mrs Pike arranges for Louisa to ride with Rowe to Bramdean to fetch the mason's estimate, meaning further matchmaking, but Louisa is occupied writing to her uncle and sends word she cannot go.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Judith, already walking to the draper's for thread, is asked to carry the errand instead, and Mrs Pike, absorbed in Louisa's letter, waves her off without thinking of a chaperone.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "A mile past the mill the donkey cart's wheel splits, and Rowe and Judith are left stranded on the verge waiting for someone to pass.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Sitting together the better part of an hour, they finally say aloud what each believed of the other, the sermon and the novels, and find both accounts had grown larger with telling.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "A farmer's cart takes them up at last, but by the time they reach Amberlight the light is failing, and the green is not empty.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Ends on the green not empty and Mrs Hale watching from the library window, which sets up the gossip chapter directly."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [
+    {
+      "quote": "there was nothing else whatever to be done until somebody came along the road",
+      "replace_with": "keep it, but pair it with one more concrete detail of the wait rather than let it stand as summary"
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Delivers the chaperone's absence directly, with Mrs Pike's own inattention causing it, and keeps enemies-of-manner alive by having both grievances corrected rather than simply dropped.",
+  "length_note": null,
+  "fixes": [
+    "Chapter runs well over target (roughly 787 words against 570). Trim the opening scheme paragraph: 'A young lady who had asked how many children there were in the parish would naturally wish to hear what a roof cost' restates Louisa's motive already established in Chapter 3 and can be cut.",
+    "The wheel-breaking passage ('A mile past the mill the near wheel went into a rut...until somebody came along the road') runs 78 words for a simple mechanical fact; cut to two sentences.",
+    "The Nye/hurdle-cart passage ('It was the better part of an hour before Nye came by...before the first cottages showed') is 62 words of travel description that can be halved without losing the beat.",
+    "Consider trimming the Mrs Pike doorstep exchange about the four sheets to her uncle; it restates Louisa's letter-writing status established two lines earlier rather than adding new information.",
+    "Once trimmed, confirm the chapter lands near 570-600 words rather than the current overage."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "length_over": 792,
+  "length_target": 570
+}

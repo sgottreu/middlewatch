@@ -1,0 +1,138 @@
+{
+  "title": "An Understanding at Amberlight",
+  "genre": "regency",
+  "subgenre": "romance",
+  "tropes": [
+    "The false engagement",
+    "The meddling matchmaker",
+    "The compromising situation"
+  ],
+  "logline": "When Mrs Pike announces an engagement that does not exist to stop a wealthy aunt from carrying off the apothecary's sister, the curate and the sister must decide whether a lie told to save her is worth becoming true.",
+  "promise": "A false engagement, forced by a well-meaning meddler, becomes a real proposal that costs the man his pride and the woman her only certain future.",
+  "setting": "Amberlight parish, Hampshire, in the autumn of 1815",
+  "target_words": 2250,
+  "cast": [
+    {
+      "name": "Mr Silas Rowe",
+      "role": "protagonist",
+      "age": 34,
+      "gender": "male",
+      "station": "curate of Amberlight; eighty a year and no expectations",
+      "want": "to marry where he loves without letting anyone believe he married for money",
+      "appearance": "Tall and thin, dark hair worn slightly too long, with the stoop of a man used to low doorways and a face that gives away more than he intends.",
+      "dress": "Worn black coat, carefully brushed, and linen that has been turned at the cuffs.",
+      "voice_note": "earnest, over-explains, goes quiet when embarrassed",
+      "voice": "Daniel",
+      "recurring": true
+    },
+    {
+      "name": "Miss Judith Vane",
+      "role": "love_interest",
+      "age": 27,
+      "gender": "female",
+      "station": "keeps house for her brother, the apothecary; no fortune of her own",
+      "want": "to be chosen for herself rather than sorted, by other people's money, into either a poor marriage or a paid companion's chair",
+      "appearance": "Fair, freckled, of middling height, with reddish hair she cannot keep pinned and a habit of looking directly at whoever is speaking.",
+      "dress": "Sprigged muslin in summer, a grey wool pelisse in winter, both mended with more thrift than skill.",
+      "voice_note": "reads everything, says less than she thinks, dry when pressed",
+      "voice": "Alice",
+      "recurring": true
+    },
+    {
+      "name": "Mrs Honoria Pike",
+      "role": "supporting",
+      "age": 58,
+      "gender": "female",
+      "station": "widow of a naval surgeon; three hundred a year and a house on the green",
+      "want": "to be credited with arranging a good match, and to be right about it publicly",
+      "appearance": "Short and broad, with grey hair pinned severely under a lace cap, and small quick eyes set in a round weathered face.",
+      "dress": "Black bombazine with a plain white fichu, ten years out of fashion and immaculately kept.",
+      "voice_note": "warm, talks too much, states rumour as established fact",
+      "voice": "Matilda",
+      "recurring": true
+    },
+    {
+      "name": "Mrs Charlotte Ferris",
+      "role": "antagonist",
+      "age": 52,
+      "gender": "female",
+      "station": "wealthy widow of a Bath wine merchant; Judith's aunt by marriage, with two thousand a year and no children",
+      "want": "to secure her niece's future, and to be certain any match is love and not merely relief",
+      "appearance": "A small, sharp-eyed woman with silver hair dressed high and a habit of examining people over the top of her spectacles.",
+      "dress": "Fine dove-grey silk, plainly cut but visibly costly, with a single good ring.",
+      "voice_note": "clipped and dry, asks the question nobody else will"
+    },
+    {
+      "name": "Mr Edmund Vane",
+      "role": "supporting",
+      "age": 30,
+      "gender": "male",
+      "station": "apothecary of Amberlight; a struggling shop and a sister he depends on more than he admits",
+      "want": "to see his sister settled so his conscience and his ledgers can both rest",
+      "appearance": "Fair and round-faced, with a permanent stain of green dye on one cuff from mixing tinctures.",
+      "dress": "A brown coat and an apron he forgets to remove before greeting callers.",
+      "voice_note": "quick, practical, blurts things out"
+    }
+  ],
+  "chapters": [
+    {
+      "n": 1,
+      "title": "A Visitor from Bath",
+      "beats": [
+        "Mrs Charlotte Ferris arrives at the apothecary's house and announces she means to take Judith Vane back to Bath as her companion, since the girl has no prospects at Amberlight worth staying for.",
+        "Mrs Pike, calling at once to inspect the visitor, mistakes overheard talk of Judith's 'understanding' at the shop counter for a private engagement and repeats it as settled fact.",
+        "At the Bell that evening, before half the parish, Mrs Pike congratulates Mrs Ferris on the news that Judith is engaged to Mr Silas Rowe.",
+        "Mrs Ferris, delighted rather than embarrassed, declares she must meet the intended properly before she decides anything about Bath, and Silas realises he has just been engaged in front of witnesses."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 2,
+      "title": "The Convenient Fiction",
+      "beats": [
+        "Silas calls on Judith to disentangle the misunderstanding and finds Edmund already delighted, since a settled sister solves half his worries about the shop.",
+        "Judith points out that denying it now, in front of her aunt, would only confirm to Mrs Ferris that she has nothing and must be taken to Bath at once.",
+        "The three agree to let the engagement stand until Mrs Ferris departs, after which it can be quietly forgotten.",
+        "Mrs Ferris announces she will extend her stay a fortnight to see the young people properly courted, which neither Silas nor Judith expected or wanted."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 3,
+      "title": "Playing the Part",
+      "beats": [
+        "Mrs Pike, thrilled with her success, begins arranging wedding details neither party has agreed to, forcing Silas and Judith into daily walks and dinners to keep the story alive.",
+        "In the course of the charade the two talk more honestly than they ever have, and Silas finds himself saying things he had not planned to say.",
+        "Judith overhears Silas telling Edmund he means to 'put an end to it' the moment Mrs Ferris leaves, and takes it to mean he intends to end things between them, not merely the pretence.",
+        "She grows cold to him without explanation, and Silas, baffled, cannot ask why in front of the very people who are watching them for signs of trouble."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 4,
+      "title": "Found Out",
+      "beats": [
+        "Silas goes to the Vane house alone to press Judith for the reason of her coldness, and the misunderstanding finally comes out between them.",
+        "In the relief of it being cleared away, he takes her hand and they are found, unmistakably close, by Mrs Ferris and Mrs Pike arriving together at the door.",
+        "Mrs Ferris, rather than scandalised, is satisfied she has seen something real, and asks Silas plainly whether he would marry Judith without a shilling of her aunt's money attached.",
+        "Silas hesitates only a moment before saying he would rather she kept every shilling than have anyone say he married Judith for it, which is not the answer Mrs Ferris expected from a poor man."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 5,
+      "title": "What It Cost",
+      "beats": [
+        "Judith, hearing what he said, tells him she would rather have his eighty pounds a year and his honesty than her aunt's certainty in Bath, and gives up the settled future for the uncertain one.",
+        "Mrs Ferris, satisfied at last, settles money on Judith anyway, as a wedding gift rather than a condition, and Silas can accept it now that it buys nothing.",
+        "Mrs Pike takes full credit for the match at every house on the green, entirely untroubled by how near she came to ruining it.",
+        "The banns are read at Amberlight church on an ordinary Sunday, and Judith and Silas walk out afterward exactly as they had all fortnight, except that now it is true."
+      ],
+      "target_words": 450
+    }
+  ],
+  "length_min": 15,
+  "bible": "amberlight",
+  "series": "Middle Watch: Amberlight",
+  "slug": "an-understanding-at-amberlight"
+}

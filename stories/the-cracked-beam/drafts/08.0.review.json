@@ -1,0 +1,73 @@
+{
+  "n": 8,
+  "pass": false,
+  "score": 7,
+  "beats": [
+    {
+      "beat": "News of the schoolroom's rescue reaches the parish the same week as news of the engagement, and Mrs Hale cannot decide which to tell first.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mrs Pike claims full credit for both, insisting the dinner was always meant to end this way, and nobody troubles to correct her.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Louisa Marchmont, her errand accomplished, returns to town, having secured her uncle's promise and gained a correspondent in Judith.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Owen gives his blessing over the shop counter, on condition Rowe never again send his sister out on a cracked wheel without him.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "The story closes with the schoolroom roof going up the same week the banns are read, and Amberlight satisfied that the right things happened, whatever the wrong reasons given for them.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "As a closing chapter it resolves rather than turns forward, but Mrs Pike's last line ('I am not finished') closes on a note that keeps her in motion, which is appropriate for a final beat."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [
+    {
+      "quote": "Amberlight was satisfied.",
+      "replace_with": "Name a concrete parish action or reaction instead of asserting the village's collective mood \u2014 e.g. who paid what, who stopped gossiping, who finally borrowed the Cobbe list."
+    },
+    {
+      "quote": "no harm was done by them",
+      "replace_with": "This restates the outline's closing thesis directly; let a specific image carry the same idea, such as what Mrs Hale says instead of what she believes."
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "The meddling matchmaker is served straight and rewarded with the last word, and the chaperone's absence is closed off cleanly by Owen's counter-condition; no fourth trope creeps in.",
+  "length_note": null,
+  "fixes": [
+    "Trim Mrs Pike's credit-claiming speech ('There was ham on that table...') \u2014 it restates facts from Chapter 3 the listener already has (the ham, the cloth, where Judith sat) rather than adding anything new to her character.",
+    "Cut or shorten the narrator's follow-up paragraph about the 'yard' of truth ('Judith had in fact said it on the step...a yard has never yet been enough') \u2014 the joke is good but the explanation of why it's a joke undercuts it; end after 'the step belonged to Mrs Pike.'",
+    "The Fenner/fifteen-pounds aside ('not for the fifteen pounds, which was never wanted, but for the chimney of the stove') repeats a fact already resolved in Chapter 6; compress to a single clause or cut.",
+    "The final paragraph re-lists 'the school was got, and the curate was got' beat by beat after the scene has already shown both outcomes; cut the summary and let the chapter end on Mrs Pike's line.",
+    "Replace 'Amberlight was satisfied' with a specific, small image of the parish's mood rather than a stated verdict."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "length_over": 691,
+  "length_target": 560
+}

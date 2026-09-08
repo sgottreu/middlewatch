@@ -1,0 +1,68 @@
+{
+  "n": 7,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Judith tells Rowe she means to correct the story to the whole parish, whatever it costs her pride to explain a cracked wheel to fools.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Rowe says he does not want the rumour corrected so much as made true, and asks her, without any of Mrs Pike's staging, whether she would have him.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Wary of being a convenience to a story rather than a choice, Judith asks whether he asks from feeling or from wanting to stop tongues.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "He answers with the sermon and the novels, admitting he has thought of her correcting him at the counter far more often than a man ought to think of someone he claims to dislike, and she laughs and lets it settle the matter.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "They walk back into Amberlight together in full daylight this time, meaning to be seen.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "The proposal is accepted, which converts the gossip from a threat into a matter of record and sets up the parish's reception of it in the final chapter."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": [
+      "The shield simile ('the nearest thing to putting down a shield that a curate can manage') is narratorial interpretation rather than observed detail, and edges toward telling the reader how to read the gesture."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [
+    {
+      "quote": "which was the nearest thing to putting down a shield that a curate can manage",
+      "replace_with": "Cut the gloss and let the object stand alone: he set the hat on the post and left it there."
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Delivers the enemies-of-manner payoff straight through the sermon and novels callback, and quietly closes the matchmaker inversion by having Rowe note Mrs Pike knows nothing of the proposal.",
+  "length_note": null,
+  "fixes": [
+    "Trim Rowe's long speech ('It is the whole of it... but the weather.') \u2014 it restates the sermon grievance and the novels grievance in full after both have already been dramatized in Chapter 4; compress to one memory stated once.",
+    "Cut 'which was the nearest thing to putting down a shield that a curate can manage' and let the hat-on-the-post action stand without the simile.",
+    "The closing narrator paragraph describing the walk ('at a walking pace, in the full light of a Monday afternoon') can lose 'at a walking pace' \u2014 'full light of a Monday afternoon' already carries the beat.",
+    "Consider shortening Judith's opening speech about her correction plan; the specifics (Nye, hurdles, Mrs Yardley, Sarah Copp's mother) can be trimmed to two named parties rather than three, since the point is made after the first."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  }
+}

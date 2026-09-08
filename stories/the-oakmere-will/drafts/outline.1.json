@@ -1,0 +1,185 @@
+{
+  "title": "The Oakmere Will",
+  "genre": "regency",
+  "subgenre": "mystery",
+  "tropes": [
+    "the disputed inheritance",
+    "the returning officer",
+    "forced proximity"
+  ],
+  "logline": "A captain long believed dead comes home to find his great-uncle's farm signed away to a cousin he has never trusted, and the only people who can prove the will a fraud are an apothecary's dispensing book and a letter that never reached him.",
+  "promise": "The rightful heir gets his farm back, the fraud is exposed without a drop of blood spilled, and the woman who grieved him in silence is finally asked properly.",
+  "setting": "Amberlight parish and the Winchester road, October 1816",
+  "target_words": 4500,
+  "cast": [
+    {
+      "name": "Miss Judith Vane",
+      "role": "protagonist",
+      "age": 27,
+      "gender": "female",
+      "station": "keeps house for her brother, the apothecary; no fortune of her own",
+      "want": "to see the truth of the will established before an honest man is cheated of everything",
+      "appearance": "Fair, freckled, of middling height, with reddish hair she cannot keep pinned and a habit of looking directly at whoever is speaking.",
+      "dress": "Sprigged muslin in summer, a grey wool pelisse in winter, both mended with more thrift than skill.",
+      "voice_note": "quiet, precise, says less than she is thinking",
+      "voice": "Alice",
+      "recurring": true
+    },
+    {
+      "name": "Mr Silas Rowe",
+      "role": "supporting",
+      "age": 34,
+      "gender": "male",
+      "station": "curate of Amberlight; eighty a year and no expectations",
+      "want": "to help without making the matter worse through his own clumsiness",
+      "appearance": "Tall and thin, dark hair worn slightly too long, with the stoop of a man used to low doorways and a face that gives away more than he intends.",
+      "dress": "Worn black coat, carefully brushed, and linen that has been turned at the cuffs.",
+      "voice_note": "earnest, over-explains, trails off when he loses his nerve",
+      "voice": "Daniel",
+      "recurring": true
+    },
+    {
+      "name": "Mrs Honoria Pike",
+      "role": "supporting",
+      "age": 58,
+      "gender": "female",
+      "station": "widow of a naval surgeon; three hundred a year and a house on the green",
+      "want": "to be the first in the parish to know how the will affair ends, and to take some credit for the outcome",
+      "appearance": "Short and broad, with grey hair pinned severely under a lace cap, and small quick eyes set in a round weathered face.",
+      "dress": "Black bombazine with a plain white fichu, ten years out of fashion and immaculately kept.",
+      "voice_note": "brisk, delighted by her own certainty, interrupts",
+      "voice": "Matilda",
+      "recurring": true
+    },
+    {
+      "name": "Captain Nathaniel Farr",
+      "role": "love_interest",
+      "age": 32,
+      "gender": "male",
+      "station": "half-pay officer, presumed heir to Oakmere Farm, worth some three hundred a year",
+      "want": "to reclaim the home and the promise his great-uncle made him before he went for a soldier",
+      "appearance": "weathered and lean, sun-darkened where an Englishman is usually pale, with a slight limp and a scar along one hand.",
+      "dress": "a faded regimental coat at first, plain and unmarked of rank, worn thin at the cuffs.",
+      "voice_note": "spare, direct, softens only when speaking of the farm or of Judith"
+    },
+    {
+      "name": "Mr Vernon Hartwell",
+      "role": "antagonist",
+      "age": 36,
+      "gender": "male",
+      "station": "Fenner's cousin's son, presently in possession of Oakmere under a disputed will",
+      "want": "to secure the farm and its rents before his debts in town come due",
+      "appearance": "fair-haired and soft-handed, a little too well dressed for a working farm, with a smile that arrives before it is warranted.",
+      "dress": "a town-tailored coat and polished boots wholly unsuited to mud, a watch-chain worn where it can be seen.",
+      "voice_note": "smooth, quick to reassure, never quite answers the question"
+    },
+    {
+      "name": "Mrs Dorcas Whitlow",
+      "role": "supporting",
+      "age": 54,
+      "gender": "female",
+      "station": "housekeeper at Oakmere Farm these thirty years, dependent on her place",
+      "want": "to keep her position and not be blamed for what she saw the day the will was signed",
+      "appearance": "grey-haired under a plain cap, stooped, with work-roughened hands never quite still.",
+      "dress": "a dark stuff gown, a clean apron, a ring of keys at her waist.",
+      "voice_note": "hesitant, drops her voice when frightened, speaks in short bursts"
+    },
+    {
+      "name": "Mr Owen Vane",
+      "role": "supporting",
+      "age": 30,
+      "gender": "male",
+      "station": "apothecary of Amberlight; modest income from his shop",
+      "want": "to be believed by the gentry without being made to quarrel with them",
+      "appearance": "slight, bespectacled, with herb stains permanently on his cuffs and an ink-stained thumb.",
+      "dress": "a plain brown coat, often still in his apothecary's apron when called upon suddenly.",
+      "voice_note": "careful, exact with dates and numbers, uneasy outside his shop"
+    }
+  ],
+  "chapters": [
+    {
+      "n": 1,
+      "title": "The Coach on Friday",
+      "beats": [
+        "Mrs Pike carries word about the parish that old Mr Aldous Fenner of Oakmere Farm has died, and that his cousin's son, Mr Vernon Hartwell, has already moved into the farmhouse under a new will.",
+        "At the circulating library Judith Vane learns from Mrs Pike that the will was witnessed only weeks before Fenner's death, and leaves nothing at all to the great-nephew who went for a soldier years since and was thought lost.",
+        "The Friday coach comes in at the Bell, and among its passengers a sun-browned stranger asks the way to Oakmere: Captain Nathaniel Farr, alive and come home after three years everyone believed him dead."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 2,
+      "title": "Oakmere Farm",
+      "beats": [
+        "Farr walks to Oakmere expecting to be welcomed as heir, and finds Hartwell installed as master of the house.",
+        "Hartwell produces the later will, properly witnessed by two servants, disinheriting Farr entirely and leaving the farm to himself.",
+        "With no proof but an old man's spoken promise years ago, Farr is turned from the door, and the parish begins to murmur that he has come home only for what he might get from it."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 3,
+      "title": "The Dispensing Book",
+      "beats": [
+        "Farr, penniless and doubted, seeks out Judith Vane, whom he knew before he left, hoping her brother might remember something of the old man's last weeks.",
+        "Judith consults Owen's dispensing book, which records every dose given to Fenner during his final illness.",
+        "The date of the disputed will falls on a day Fenner was given a heavy dose against pain, a day Owen recalls the old man could barely say his own name."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 4,
+      "title": "What Mrs Whitlow Knew",
+      "beats": [
+        "Judith and Mr Rowe call at Oakmere under pretence of parish business, and find the housekeeper, Mrs Whitlow, uneasy and unwilling to speak against her new employer.",
+        "Pressed gently, Whitlow admits she was told what account to give of the signing, and that months before the death she had written to Farr's regiment warning him his great-uncle was failing.",
+        "She cannot say what became of that letter, since Mr Hartwell had by then taken charge of all the post leaving the house."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 5,
+      "title": "The Road to Winchester",
+      "beats": [
+        "Judith brings the dispensing book and Whitlow's account to Farr, who resolves to lay the whole matter before the Winchester attorney who holds Fenner's papers.",
+        "Since Farr alone would be taken for a suspected fortune hunter, Judith agrees to go with him, carrying her brother's book as evidence, with Mr Rowe's blessing.",
+        "A few miles short of Winchester, a wheel gives way on their hired chaise, and there is no coach to be had before the next day."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 6,
+      "title": "The Wayside House",
+      "beats": [
+        "Waiting on the wheelwright at a farmhouse by the road, Farr tells Judith what became of him: wounded after a battle abroad, a year in hospital, letters lost once his regiment moved on without an address to send them to.",
+        "Judith admits, for the first time, that she had heard he was dead and grieved it more than she let anyone see.",
+        "Working through the dates together, they realize Whitlow's letter would have passed through Hartwell's own hands, and that only he had the chance to see it never leave the house."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 7,
+      "title": "The Attorney's Pigeonhole",
+      "beats": [
+        "In Winchester, the attorney confirms that the earlier will naming Farr was never formally revoked, only set aside as superseded.",
+        "Searching unclaimed correspondence at the office, they find Whitlow's original letter, misdirected there by a clerk's error rather than destroyed, its date proving Fenner was failing months before Hartwell's will was ever signed.",
+        "The attorney agrees the evidence is enough to summon Hartwell to account, and they hurry back to Amberlight before he can move against the farm or its stock."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 8,
+      "title": "Oakmere Reclaimed",
+      "beats": [
+        "Before Whitlow and Rowe as witnesses, Farr and Judith lay out the dispensing book, the housekeeper's testimony, and the recovered letter, and Hartwell cannot account for either the date or the missing post.",
+        "Unable to answer for it, and with the attorney now involved, Hartwell quits Oakmere before nightfall, his debts and his fraud the whole parish's talk within a day by way of Mrs Pike.",
+        "Farr, confirmed in his inheritance, asks Judith what he could not honestly have asked her with nothing to his name, and she accepts, the parish agreeing she had only ever been waiting for him to ask properly."
+      ],
+      "target_words": 560
+    }
+  ],
+  "length_min": 30,
+  "bible": "amberlight",
+  "series": "Middle Watch: Amberlight",
+  "slug": "the-oakmere-will"
+}

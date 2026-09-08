@@ -1,0 +1,73 @@
+{
+  "n": 3,
+  "pass": true,
+  "score": 7,
+  "beats": [
+    {
+      "beat": "Lodging at the Bell on credit he can ill afford, Farr seeks out Judith Vane, who knew him before he went to war.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Judith takes him to her brother Owen's shop, where Owen is reluctant to be drawn into a quarrel with gentry.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Owen consults his dispensing book and finds the entry for the very date the will was signed.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "The entry shows Fenner was given a heavy dose against pain that same morning, and Owen recalls the old man could scarcely say his own name that day.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Judith concludes that a dispensing book alone will not answer, and that they need someone who was inside Oakmere on the day of the signing.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Judith's decision to go to Oakmere under pretence of parish alms sets up the next chapter's action directly."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": [
+      "\"which is a kind of charity that costs a man more than it saves him\" is a narratorial aphorism disconnected from any character's specific voice.",
+      "\"He is exact with dates and numbers, and he cannot bear to be asked a thing he can answer and leave it unanswered\" tells the reader a trait the following dialogue already demonstrates."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [
+    {
+      "quote": "which is a kind of charity that costs a man more than it saves him",
+      "replace_with": "name the actual cost \u2014 e.g. the landlord's tally chalked on the door, or an interest he's too proud to ask about."
+    },
+    {
+      "quote": "He is exact with dates and numbers, and he cannot bear to be asked a thing he can answer and leave it unanswered.",
+      "replace_with": "cut this and let the immediate action (reaching for the book, naming the date) carry the trait."
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Serves the disputed inheritance directly through the dispensing-book evidence and sets up the returning officer's need for allies; forced proximity is not yet in play but nothing here forecloses it.",
+  "length_note": "Chapter runs to roughly 668 words against a 560 target, about 19% over, just under the fail threshold but worth trimming.",
+  "fixes": [
+    "Cut or rewrite 'which is a kind of charity that costs a man more than it saves him' into something concrete about the actual debt.",
+    "Delete the generic trait sentence about Owen being exact with dates; the scene already shows it.",
+    "Trim narration in the Bell/shop transition paragraphs to bring the chapter closer to 560 words.",
+    "Consider one more clearly marked free indirect passage from Judith's viewpoint to strengthen that technique's presence."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  }
+}
