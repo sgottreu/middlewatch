@@ -1,0 +1,27 @@
+[Unit]
+# The review queue, on review.middlewatch.co behind oauth2-proxy.
+#
+# Install:  sudo install -m 644 scripts/deploy/mw-review.service /etc/systemd/system/
+#           sudo systemctl daemon-reload && sudo systemctl enable --now mw-review
+Description=Middle Watch review queue
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+# Load-bearing, not tidiness. main() calls cfgmod.load_env() before it
+# dispatches and config.load() falls back to Path("config.yaml"), so this one
+# line wires up the credentials, the config and stories/ at once. That is also
+# why there is no EnvironmentFile here: the app reads its own .env.
+WorkingDirectory=/srv/middlewatch
+ExecStart=/srv/middlewatch/.venv/bin/python -m story_pipeline.cli review --port 8765 --no-open
+Restart=on-failure
+RestartSec=5
+
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectHome=read-only
+
+[Install]
+WantedBy=multi-user.target

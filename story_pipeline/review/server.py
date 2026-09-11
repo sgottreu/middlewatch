@@ -19,6 +19,8 @@ Routes:
     POST /api/critique         re-run the editor on written chapters — paid,
                                but rewrites nothing
     POST /api/chapter          save an edited chapter's segments — free
+    POST /api/redraft          send one chapter back to the writer with your
+                               note — paid; runs as a job like write
     POST /api/reject           delete the bundle
 """
 
@@ -247,7 +249,10 @@ def story_detail(cfg: dict, slug: str) -> dict:
                 "listenability": review.get("listenability", []),
                 "boundary_breaches": review.get("boundary_breaches", []),
                 "length_note": review.get("length_note", ""),
+                "writer_note": review.get("writer_note", ""),
             } if review else None,
+            "redraft_estimate": (textagent.estimate_redraft(cfg, b, n)
+                                 if b.chapter_json(n).exists() else None),
         })
 
     return {
@@ -588,14 +593,79 @@ def write_start(cfg: dict, slug: str, restart: bool = False) -> dict:
         )
     with _jobs_lock:
         if (_jobs.get(slug) or {}).get("state") == "running":
-            raise ValueError(f"{slug} is already being written.")
+            raise ValueError(f"{slug} already has a write or redraft running.")
         pending = textagent.pending_chapters(b, restart)
-        _jobs[slug] = {"state": "running", "done": 0,
+        _jobs[slug] = {"state": "running", "kind": "write", "done": 0,
                        "total": len(b.outline().get("chapters", [])),
                        "to_write": len(pending), "restart": restart,
                        "chapters": [], "started": time.time()}
 
     threading.Thread(target=_run_write, args=(cfg, slug, restart),
+                     daemon=True).start()
+    return {"ok": True, "slug": slug, **job(slug)}
+
+
+def _run_redraft(cfg: dict, slug: str, n: int, note: str) -> None:
+    b = Bundle.open(Path(cfg["stories_dir"]) / slug)
+
+    def on_pass(attempt, review):
+        with _jobs_lock:
+            _jobs[slug]["passes"].append({
+                "attempt": attempt,
+                "pass": bool(review.get("pass")),
+                "score": review.get("score"),
+                "words": b.chapter_words(n),
+            })
+
+    try:
+        review = textagent.redraft_chapter(cfg, b, n, note, verbose=False,
+                                           on_pass=on_pass)
+        summary.write(b)
+        target = next((c.get("target_words", 0) for c in b.outline()["chapters"]
+                       if c["n"] == n), 0)
+        with _jobs_lock:
+            _jobs[slug].update(
+                state="done",
+                passed=bool(review.get("pass")),
+                score=review.get("score"),
+                exhausted=bool(review.get("exhausted")),
+                words=b.chapter_words(n),
+                target=target,
+                # Written with the old version of this chapter as context, and
+                # not rewritten. Named so you know what to reread.
+                later=[m for m in b.chapter_numbers()
+                       if m > n and b.chapter_json(m).exists()],
+                approval_lapsed=(str(n) in b.chapter_approvals()
+                                 and not b.chapter_approved(n)),
+                narration_stale=b.narration_stale(n),
+            )
+    except Exception as e:
+        # Every pass that got through validation is already in drafts/ and the
+        # last one is chapters/NN.json, so nothing billed is lost.
+        with _jobs_lock:
+            _jobs[slug].update(state="failed", error=f"{type(e).__name__}: {e}")
+
+
+def redraft_start(cfg: dict, slug: str, n, note: str) -> dict:
+    """Send chapter `n` back to the writer with a note. **This spends money.**
+
+    A job rather than a request, like `write`: up to three writer-and-editor
+    passes is a minute or more, and the page should not hang on it.
+    """
+    b = Bundle.open(Path(cfg["stories_dir"]) / slug)
+    n = int(n)
+    note = (note or "").strip()
+    if not note:
+        raise ValueError("The note is empty — say what the writer should change.")
+    if not b.chapter_json(n).exists():
+        raise ValueError(f"chapter {n} has not been written yet.")
+    with _jobs_lock:
+        if (_jobs.get(slug) or {}).get("state") == "running":
+            raise ValueError(f"{slug} already has a write or redraft running.")
+        _jobs[slug] = {"state": "running", "kind": "redraft", "n": n,
+                       "passes": [], "max_passes": cfg.get("max_edit_passes", 2),
+                       "started": time.time()}
+    threading.Thread(target=_run_redraft, args=(cfg, slug, n, note),
                      daemon=True).start()
     return {"ok": True, "slug": slug, **job(slug)}
 
@@ -694,6 +764,9 @@ def _handler(cfg: dict):
                 elif path == "/api/chapter":
                     self._json(save_chapter(cfg, body["slug"], body["n"],
                                             body.get("segments")))
+                elif path == "/api/redraft":
+                    self._json(redraft_start(cfg, body["slug"], body["n"],
+                                             body.get("note", "")))
                 elif path == "/api/reject":
                     self._json(reject(cfg, body["slug"]))
                 else:

@@ -165,6 +165,38 @@
             transition:width .3s; }
   #proglog { font-family:var(--mono); font-size:12px; color:var(--dim);
              margin-top:8px; max-height:140px; overflow-y:auto; }
+  /* note-to-writer dialog ---------------------------------------------- */
+  #nscrim { position:fixed; inset:0; background:rgba(0,0,0,.55); display:none;
+            align-items:center; justify-content:center; z-index:10; }
+  #nscrim.show { display:flex; }
+  #notef { background:var(--panel); border:1px solid var(--line); border-radius:8px;
+           width:min(560px, 92vw); max-height:88vh; overflow-y:auto; padding:22px 24px; }
+  #notef h2 { margin:0 0 4px; font-size:19px; }
+  #notef .lede { color:var(--dim); font-size:13px; margin:0 0 14px; }
+  #notef .pick { display:flex; gap:10px; align-items:center; font-size:14px;
+                 margin:0 0 10px; }
+  #notef select { font:inherit; font-size:14px; background:var(--bg); color:var(--ink);
+                  border:1px solid var(--line); border-radius:5px; padding:4px 6px; }
+  #notef textarea { width:100%; min-height:110px; font:inherit; font-size:14px;
+                    background:transparent; color:var(--ink); border:1px solid var(--line);
+                    border-radius:6px; padding:9px 11px; resize:vertical; }
+  #notef .hint { color:var(--dim); font-size:13px; margin:8px 0 0; }
+  #notef .hint b { color:var(--accent); font-weight:600; }
+  #notef .cost { border:1px solid var(--accent); background:rgba(201,162,39,.09);
+                 border-radius:6px; padding:9px 12px; font-size:13px; margin:14px 0 0; }
+  #nstatus { display:none; border-radius:6px; padding:10px 13px; margin:14px 0 0;
+             font-size:14px; border:1px solid var(--line); }
+  #nstatus.working { display:block; border-color:var(--accent);
+                     animation: pulse 1.4s ease-in-out infinite; }
+  #nstatus.ok { display:block; border-color:var(--ok); background:rgba(126,160,90,.12); }
+  #nstatus.bad { display:block; border-color:var(--danger);
+                 background:rgba(212,103,74,.12); white-space:pre-wrap; }
+  #nstatus .m2 { display:block; font-family:var(--mono); font-size:12px;
+                 color:var(--dim); margin-top:3px; }
+  #notef .row2 { display:flex; gap:9px; justify-content:flex-end; margin-top:16px; }
+  .ch .wnote { font-size:13px; color:var(--dim); border-left:2px solid var(--accent);
+               padding-left:10px; margin:6px 0 8px; }
+  .chapnote { font-size:12px; padding:3px 10px; flex:none; }
   #toast { position:fixed; bottom:74px; right:34px; background:var(--panel);
            border:1px solid var(--line); border-left:3px solid var(--accent);
            padding:10px 15px; border-radius:5px; font-size:14px; opacity:0;
@@ -212,6 +244,21 @@
     <div class="row2">
       <button type="button" id="wcancel">Cancel</button>
       <button type="submit" id="wgo" class="primary">Write it</button>
+    </div>
+  </form></div>
+  <div id="nscrim"><form id="notef">
+    <h2>Note to the writer</h2>
+    <p class="lede">The writer revises the chapter on disk with your note ranked
+      above everything else, then the editor judges it as usual. Every earlier
+      version stays in <code>drafts/</code>.</p>
+    <label class="pick">Rewrite chapter <select id="ntarget"></select></label>
+    <textarea id="ntext" placeholder="e.g. Chapter 3 ends on a question that is never answered. Open this chapter by answering it, before the scene moves on."></textarea>
+    <p class="hint" id="nhint"></p>
+    <div class="cost" id="ncost"></div>
+    <div id="nstatus"></div>
+    <div class="row2">
+      <button type="button" id="ncancel">Cancel</button>
+      <button type="submit" id="ngo" class="primary">Send to writer</button>
     </div>
   </form></div>
   <div id="toast"></div>
@@ -351,13 +398,16 @@ function render(d) {
   }
 
   h += `<h2>Chapters</h2>`;
+  const busy = (d.job || {}).state === "running";
   for (const c of d.chapter_detail) {
     const r = c.review;
     const st = c.approved ? "approved" : (c.approval_lapsed ? "lapsed" : "");
     h += `<div class="ch${st ? " " + st : ""}" id="ch-${c.n}">` +
       `<h3>${c.n}. ${esc(c.title)}` +
       (c.words && state.editing !== c.n
-        ? `<button type="button" class="chapedit" data-n="${c.n}">Edit</button>` +
+        ? `<button type="button" class="chapnote" data-n="${c.n}"` +
+          `${busy ? " disabled" : ""}>Note to writer…</button>` +
+          `<button type="button" class="chapedit" data-n="${c.n}">Edit</button>` +
           `<button type="button" class="chapok" data-n="${c.n}" data-on="${c.approved ? 1 : 0}">` +
           `${c.approved ? "✓ approved" : "Approve chapter"}</button>`
         : ``) +
@@ -372,6 +422,9 @@ function render(d) {
         ? ` · <b style="color:var(--accent)">edited since the editor read it</b>` : "") +
       (r ? ` · ${r.pass ? "passed" : "FAILED"}${r.score ? " (" + r.score + ")" : ""}` +
            (r.exhausted ? ", revisions exhausted" : "") : "") + `</span>`;
+    // Why this chapter last changed, when it was you who asked.
+    if (r && r.writer_note)
+      h += `<div class="wnote">Redrafted from your note: ${esc(r.writer_note)}</div>`;
     if (state.editing === c.n) h += segmentEditor(c, d);
     else if (c.markdown) h += `<pre class="prose">${esc(c.markdown)}</pre>`;
     else h += `<ul>` + c.beats.map(b => `<li>${esc(b)}</li>`).join("") + `</ul>`;
@@ -405,6 +458,8 @@ function render(d) {
   // One listener on the container rather than one per chapter, so re-rendering
   // the document does not leak handlers.
   body.onclick = async e => {
+    const nb = e.target.closest(".chapnote");
+    if (nb) { openNote(Number(nb.dataset.n)); return; }
     const ed = e.target.closest(".chapedit");
     if (ed) {
       state.editing = Number(ed.dataset.n);
@@ -580,7 +635,8 @@ function setActions(d) {
   const writing = (d.job || {}).state === "running";
   wr.disabled = writing ||
                 !(ideate === "approved" && (edit === "pending" || edit === "running"));
-  wr.innerHTML = writing ? `Writing…` : `Write…<kbd>w</kbd>`;
+  wr.innerHTML = !writing ? `Write…<kbd>w</kbd>`
+    : d.job.kind === "redraft" ? `Redrafting ${d.job.n}…` : `Writing…`;
   const lapsed = chs.filter(c => c.approval_lapsed).length;
   facts.textContent =
     `${d.chapters} chapters · ${d.beats} beats · ${d.per_beat} w/beat · ` +
@@ -887,6 +943,145 @@ document.getElementById("write").onsubmit = async e => {
   pollTimer = setInterval(pollJob, 1500);
 };
 
+// --- note to writer ------------------------------------------------------
+// For what only a reader of the whole story sees — a chapter that ends on a
+// question the next one never answers. The writer sees every earlier chapter
+// but none after, so the dialog lets you pick which side of the seam to fix.
+const nscrim = document.getElementById("nscrim");
+let npoll = null, nslug = null;   // the story the job belongs to, not the selection
+
+function syncNote() {
+  const d = state.detail; if (!d) return;
+  const n = Number(document.getElementById("ntarget").value);
+  const c = d.chapter_detail.find(x => x.n === n) || {};
+  const later = d.chapter_detail.filter(x => x.n > n && x.words).map(x => x.n);
+  const hint = [];
+  hint.push(n > 1
+    ? `The writer sees chapters 1–${n - 1} and your note, not anything after ${n}.`
+    : `The writer sees your note and the outline, not the chapters after this one.`);
+  if (later.length)
+    hint.push(`<b>Chapter${later.length > 1 ? "s" : ""} ` +
+      `${later.length > 1 ? later[0] + "–" + later[later.length - 1] : later[0]} ` +
+      `will not be rewritten</b> — they were written against the current ` +
+      `chapter ${n}, so reread them after.`);
+  if (c.approved) hint.push(`Your approval of chapter ${n} will lapse.`);
+  document.getElementById("nhint").innerHTML = hint.join(" ");
+
+  const e = c.redraft_estimate || {};
+  document.getElementById("ncost").innerHTML = e.known
+    ? `<b>This spends about $${e.low.toFixed(2)}</b>, up to $${e.high.toFixed(2)} ` +
+      `if the editor sends it back for every revision ` +
+      `(${esc(e.writer)} writes, ${esc(e.editor)} judges).`
+    : `<b>This spends money</b> — one writer and one editor call per pass. ` +
+      `ledger/rates.json has no price for these models.`;
+  document.getElementById("ngo").disabled =
+    !document.getElementById("ntext").value.trim();
+}
+
+function openNote(n) {
+  const d = state.detail; if (!d) return;
+  const written = d.chapter_detail.filter(c => c.words);
+  document.getElementById("ntarget").innerHTML = written.map(c =>
+    `<option value="${c.n}"${c.n === n ? " selected" : ""}>` +
+    `${c.n}. ${esc(c.title)}</option>`).join("");
+  document.getElementById("ntext").value = "";
+  const st = document.getElementById("nstatus");
+  st.className = ""; st.innerHTML = "";
+  const go = document.getElementById("ngo");
+  go.textContent = "Send to writer";
+  document.getElementById("ncancel").textContent = "Cancel";
+  document.getElementById("ntarget").disabled =
+    document.getElementById("ntext").disabled = false;
+  syncNote();
+  nscrim.classList.add("show");
+  document.getElementById("ntext").focus();
+}
+
+document.getElementById("ntarget").onchange = syncNote;
+document.getElementById("ntext").oninput = syncNote;
+document.getElementById("ncancel").onclick = () => {
+  // Like write: closing the dialog does not stop the job.
+  if (npoll) toast("Still redrafting in the background.");
+  nscrim.classList.remove("show");
+};
+nscrim.onclick = e => { if (e.target === nscrim) document.getElementById("ncancel").click(); };
+
+async function pollNote() {
+  const slug = nslug;
+  const j = await (await fetch("/api/job/" + encodeURIComponent(slug))).json();
+  const st = document.getElementById("nstatus");
+  const passes = (j.passes || []).map(p =>
+    `pass ${p.attempt + 1}: ${p.pass ? "passed" : "sent back"}` +
+    (p.score ? ` (${p.score})` : ``) + ` · ${p.words}w`);
+  if (j.state === "running") {
+    st.className = "working";
+    st.innerHTML = `The writer is revising chapter ${j.n}…` +
+      `<span class="m2">${passes.map(esc).join("<br>") ||
+        "about a minute a pass · you can close this"}</span>`;
+    return;
+  }
+  clearInterval(npoll); npoll = null;
+  const go = document.getElementById("ngo");
+  if (j.state === "failed") {
+    st.className = "bad";
+    st.innerHTML = `<b>That didn't finish.</b> ${esc(j.error || "failed")}`;
+    go.textContent = "Try again"; go.disabled = false;
+    document.getElementById("ntext").disabled =
+      document.getElementById("ntarget").disabled = false;
+    return;
+  }
+  // Stays on screen: which chapters to reread is the thing you need next.
+  const later = j.later || [];
+  st.className = "ok";
+  st.innerHTML = `<b>Chapter ${j.n} redrafted</b> — ` +
+    `${(j.words || 0).toLocaleString()} words against ${j.target}, ` +
+    (j.passed ? `passed the editor${j.score ? " (" + j.score + ")" : ""}`
+              : `<span style="color:var(--danger)">failed the editor` +
+                (j.exhausted ? `, revisions exhausted` : ``) + `</span>`) +
+    `<span class="m2">${passes.map(esc).join("<br>")}` +
+    (j.approval_lapsed ? `<br>approval withdrawn — read it again` : ``) +
+    (j.narration_stale ? `<br>narration out of date` : ``) +
+    (later.length ? `<br>reread chapter${later.length > 1 ? "s" : ""} ` +
+      `${later.join(", ")} — written against the old version` : ``) +
+    `</span>`;
+  go.textContent = "Done"; go.disabled = false;
+  document.getElementById("ncancel").textContent = "Close";
+  toast(`Chapter ${j.n} redrafted` + (j.passed ? "" : " · failed review"));
+  // Back to the chapter itself if you are still on this story.
+  if (state.sel === slug) state.anchor = j.n;
+  await loadQueue(state.sel);
+}
+
+document.getElementById("notef").onsubmit = async e => {
+  e.preventDefault();
+  const go = document.getElementById("ngo");
+  if (go.textContent === "Done") { nscrim.classList.remove("show"); return; }
+  const n = Number(document.getElementById("ntarget").value);
+  const note = document.getElementById("ntext").value;
+  // Locked while it runs, so a second click cannot spend twice.
+  go.disabled = true; go.textContent = "Sending…";
+  document.getElementById("ntext").disabled =
+    document.getElementById("ntarget").disabled = true;
+  let res;
+  try {
+    res = await (await fetch("/api/redraft", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ slug: state.sel, n, note }) })).json();
+  } catch (err) { res = { error: String(err) }; }
+  if (res.error) {
+    const st = document.getElementById("nstatus");
+    st.className = "bad"; st.innerHTML = `<b>That didn't run.</b> ${esc(res.error)}`;
+    go.textContent = "Try again"; go.disabled = false;
+    document.getElementById("ntext").disabled =
+      document.getElementById("ntarget").disabled = false;
+    return;
+  }
+  go.textContent = "Redrafting…";
+  nslug = state.sel;
+  npoll = setInterval(pollNote, 1500);
+  pollNote();
+};
+
 document.getElementById("writeBtn").onclick = openWrite;
 document.getElementById("reviseBtn").onclick = openRevise;
 document.getElementById("approve").onclick = () => act("approve");
@@ -894,13 +1089,16 @@ document.getElementById("reject").onclick = () => act("reject");
 
 document.addEventListener("keydown", e => {
   if (e.key === "Escape") {
+    if (nscrim.classList.contains("show")) {
+      document.getElementById("ncancel").click(); return; }
     if (wscrim.classList.contains("show")) {
       document.getElementById("wcancel").click(); return; }
     if (scrim.classList.contains("show")) {
       scrim.classList.remove("show"); return; }
   }
   if (e.metaKey || e.ctrlKey || e.altKey) return;
-  if (scrim.classList.contains("show") || wscrim.classList.contains("show")) return;
+  if (scrim.classList.contains("show") || wscrim.classList.contains("show")
+      || nscrim.classList.contains("show")) return;
   if (/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) return;
   const i = state.rows.indexOf(state.sel);
   if (e.key === "j" || e.key === "ArrowDown") {

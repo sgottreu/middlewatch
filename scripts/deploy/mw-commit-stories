@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+#
+# Commit and push story approvals. Run by mw-stories.timer every 15 minutes,
+# and by mw-deploy before it pulls.
+#
+# This is the only backup of review state that exists: approvals are made on the
+# server and nowhere else. It is deliberately not clever — no rebase, no force.
+# If the push fails because your laptop and the server have diverged, the commit
+# is still safe on disk and the unit goes red, which is the correct outcome.
+# Silently rewriting approval history would be worse than a red unit.
+
+set -euo pipefail
+
+REPO=${MW_REPO:-/srv/middlewatch}
+cd "$REPO"
+
+busy=$(mw-write-running || true)
+if [ -n "$busy" ]; then
+    echo "write in progress, skipping this run:"
+    echo "$busy" | sed 's/^/    /'
+    exit 0
+fi
+
+git add -A stories
+
+if git diff --cached --quiet -- stories; then
+    exit 0
+fi
+
+git -c user.name='Middle Watch review' \
+    -c user.email='sgottreu@gmail.com' \
+    commit -q -m "stories: review $(date -u +%Y-%m-%dT%H:%MZ)"
+
+git push -q origin HEAD:main
+
+echo "pushed $(git rev-parse --short HEAD)"

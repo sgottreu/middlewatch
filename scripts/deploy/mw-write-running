@@ -1,0 +1,70 @@
+#!/usr/bin/env python3
+"""Print every story the review server is currently writing. Silence means idle.
+
+Both `mw-commit-stories` and `mw-deploy` need this answer before they touch
+`stories/`: the writer lands chapters on disk one at a time across several
+minutes, and a commit taken mid-run captures a bundle in a state no stage
+intended anyone to see.
+
+Asks the process, not the disk, on purpose. `run_text_stages` sets
+`stages.write = "running"` in the manifest on entry and only clears it on
+success, so a hard kill leaves that field saying "running" forever — a check
+built on it would block commits until someone noticed. The `_jobs` dict is
+rebuilt empty on every start, so it cannot get stuck.
+
+A server that is not answering is reported as idle, which is correct: nothing
+can be mid-write if nothing is running.
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import sys
+import urllib.error
+import urllib.parse
+import urllib.request
+
+PORT = os.environ.get("MW_REVIEW_PORT", "8765")
+BASE = f"http://127.0.0.1:{PORT}"
+TIMEOUT = 5
+
+DEAD = (urllib.error.URLError, OSError, json.JSONDecodeError, ValueError)
+
+
+def get(path: str):
+    with urllib.request.urlopen(BASE + path, timeout=TIMEOUT) as r:
+        return json.load(r)
+
+
+def main() -> int:
+    try:
+        queue = get("/api/queue")
+    except DEAD:
+        return 0
+
+    # Every group, not just `approved`: a write is startable from the detail
+    # page of any story whose outline is approved, and the queue regroups a
+    # story the moment its stages change underneath it.
+    slugs = sorted({
+        row["slug"]
+        for group in queue.get("groups", {}).values()
+        for row in group
+        if isinstance(row, dict) and row.get("slug")
+    })
+
+    for slug in slugs:
+        try:
+            job = get("/api/job/" + urllib.parse.quote(slug))
+        except DEAD:
+            continue
+        if job.get("state") == "running":
+            done = job.get("done", 0)
+            total = job.get("to_write") or job.get("total", "?")
+            print(f"{slug} ({done} of {total} chapters)")
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -3,8 +3,8 @@
 `cli review` — a local page listing everything waiting on you, with the document
 in a side pane and approve / reject in reach.
 
-**Status:** the three prerequisites, steps 1–2 of the build order, and Revise are
-done. In-place editing, the diff view and the remaining suggestions are not.
+**Status:** the three prerequisites, steps 1–2 of the build order, Revise and
+Note to writer are done. In-place editing, the diff view and the remaining suggestions are not.
 
 ```bash
 python3 -m story_pipeline.cli review          # opens a browser on :8765
@@ -379,6 +379,52 @@ Two guards worth having:
   that is what you want — and the composed note tells the ideator to preserve the
   events while changing who is in them.
 
+### Note to writer
+
+Some problems are only visible to someone reading the whole story: chapter 3
+ends on a question — *"How many children?"* — and chapter 4 opens on a
+different scene and never answers it. The editor cannot catch that from
+chapter 4's side reliably, and hand-editing means writing the missing scene
+yourself.
+
+Every written chapter has a **Note to writer…** button. It opens a dialog with
+the note, a choice of which chapter to rewrite (defaulting to the one you
+clicked), and the price:
+
+```
+Rewrite chapter [4. The Bramdean Road ▾]
+[ Chapter 3 ends on "How many children?" and chapter 4 never answers.
+  Open chapter 4 on the step: Miss Vane answers, before the Bramdean scheme. ]
+
+The writer sees chapters 1–3 and your note, not anything after 4.
+Chapters 5–8 will not be rewritten — reread them after.
+
+This spends about $0.09, up to $0.26 if the editor sends it back for every revision.
+```
+
+**Which side of the seam to fix.** The writer is sent every chapter *before*
+the one it writes and none after. So a loose end at the close of chapter 3 is
+usually best answered by rewriting chapter 4, which can see the question; to
+change how chapter 3 ends instead, pick chapter 3.
+
+What happens (`text.redraft_chapter`):
+
+- The first pass **revises the chapter on disk** rather than drafting from
+  nothing. The note is stated above the editor's fixes and outranks the beat
+  list.
+- The editor judges it as usual, and the normal bounded loop runs. **The note
+  rides along on every pass**, so an editor revision cannot quietly undo it.
+- Drafts are **appended** — `drafts/04.2.json`, `04.3.json` — after the ones
+  the original write kept, so the before-and-after survives.
+- The note is saved on the verdict as `writer_note` and shown under the
+  chapter heading: *Redrafted from your note: …*
+- Approval and narration lapse on their own (the hash changed). Later chapters
+  are **not** touched; the result names them so you know what to reread.
+
+It runs as a job, like write: `POST /api/redraft` returns at once and the
+dialog polls `/api/job/<slug>`, listing each pass. Closing the dialog does not
+stop it. One job per story at a time — a write and a redraft cannot overlap.
+
 ### Write
 
 The step between the two gates. Available once the outline is approved and no
@@ -472,6 +518,7 @@ and disabled once they have, because the chapters would no longer match.
 | Reject | Deletes the bundle, with a confirm | free |
 | Save edits | Writes back, re-validates, re-renders `story.md` | free |
 | Revise… | A form: checkboxes for what to keep, plus a free note. Composes the feedback and calls `revise_outline()`. | **~$0.07** |
+| Note to writer… | Sends one chapter back to the writer with your note; editor re-judges. `redraft_chapter()` | **~$0.09–0.26** |
 | Re-record | Clears the stale chapter's audio | costs narration |
 
 Anything that spends money says so on the button and confirms. That rule is

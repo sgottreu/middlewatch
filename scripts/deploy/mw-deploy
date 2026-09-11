@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+#
+# Pull code onto the review server and restart only what actually needs it.
+#
+#   mw-deploy
+#
+# The whole body sits in a function so bash parses the file before running any
+# of it. This script can be replaced by the pull it performs, and bash otherwise
+# reads scripts incrementally — it would resume in the middle of the new file.
+
+set -euo pipefail
+
+main() {
+    local repo=${MW_REPO:-/srv/middlewatch}
+    cd "$repo"
+
+    echo "==> flushing story approvals"
+    mw-commit-stories
+
+    # mw-commit-stories exits quietly when a write is running, leaving the tree
+    # dirty. Pulling onto that is exactly what this guards against.
+    if ! git diff --quiet -- stories || ! git diff --cached --quiet -- stories; then
+        echo "" >&2
+        echo "stories/ still has uncommitted changes — a write is probably running:" >&2
+        mw-write-running | sed 's/^/    /' >&2
+        echo "Let it finish, then run mw-deploy again." >&2
+        return 1
+    fi
+
+    local before after changed
+    before=$(git rev-parse HEAD)
+
+    echo "==> pulling"
+    git pull --ff-only
+
+    after=$(git rev-parse HEAD)
+    if [ "$before" = "$after" ]; then
+        echo "already up to date — nothing to restart"
+        return 0
+    fi
+
+    changed=$(git diff --name-only "$before" "$after")
+    echo "==> changed"
+    echo "$changed" | sed 's/^/    /'
+
+    if grep -q '^requirements.txt$' <<<"$changed"; then
+        echo "!!  requirements.txt changed. This box installs a hand-picked subset," >&2
+        echo "    so check whether the review server needs anything new:" >&2
+        echo "      .venv/bin/python3 -m pip install <pkg>" >&2
+    fi
+
+    if grep -q '^scripts/deploy/' <<<"$changed"; then
+        echo "!!  the deploy scripts themselves changed. Reinstall them:" >&2
+        echo "      sudo install -m 755 scripts/deploy/* /usr/local/bin/" >&2
+    fi
+
+    # app.html is read from disk on every request, so a front-end change is live
+    # the moment it lands. The Python is loaded once at import and is not.
+    if grep -qE '\.py$' <<<"$changed"; then
+        echo "==> python changed, restarting mw-review"
+        sudo systemctl restart mw-review
+        sleep 2
+        if systemctl is-active --quiet mw-review; then
+            echo "    up"
+        else
+            echo "    mw-review did not come back:" >&2
+            journalctl -u mw-review -n 30 --no-pager >&2
+            return 1
+        fi
+    else
+        echo "==> no python changed — app.html is re-read per request, no restart needed"
+    fi
+
+    echo "==> done, now at $(git rev-parse --short HEAD)"
+}
+
+main "$@"

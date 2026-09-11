@@ -1,4 +1,13 @@
-#stories/
+# Story bundles are tracked: they are the approval history and there is no
+# second copy of them. Only the text is — the rendered halves below are large,
+# binary, and regenerable from the text plus a paid call. Same reasoning as
+# assets/sfx_cache/ further down, and the same deadline: cheap to decide now,
+# impossible to undo after the first `record` commits an mp3.
+stories/*/audio/
+stories/*/images/
+stories/*/video/
+stories/*/*.srt
+
 ambience/
 sweep*.log
 # Generated SFX, keyed by prompt hash and reused across every project. Ignored

@@ -1,0 +1,15 @@
+[Unit]
+# One pass of mw-commit-stories. Driven by mw-stories.timer; also safe to run by
+# hand with `sudo systemctl start mw-stories`.
+#
+# No ProtectHome here, unlike mw-review: this one pushes over SSH and needs the
+# deploy key at ~/.ssh/id_ed25519.
+Description=Commit and push story approvals
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=ubuntu
+WorkingDirectory=/srv/middlewatch
+ExecStart=/usr/local/bin/mw-commit-stories

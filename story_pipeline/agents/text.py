@@ -613,7 +613,15 @@ def _context(b: Bundle, n: int) -> str:
     return "\n\n".join(parts)
 
 
-def write_chapter(cfg: dict, b: Bundle, n: int, fixes: list[str] | None = None) -> dict:
+def write_chapter(cfg: dict, b: Bundle, n: int, fixes: list[str] | None = None,
+                  note: str | None = None) -> dict:
+    """Draft chapter `n`, or revise the one on disk.
+
+    A revision happens when there are editor `fixes`, a `note` from you, or
+    both. The note is stated first and ranked above the fixes: it is the one
+    instruction nobody else in the loop can overrule, and an editor pass that
+    quietly undid it would spend money to put the problem back.
+    """
     outline = b.outline()
     spec = next(c for c in outline["chapters"] if c["n"] == n)
 
@@ -637,12 +645,23 @@ def write_chapter(cfg: dict, b: Bundle, n: int, fixes: list[str] | None = None) 
     ask = _context(b, n) + f"\n\n# Write chapter {n}: {spec['title']}\n\nBeats to cover:\n"
     ask += "\n".join(f"- {x}" for x in spec["beats"])
 
+    if fixes or note:
+        ask += ("\n\n# This is a revision\n\nYour previous draft:\n\n"
+                + json.dumps(b.chapter(n), indent=2))
+    if note:
+        ask += (
+            "\n\n## A note from the person commissioning this story\n\n"
+            "They have read the draft and ask for this change. It outranks every "
+            "other instruction here, including the beat list: make it, and change "
+            "nothing else that was working.\n\n"
+            + note.strip()
+        )
     if fixes:
         ask += (
-            "\n\n# This is a revision\n\nYour previous draft:\n\n"
-            + json.dumps(b.chapter(n), indent=2)
-            + "\n\nThe editor requires these fixes. Apply all of them and change "
-            "nothing else that was working:\n"
+            "\n\nThe editor requires these fixes. Apply all of them "
+            + ("without undoing the change the note above asks for, "
+               if note else "")
+            + "and change nothing else that was working:\n"
             + "\n".join(f"- {f}" for f in fixes)
         )
 
@@ -969,29 +988,49 @@ def length_fix(b: Bundle, n: int, target: int, tolerance: float) -> str | None:
     )
 
 
-def draft_and_edit(cfg: dict, b: Bundle, n: int, verbose: bool = True) -> dict:
+def draft_and_edit(cfg: dict, b: Bundle, n: int, verbose: bool = True,
+                   note: str | None = None, on_pass=None) -> dict:
     """Write, review, revise. Bounded, because an unbounded loop with a strict
-    editor will burn tokens forever on a chapter that is already fine."""
+    editor will burn tokens forever on a chapter that is already fine.
+
+    With a `note`, the first pass revises the chapter already on disk rather
+    than drafting from nothing, and the note rides along on every later pass so
+    an editor revision cannot quietly undo it. Its drafts are numbered after the
+    ones already kept, so the history of the original write survives.
+
+    `on_pass(attempt, review)` fires after each write-and-judge pass.
+    """
     max_passes = cfg["max_edit_passes"]
     tolerance = _tolerance(cfg)
     target = next((c.get("target_words", 0) for c in b.outline()["chapters"]
                    if c["n"] == n), 0)
     fixes: list[str] | None = None
+    # A normal write starts the numbering at 0, as it always has. A redraft
+    # from a note appends — overwriting drafts/NN.0.json would destroy the one
+    # record of what the chapter looked like before you asked for the change.
+    kept = b.drafts(n) if note else []
+    first = (max(kept) + 1) if kept else 0
 
     for attempt in range(max_passes + 1):
         if verbose:
-            label = "drafting" if attempt == 0 else f"revision {attempt}"
+            label = ("redrafting from your note" if note and attempt == 0
+                     else "drafting" if attempt == 0 else f"revision {attempt}")
             print(f"  chapter {n}: {label}...")
-        chapter = write_chapter(cfg, b, n, fixes)
+        chapter = write_chapter(cfg, b, n, fixes, note=note)
         review = review_chapter(cfg, b, n)
+        if note:
+            # Kept on the verdict, so the record says why this chapter changed.
+            review["writer_note"] = note.strip()
+            b.review_path(n).write_text(json.dumps(review, indent=2) + "\n")
 
         # Snapshot this pass before the next one overwrites the live files. The
         # first draft is the interesting one: it is what the model produces
         # unprompted, and comparing it to the final is the only way to see what
         # the editor actually bought.
-        b.draft_path(n, attempt).parent.mkdir(parents=True, exist_ok=True)
-        b.draft_path(n, attempt).write_text(json.dumps(chapter, indent=2) + "\n")
-        b.draft_review_path(n, attempt).write_text(json.dumps(review, indent=2) + "\n")
+        b.draft_path(n, first + attempt).parent.mkdir(parents=True, exist_ok=True)
+        b.draft_path(n, first + attempt).write_text(json.dumps(chapter, indent=2) + "\n")
+        b.draft_review_path(n, first + attempt).write_text(
+            json.dumps(review, indent=2) + "\n")
 
         # Measured, not judged — and only while a revision is left to spend on
         # it. On the last pass an overrun is recorded and the chapter kept,
@@ -1012,7 +1051,11 @@ def draft_and_edit(cfg: dict, b: Bundle, n: int, verbose: bool = True) -> dict:
 
         if trim:
             b.review_path(n).write_text(json.dumps(review, indent=2) + "\n")
-            b.draft_review_path(n, attempt).write_text(json.dumps(review, indent=2) + "\n")
+            b.draft_review_path(n, first + attempt).write_text(
+                json.dumps(review, indent=2) + "\n")
+
+        if on_pass:
+            on_pass(attempt, review)
 
         if review.get("pass"):
             if verbose:
@@ -1042,6 +1085,62 @@ def draft_and_edit(cfg: dict, b: Bundle, n: int, verbose: bool = True) -> dict:
     review["exhausted"] = True
     b.review_path(n).write_text(json.dumps(review, indent=2) + "\n")
     return review
+
+
+def redraft_chapter(cfg: dict, b: Bundle, n: int, note: str,
+                    verbose: bool = True, on_pass=None) -> dict:
+    """Send one written chapter back to the writer with a note from you.
+
+    **This spends money** — a writer call and an editor call per pass, up to
+    the usual revision limit. The note is what the review UI's *Note to
+    writer* sends; it exists for the problems only a reader of the whole story
+    sees, like a chapter that ends on a question the next one never answers.
+
+    Nothing else is rewritten. Later chapters were written with this one as
+    context and are left as they are; the caller says so. Approval and
+    narration lapse on their own, because both are stamped with the hash.
+    """
+    note = (note or "").strip()
+    if not note:
+        raise ValueError("A note to the writer cannot be empty — say what to change.")
+    if not b.chapter_json(n).exists():
+        raise ValueError(f"chapter {n} has not been written yet.")
+    review = draft_and_edit(cfg, b, n, verbose=verbose, note=note, on_pass=on_pass)
+    _sync_edit_stage(b)
+    return review
+
+
+def estimate_redraft(cfg: dict, b: Bundle, n: int) -> dict[str, Any]:
+    """What sending chapter `n` back with a note will cost, before sending it.
+
+    Same structure as `estimate_write`, for one chapter: the writer is sent the
+    fixed layers, every earlier chapter, and the current draft of this one, and
+    the editor reads the same plus the result. The low figure is one pass; the
+    high is the editor sending it back for every revision it is allowed.
+    """
+    TOK, FIXED = 1.33, 5000
+    spec = next((c for c in b.outline().get("chapters", []) if c["n"] == n), None)
+    if not spec or not b.chapter_json(n).exists():
+        return {"known": False}
+    words = b.chapter_words(n) or spec.get("target_words", 0)
+    ctx = int(sum(b.chapter_words(m) for m in b.chapter_numbers()
+                  if m < n and b.chapter_json(m).exists()) * TOK)
+    out = int(spec.get("target_words", words) * TOK)
+    passes = int(cfg.get("max_edit_passes", 2)) + 1
+    base = {"passes": passes, "writer": cfg["models"]["writer"],
+            "editor": cfg["models"]["editor"]}
+    try:
+        rates = _anthropic_rates()
+        w = rates[cfg["models"]["writer"]]
+        e = rates[cfg["models"]["editor"]]
+    except (KeyError, OSError, ValueError):
+        return {"known": False, **base}
+    per = ((FIXED + ctx + int(words * TOK) + 300) * w["input_tokens"]
+           + out * w["output_tokens"]
+           + (FIXED + ctx + out) * e["input_tokens"]
+           + 900 * e["output_tokens"]) / 1_000_000
+    return {"known": True, "low": round(per, 2), "high": round(per * passes, 2),
+            **base}
 
 
 def chapter_done(b: Bundle, n: int) -> bool:
