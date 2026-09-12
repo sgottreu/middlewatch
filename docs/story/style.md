@@ -23,6 +23,35 @@ prose, because those two drift the instant they live apart — someone adds a tr
 and never touches the guide explaining how that genre handles one. Adding a genre
 is adding one file; nothing else changes.
 
+## Scene breaks
+
+A jump in time or place inside a chapter is a segment — `{"speaker": "break"}`,
+no text — and it renders three ways: `* * *` on the page, two seconds of
+silence in the narration (`casting.break_ms`), and nothing at all to the voice.
+
+It is a segment rather than a flag on the segment after it because every path
+that rebuilds a segment as `{speaker, text}` would drop a flag — the review
+editor does exactly that — and because `chapter_hash` hashes speaker/text
+pairs, so a break as a segment makes moving one count as a change and correctly
+marks the narration out of date.
+
+**The mark is not the cue.** A reader sees asterisks; a listener gets silence
+and no other information, so the sentence after a break has to say when or
+where we now are. That rule is in `house.md` for the writer, checked by the
+editor, and approximated by the linter: `break_into_dialogue` is an error, and
+`break_unanchored` warns when the first sentence after a break names no time
+and no place.
+
+`_validate_chapter` repairs placement rather than failing a paid draft: a break
+at either end of a chapter marks nothing and is dropped, two in a row collapse
+to one, and a segment whose whole text is asterisks — the writer copying the
+mark out of the context it was given — becomes a real break. Breaks dropped
+this way are counted in `dropped_breaks`.
+
+Anything longer than a night or wider than the parish is usually a chapter, not
+a break. Three or more in one chapter is a `break_count` warning for the same
+reason.
+
 **Tropes** are a promise to the viewer, so they're structural rather than
 advisory. The ideator picks two or three from its genre's list and records them
 in the outline; `_validate_outline` rejects four or more, and rejects any trope

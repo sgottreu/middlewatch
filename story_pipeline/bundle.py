@@ -17,6 +17,18 @@ from typing import Any
 
 STAGES = ["ideate", "write", "edit", "record", "design", "direct"]
 
+# A scene break: a jump in time or place inside a chapter. It is a segment with
+# this in the speaker field and no text, rather than a flag on the segment after
+# it, for three reasons — everything downstream already walks segments in order,
+# a flag would be silently dropped by every path that rebuilds a segment as
+# `{speaker, text}` (the review editor does exactly that), and `chapter_hash`
+# hashes the speaker/text pairs, so a break as a segment makes moving one count
+# as a change to the chapter and correctly marks the narration out of date.
+#
+# It renders three ways: `* * *` on the page, a long silence in the narration,
+# and nothing at all to the voice — it is never spoken.
+BREAK = "break"
+
 
 def slugify(text: str) -> str:
     s = re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")

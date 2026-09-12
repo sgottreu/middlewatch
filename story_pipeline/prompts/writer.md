@@ -37,15 +37,35 @@ segment is spoken by a different voice in the recording.
   marks: the voice supplies them. Narrator segments keep normal punctuation.
 - Do not put a speaker's name inside a dialogue segment's text.
 - Never emit an empty segment.
+- `{"speaker": "break"}` with no text is a scene break. See below.
 
 {
   "n": {n},
   "title": "...",
   "segments": [
     {"speaker": "narrator", "text": "..."},
-    {"speaker": "Elizabeth", "text": "..."}
+    {"speaker": "Elizabeth", "text": "..."},
+    {"speaker": "break"},
+    {"speaker": "narrator", "text": "..."}
   ]
 }
+
+## Scene breaks
+
+A chapter may jump — an hour, a night, the vestry to the mill. Mark the jump
+with a break segment. The page prints `* * *` and the narration takes a long
+silence; nothing is ever read aloud for it.
+
+- **Only for a real jump in time or place.** Not for a change of subject, and
+  never between two speeches in the same room.
+- **Never first or last in a chapter.** The chapter break already does that.
+- **At most two, and one is usual.** Three is a chapter that should have been
+  outlined as two.
+- **The sentence after the break carries the jump.** A listener cannot see the
+  asterisks — all they get is silence — so the first sentence after one says
+  when we are, or where: *By Thursday the frost was off the glass.* Never
+  resume on dialogue, and never on a pronoun whose owner was last named before
+  the break.
 
 ## Length
 

@@ -2,6 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<!-- Without this a phone lays the page out at 980px and scales it down, which
+     is why the desktop layout "worked" on a phone and was unreadable. -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- One palette, declared: it also makes the select and the scrollbars dark
+     rather than leaving the browser to guess from the page. -->
+<meta name="color-scheme" content="dark">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Middle Watch — review</title>
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/icon-180.png">
@@ -13,12 +22,11 @@
     --dim: #97917f; --accent: #c9a227; --danger: #d4674a; --ok: #7ea05a;
     --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
   }
-  @media (prefers-color-scheme: light) {
-    :root { --bg:#f7f5ef; --panel:#fff; --line:#e0dccf; --ink:#20201a;
-            --dim:#6b6656; --accent:#8a6d1f; }
-  }
+  /* Dark only. This is a night-watch tool read in the evening, and a second
+     palette is a second thing every new piece of UI has to be checked against.
+     The light variant was never looked at; it is gone rather than left to rot. */
   * { box-sizing: border-box; }
-  body { margin:0; height:100vh; display:flex; background:var(--bg); color:var(--ink);
+  body { margin:0; height:100vh; height:100dvh; display:flex; background:var(--bg); color:var(--ink);
          font: 15px/1.55 Charter, Georgia, serif; }
   h1,h2,h3 { font-weight:600; line-height:1.25; }
 
@@ -80,6 +88,16 @@
   .seg .kill { flex:none; margin-top:2px; padding:2px 8px; font-size:12px;
                color:var(--dim); border-color:transparent; }
   .seg .kill:hover { color:var(--danger); border-color:var(--danger); }
+  /* A scene break, in the editor. It has no speaker and no text, so it is a
+     row of its own rather than a segment with the fields greyed out. */
+  .seg.brk { align-items:center; gap:14px; margin:14px 0; }
+  .seg.brk .mark { flex:1; text-align:center; font-family:var(--mono);
+                   font-size:13px; letter-spacing:.5em; color:var(--accent);
+                   border-top:1px solid var(--line); padding-top:12px; }
+  .seg .addbrk { flex:none; margin-top:2px; padding:2px 7px; font-size:11px;
+                 font-family:var(--mono); color:var(--dim);
+                 border-color:transparent; }
+  .seg .addbrk:hover { color:var(--accent); border-color:var(--accent); }
   .editbar { display:flex; align-items:center; gap:10px; margin:12px 0 4px;
              font-family:var(--mono); font-size:11px; color:var(--dim); }
   .editbar .count { margin-left:auto; }
@@ -92,6 +110,14 @@
   td.num { font-family:var(--mono); text-align:right; }
   .arrow { color:var(--accent); }
   pre.prose { white-space:pre-wrap; font:inherit; margin:0; }
+
+  /* Back to the queue. Phone only: on desktop the queue is never gone. */
+  #dochead { display:none; flex:none; align-items:center; gap:10px;
+             padding:8px 12px; border-bottom:1px solid var(--line);
+             background:var(--panel); }
+  #dochead #back { font-size:14px; padding:7px 12px; }
+  #dochead .t { font-size:13px; color:var(--dim); overflow:hidden;
+                white-space:nowrap; text-overflow:ellipsis; }
 
   /* action bar --------------------------------------------------------- */
   #bar { flex:none; border-top:1px solid var(--line); background:var(--panel);
@@ -197,6 +223,76 @@
   .ch .wnote { font-size:13px; color:var(--dim); border-left:2px solid var(--accent);
                padding-left:10px; margin:6px 0 8px; }
   .chapnote { font-size:12px; padding:3px 10px; flex:none; }
+  /* phone ---------------------------------------------------------------
+     One screen at a time: the queue is a list you leave once you have picked
+     something, so it gets the whole width and the story replaces it. Nothing
+     here changes the desktop layout — the class the script toggles is only
+     read inside this block. */
+  @media (max-width: 760px) {
+    body { flex-direction:column; }
+    #queue { width:auto; flex:1; border-right:none; min-height:0; }
+    #doc { display:none; }
+    body.show-story #queue { display:none; }
+    body.show-story #doc { display:flex; }
+    #dochead { display:flex; }
+
+    /* A touch target is a fingertip, not a cursor. */
+    .row { padding:13px 16px; }
+    button { padding:9px 14px; min-height:40px; }
+    kbd { display:none; }              /* no keyboard to hint at */
+
+    #docbody { padding:16px 16px 20px; max-width:none; }
+    #docbody h1 { font-size:22px; }
+    pre.prose { font-size:16px; line-height:1.6; }
+    table { font-size:12px; }
+    th, td { padding:4px 6px; }
+
+    /* The bar wraps rather than crushing five labels onto one line: the facts
+       take their own row, the actions share the one under it. */
+    #bar { flex-wrap:wrap; padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+           gap:8px; }
+    #bar .facts { flex-basis:100%; flex-grow:0; }
+    #bar button { flex:1 1 auto; }
+
+    /* Chapter headings carry three buttons now. Let them stack. */
+    .ch h3 { flex-wrap:wrap; gap:6px; }
+    .chapok, .chapedit, .chapnote { margin-left:0; }
+
+    /* The segment editor: a 130px speaker column beside a textarea leaves the
+       prose about twenty characters wide. Stack them instead. */
+    /* Stacked, but the controls stay together: source order would leave the
+       delete × stranded on a line of its own under the prose. */
+    .seg { flex-wrap:wrap; gap:6px; align-items:center; }
+    .seg select { width:auto; flex:1 1 auto; order:1; margin-top:0; }
+    .seg .addbrk { order:2; }
+    .seg .kill { order:3; margin-top:0; }
+    .seg textarea { order:4; }
+    .seg.brk { margin:18px 0; }
+    .seg.brk .mark { order:1; }
+    .seg.brk .kill { order:2; align-self:center; }
+    .seg textarea { flex-basis:100%; order:4;
+                    /* 16px exactly: iOS zooms the page when a focused field is
+                       smaller, and never zooms back out. */
+                    font-size:16px; }
+    .seg .addbrk, .seg .kill { min-height:0; padding:2px 8px; }
+    .editbar { flex-wrap:wrap; }
+    .editbar .count { flex-basis:100%; margin-left:0; }
+
+    /* Dialogs become sheets: full width, off the bottom edge, thumb-reachable
+       buttons, and never taller than the visible viewport. */
+    #scrim, #wscrim, #nscrim { align-items:flex-end; }
+    #revise, #write, #notef { width:100%; max-width:none; max-height:88dvh;
+                              border-radius:14px 14px 0 0;
+                              padding:18px 16px calc(18px + env(safe-area-inset-bottom)); }
+    #revise .row2, #write .row2, #notef .row2 { flex-wrap:wrap; }
+    #revise .row2 button, #write .row2 button, #notef .row2 button { flex:1 1 auto; }
+    #notef textarea, #revise textarea { font-size:16px; }
+    #notef select { min-height:40px; font-size:16px; }
+
+    #toast { left:16px; right:16px; bottom:calc(84px + env(safe-area-inset-bottom));
+             max-width:none; }
+  }
+
   #toast { position:fixed; bottom:74px; right:34px; background:var(--panel);
            border:1px solid var(--line); border-left:3px solid var(--accent);
            padding:10px 15px; border-radius:5px; font-size:14px; opacity:0;
@@ -208,6 +304,10 @@
   <nav id="queue"><header><b>Review</b><span id="count">loading…</span></header>
     <div id="groups"></div></nav>
   <main id="doc">
+    <div id="dochead">
+      <button type="button" id="back">‹ Queue</button>
+      <span class="t" id="docwhat"></span>
+    </div>
     <div id="docbody"><p class="empty">Select a story.</p></div>
     <div id="bar">
       <span class="facts" id="facts"></span>
@@ -275,6 +375,13 @@ const GROUPS = [
 let state = { rows: [], sel: null, detail: null, keepable: [], editing: null,
               anchor: null };
 
+// On a phone the queue and the document are two screens. The class is toggled
+// at every width and only read under the phone media query, so there is one
+// code path rather than two and nothing to keep in step.
+function showStory(on) {
+  document.body.classList.toggle("show-story", !!on);
+}
+
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c =>
   ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
 
@@ -329,6 +436,8 @@ async function loadQueue(keep) {
   if (keep && state.rows.includes(keep)) await select(keep);
   else if (!state.rows.includes(state.sel)) {
     state.sel = null; state.detail = null;
+    showStory(false);
+    document.getElementById("docwhat").textContent = "";
     document.getElementById("docbody").innerHTML =
       `<p class="empty">${waiting ? "Select a story." : "Nothing waiting. All clear."}</p>`;
     setActions(null);
@@ -352,6 +461,8 @@ async function select(slug) {
   const body = document.getElementById("docbody");
   const was = body.scrollTop;
   state.detail = d; render(d); setActions(d);
+  document.getElementById("docwhat").textContent = d.title;
+  showStory(true);
   // A different story is a different document — start at the top. The same
   // story means an action on what you are already reading, so stay put.
   if (!same) body.scrollTop = 0;
@@ -487,6 +598,12 @@ function render(d) {
       return;
     }
 
+    if (e.target.closest(".seg .addbrk")) {
+      e.target.closest(".seg").insertAdjacentHTML("beforebegin",
+        segRow({ speaker: "break", text: "" }, []));
+      return;
+    }
+
     if (e.target.closest(".seg .kill")) {
       e.target.closest(".seg").remove(); segCount(); return; }
 
@@ -557,6 +674,8 @@ function segmentEditor(c, d) {
     `<button type="button" id="segsave" class="primary">Save chapter</button>` +
     `<button type="button" id="segcancel">Cancel</button>` +
     `<button type="button" id="segadd">+ segment</button>` +
+    `<span title="A jump in time or place: * * * on the page, a long silence ` +
+    `in the narration.">* * * marks a scene break</span>` +
     `<span class="count" id="segcount"></span></div>` +
     `<div id="segs" data-n="${c.n}" data-target="${c.target_words}" ` +
          `data-lo="${band[0]}" data-hi="${band[1]}">`;
@@ -565,8 +684,19 @@ function segmentEditor(c, d) {
 }
 
 function segRow(seg, cast) {
+  // A break carries nothing to edit: no speaker to cast, no text to read. The
+  // only things to do with one are see it and delete it.
+  if (seg.speaker === "break")
+    return `<div class="seg brk" data-break="1">` +
+      `<span class="mark">* * *</span>` +
+      `<button type="button" class="kill" title="remove this scene break">×</button>` +
+      `</div>`;
   const dial = seg.speaker !== "narrator";
   return `<div class="seg${dial ? " dialogue" : ""}">` +
+    // Inserted above a line rather than appended at the end: the rows cannot be
+    // reordered here, and a break appended last marks nothing and is dropped on
+    // save, which would look like the button did nothing.
+    `<button type="button" class="addbrk" title="scene break above this line">* * *</button>` +
     `<select>` + cast.map(name =>
       `<option${name === seg.speaker ? " selected" : ""}>${esc(name)}</option>`
     ).join("") +
@@ -598,10 +728,12 @@ function segCount() {
 
 function segRead() {
   const box = document.getElementById("segs");
-  return [...box.querySelectorAll(".seg")].map(row => ({
-    speaker: row.querySelector("select").value,
-    text: row.querySelector("textarea").value,
-  }));
+  return [...box.querySelectorAll(".seg")].map(row => row.dataset.break
+    ? { speaker: "break", text: "" }
+    : {
+        speaker: row.querySelector("select").value,
+        text: row.querySelector("textarea").value,
+      });
 }
 
 function setActions(d) {
@@ -1093,6 +1225,7 @@ document.getElementById("notef").onsubmit = async e => {
   pollNote();
 };
 
+document.getElementById("back").onclick = () => showStory(false);
 document.getElementById("writeBtn").onclick = openWrite;
 document.getElementById("reviseBtn").onclick = openRevise;
 document.getElementById("approve").onclick = () => act("approve");

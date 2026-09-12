@@ -17,7 +17,7 @@ import subprocess
 from pathlib import Path
 
 from .. import tts
-from ..bundle import Bundle
+from ..bundle import BREAK, Bundle
 
 
 def _split(text: str, limit: int) -> list[str]:
@@ -53,7 +53,7 @@ def cast_voices(cfg: dict, b: Bundle, provider) -> dict[str, str]:
         if not b.chapter_json(n).exists():
             continue
         for seg in b.chapter(n)["segments"]:
-            if seg["speaker"] != "narrator":
+            if seg["speaker"] not in ("narrator", BREAK):
                 counts[seg["speaker"]] = counts.get(seg["speaker"], 0) + 1
 
     voices = {"narrator": defaults["narrator"]}
@@ -143,18 +143,35 @@ def _plan(chapter: dict, limit: int) -> list[dict]:
     if chapter.get("_announcement"):
         units.append({"speaker": "narrator", "text": chapter["_announcement"]})
     for seg in chapter["segments"]:
+        if seg["speaker"] == BREAK:
+            # Carried through as a unit so the silence lands in the right place
+            # in the timeline. It is never synthesized and never billed.
+            units.append({"speaker": BREAK, "text": ""})
+            continue
         for chunk in _split(seg["text"].strip(), limit):
             units.append({"speaker": seg["speaker"], "text": chunk})
-    for i, u in enumerate(units):
-        u["previous"] = units[i - 1]["text"] if i else None
-        u["following"] = units[i + 1]["text"] if i + 1 < len(units) else None
+    # Neighbours are prosody context for the provider, so a break — which has no
+    # text — must not become an empty `previous` that restarts the voice cold in
+    # the middle of a scene. The silence is what separates the two scenes.
+    spoken = [u for u in units if u["speaker"] != BREAK]
+    for i, u in enumerate(spoken):
+        u["previous"] = spoken[i - 1]["text"] if i else None
+        u["following"] = spoken[i + 1]["text"] if i + 1 < len(spoken) else None
     return units
 
 
 def record_chapter(cfg: dict, b: Bundle, n: int, voices: dict, provider) -> dict:
     gap_ms = cfg["casting"]["gap_ms"]
+    # A jump in time or place. Silence is all a listener gets — the page has
+    # `* * *` and the ear has nothing — so it has to be long enough that it
+    # cannot be mistaken for the pause between two paragraphs, and short enough
+    # that it is not mistaken for the end of the chapter. A struck bell in the
+    # middle of it is the obvious next move; the length is the part worth
+    # settling first, by listening to one.
+    break_ms = cfg["casting"].get("break_ms", 2000)
     rate = provider.sample_rate
     gap_bytes = b"\x00" * int(rate * 2 * gap_ms / 1000)
+    break_bytes = b"\x00" * int(rate * 2 * break_ms / 1000)
 
     pcm = bytearray()
     sentences: list[dict] = []
@@ -165,6 +182,10 @@ def record_chapter(cfg: dict, b: Bundle, n: int, voices: dict, provider) -> dict
     said = announcement(cfg, b, n)
     chapter = {**b.chapter(n), "_announcement": said}
     for unit in _plan(chapter, provider.max_chars):
+        if unit["speaker"] == BREAK:
+            pcm += break_bytes
+            cursor += break_ms
+            continue
         voice_name = voices.get(unit["speaker"], voices["narrator"])
         clip = provider.synthesize(
             unit["text"],

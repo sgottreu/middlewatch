@@ -17,6 +17,8 @@ import re
 import statistics
 from dataclasses import dataclass
 
+from .bundle import BREAK
+
 
 @dataclass
 class Finding:
@@ -252,11 +254,66 @@ def lint_shape(full_text: str) -> list[Finding]:
     return f
 
 
+# What the first sentence after a scene break has to do: say when, or say where.
+# A listener gets silence and nothing else — no asterisks, no white space — so a
+# scene that resumes without naming its own time or place leaves them working out
+# that the story moved while it is already moving.
+TIME_MARKERS = [
+    r"\b(?:morning|afternoon|evening|night|midnight|noon|dawn|dusk|daybreak)\b",
+    r"\b(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b",
+    r"\b(?:january|february|march|april|may|june|july|august|september|october"
+    r"|november|december)\b",
+    r"\b(?:yesterday|tomorrow|afterwards|later|since|by the time|that day"
+    r"|next day|the day after|a week|a fortnight|a month|days|weeks|hours)\b",
+    r"\b(?:o'clock|sunrise|sunset|michaelmas|lady day|easter|christmas)\b",
+    r"\bby [A-Z]",                  # "By Thursday", "By the time Rowe reached"
+    r"\b(?:at|in|on) the [a-z]+",   # a place re-established: "at the mill"
+]
+
+
+def lint_breaks(chapter: dict) -> list[Finding]:
+    """Scene breaks: placed where a listener can follow them, and anchored."""
+    segs = chapter.get("segments", [])
+    findings: list[Finding] = []
+    breaks = [i for i, s in enumerate(segs) if s.get("speaker") == BREAK]
+
+    for i in breaks:
+        nxt = segs[i + 1] if i + 1 < len(segs) else None
+        if not nxt:
+            continue
+        if nxt.get("speaker") != "narrator":
+            findings.append(Finding(
+                "break_into_dialogue", "error",
+                _clip(nxt.get("text", "")),
+                "A scene break resumes on dialogue. On the page the asterisks "
+                "carry it; in the narration there is only silence, so the "
+                "listener hears a new voice with no idea when or where they "
+                "are. Open the new scene on narration.", i + 1))
+            continue
+        first = (_sentences(nxt.get("text", "")) or [""])[0]
+        if not any(re.search(p, first, re.I) for p in TIME_MARKERS):
+            findings.append(Finding(
+                "break_unanchored", "warn", _clip(first),
+                "The sentence after a scene break has to say when or where we "
+                "now are — it is the only cue a listener gets that time has "
+                "passed.", i + 1))
+
+    if len(breaks) > 2:
+        findings.append(Finding(
+            "break_count", "warn", f"{len(breaks)} scene breaks",
+            "More than two jumps inside one chapter. That is usually a chapter "
+            "the outline should have split in two.", -1))
+    return findings
+
+
 def lint_chapter(chapter: dict) -> list[Finding]:
     findings: list[Finding] = []
     for i, seg in enumerate(chapter.get("segments", [])):
+        if seg.get("speaker") == BREAK:
+            continue          # no words in it to judge
         findings += lint_segment(seg["text"], i)
     findings += lint_shape(" ".join(s["text"] for s in chapter.get("segments", [])))
+    findings += lint_breaks(chapter)
     return findings
 
 

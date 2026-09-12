@@ -7,7 +7,7 @@ import re
 from typing import Any
 
 from .. import bibles, genres, history, lint, llm
-from ..bundle import HONORIFICS, Bundle, ear_key, slugify
+from ..bundle import BREAK, HONORIFICS, Bundle, ear_key, slugify
 from ..config import prompt_text
 
 SYSTEM = "You return only the JSON object requested. No preamble, no fences, no commentary."
@@ -766,14 +766,27 @@ def _validate_chapter(ch: dict, outline: dict) -> int:
     # Only a bolded *cast name* is stripped. Matching any bold prefix would eat
     # a legitimate sentence that happens to open on emphasis; matching a name
     # cannot, because a segment never opens by naming its own speaker.
+    # A break is punctuation, not speech: whatever text arrives with one would
+    # be read aloud. And a segment that is nothing but asterisks is a break the
+    # writer typed as prose — it has seen `* * *` in the chapters it was given
+    # as context — so take it as one rather than dropping it as empty later.
     for s in ch["segments"]:
+        if s.get("speaker") == BREAK:
+            s["text"] = ""
+        elif re.fullmatch(r"[*\s\u2014\u2013-]{3,9}", s.get("text", "") or ""):
+            s["speaker"], s["text"] = BREAK, ""
+
+    for s in ch["segments"]:
+        if s.get("speaker") == BREAK:
+            continue
         m = re.match(r"\s*\*\*([^*]{1,40})\*\*[:.,]?\s*", s.get("text", ""))
         if m and (m.group(1).strip().lower() == "narrator"
                   or resolve_speaker(m.group(1).strip(), cast)):
             s["text"] = s["text"][m.end():]
 
     segs = ch["segments"]
-    kept = [s for s in segs if s.get("text", "").strip()]
+    kept = [s for s in segs
+            if s.get("text", "").strip() or s.get("speaker") == BREAK]
     dropped = len(segs) - len(kept)
     ch["segments"] = kept
     if not kept:
@@ -787,9 +800,33 @@ def _validate_chapter(ch: dict, outline: dict) -> int:
         # the chapter worth finding later.
         ch["dropped_empty_segments"] = dropped
 
+    # A break needs a scene on each side. One at either end of the chapter marks
+    # nothing — the chapter break already did that — and two in a row is a hole
+    # the reader reads as a fault. Repaired rather than raised: the prose is
+    # fine and already paid for, and this is a misplaced mark, not a broken
+    # chapter.
+    placed, previous_break = [], True      # True so a leading break is dropped
+    for s in kept:
+        is_break = s.get("speaker") == BREAK
+        if is_break and previous_break:
+            continue
+        placed.append(s)
+        previous_break = is_break
+    while placed and placed[-1].get("speaker") == BREAK:
+        placed.pop()
+    if len(placed) != len(kept):
+        ch["dropped_breaks"] = len(kept) - len(placed)
+    kept = placed
+    ch["segments"] = kept
+    if not kept:
+        raise ValueError(
+            f"chapter {ch['n']}: nothing left but scene breaks, which mark "
+            f"nothing on their own."
+        )
+
     for i, seg in enumerate(kept):
         speaker = seg.get("speaker")
-        if speaker in known:
+        if speaker in known or speaker == BREAK:
             continue
         # Repair in place. Everything downstream — voice casting, the markdown
         # label, the editor's continuity check — joins on this string, so the
@@ -847,6 +884,12 @@ def _short_name(name: str, outline: dict) -> str:
     return short if clashes <= 1 else name
 
 
+# What a break looks like on the page. Asterisks rather than a rule because a
+# lone `---` is a setext heading marker in markdown and would silently promote
+# whatever line sits above it.
+SCENE_BREAK = "* * *"
+
+
 def render_markdown(chapter: dict, outline: dict, attribute: bool = True) -> str:
     """Human-readable chapter. Dialogue gets its quotation marks back here.
 
@@ -873,6 +916,15 @@ def render_markdown(chapter: dict, outline: dict, attribute: bool = True) -> str
 
     for seg in chapter["segments"]:
         speaker, text = seg["speaker"], seg["text"].strip()
+        if speaker == BREAK:
+            # The printed form of a jump in time or place. Its own paragraph,
+            # never labelled, and it closes whoever was speaking — the scene
+            # after it starts cold, the same way the narration does.
+            paras.append([SCENE_BREAK])
+            labels.append("")
+            speaker_here = None
+            after_tag = False
+            continue
         if not text:
             continue
         piece = text if speaker == "narrator" else f"\u201c{text}\u201d"

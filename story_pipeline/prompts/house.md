@@ -40,6 +40,12 @@ what works.
 
 {structure}
 
+**A jump inside a chapter is marked, not narrated.** A break segment prints
+`* * *` on the page and becomes a long silence in the narration. The mark is
+not the cue — silence alone tells a listener nothing — so the sentence that
+follows one names the new time or the new place. Anything longer than a night
+or wider than the parish is usually a chapter, not a break.
+
 ## Tropes
 
 Every story declares two or three tropes from its genre's list, and the outline

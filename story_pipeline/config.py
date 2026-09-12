@@ -71,6 +71,10 @@ DEFAULTS: dict[str, Any] = {
         },
         "max_named_voices": 3,
         "gap_ms": 400,
+        # The silence a scene break becomes. Long enough not to be heard as the
+        # pause between paragraphs (gap_ms), short enough not to be heard as the
+        # end of the chapter.
+        "break_ms": 2000,
         # Spoken before each chapter. Generated at record time from this
         # template rather than written by the model, which was inconsistent in
         # a way only the audio revealed: one story announced seven of eight

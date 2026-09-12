@@ -32,6 +32,7 @@ casting:                     # genre files override narrator / character_voices
   character_voices: [Daniel, Alice, George, Lily]
   max_named_voices: 3
   gap_ms: 400
+  break_ms: 2000            # a scene break, as silence
 
 elevenlabs:
   model: eleven_multilingual_v2   # turbo/flash bill at half a credit per char

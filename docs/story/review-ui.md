@@ -229,6 +229,15 @@ So each segment is one editable block, with the speaker as a dropdown beside it:
   [Save chapter] [Cancel] [+ segment]      517 words · target 560 · band 448–672
 ```
 
+A scene break is a segment with no speaker and no text, so it is a row of its
+own — `* * *` across the width, with an × to remove it. Every other row carries
+a small `* * *` button that inserts a break **above** that line: the rows cannot
+be reordered here, and a break appended at the end marks nothing and is dropped
+on save, which would look like the button had done nothing.
+
+```
+```
+
 The word count is live against the band the length check enforces. Trimming by
 hand is the one case where knowing the number *as you cut* changes what you cut.
 
@@ -301,6 +310,47 @@ python3 -m story_pipeline.cli approve <story> --chapters      # all of them
 
 `cli status` shows the same state, with `!` marking a chapter approved and then
 rewritten.
+
+### On a phone
+
+The review server is reachable from anywhere you can reach
+`review.middlewatch.co`, and a queue of twelve outlines is exactly the thing
+you end up reading away from the desk. The page had no `viewport` meta tag at
+all, so a phone laid it out at 980px and scaled the result down — the desktop
+layout technically "worked" and was unreadable.
+
+**One screen at a time.** Under 760px the queue takes the full width and
+selecting a story replaces it, with a `‹ Queue` header to come back. Same
+markup, same script: a `show-story` class on `body` is toggled at every width
+and only read inside the phone media query, so there is one code path rather
+than a mobile build to keep in step with this one.
+
+What the same block fixes, in the order the problems actually bite:
+
+| | |
+|---|---|
+| The action bar | Wraps — facts on their own row, buttons sharing the one below, with `env(safe-area-inset-bottom)` so the home indicator does not sit on them |
+| The segment editor | Speaker, `* * *` and × on one control row, prose full width beneath. Source order would strand the delete × on a line of its own under the text |
+| Any textarea | Exactly 16px. iOS zooms the page when a focused field is smaller and never zooms back out |
+| Dialogs | Bottom sheets: full width, rounded top, capped at 88dvh |
+| Heights | `100dvh`, because the iOS URL bar makes `100vh` taller than the visible viewport and pushed the action bar underneath it |
+| Chapter headings | Three buttons now, so they wrap instead of crushing |
+
+**Every action is available, including the paid ones.** They keep the
+confirmation dialogs they have on the desktop, which is what makes that safe:
+nothing spends money without a figure on screen first.
+
+`display: standalone` in the manifest was already there, so **Add to Home
+Screen** gives it its own icon and no browser chrome on the phone as well as
+on the desktop.
+
+### Dark only
+
+The light palette is gone. It was a `prefers-color-scheme` block nobody had
+looked at, and a second palette is a second thing every new piece of UI has to
+be checked against — the note-to-writer dialog and the scene-break row were
+each one more. `<meta name="color-scheme" content="dark">` tells the browser
+too, so the selects and scrollbars come up dark rather than white.
 
 ### The icon
 

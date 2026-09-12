@@ -73,6 +73,23 @@ rather than trusting the shipped figure.
 
 ---
 
+## Scene breaks
+
+`casting.break_ms` (2,000 by default) is the silence a `break` segment becomes,
+against `gap_ms` (400) between ordinary segments. The break is never
+synthesized and never billed, it carries no prosody context across itself, and
+its length lands in `timeline.json` like any other time, so the subtitles and
+the video stay in step.
+
+Two seconds is a first guess made without listening to one. It has to be long
+enough not to be heard as the pause between paragraphs and short enough not to
+be heard as the end of the chapter, and the honest way to settle it is to
+record a chapter that has one. A struck ship's bell inside the silence is the
+obvious next move — it is the channel's own image, `ambience_pipeline.synth`
+can render one for nothing, and it removes the ambiguity that silence alone
+always has. Left undone deliberately until a real story has been heard with
+plain silence in it.
+
 ## Chapter announcements
 
 The heading a listener hears — *"Chapter 4. The Bramdean Road."* — is generated
