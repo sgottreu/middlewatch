@@ -342,11 +342,19 @@ class Bundle:
         segs = json.loads(p.read_text())["segments"]
         # Serialised rather than string-joined: no separator to pick, and
         # nothing to collide with text that happens to contain one.
-        payload = json.dumps([[s["speaker"], s["text"]] for s in segs],
-                             ensure_ascii=False, sort_keys=True)
+        #
+        # A performance tag changes the audio, so it belongs in the hash — but
+        # only when there is one. A segment without a tag hashes exactly as it
+        # did before tags existed, which is what stops every chapter already
+        # approved and narrated from lapsing the day this shipped.
+        payload = json.dumps(
+            [[s["speaker"], s["text"]] + ([s["tag"]] if s.get("tag") else [])
+             for s in segs],
+            ensure_ascii=False, sort_keys=True)
         return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:16]
 
-    def narration_stale(self, n: int, announcement: str | None = None) -> bool:
+    def narration_stale(self, n: int, announcement: str | None = None,
+                        voices: dict | None = None) -> bool:
         """True when the audio on disk was made from different words.
 
         `record_all` skips any chapter that already has audio, so without this an
@@ -360,6 +368,12 @@ class Bundle:
         changing that template would otherwise leave audio saying the old
         heading with nothing to detect it. Pass it to have that counted too;
         omit it to check the prose alone.
+
+        `voices` is the casting the actor would use now. Same argument a third
+        time: switching a story from a cast to a single reader changes every
+        second of the audio and not one character of the text, so without this
+        `record` looks at the mp3 on disk, finds the words unchanged, and keeps
+        a recording made by seven voices you have just decided against.
         """
         if not (self.audio_path(n).exists() and self.timeline_path(n).exists()):
             return False
@@ -372,6 +386,8 @@ class Bundle:
         # Only when the caller knows what the template says now. A timeline from
         # before announcements existed has no key at all, and `None == None`
         # leaves it correctly untouched.
+        if voices is not None and t.get("voices") and t["voices"] != voices:
+            return True
         return announcement is not None and t.get("announcement") != announcement
 
     def duration_ms(self) -> int | None:

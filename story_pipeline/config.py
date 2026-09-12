@@ -69,6 +69,13 @@ DEFAULTS: dict[str, Any] = {
             "female": ["Alice", "Lily", "Matilda"],
             "male": ["Daniel", "George", "Brian"],
         },
+        # solo: one voice reads everything, the way an audiobook is read. It is
+        # the default because a cast pays for itself in seams — every change of
+        # speaker is a separate generation with its own start and end, and a
+        # chapter of dialogue has dozens. cast: a voice per character, kept for
+        # the stories that want it.
+        "mode": "solo",
+        "solo_voice": None,        # defaults to the narrator
         "max_named_voices": 3,
         "gap_ms": 400,
         # The silence a scene break becomes. Long enough not to be heard as the

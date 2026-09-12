@@ -73,6 +73,135 @@ rather than trusting the shipped figure.
 
 ---
 
+## Solo narration is the default
+
+One voice reads the whole story, the way an audiobook is read. `casting.mode`
+takes `solo` (default) or `cast`; `casting.solo_voice` names the reader and
+falls back to the narrator.
+
+The reason is arithmetic rather than taste. Every change of speaker is a
+separate generation with its own beginning and end, and a 400ms silence was
+stapled into each join:
+
+| | Generations for The Cracked Beam |
+|---|---|
+| A voice per character, one call per segment | **182** |
+| Merging consecutive same-speaker runs | 153 |
+| One voice, chunked at the provider's limit | **16** |
+
+A cast cannot escape this. Dialogue alternates every few lines, so merging
+same-speaker runs saves 29 joins out of 181 and the switching noise stays. Solo
+joins the whole chapter into runs and cuts only where the character limit
+forces it — the seam stops being something you hear several times a minute.
+
+Two consequences worth knowing:
+
+- **The prose carries attribution now.** With a cast, `said Mrs Pike` was
+  redundant — you could hear who it was — and `writer.md` forbade it. With one
+  reader an unattributed line in a scene of three is lost the moment it is
+  heard. The writer is told to attribute, and the editor checks it (both ways:
+  a tag on every line is padding).
+- **Solo casts one voice.** `cast_voices` asks the account for the reader and
+  nothing else, so a story does not refuse to record because six voices you
+  were never going to hear are missing from your library.
+
+`casting.mode: cast` keeps the old behaviour, seams and all, for a story that
+wants it.
+
+### Putting attribution into stories already written
+
+Everything written before this was written under the old rule, which forbade
+`said Mrs Pike` because seven voices made it redundant. One voice makes it
+essential, so those chapters need a pass:
+
+```bash
+python3 -m story_pipeline.cli attribute stories/the-cracked-beam --dry-run
+python3 -m story_pipeline.cli attribute stories/the-cracked-beam
+```
+
+It runs the ordinary write/edit loop per chapter, seeded with one standing note
+(`text.ATTRIBUTION_NOTE` — one string in one place, because a note that drifts
+between chapters produces a story that drifts with it). Roughly $0.09 a chapter,
+$0.27 if the editor sends it back twice.
+
+Three things it is careful about:
+
+- **Chapters with no dialogue are skipped**, not paid for.
+- **The note asks for no net growth.** These chapters already run 8–20% over
+  their ceiling, and attribution adds words. Without that instruction the length
+  check sends every chapter straight back to be cut, spending the revision
+  budget on arithmetic rather than prose.
+- **Approvals and narration lapse**, which is correct — the words changed — so
+  the chapters return to the review queue and `record` will redo them rather
+  than keep audio of a story that no longer matches.
+
+## Audio tags
+
+A segment may carry an optional `tag` — `"[quietly]"`, `"[a beat]"` — which is
+performance direction for an Eleven v3 voice. It is sent with the line and
+**stripped back out of the alignment**, so it never reaches the page, the
+subtitles, or the cues the video is built from. A tag written into the prose is
+lifted into the field by `_validate_chapter` for the same reason.
+
+Tags are worth using sparingly: a line every few pages that would otherwise be
+misread. Tagging everything flattens the reading into a list of instructions,
+and the model gets less stable the more direction it is holding. They cannot
+make one voice into another person — there is no pitch or timbre dial, and
+`[deep voice]` on a female reader is not a man, it is a woman doing an
+impression.
+
+Tags change the audio, so they are in `chapter_hash` — but only when present, so
+nothing already approved or narrated lapsed the day this shipped.
+
+## Check the model before you trust it
+
+```bash
+python3 -m story_pipeline.cli tts-check          # a few hundred credits
+```
+
+Synthesizes one tagged line and prints the sentence spans it got back. Two
+things it settles that documentation will not: whether the configured model
+returns character alignment at all — the timeline, the subtitles and the video
+sync are all built from it — and whether an audio tag is performed or read out
+loud. Both cost cents here and a whole story to discover later. Run it after any
+change to `elevenlabs.model`.
+
+## The voice ids are yours, not ours
+
+`elevenlabs.voice_library` ships the public library ids. They only work for an
+account that has added those voices, so the first run on a new key fails with
+`404 voice_not_found` — and it fails *after* chapter one's narrator segments
+have been synthesized and billed, because the 404 arrives on whichever voice
+happens to be cast second.
+
+`cast_voices` now asks the account what it actually has (one free `GET /v1/voices`)
+and refuses before anything is synthesized, naming every voice that is missing.
+Fix it once, per machine:
+
+```bash
+python3 -m story_pipeline.cli voices     # your real ids, flagged against the library
+```
+
+and put those ids in `elevenlabs.voice_library`. The manifest pins voice
+*names*, not ids, so correcting the library is enough — no re-casting needed.
+
+## Casting never crosses gender
+
+When the pool for a gender runs out — four women speaking against three female
+voices — the leftover part is read by **the narrator**, not by whatever voice is
+free. Taking any free voice is how Mrs Hale ended up cast as Brian on the first
+story to hit it: silent, invisible in the manifest unless you read it, and only
+audible after the chapter was paid for. The narrator covering a minor part is
+what an audiobook does anyway, and the casting line in `record` marks it:
+
+```
+casting:  narrator=Charlotte, ..., Mrs Hale=Charlotte (narrator covers)
+```
+
+To give her a voice of her own instead, either pin one on her cast entry in
+`outline.json` (`"voice": "Rachel"` — pinned voices never count against
+`max_named_voices`) or widen the genre's pool.
+
 ## Scene breaks
 
 `casting.break_ms` (2,000 by default) is the silence a `break` segment becomes,

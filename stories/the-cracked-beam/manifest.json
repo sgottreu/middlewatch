@@ -6,11 +6,13 @@
     "ideate": "approved",
     "write": "done",
     "edit": "approved",
-    "record": "pending",
+    "record": "done",
     "design": "pending",
     "direct": "pending"
   },
-  "spend": {},
+  "spend": {
+    "elevenlabs_credits": 25878.0
+  },
   "pinned": {
     "art_style": "Romantic-era English watercolour and ink illustration, in the manner of early nineteenth-century hand-coloured aquatint book plates. Soft muted palette of sage, dove grey, cream and dusty rose. Visible paper tooth. Gentle diffused daylight.",
     "genre": "regency",
@@ -34,7 +36,17 @@
         ]
       }
     },
-    "bible": "amberlight"
+    "bible": "amberlight",
+    "tts_provider": "elevenlabs",
+    "voices": {
+      "narrator": "Charlotte",
+      "Miss Judith Vane": "Alice",
+      "Mr Silas Rowe": "Daniel",
+      "Mrs Honoria Pike": "Matilda",
+      "Mr Owen Vane": "George",
+      "Miss Louisa Marchmont": "Lily",
+      "Mrs Hale": "Charlotte"
+    }
   },
   "stage_info": {
     "edit": {

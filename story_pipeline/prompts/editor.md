@@ -67,7 +67,13 @@ Check, in order:
    which a listener cannot recover from. Quote the second kind in `fixes` and say
    where to split it. More than two of that second kind in a chapter is a style
    failure.
-9. **Scene breaks.** A `break` segment is a jump in time or place, and it is
+9. **Attribution.** One voice reads every line, so a listener has only the prose
+   to tell them who is speaking. Read each scene of three or more people, and
+   each exchange longer than two turns, and ask at every line whether you could
+   say who said it with your eyes shut. Quote any line you could not in `fixes`
+   and say what to attach to it. An attribution on every single line is the
+   opposite fault and is also a fix: it is the writer padding.
+10. **Scene breaks.** A `break` segment is a jump in time or place, and it is
    silent in the narration — the listener gets no asterisks, only a gap. So read
    the sentence after each one the way you read a chapter's first sentence:
    it has to say when or where we now are. One that resumes on dialogue, or on
@@ -75,7 +81,7 @@ Check, in order:
    A jump that happens with no break at all is the same fault in reverse:
    quote the sentence where the story moved and say a break belongs there. The
    linter counts them; the judgement is yours.
-10. **The opening sentence.** Read the chapter's first sentence alone, as
+11. **The opening sentence.** Read the chapter's first sentence alone, as
    somebody who has heard everything up to here and cannot go back. Can they say
    what it refers to? A pronoun or a bare noun standing in for something
    established in an earlier chapter is a failure even when the next paragraph
@@ -83,20 +89,20 @@ Check, in order:
    listener who has already stopped following. Quote it in `fixes` with the
    naming the sentence needs. This is the one sentence in the chapter worth
    reading twice.
-11. **Words the plot owns.** The story's own objects — whatever the plot turns on —
+12. **Words the plot owns.** The story's own objects — whatever the plot turns on —
    own their words literally, and a figurative use of one sends the listener to
    the wrong place. Identify the two or three concrete things this story is
    about, from the title and the logline, then flag any metaphorical use of their
    vocabulary. *Kept it in good repair* about a grievance, in a story about
    repairing a schoolroom beam, is the case: the sentence is good and the word is
    spoken for. List these in `listenability`.
-12. **Boundaries.** Check the chapter against the content boundaries above. Any
+13. **Boundaries.** Check the chapter against the content boundaries above. Any
    breach is an automatic fail regardless of everything else, and goes in
    `boundary_breaches` quoted exactly. Check ages for any character in a
    romantic role.
-13. **Tropes.** The declared tropes are {tropes}. Note in `trope_note` whether
+14. **Tropes.** The declared tropes are {tropes}. Note in `trope_note` whether
    this chapter serves them, ignores them, or has quietly added a fourth.
-14. **Length.** The word count is measured exactly in code, before your verdict
+15. **Length.** The word count is measured exactly in code, before your verdict
     is read, and a chapter over the band is sent back to be cut whatever you
     say — so do not spend attention counting, and do not argue the overage is
     incident rather than padding. That judgement was made eight times on the
@@ -106,7 +112,7 @@ Check, in order:
     the specific passages that restate something already established — the trim
     instruction can say *what* to cut, but only you can say *where*. Set
     `length_note` to null unless the chapter is short.
-15. **Machine register.** A regex linter runs separately and catches the banned
+16. **Machine register.** A regex linter runs separately and catches the banned
    vocabulary, the trailing analytic participles, and the negative parallelisms,
    so do not spend your attention there. Judge the thing it cannot: whether the
    prose is *specific*. Flag every sentence that would still be true of a

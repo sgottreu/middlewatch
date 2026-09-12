@@ -30,7 +30,9 @@ tts_provider: elevenlabs     # elevenlabs | polly
 casting:                     # genre files override narrator / character_voices
   narrator: Charlotte
   character_voices: [Daniel, Alice, George, Lily]
-  max_named_voices: 3
+  mode: solo                # solo | cast — one voice, or one per character
+  solo_voice: null          # defaults to the narrator
+  max_named_voices: 3       # cast mode only
   gap_ms: 400
   break_ms: 2000            # a scene break, as silence
 

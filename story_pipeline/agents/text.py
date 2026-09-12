@@ -776,6 +776,21 @@ def _validate_chapter(ch: dict, outline: dict) -> int:
         elif re.fullmatch(r"[*\s\u2014\u2013-]{3,9}", s.get("text", "") or ""):
             s["speaker"], s["text"] = BREAK, ""
 
+    # A performance tag is direction, not prose: `[quietly]` written into the
+    # text would be printed on the page and read into the subtitles. Lift a
+    # leading one into its own field, and drop any others — a tag mid-sentence
+    # is the model being told to act in the middle of a line, which reads worse
+    # than it performs.
+    for s in ch["segments"]:
+        if s.get("speaker") == BREAK:
+            continue
+        text = s.get("text", "")
+        lead = re.match(r"\s*(\[[^\]\n]{1,40}\])\s*", text)
+        if lead:
+            s.setdefault("tag", lead.group(1))
+            text = text[lead.end():]
+        s["text"] = re.sub(r"\s*\[[^\]\n]{1,40}\]\s*", " ", text).strip()
+
     for s in ch["segments"]:
         if s.get("speaker") == BREAK:
             continue
@@ -1139,6 +1154,46 @@ def draft_and_edit(cfg: dict, b: Bundle, n: int, verbose: bool = True,
     return review
 
 
+# The note `cli attribute` sends. It is one string in one place because it will
+# be sent to every chapter of every story written before narration went solo,
+# and a note that drifts between chapters produces a story that drifts with it.
+ATTRIBUTION_NOTE = """This story is now read by a single narrator rather than a
+cast with a voice each, so the prose has to carry who is speaking. It was
+written under the old rule, which forbade attribution because the voices made it
+redundant.
+
+Go through the chapter and add attribution wherever a listener — who cannot see
+the page, and cannot look back — would lose track of who is speaking. A tag
+belongs in its own narrator segment: `said Mrs Pike`, `Rowe said`, or an action
+that does the same work: *Rowe turned the note over.* Two people alternating in
+a plain exchange do not need one every line; the third turn usually does, and so
+does every return to dialogue after narration, and every line in a scene of
+three or more.
+
+Do not attribute every line. An unbroken column of `said X` is padding, and it
+is the opposite failure.
+
+Where a line would be misread without it, you may add a `tag` to that segment —
+`"[quietly]"`, `"[a beat]"`, `"[warmly]"` — as performance direction for the
+voice. It is never printed and never spoken. A few a chapter at most, and never
+to imitate a different person: one voice reads everyone.
+
+Come back no longer than you started. These chapters are already at or over
+their word ceiling, and attribution adds words — so take them back out of
+restatement: a line of dialogue that lands followed by narration explaining that
+it landed, a room established twice. If you come back long the check sends the
+chapter straight back to be cut, which spends a revision on arithmetic instead
+of on the prose.
+
+Change nothing else. Same events, same beats, same jokes, same last line."""
+
+
+def chapter_dialogue_turns(b: Bundle, n: int) -> int:
+    """How many spoken turns a chapter has. Zero means nothing to attribute."""
+    return sum(1 for s in b.chapter(n).get("segments", [])
+               if s["speaker"] not in ("narrator", BREAK))
+
+
 def redraft_chapter(cfg: dict, b: Bundle, n: int, note: str,
                     verbose: bool = True, on_pass=None) -> dict:
     """Send one written chapter back to the writer with a note from you.
@@ -1279,6 +1334,7 @@ def save_chapter(b: Bundle, n: int, segments: list[dict]) -> dict:
     chapter = dict(b.chapter(n))
     chapter["segments"] = [
         {"speaker": s.get("speaker", "narrator"), "text": s.get("text", "")}
+        | ({"tag": s["tag"]} if s.get("tag") else {})
         for s in segments
     ]
     _validate_chapter(chapter, outline)

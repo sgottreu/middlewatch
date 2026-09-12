@@ -73,6 +73,17 @@ class Provider(Protocol):
 # --------------------------------------------------------------------------- #
 
 
+# `[quietly]`, `[a beat]` — an Eleven v3 audio tag. The model consumes them and
+# does not read them out, but the alignment it returns still contains their
+# characters, so they have to come out of the sentence text or they end up in
+# the subtitles and in every cue the video is built from.
+TAG = re.compile(r"\[[^\]\n]{1,40}\]")
+
+
+def strip_tags(text: str) -> str:
+    return TAG.sub("", text).replace("  ", " ").strip()
+
+
 def sentences_from_alignment(alignment: dict) -> list[dict]:
     """Collapse per-character timings into per-sentence spans.
 
@@ -118,7 +129,12 @@ def sentences_from_alignment(alignment: dict) -> list[dict]:
     if not out and chars:
         out = [{"start_ms": round(starts[0] * 1000), "end_ms": round(ends[-1] * 1000),
                 "text": "".join(chars).strip()}]
-    return out
+
+    # The timings stay as they are: the tag occupies no audio, so the span it
+    # sits in still starts and ends where the words do.
+    for s in out:
+        s["text"] = strip_tags(s["text"])
+    return [s for s in out if s["text"]]
 
 
 def _is_abbreviation(buffer: str, chars: list[str], i: int) -> bool:
@@ -243,6 +259,23 @@ class ElevenLabs:
             "unit": "credits",
             "engine": self.model,
             "usd": round(credits / 1000 * self.usd_per_1k_credits, 2),
+        }
+
+    def probe(self, text: str, voice: str) -> dict:
+        """Synthesize one short line and report what came back.
+
+        `record` depends on character alignment for the timeline, the subtitles
+        and the video sync, and whether a given model returns it is a question
+        the docs do not answer. Paying a few hundred credits to find out beats
+        discovering it eight chapters into a story.
+        """
+        clip = self.synthesize(text, self.resolve_voice(voice))
+        return {
+            "model": self.model,
+            "billed": clip.billed_units,
+            "duration_ms": round(clip.duration_ms),
+            "sentences": clip.sentences,
+            "alignment": True,
         }
 
     def list_voices(self) -> list[dict]:

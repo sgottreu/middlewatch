@@ -372,6 +372,100 @@ def cmd_record(args, cfg):
     print(f"Next:   python3 -m story_pipeline.cli design {b.root}")
 
 
+def cmd_attribute(args, cfg):
+    """Put dialogue attribution into a story written for a cast.
+
+    **This spends money** — a writer and an editor call per chapter, the same
+    loop `write` uses, seeded with one standing note. Everything written before
+    narration went solo needs it: the old `writer.md` forbade `said Mrs Pike`
+    because seven voices made it redundant, and one voice makes it essential.
+
+    Chapters with no dialogue are skipped rather than paid for. Every chapter it
+    does rewrite lapses its approval and its narration, which is correct — the
+    words changed — and means a re-read and a re-record.
+    """
+    b = _bundle(args)
+    numbers = args.chapter or [n for n in b.chapter_numbers()
+                               if b.chapter_json(n).exists()]
+    todo, skipped = [], []
+    for n in numbers:
+        if not b.chapter_json(n).exists():
+            continue
+        (todo if text.chapter_dialogue_turns(b, n) else skipped).append(n)
+
+    if skipped:
+        print(f"No dialogue, skipping: {', '.join(str(n) for n in skipped)}")
+    if not todo:
+        sys.exit("Nothing to attribute.")
+
+    est = [text.estimate_redraft(cfg, b, n) for n in todo]
+    low = sum(e.get("low", 0) for e in est)
+    high = sum(e.get("high", 0) for e in est)
+    print(f"{len(todo)} chapter(s) to rewrite: {', '.join(str(n) for n in todo)}")
+    if all(e.get("known") for e in est):
+        print(f"about ${low:.2f}, up to ${high:.2f} if the editor sends every one back")
+    else:
+        print("cost unknown — ledger/rates.json has no price for these models")
+    print("Each chapter's approval and its narration lapse: the words change.")
+    if args.dry_run:
+        print("\nDry run. Nothing rewritten.")
+        return
+    if not args.yes:
+        if input("proceed? [y/N] ").strip().lower() not in ("y", "yes"):
+            print("stopped.")
+            return
+
+    done = []
+    for n in todo:
+        print(f"\nchapter {n}: sending to the writer...")
+        try:
+            review = text.redraft_chapter(cfg, b, n, text.ATTRIBUTION_NOTE)
+        except Exception as e:                    # one bad chapter is not the story
+            print(f"  failed: {type(e).__name__}: {e}")
+            continue
+        done.append(n)
+        print(f"  {'passed' if review.get('pass') else 'FAILED'} "
+              f"({review.get('score', '?')}), {b.chapter_words(n)} words")
+    summary.write(b)
+
+    print(f"\n{len(done)} of {len(todo)} rewritten. Read them before recording:")
+    print(f"  python3 -m story_pipeline.cli review")
+    print("Then re-approve, and record — the narration is marked out of date, so "
+          "`record` will\nredo those chapters rather than keep audio of words "
+          "that have changed.")
+
+
+def cmd_tts_check(args, cfg):
+    """Synthesize one line and report what the model actually returns.
+
+    The timeline, the subtitles and the video sync are all built from character
+    alignment, and whether a given model returns it is not something the docs
+    will tell you. Nor will they tell you whether an audio tag is performed or
+    read out loud. Both are a few hundred credits to find out here, against
+    25,000 to find out during a story.
+    """
+    provider = tts.build(cfg)
+    if not hasattr(provider, "probe"):
+        sys.exit(f"{provider.name} has no probe")
+    voices = cfg["casting"]
+    voice = args.voice or voices.get("solo_voice") or voices["narrator"]
+    line = args.text or (
+        "[quietly] Old Mr Fenner is dead, and the beam is cracked through "
+        "with the damp. Fifteen pounds, and the poor box holds four."
+    )
+    print(f"model:  {cfg['elevenlabs']['model']}")
+    print(f"voice:  {voice}")
+    print(f"text:   {line}\n")
+    r = provider.probe(line, voice)
+    print(f"alignment returned: yes ({len(r['sentences'])} sentence(s))")
+    print(f"billed: {r['billed']} credits, {r['duration_ms'] / 1000:.1f}s of audio")
+    for s in r["sentences"]:
+        print(f"  [{s['start_ms']:>6} - {s['end_ms']:>6}ms] {s['text']}")
+    print("\nIf a tag appears in the text above it was not stripped; if you can "
+          "hear it\nspoken, the model is not performing it. Listen before "
+          "recording a story.")
+
+
 def cmd_voices(args, cfg):
     """List the account's real voices, so voice_library can be corrected."""
     provider = tts.build(cfg)
@@ -715,6 +809,22 @@ def main(argv=None):
                     help="remove chapter titles written into the prose; the "
                          "narration adds them from a template now")
     rn.set_defaults(fn=cmd_render)
+
+    at = sub.add_parser("attribute",
+                        help="add dialogue attribution for solo narration; paid")
+    at.add_argument("story")
+    at.add_argument("--chapter", type=int, action="append", metavar="N",
+                    help="just this chapter; repeatable")
+    at.add_argument("--dry-run", action="store_true", help="cost only, rewrite nothing")
+    at.add_argument("--yes", "-y", action="store_true", help="skip the spend prompt")
+    at.set_defaults(fn=cmd_attribute)
+
+    tc = sub.add_parser("tts-check",
+                        help="synthesize one line to verify alignment and tags; "
+                             "costs a few hundred credits")
+    tc.add_argument("--text", help="the line to speak; defaults to a tagged sample")
+    tc.add_argument("--voice", help="voice name; defaults to the narrator")
+    tc.set_defaults(fn=cmd_tts_check)
 
     cq = sub.add_parser("critique",
                         help="re-run the editor on written chapters without rewriting them")

@@ -46,6 +46,12 @@ not the cue — silence alone tells a listener nothing — so the sentence that
 follows one names the new time or the new place. Anything longer than a night
 or wider than the parish is usually a chapter, not a break.
 
+**One voice reads everything.** The narration is a single reader performing the
+whole story, as an audiobook is, not a cast with a microphone each. So the prose
+carries who is speaking — an unattributed line in a scene of three is lost the
+moment it is heard rather than read — and nothing in the writing should depend on
+two characters sounding different.
+
 ## Tropes
 
 Every story declares two or three tropes from its genre's list, and the outline

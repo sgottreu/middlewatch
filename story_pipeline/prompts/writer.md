@@ -35,7 +35,21 @@ segment is spoken by a different voice in the recording.
   narrator, dialogue.
 - Dialogue segments contain the spoken words only. No surrounding quotation
   marks: the voice supplies them. Narrator segments keep normal punctuation.
-- Do not put a speaker's name inside a dialogue segment's text.
+- **Attribute dialogue in the prose.** One voice reads the whole story, so a
+  listener has nothing but your words to tell them who is speaking. A line whose
+  speaker is not obvious from what was just said gets a tag — in its own narrator
+  segment, as `said Mrs Pike`, `Rowe said`, or something that does work as well:
+  *Rowe turned the note over.* Two people alternating in a scene do not need one
+  every line; the third turn usually does, and every return after narration does.
+- Do not put a speaker's name inside a dialogue segment's text. The tag is its
+  own narrator segment — the `speaker` field is still what casts the voice and
+  what the page labels.
+- **`tag`** is optional performance direction for the voice model: `"[quietly]"`,
+  `"[a beat]"`, `"[warmly]"`. It is spoken by nobody and printed nowhere. Use it
+  where the line would be misread without it, a few times a chapter at most —
+  tagging every line flattens the performance into a series of instructions and
+  makes the model unstable. Never use one to fake a different person: the voice
+  cannot become someone else, and asking it to try is what makes it sound wrong.
 - Never emit an empty segment.
 - `{"speaker": "break"}` with no text is a scene break. See below.
 
@@ -44,7 +58,8 @@ segment is spoken by a different voice in the recording.
   "title": "...",
   "segments": [
     {"speaker": "narrator", "text": "..."},
-    {"speaker": "Elizabeth", "text": "..."},
+    {"speaker": "Elizabeth", "text": "...", "tag": "[quietly]"},
+    {"speaker": "narrator", "text": "said Elizabeth, and did not look up."},
     {"speaker": "break"},
     {"speaker": "narrator", "text": "..."}
   ]

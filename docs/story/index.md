@@ -167,7 +167,8 @@ Describes the system. Safe to edit freely.
 `index.md` (this file) · `setup.md` · `running.md` · `ideation.md` ·
 `bibles.md` · `style.md` · `boundaries.md` · `narration.md` ·
 `architecture.md` · `cost.md` · `calibration.md` · `bible-format.md` ·
-`continuity.md` · `review-ui.md` · `troubleshooting.md`
+`continuity.md` · `review-ui.md` · `solo-narration-runbook.md` ·
+`troubleshooting.md`
 
 ### Prompts — `story_pipeline/prompts/`
 
