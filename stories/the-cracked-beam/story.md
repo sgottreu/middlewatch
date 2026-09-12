@@ -10,7 +10,7 @@ regency / slice_of_life · Middle Watch: Amberlight
 |---|---|---|
 | Target (30 min) | 4,500 | 30:00 |
 | Planned | 4,500 | 30:00 |
-| Written | 5,033 | 33:33 |
+| Written | 5,096 | 33:58 |
 | **Narrated** | | *not yet recorded* |
 
 ## Chapters
@@ -22,7 +22,7 @@ regency / slice_of_life · Middle Watch: Amberlight
 | 1 | The Cracked Beam | 5 | 570 | 638 (+12%) | — |
 | 2 | Old Grievances | 5 | 560 | 672 (+20%) | — |
 | 3 | An Evening Arranged | 5 | 560 | 622 (+11%) | — |
-| 4 | The Bramdean Road | 5 | 570 | 620 (+9%) | — |
+| 4 | The Bramdean Road | 5 | 570 | 683 (+20%) | — |
 | 5 | What Was Seen | 5 | 560 | 606 (+8%) | — |
 | 6 | The Apothecary's Question | 5 | 560 | 605 (+8%) | — |
 | 7 | A Proposal Not Required | 5 | 560 | 632 (+13%) | — |

@@ -1,0 +1,64 @@
+{
+  "n": 4,
+  "pass": false,
+  "score": 6,
+  "beats": [
+    {
+      "beat": "Mrs Pike arranges for Louisa to ride with Rowe to Bramdean to fetch the mason's estimate, meaning further matchmaking, but Louisa is occupied writing to her uncle and sends word she cannot go.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Judith, already walking to the draper's for thread, is asked to carry the errand instead, and Mrs Pike, absorbed in Louisa's letter, waves her off without thinking of a chaperone.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "A mile past the mill the donkey cart's wheel splits, and Rowe and Judith are left stranded on the verge waiting for someone to pass.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Sitting together the better part of an hour, they finally say aloud what each believed of the other, the sermon and the novels, and find both accounts had grown larger with telling.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "A farmer's cart takes them up at last, but by the time they reach Amberlight the light is failing, and the green is not empty.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Ends on Mrs Hale visible in the lit library window as the two return together at dusk, unchaperoned, setting up the gossip chapter directly."
+  },
+  "continuity": [
+    "Chapter 2 establishes the sermon incident had five people present: 'Miss Vane was at the shelf... Two customers heard her,' alongside Rowe and Mrs Hale. Chapter 4 has Judith say 'There were four of us and nobody laughed,' a headcount that does not match the earlier scene. Keep the number consistent with Chapter 2's account."
+  ],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Delivers the chaperone's absence trope directly and well, and continues enemies-of-manner through the corrected accounts; the meddling matchmaker beat is present but secondary this chapter.",
+  "length_note": null,
+  "fixes": [
+    "Rewrite the opening line so it does not depend on remembering Miss Marchmont's 'How many children?' from the prior chapter's ending. Add a naming clause, e.g. 'Miss Marchmont had asked how many children the schoolroom served, and Judith answered her plainly: twenty-two.'",
+    "Fix the headcount contradiction: change Judith's line 'There were four of us and nobody laughed' to match the five people established in Chapter 2 (Rowe, Mrs Hale, Judith, and two customers), or explicitly explain the discrepancy if it is meant to be part of her own faulty memory.",
+    "Consider a brief narrator sentence bridging into the Bramdean errand set-up, since the transition from Louisa's exchange with Judith on the step to Mrs Pike's cart arrangement is abrupt even by segment standards."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "chapter_hash": "a822eab5fe53b89b",
+  "writer_note": "\"Chapter 3 ends on 'How many children?' \u2014 open on the step with Miss Vane answering, before the Bramdean scheme.\""
+}
