@@ -1,0 +1,112 @@
+#!/usr/bin/env bash
+#
+# Restart the review server, safely.
+#
+#   mw-restart              refuse while a write or redraft is running
+#   mw-restart --wait       wait for it to finish (default 10 minutes), then restart
+#   mw-restart --wait 1800  wait up to half an hour
+#   mw-restart --force      restart anyway, losing whatever is mid-flight
+#
+# Why this exists: `app.html` is re-read from disk on every request and the
+# Python is not. So a pull that changes only the page is live immediately, and a
+# pull that changes a route leaves the browser offering a button the running
+# server has never heard of — which looks like a broken feature, not a stale
+# process. `mw-deploy` restarts when it sees a `.py` change; this is the same
+# step on its own, for a pull done by hand, an edit made on the box, or a server
+# that has wedged.
+#
+# The guard is the point. `run_text_stages` writes chapters to disk one at a
+# time across several minutes and sets `stages.write = "running"` on entry,
+# clearing it only on success — so a restart mid-write loses the chapter being
+# drafted, along with what it cost, and leaves the manifest claiming a run that
+# no longer exists. `_jobs` is rebuilt empty on start, so the job simply
+# vanishes from the page with no error anywhere.
+
+set -euo pipefail
+
+UNIT=${MW_UNIT:-mw-review}
+PORT=${MW_REVIEW_PORT:-8765}
+REPO=${MW_REPO:-/srv/middlewatch}
+WAIT=0
+WAIT_MAX=600
+FORCE=0
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --wait)
+            WAIT=1
+            # An optional number after --wait, so `--wait` alone still works.
+            if [ "${2-}" ] && [ -z "${2//[0-9]/}" ]; then WAIT_MAX=$2; shift; fi
+            ;;
+        --force) FORCE=1 ;;
+        -h|--help) sed -n '2,28p' "$0" | sed 's/^#\{1,2\} \{0,1\}//'; exit 0 ;;
+        *) echo "unknown argument: $1" >&2; exit 2 ;;
+    esac
+    shift
+done
+
+busy() { mw-write-running 2>/dev/null || true; }
+
+if [ "$FORCE" = 1 ]; then
+    b=$(busy)
+    if [ -n "$b" ]; then
+        echo "!!  restarting while this is in flight — it will be lost:" >&2
+        echo "$b" | sed 's/^/    /' >&2
+    fi
+else
+    waited=0
+    while :; do
+        b=$(busy)
+        [ -z "$b" ] && break
+        if [ "$WAIT" = 0 ]; then
+            echo "not restarting — the writer is working:" >&2
+            echo "$b" | sed 's/^/    /' >&2
+            echo "" >&2
+            echo "Chapters land on disk one at a time, so a restart now loses the" >&2
+            echo "one being drafted and what it cost. Wait for it, or:" >&2
+            echo "    mw-restart --wait      # restart as soon as it finishes" >&2
+            echo "    mw-restart --force     # restart now and lose it" >&2
+            exit 1
+        fi
+        if [ "$waited" -ge "$WAIT_MAX" ]; then
+            echo "still busy after ${WAIT_MAX}s, giving up:" >&2
+            echo "$b" | sed 's/^/    /' >&2
+            exit 1
+        fi
+        [ "$waited" = 0 ] && { echo "==> waiting for the writer to finish"; echo "$b" | sed 's/^/    /'; }
+        sleep 15
+        waited=$((waited + 15))
+    done
+    [ "$waited" -gt 0 ] && echo "    idle after ${waited}s"
+fi
+
+echo "==> restarting $UNIT"
+sudo systemctl restart "$UNIT"
+
+# `is-active` only says systemd started the process. A server that imports fine
+# and then fails on its first request would still read as green here, and the
+# whole reason for restarting is that the routes changed — so ask it for one.
+ok=0
+for _ in $(seq 1 10); do
+    sleep 1
+    systemctl is-active --quiet "$UNIT" || continue
+    if curl -fsS --max-time 3 "http://127.0.0.1:${PORT}/api/queue" >/dev/null 2>&1; then
+        ok=1
+        break
+    fi
+done
+
+if [ "$ok" = 0 ]; then
+    echo "    $UNIT did not come back:" >&2
+    journalctl -u "$UNIT" -n 30 --no-pager >&2
+    exit 1
+fi
+
+waiting=$(curl -fsS "http://127.0.0.1:${PORT}/api/queue" \
+    | python3 -c 'import json,sys; g=json.load(sys.stdin)["groups"]; print(sum(len(v) for k,v in g.items() if k!="done"))' \
+    2>/dev/null || echo "?")
+
+echo "    up on :${PORT} — ${waiting} waiting on you"
+if [ -d "$REPO/.git" ]; then
+    echo "    serving $(git -C "$REPO" rev-parse --short HEAD) ($(git -C "$REPO" log -1 --format=%s))"
+fi

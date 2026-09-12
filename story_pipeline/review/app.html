@@ -278,6 +278,17 @@ let state = { rows: [], sel: null, detail: null, keepable: [], editing: null,
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c =>
   ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
 
+// app.html is re-read on every request; the Python behind it is loaded once.
+// So after a pull the page can offer a button the running server has never
+// heard of, and the server's answer is a bare "not found". Say what it means.
+function explain(err) {
+  return /^not found$/i.test(String(err || "").trim())
+    ? "The review server is running older code than this page — it has no " +
+      "route for this action yet. Restart it (sudo systemctl restart mw-review, " +
+      "or mw-deploy) and try again."
+    : err;
+}
+
 function toast(msg) {
   const t = document.getElementById("toast");
   t.textContent = msg; t.classList.add("show");
@@ -498,7 +509,7 @@ function render(d) {
       })).json();
       if (res.error) {
         e.target.disabled = false; e.target.textContent = "Save chapter";
-        toast(res.error); return;
+        toast(explain(res.error)); return;
       }
       state.editing = null;
       // Everything that was decided about the old prose lapses on its own,
@@ -526,7 +537,7 @@ function render(d) {
       body: JSON.stringify({ slug: state.sel, what: "chapters",
                              chapters: [n], undo })
     })).json();
-    if (res.error) { btn.disabled = false; toast(res.error); return; }
+    if (res.error) { btn.disabled = false; toast(explain(res.error)); return; }
     toast(res.all_approved
       ? `All ${res.written} chapters approved — recording is unlocked`
       : `${res.approved.length} of ${res.written} approved` +
@@ -664,7 +675,7 @@ async function act(kind) {
   const res = await (await fetch("/api/" + kind, {
     method: "POST", headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body) })).json();
-  if (res.error) { toast(res.error); return; }
+  if (res.error) { toast(explain(res.error)); return; }
   toast(kind === "approve" ? `Approved ${res.what}: ${d.title}` : `Deleted ${d.title}`);
   // Land on the next item so a queue can be worked straight through.
   const next = state.rows[idx + 1] || state.rows[idx - 1] || null;
@@ -761,7 +772,7 @@ document.getElementById("revise").onsubmit = async e => {
     // In the dialog, not behind it. A toast raised while the scrim is up is the
     // one message you most need to read and the easiest to miss.
     status.className = "bad";
-    status.innerHTML = `<b>That didn't run.</b>${esc(res.error)}`;
+    status.innerHTML = `<b>That didn't run.</b>${esc(explain(res.error))}`;
     go.textContent = "Try again";
     go.disabled = cancel.disabled = false;
     return;
@@ -936,7 +947,7 @@ document.getElementById("write").onsubmit = async e => {
     go.disabled = false; go.textContent = "Write it";
     document.getElementById("prog").className = "show";
     document.getElementById("proglog").innerHTML =
-      `<span style="color:var(--danger)">${esc(res.error)}</span>`;
+      `<span style="color:var(--danger)">${esc(explain(res.error))}</span>`;
     return;
   }
   renderProgress(res);
@@ -1070,7 +1081,7 @@ document.getElementById("notef").onsubmit = async e => {
   } catch (err) { res = { error: String(err) }; }
   if (res.error) {
     const st = document.getElementById("nstatus");
-    st.className = "bad"; st.innerHTML = `<b>That didn't run.</b> ${esc(res.error)}`;
+    st.className = "bad"; st.innerHTML = `<b>That didn't run.</b> ${esc(explain(res.error))}`;
     go.textContent = "Try again"; go.disabled = false;
     document.getElementById("ntext").disabled =
       document.getElementById("ntarget").disabled = false;

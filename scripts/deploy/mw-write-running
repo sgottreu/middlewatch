@@ -58,7 +58,14 @@ def main() -> int:
             job = get("/api/job/" + urllib.parse.quote(slug))
         except DEAD:
             continue
-        if job.get("state") == "running":
+        if job.get("state") != "running":
+            continue
+        if job.get("kind") == "redraft":
+            # One chapter sent back with a note from the review page.
+            passes = len(job.get("passes") or [])
+            print(f"{slug} (redrafting chapter {job.get('n', '?')}, "
+                  f"{passes} pass{'es' if passes != 1 else ''} done)")
+        else:
             done = job.get("done", 0)
             total = job.get("to_write") or job.get("total", "?")
             print(f"{slug} ({done} of {total} chapters)")
