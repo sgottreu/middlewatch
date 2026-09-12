@@ -1,0 +1,187 @@
+#!/usr/bin/env bash
+#
+# Ship what is on this laptop to the review server.
+#
+#   mw-ship "Add scene breaks"      commit everything tracked, push, deploy
+#   mw-ship                         same, with a generated message
+#   mw-ship -n "..."                dry run: say what would happen, change nothing
+#   mw-ship --no-commit             push and deploy what is already committed
+#
+# Runs on the laptop, in the repo. The server end is `mw-deploy`, which already
+# knows how to pull and what to restart; this drives it over ssh and gets the
+# ordering right around the one thing that makes a naive version fail.
+#
+# THE ORDERING. The review server commits story approvals to `stories/` and
+# pushes them every fifteen minutes, because approvals are made there and
+# nowhere else. So both ends write to main. If this script pushed first, the
+# server's next `mw-commit-stories` would be behind, its push would be rejected,
+# and — by design, since nothing here rewrites approval history — the unit would
+# go red rather than rebase. So the server flushes FIRST, this end rebases onto
+# what it pushed, and only then does the code go up:
+#
+#   1. commit here
+#   2. ssh: flush the server's approvals to main
+#   3. pull --rebase, push
+#   4. ssh: mw-deploy — pull, and restart only if Python changed
+#
+# THE SERVER. Set MW_SSH to whatever your ~/.ssh/config calls it:
+#
+#   export MW_SSH=ubuntu@review.middlewatch.co       # in your shell profile
+#   MW_SSH=middlewatch mw-ship "..."                 # or per run
+
+set -euo pipefail
+
+SSH_TARGET=${MW_SSH:-ubuntu@review.middlewatch.co}
+REMOTE_REPO=${MW_REMOTE_REPO:-/srv/middlewatch}
+BRANCH=${MW_BRANCH:-main}
+DRY=0
+COMMIT=1
+MESSAGE=""
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -n|--dry-run) DRY=1 ;;
+        --no-commit) COMMIT=0 ;;
+        -h|--help) sed -n '2,26p' "$0" | sed 's/^#\{1,2\} \{0,1\}//'; exit 0 ;;
+        -*) echo "unknown argument: $1" >&2; exit 2 ;;
+        *) MESSAGE=$1 ;;
+    esac
+    shift
+done
+
+say() { echo "==> $*"; }
+run() { if [ "$DRY" = 1 ]; then echo "    would: $*"; else "$@"; fi; }
+
+cd "$(git rev-parse --show-toplevel)"
+
+# --------------------------------------------------------------------------- #
+# Checks worth doing before anything leaves this machine
+# --------------------------------------------------------------------------- #
+
+current=$(git rev-parse --abbrev-ref HEAD)
+if [ "$current" != "$BRANCH" ]; then
+    echo "on branch '$current', not '$BRANCH' — the server only ever pulls $BRANCH." >&2
+    exit 1
+fi
+
+if ! ssh -o BatchMode=yes -o ConnectTimeout=8 "$SSH_TARGET" true 2>/dev/null; then
+    echo "cannot reach $SSH_TARGET over ssh." >&2
+    echo "Set MW_SSH to the host in your ~/.ssh/config, e.g." >&2
+    echo "    MW_SSH=middlewatch mw-ship \"$MESSAGE\"" >&2
+    exit 1
+fi
+
+if [ "$COMMIT" = 1 ]; then
+    if git diff --quiet && git diff --cached --quiet; then
+        say "nothing to commit — shipping what is already on $BRANCH"
+        COMMIT=0
+    else
+        say "committing"
+        git status --short | sed 's/^/    /'
+        # Tracked files only. An untracked file is either a secret, a scratch
+        # file, or something that has never been thought about — none of which
+        # should reach the server because a deploy script was in a hurry.
+        untracked=$(git ls-files --others --exclude-standard)
+        if [ -n "$untracked" ]; then
+            echo "    (untracked, NOT shipped — git add them yourself if they belong):"
+            echo "$untracked" | sed 's/^/      /'
+        fi
+        if [ -z "$MESSAGE" ]; then
+            MESSAGE="ship: $(git diff --name-only | sed 's#.*/##' | paste -sd', ' - | cut -c1-60)"
+        fi
+        run git commit -qam "$MESSAGE"
+        [ "$DRY" = 1 ] || say "committed $(git rev-parse --short HEAD)"
+    fi
+fi
+
+# --------------------------------------------------------------------------- #
+# 1. The server flushes its approvals first (see THE ORDERING above)
+# --------------------------------------------------------------------------- #
+
+say "flushing story approvals on the server"
+flush=$(cat <<EOF
+set -e
+cd "$REMOTE_REPO"
+if command -v mw-commit-stories >/dev/null 2>&1; then
+    mw-commit-stories
+else
+    ./scripts/deploy/mw-commit-stories
+fi
+EOF
+)
+if [ "$DRY" = 1 ]; then
+    echo "    would: ssh $SSH_TARGET mw-commit-stories"
+else
+    ssh "$SSH_TARGET" "bash -s" <<<"$flush" | sed 's/^/    /'
+fi
+
+# --------------------------------------------------------------------------- #
+# 2. Rebase onto whatever it just pushed, then push
+# --------------------------------------------------------------------------- #
+
+say "rebasing onto origin/$BRANCH"
+run git fetch -q origin "$BRANCH"
+if [ "$DRY" = 0 ] && ! git rebase -q "origin/$BRANCH"; then
+    git rebase --abort || true
+    echo "" >&2
+    echo "The rebase hit a conflict, so nothing has been pushed and the tree is" >&2
+    echo "back as it was. That means the same file changed here and on the" >&2
+    echo "server — almost always a story you edited in both places. Sort it out" >&2
+    echo "by hand:  git pull --rebase" >&2
+    exit 1
+fi
+
+ahead=$(git rev-list --count "origin/$BRANCH..HEAD")
+if [ "$ahead" = 0 ]; then
+    say "nothing to push — the server already has this code"
+else
+    say "pushing $ahead commit(s)"
+    git log --oneline "origin/$BRANCH..HEAD" | sed 's/^/    /'
+    run git push -q origin "$BRANCH"
+fi
+
+# --------------------------------------------------------------------------- #
+# 3. Deploy
+# --------------------------------------------------------------------------- #
+
+say "deploying on $SSH_TARGET"
+deploy=$(cat <<EOF
+set -e
+cd "$REMOTE_REPO"
+before=\$(git rev-parse HEAD)
+
+# mw-deploy is the real thing and does its own change detection. Fall back only
+# when it is not installed yet — the first ship of these scripts is exactly that
+# case, and a bootstrap that needs a manual step is a bootstrap nobody runs.
+if command -v mw-deploy >/dev/null 2>&1; then
+    mw-deploy
+else
+    echo "mw-deploy not installed — bootstrapping"
+    git pull --ff-only
+    sudo install -m 755 scripts/deploy/mw-commit-stories scripts/deploy/mw-deploy \\
+        scripts/deploy/mw-restart scripts/deploy/mw-write-running /usr/local/bin/
+    echo "installed the deploy scripts"
+    mw-restart
+fi
+
+after=\$(git rev-parse HEAD)
+# The deploy scripts changing is the one case mw-deploy deliberately will not
+# handle itself: it is running from /usr/local/bin while the new copies land in
+# the repo, and a script that overwrites itself mid-run is its own bug report.
+if [ "\$before" != "\$after" ] && git diff --name-only "\$before" "\$after" | grep -q '^scripts/deploy/'; then
+    echo "==> deploy scripts changed, reinstalling"
+    sudo install -m 755 scripts/deploy/mw-commit-stories scripts/deploy/mw-deploy \\
+        scripts/deploy/mw-restart scripts/deploy/mw-write-running /usr/local/bin/
+fi
+EOF
+)
+if [ "$DRY" = 1 ]; then
+    echo "    would: ssh $SSH_TARGET mw-deploy"
+    exit 0
+fi
+
+# -t so a sudo password prompt has a terminal to ask on. Without it the restart
+# hangs silently on a box that is not passwordless.
+ssh -t "$SSH_TARGET" "bash -s" <<<"$deploy" | sed 's/^/    /'
+
+say "shipped $(git rev-parse --short HEAD)"
