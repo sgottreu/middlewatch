@@ -119,6 +119,12 @@
   #dochead .t { font-size:13px; color:var(--dim); overflow:hidden;
                 white-space:nowrap; text-overflow:ellipsis; }
 
+  /* The foot of a chapter: the same approve, where you stop reading. */
+  .chend { display:flex; align-items:center; gap:12px; margin:14px 0 2px;
+           padding-top:10px; border-top:1px dashed var(--line); }
+  .chend .m { font-family:var(--mono); font-size:11px; color:var(--dim); }
+  .chend .chapok { margin-left:auto; }
+
   /* action bar --------------------------------------------------------- */
   #bar { flex:none; border-top:1px solid var(--line); background:var(--panel);
          padding:12px 34px; display:flex; align-items:center; gap:10px; }
@@ -231,7 +237,14 @@
   @media (max-width: 760px) {
     body { flex-direction:column; }
     #queue { width:auto; flex:1; border-right:none; min-height:0; }
-    #doc { display:none; }
+    /* min-height:0 is load-bearing on both. A column flex child defaults to
+       min-height:auto, so #doc grows to fit the whole chapter, #docbody never
+       becomes the scroller, and the document scrolls instead — which takes the
+       action bar off the bottom of the screen with it and leaves every
+       docbody.scrollTop in the script writing to something that does not
+       scroll. Both bugs look like "the phone layout is a bit off". */
+    #doc { display:none; min-height:0; }
+    body.show-story #docbody { min-height:0; }
     body.show-story #queue { display:none; }
     body.show-story #doc { display:flex; }
     #dochead { display:flex; }
@@ -253,6 +266,9 @@
            gap:8px; }
     #bar .facts { flex-basis:100%; flex-grow:0; }
     #bar button { flex:1 1 auto; }
+
+    .chend { flex-wrap:wrap; gap:8px; }
+    .chend .chapok { margin-left:0; flex:1 1 100%; }
 
     /* Chapter headings carry three buttons now. Let them stack. */
     .ch h3 { flex-wrap:wrap; gap:6px; }
@@ -466,19 +482,33 @@ async function select(slug) {
   // A different story is a different document — start at the top. The same
   // story means an action on what you are already reading, so stay put.
   if (!same) body.scrollTop = 0;
-  else if (state.anchor != null) scrollToChapter(state.anchor);
+  else if (state.anchor != null) scrollToAnchor(state.anchor);
   else body.scrollTop = was;
   state.anchor = null;
 }
 
-// Anchoring on the chapter rather than restoring a pixel offset, because an
+// Anchoring on an element rather than restoring a pixel offset, because an
 // edit changes the height of everything above it and the offset would drift.
-function scrollToChapter(n) {
+// An id rather than a chapter number: approving from the foot of a chapter has
+// to come back to the foot, not to a heading three screens up.
+function scrollToAnchor(anchor) {
   const body = document.getElementById("docbody");
-  const el = document.getElementById("ch-" + n);
+  const { id, offset } = typeof anchor === "string" ? { id: anchor } : anchor;
+  const el = document.getElementById(id);
   if (!el) return;
+  // `offset` is where the element was on screen when the action started. Pinning
+  // it to the top instead would jolt the page by half a screen for a button you
+  // clicked mid-screen — which is the scrolling this button exists to avoid.
   body.scrollTop += el.getBoundingClientRect().top
-                  - body.getBoundingClientRect().top - 8;
+                  - body.getBoundingClientRect().top - (offset ?? 8);
+}
+
+// The same element, left exactly where it is now.
+function anchorHere(id) {
+  const el = document.getElementById(id);
+  if (!el) return id;
+  return { id, offset: el.getBoundingClientRect().top
+                     - document.getElementById("docbody").getBoundingClientRect().top };
 }
 
 function render(d) {
@@ -563,6 +593,17 @@ function render(d) {
           `<li>${esc(g.quote)}<span class="m"> → ${esc(g.replace_with)}</span></li>`)
           .join("") + `</ul>`;
     }
+    // The same button again, where you finish reading. Approving a chapter you
+    // have just read should not mean scrolling back up past everything you read
+    // to find the heading — which is three screens on a phone. It names the
+    // chapter because by this point the heading is long off the top.
+    if (c.words && state.editing !== c.n)
+      h += `<div class="chend" id="chend-${c.n}">` +
+        `<span class="m">end of chapter ${c.n}</span>` +
+        `<button type="button" class="chapok" data-n="${c.n}" ` +
+        `data-on="${c.approved ? 1 : 0}" data-foot="1">` +
+        `${c.approved ? `✓ chapter ${c.n} approved` : `Approve chapter ${c.n}`}` +
+        `</button></div>`;
     h += `</div>`;
   }
   document.getElementById("docbody").innerHTML = h;
@@ -586,7 +627,7 @@ function render(d) {
     if (ed) {
       state.editing = Number(ed.dataset.n);
       render(state.detail); setActions(state.detail);
-      scrollToChapter(state.editing);
+      scrollToAnchor("ch-" + state.editing);
       return;
     }
 
@@ -594,7 +635,7 @@ function render(d) {
       const was = state.editing;
       state.editing = null;
       render(state.detail); setActions(state.detail);
-      scrollToChapter(was);
+      scrollToAnchor("ch-" + was);
       return;
     }
 
@@ -618,7 +659,7 @@ function render(d) {
     if (e.target.id === "segsave") {
       const box = document.getElementById("segs");
       const n = Number(box.dataset.n);
-      state.anchor = n;
+      state.anchor = "ch-" + n;
       e.target.disabled = true; e.target.textContent = "Saving…";
       const res = await (await fetch("/api/chapter", {
         method: "POST", headers: { "Content-Type": "application/json" },
@@ -647,7 +688,13 @@ function render(d) {
     const btn = e.target.closest(".chapok");
     if (!btn) return;
     const n = Number(btn.dataset.n), undo = btn.dataset.on === "1";
-    state.anchor = n;
+    // From the heading, come back to the heading. From the foot, stay at the
+    // foot — except that approving there means you are done with this chapter,
+    // so the next one's heading is where you were going anyway.
+    const after = (state.detail.chapter_detail.find(c => c.n > n) || {}).n;
+    state.anchor = !btn.dataset.foot ? "ch-" + n
+      : (!undo && after) ? "ch-" + after      // done here; the next one is next
+      : anchorHere("chend-" + n);             // withdrawn, or the last chapter
     btn.disabled = true;
     const res = await (await fetch("/api/approve", {
       method: "POST", headers: { "Content-Type": "application/json" },
@@ -1191,7 +1238,7 @@ async function pollNote() {
   document.getElementById("ncancel").textContent = "Close";
   toast(`Chapter ${j.n} redrafted` + (j.passed ? "" : " · failed review"));
   // Back to the chapter itself if you are still on this story.
-  if (state.sel === slug) state.anchor = j.n;
+  if (state.sel === slug) state.anchor = "ch-" + j.n;
   await loadQueue(state.sel);
 }
 

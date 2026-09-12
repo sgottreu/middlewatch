@@ -300,6 +300,26 @@ agreed to; the queue reports what the chapters actually say, and the story
 reappears under *Chapters awaiting review*. `record` refuses on the same
 condition, checked in the actor rather than only in the CLI wrapper.
 
+**The button appears twice: at the heading and at the foot of the chapter.**
+Approving a chapter you have just read should not mean scrolling back up past
+everything you read to find the heading, which is three screens on a phone. The
+foot copy names the chapter — `Approve chapter 4` — because by then the heading
+is long gone off the top. It is the same `chapok` element with a `data-foot`
+flag, so both share one handler and one notion of approved state.
+
+Where the page lands afterwards differs, and that is the point:
+
+| Clicked | Lands |
+|---|---|
+| The heading button | Back at that heading, as before |
+| The foot button, approving | The next chapter's heading — you have finished this one |
+| The foot button, withdrawing, or on the last chapter | Exactly where it was on screen |
+
+The last row is why `state.anchor` holds `{id, offset}` rather than a chapter
+number: pinning the anchor to the top of the pane would jolt the page half a
+screen for a button clicked mid-screen, which is the scrolling the second
+button exists to remove.
+
 From the terminal:
 
 ```bash
@@ -334,6 +354,7 @@ What the same block fixes, in the order the problems actually bite:
 | Any textarea | Exactly 16px. iOS zooms the page when a focused field is smaller and never zooms back out |
 | Dialogs | Bottom sheets: full width, rounded top, capped at 88dvh |
 | Heights | `100dvh`, because the iOS URL bar makes `100vh` taller than the visible viewport and pushed the action bar underneath it |
+| `min-height: 0` on `#doc` | A column flex child defaults to `min-height: auto`, so `#doc` grew to fit the whole chapter, `#docbody` never became the scroller, and the document scrolled instead — which took the action bar off the bottom of the screen and left every `docbody.scrollTop` in the script writing to something that does not scroll. Both look like "the phone layout is a bit off" rather than like bugs, and only a test that asserted the bar stays pinned found them |
 | Chapter headings | Three buttons now, so they wrap instead of crushing |
 
 **Every action is available, including the paid ones.** They keep the
