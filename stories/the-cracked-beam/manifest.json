@@ -5,7 +5,7 @@
   "stages": {
     "ideate": "approved",
     "write": "done",
-    "edit": "awaiting_review",
+    "edit": "approved",
     "record": "done",
     "design": "pending",
     "direct": "pending"
@@ -54,13 +54,13 @@
     }
   },
   "chapter_approvals": {
-    "1": "c620dbc51deaf897",
-    "2": "0dbacd556dc12427",
-    "3": "f55dee4d7b5bfd4c",
-    "4": "8b4539bc135e57e1",
-    "5": "fcc8ceb7ad3e974a",
-    "6": "2d187d2d11e549e6",
-    "7": "51a1061d922a8e93",
-    "8": "f845e55b5e9d4ecc"
+    "1": "ae9e2e63a5bac0b4",
+    "2": "3a5007ea25369914",
+    "3": "1bc855c4c98271ed",
+    "4": "8813bb628d769cc7",
+    "5": "00356c3b83f8030b",
+    "6": "27a7c8217b909bb0",
+    "7": "4f46fff146ef30a5",
+    "8": "1b13dae1189b3675"
   }
 }
