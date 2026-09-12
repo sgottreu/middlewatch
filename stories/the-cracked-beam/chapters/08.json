@@ -24,7 +24,7 @@
     },
     {
       "speaker": "narrator",
-      "text": "Nobody troubled to correct her. Judith had in fact said it on the step, waiting for the lantern, and the step belonged to Mrs Pike."
+      "text": "said Mrs Pike, on her own doorstep, to the sexton. Nobody troubled to correct her. Judith had in fact said it on the step, waiting for the lantern, and the step belonged to Mrs Pike."
     },
     {
       "speaker": "narrator",
@@ -35,12 +35,16 @@
       "text": "Write to me. Not about the weather, and not about who is engaged, because I shall know. Write and tell me whether the stove smokes, because his man swears it will not and I do not believe him."
     },
     {
+      "speaker": "narrator",
+      "text": "said Miss Marchmont, from the step of the coach."
+    },
+    {
       "speaker": "Miss Judith Vane",
       "text": "I will. And here is something to be going on with."
     },
     {
       "speaker": "narrator",
-      "text": "She gave her the list of six books that had been made out for Mrs Cobbe in October, copied fair, with the shelf numbers against them."
+      "text": "Judith gave her the list of six books made out for Mrs Cobbe in October, copied fair, with the shelf numbers against them."
     },
     {
       "speaker": "Miss Louisa Marchmont",
@@ -52,15 +56,19 @@
     },
     {
       "speaker": "narrator",
-      "text": "Mrs Hale watched the coach out from the window and reported that Miss Marchmont had read the whole way to the turn without once looking up, which was thought very odd of her."
+      "text": "Mrs Hale watched the coach out and reported that Miss Marchmont had read the whole way to the turn without once looking up, which was thought very odd of her."
     },
     {
       "speaker": "narrator",
-      "text": "Mr Rowe came to the apothecary's on the Saturday and was made to stand at the counter, on the shop side of it, among the drawers of chalk and rhubarb."
+      "text": "Mr Rowe came to the apothecary's on the Saturday and was made to stand on the shop side of the counter, among the drawers of chalk and rhubarb."
     },
     {
       "speaker": "Mr Owen Vane",
       "text": "You may have her, and I am glad of it, and I shall say so in the Bell so that they hear it from me first. One condition."
+    },
+    {
+      "speaker": "narrator",
+      "text": "said Owen."
     },
     {
       "speaker": "Mr Silas Rowe",
@@ -76,7 +84,8 @@
     },
     {
       "speaker": "Mr Owen Vane",
-      "text": "I know it. That is why the condition is worded so."
+      "text": "I know it. That is why the condition is worded so.",
+      "tag": "[dry]"
     },
     {
       "speaker": "narrator",
@@ -84,7 +93,7 @@
     },
     {
       "speaker": "narrator",
-      "text": "The subscription book was shut with nine shillings entered in it, and a promise of a load of straw. The straw came. Two of the Barrow girls walked up the lane on the Sunday to look at the east wing with its scaffold, and stood at the gate a full quarter of an hour saying nothing much, and Mrs Pike stood on her own step in the sun and accepted the thanks of everybody who passed."
+      "text": "The subscription book was shut with nine shillings entered in it, and a promise of a load of straw. The straw came. Two of the Barrow girls walked up the lane on the Sunday to look at the east wing with its scaffold, and stood at the gate a full quarter of an hour saying nothing much. Mrs Pike stood on her own step in the sun and accepted the thanks of everybody who passed."
     },
     {
       "speaker": "Mrs Honoria Pike",

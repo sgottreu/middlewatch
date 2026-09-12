@@ -97,6 +97,12 @@ def sentences_from_alignment(alignment: dict) -> list[dict]:
     out: list[dict] = []
     buf: list[str] = []
     start: float | None = None
+    # Characters inside a tag are skipped as they are walked, not deleted from
+    # the text afterwards. On a model that performs the tag they occupy no audio
+    # and it makes no difference; on one that reads it out loud, the cue would
+    # otherwise start at the tag and the subtitle would sit over the word
+    # "quietly" being spoken.
+    in_tag = False
 
     def flush(end_time: float) -> None:
         nonlocal buf, start
@@ -107,6 +113,12 @@ def sentences_from_alignment(alignment: dict) -> list[dict]:
         buf, start = [], None
 
     for i, ch in enumerate(chars):
+        if ch == "[":
+            in_tag = True
+        if in_tag:
+            if ch == "]":
+                in_tag = False
+            continue
         if start is None and not ch.isspace():
             start = starts[i]
         buf.append(ch)
@@ -130,10 +142,8 @@ def sentences_from_alignment(alignment: dict) -> list[dict]:
         out = [{"start_ms": round(starts[0] * 1000), "end_ms": round(ends[-1] * 1000),
                 "text": "".join(chars).strip()}]
 
-    # The timings stay as they are: the tag occupies no audio, so the span it
-    # sits in still starts and ends where the words do.
     for s in out:
-        s["text"] = strip_tags(s["text"])
+        s["text"] = strip_tags(s["text"])     # belt and braces for a stray "]"
     return [s for s in out if s["text"]]
 
 
@@ -167,6 +177,25 @@ CREDIT_RATE = {
 }
 
 
+# Audio tags are an Eleven v3 feature. Sent to any other model they are billed
+# as characters and read out loud as words, which is the worst of both.
+TAG_MODELS = ("eleven_v3",)
+
+
+def tags_enabled(cfg: dict) -> bool:
+    """Will an audio tag reach the model, or be stripped before it gets there?
+
+    Asked in two places for two reasons — the synthesizer strips them, and
+    `attribute` decides whether to ask the writer for them at all — so the
+    answer lives here rather than being worked out twice from the same config.
+    """
+    el = cfg.get("elevenlabs", {})
+    setting = el.get("audio_tags", "auto")
+    if setting != "auto":
+        return bool(setting)
+    return str(el.get("model", "")).startswith(TAG_MODELS)
+
+
 class ElevenLabs:
     name = "elevenlabs"
     max_chars = 2400
@@ -179,6 +208,7 @@ class ElevenLabs:
         # over stills. Keep PCM rather than mp3 so the stitch stays lossless.
         self.sample_rate = int(self.cfg["output_format"].split("_")[1])
         self.usd_per_1k_credits = self.cfg.get("usd_per_1k_credits", 0.0)
+        self.tags = tags_enabled(cfg)
 
     def resolve_voice(self, name: str) -> str:
         """Genre files name voices; the library maps names to IDs.
@@ -197,6 +227,8 @@ class ElevenLabs:
         )
 
     def synthesize(self, text, voice, previous=None, following=None) -> Clip:
+        if not self.tags:
+            text = strip_tags(text)
         body = {
             "text": text,
             "model_id": self.model,
@@ -272,6 +304,9 @@ class ElevenLabs:
         clip = self.synthesize(text, self.resolve_voice(voice))
         return {
             "model": self.model,
+            "tags": self.tags,
+            "pcm": clip.pcm,
+            "sample_rate": clip.sample_rate,
             "billed": clip.billed_units,
             "duration_ms": round(clip.duration_ms),
             "sentences": clip.sentences,

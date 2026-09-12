@@ -12,11 +12,15 @@
     },
     {
       "speaker": "narrator",
-      "text": "Miss Vane had her own account, and hers was of February. Old Nan Corbin at the mill cottages had been laid up with her hip and could not sew or stand, and Rowe went to her every Thursday and read her improving matter until she fell asleep out of self-defence. Judith wrote out a list of six novels the library had, in a fair hand, and gave it to him at the counter."
+      "text": "Miss Vane had her own account, and hers was of February. Old Nan Corbin at the mill cottages had been laid up with her hip, and Rowe went to her every Thursday and read her improving matter until she fell asleep out of self-defence. Judith wrote out a list of six novels the library had and gave it to him at the counter."
     },
     {
       "speaker": "Mr Silas Rowe",
       "text": "I do not think circulating trash is what she wants."
+    },
+    {
+      "speaker": "narrator",
+      "text": "said Rowe, and gave it back across the counter."
     },
     {
       "speaker": "Miss Judith Vane",
@@ -24,7 +28,7 @@
     },
     {
       "speaker": "narrator",
-      "text": "He had not, and said so, and thought no more about it. She had kept the list in the ledger drawer for eleven weeks before she burnt it."
+      "text": "He had not, and said so, and thought no more about it. She kept the list in the ledger drawer for eleven weeks before she burnt it."
     },
     {
       "speaker": "narrator",
@@ -32,11 +36,15 @@
     },
     {
       "speaker": "Mrs Honoria Pike",
-      "text": "Now, my dear, you are the only practical creature in this parish. It is to be Wednesday, and it must be a dinner, for you cannot introduce anybody over tea. I shall have Miss Marchmont, and Mr Rowe, and your brother if he will leave off his powders, and eight is a reasonable number for my table. You will not mind the trouble. You never do mind trouble."
+      "text": "Now, my dear, you are the only practical creature in this parish. It is to be Wednesday, and it must be a dinner, for you cannot introduce anybody over tea. I shall have Miss Marchmont, and Mr Rowe, and your brother if he will leave off his powders. You will not mind the trouble. You never do mind trouble."
     },
     {
       "speaker": "Miss Judith Vane",
       "text": "You wish me to order your dinner for you."
+    },
+    {
+      "speaker": "narrator",
+      "text": "said Judith."
     },
     {
       "speaker": "Mrs Honoria Pike",
@@ -44,7 +52,7 @@
     },
     {
       "speaker": "narrator",
-      "text": "Judith said she would. She told herself it was for the want of anything else to do between Thursday and Wednesday. It was also because she wished to see for herself what a Marchmont looked like, since the family had held the living since her grandfather's time and had never once been in it."
+      "text": "Judith said she would. She told herself it was for want of anything else to do between Thursday and Wednesday. It was also because she wished to see what a Marchmont looked like, the family having held the living since her grandfather's time without once coming into it."
     },
     {
       "speaker": "narrator",
@@ -55,6 +63,10 @@
       "text": "Mrs Pike asks whether there are flowers to be had. She particularly said white."
     },
     {
+      "speaker": "narrator",
+      "text": "said Rowe, from the doorway, having got no further in."
+    },
+    {
       "speaker": "Miss Judith Vane",
       "text": "There is guelder rose in the lane past the smithy. It will be over by Wednesday, but it will be white until then."
     },
@@ -63,12 +75,16 @@
       "text": "Thank you. That is very exact."
     },
     {
+      "speaker": "narrator",
+      "text": "he said."
+    },
+    {
       "speaker": "Miss Judith Vane",
       "text": "You may tell her the ham is spoken for and the pigeons are not. She will want to know which before she asks me herself."
     },
     {
       "speaker": "narrator",
-      "text": "They were perfectly civil. Every sentence was correct and none of them was meant, and each of them went away certain that the other had been the more disagreeable of the two."
+      "text": "Every sentence was correct and none of them was meant, and each went away certain that the other had been the more disagreeable of the two."
     },
     {
       "speaker": "narrator",
@@ -77,6 +93,10 @@
     {
       "speaker": "Mr Owen Vane",
       "text": "That is the third paper you have covered for that woman's table."
+    },
+    {
+      "speaker": "narrator",
+      "text": "said Owen."
     },
     {
       "speaker": "Miss Judith Vane",

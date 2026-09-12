@@ -5,7 +5,7 @@
   "stages": {
     "ideate": "approved",
     "write": "done",
-    "edit": "approved",
+    "edit": "awaiting_review",
     "record": "done",
     "design": "pending",
     "direct": "pending"

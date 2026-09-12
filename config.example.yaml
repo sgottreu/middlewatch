@@ -39,6 +39,7 @@ casting:                     # genre files override narrator / character_voices
 elevenlabs:
   model: eleven_multilingual_v2   # turbo/flash bill at half a credit per char
   output_format: pcm_24000        # pcm_44100 needs a Pro plan
+  audio_tags: auto          # auto = only on models that perform them (v3)
   seed: null                      # set an int for deterministic re-records
   usd_per_1k_credits: 0.22        # verify against your plan
   voice_library:                  # run `cli voices` to get your real IDs

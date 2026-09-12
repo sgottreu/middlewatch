@@ -884,6 +884,23 @@ def _is_tag(text: str) -> bool:
     return bool(head) and (head[0].islower() or head[0] in ",;\u2014\u2013-")
 
 
+def _split_tag(text: str) -> tuple[str, str]:
+    """A narrator segment that opens with an attribution, split from the rest.
+
+    `said Miss Vane.` belongs on the line it tags. `said Miss Vane. He explained
+    the beam, and the fifteen pounds, and held out the notice.` does not — the
+    first sentence tags the speech and everything after it is narration, and
+    joining the lot put a paragraph of narration inside the quotation marks.
+
+    Attribution is written into the prose now that one voice reads everything,
+    so this went from a theoretical case to the shape of every attributed line.
+    """
+    m = re.match(r"^(.{0,80}?[.!?]['\u201d\")]?)(?:\s+|$)(.*)$", text, re.S)
+    if not m:
+        return text, ""
+    return m.group(1), m.group(2).strip()
+
+
 def _short_name(name: str, outline: dict) -> str:
     """`Mrs Honoria Pike` -> `Mrs Pike`. A label is read many times a page, and
     the full form is what makes a labelled chapter tiring rather than helpful.
@@ -947,7 +964,19 @@ def render_markdown(chapter: dict, outline: dict, attribute: bool = True) -> str
         if speaker == "narrator":
             # A tag belongs to the line it tags. Narration proper does not.
             join = bool(paras) and speaker_here is not None and _is_tag(text)
-            after_tag = join
+            if join:
+                tag, rest = _split_tag(text)
+                paras[-1].append(tag)
+                after_tag = True
+                if rest:
+                    # The narration after the tag is its own paragraph, and ends
+                    # the speaker's run the way any narration does.
+                    paras.append([rest])
+                    labels.append("")
+                    speaker_here = None
+                    after_tag = False
+                continue
+            after_tag = False
         else:
             # Dialogue resuming after its own interrupting tag, or continuing
             # uninterrupted \u2014 one speaker is one paragraph either way. A break
@@ -1173,11 +1202,6 @@ three or more.
 Do not attribute every line. An unbroken column of `said X` is padding, and it
 is the opposite failure.
 
-Where a line would be misread without it, you may add a `tag` to that segment —
-`"[quietly]"`, `"[a beat]"`, `"[warmly]"` — as performance direction for the
-voice. It is never printed and never spoken. A few a chapter at most, and never
-to imitate a different person: one voice reads everyone.
-
 Come back no longer than you started. These chapters are already at or over
 their word ceiling, and attribution adds words — so take them back out of
 restatement: a line of dialogue that lands followed by narration explaining that
@@ -1186,6 +1210,20 @@ chapter straight back to be cut, which spends a revision on arithmetic instead
 of on the prose.
 
 Change nothing else. Same events, same beats, same jokes, same last line."""
+
+# Added to the note only when the configured model performs tags. Asking for
+# them on a model that strips them spends revisions on direction nobody will
+# ever hear — and tags written for a voice the writer has never heard are
+# speculative enough already.
+TAG_CLAUSE = """
+Where a line would be misread without it, you may add a `tag` to that segment —
+`"[quietly]"`, `"[a beat]"`, `"[warmly]"` — as performance direction for the
+voice. It is never printed and never spoken aloud. A few a chapter at most, and
+never to imitate a different person: one voice reads everyone."""
+
+
+def attribution_note(with_tags: bool) -> str:
+    return ATTRIBUTION_NOTE + (TAG_CLAUSE if with_tags else "")
 
 
 def chapter_dialogue_turns(b: Bundle, n: int) -> int:

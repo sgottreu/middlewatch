@@ -398,6 +398,20 @@ def cmd_attribute(args, cfg):
     if not todo:
         sys.exit("Nothing to attribute.")
 
+    # Tags are worth asking for only if the model will perform them. Default
+    # follows the provider; --tags/--no-tags overrides when you know you are
+    # about to switch models.
+    model = cfg["elevenlabs"]["model"]
+    performs = tts.tags_enabled(cfg)
+    with_tags = performs if args.tags is None else args.tags
+    if with_tags:
+        print(f"audio tags: asked for — {model} performs them"
+              + ("" if performs else "  (forced with --tags; this model strips them)"))
+    else:
+        print("audio tags: not asked for — "
+              + ("you passed --no-tags" if performs
+                 else f"{model} strips them (--tags to ask anyway)"))
+
     est = [text.estimate_redraft(cfg, b, n) for n in todo]
     low = sum(e.get("low", 0) for e in est)
     high = sum(e.get("high", 0) for e in est)
@@ -419,7 +433,8 @@ def cmd_attribute(args, cfg):
     for n in todo:
         print(f"\nchapter {n}: sending to the writer...")
         try:
-            review = text.redraft_chapter(cfg, b, n, text.ATTRIBUTION_NOTE)
+            review = text.redraft_chapter(cfg, b, n,
+                                          text.attribution_note(with_tags))
         except Exception as e:                    # one bad chapter is not the story
             print(f"  failed: {type(e).__name__}: {e}")
             continue
@@ -453,17 +468,32 @@ def cmd_tts_check(args, cfg):
         "[quietly] Old Mr Fenner is dead, and the beam is cracked through "
         "with the damp. Fifteen pounds, and the poor box holds four."
     )
+    tags = getattr(provider, "tags", False)
     print(f"model:  {cfg['elevenlabs']['model']}")
+    print(f"tags:   {'sent — this model performs them' if tags else 'STRIPPED before sending'}")
     print(f"voice:  {voice}")
     print(f"text:   {line}\n")
     r = provider.probe(line, voice)
+
+    # A check whose verdict is "listen to it" has to leave something to listen
+    # to. auditions/ is already gitignored and already means exactly this.
+    out = Path("auditions") / f"tts-check-{cfg['elevenlabs']['model']}-{voice}.mp3"
+    actor._encode(r["pcm"], r["sample_rate"], out)
+
     print(f"alignment returned: yes ({len(r['sentences'])} sentence(s))")
     print(f"billed: {r['billed']} credits, {r['duration_ms'] / 1000:.1f}s of audio")
     for s in r["sentences"]:
         print(f"  [{s['start_ms']:>6} - {s['end_ms']:>6}ms] {s['text']}")
-    print("\nIf a tag appears in the text above it was not stripped; if you can "
-          "hear it\nspoken, the model is not performing it. Listen before "
-          "recording a story.")
+    print(f"\naudio:  {out}")
+    print(f"  open {out}")
+    if tags:
+        print("\nA tag was sent. If you can hear it spoken rather than performed, "
+              "set\nelevenlabs.audio_tags: false and it will be stripped from "
+              "every line.")
+    else:
+        print("\nThe tag was stripped before sending, so it cost nothing and was "
+              "not read\nout. Switch elevenlabs.model to eleven_v3 and run this "
+              "again to hear one\nperformed.")
 
 
 def cmd_voices(args, cfg):
@@ -815,6 +845,9 @@ def main(argv=None):
     at.add_argument("story")
     at.add_argument("--chapter", type=int, action="append", metavar="N",
                     help="just this chapter; repeatable")
+    at.add_argument("--tags", action=argparse.BooleanOptionalAction, default=None,
+                    help="ask for audio tags as well; defaults to whether the "
+                         "configured model performs them")
     at.add_argument("--dry-run", action="store_true", help="cost only, rewrite nothing")
     at.add_argument("--yes", "-y", action="store_true", help="skip the spend prompt")
     at.set_defaults(fn=cmd_attribute)
