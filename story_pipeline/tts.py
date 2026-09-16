@@ -181,6 +181,13 @@ CREDIT_RATE = {
 # as characters and read out loud as words, which is the worst of both.
 TAG_MODELS = ("eleven_v3",)
 
+# ...and v3 is the one model that refuses the continuity fields, with a 400:
+# "Providing previous_text or next_text is not yet supported with the
+# 'eleven_v3' model." Two capabilities, opposite ways round, which is why each
+# is a list rather than one "is it v3" test that would eventually be read as
+# meaning something.
+NO_CONTEXT_MODELS = ("eleven_v3",)
+
 
 def tags_enabled(cfg: dict) -> bool:
     """Will an audio tag reach the model, or be stripped before it gets there?
@@ -209,6 +216,7 @@ class ElevenLabs:
         self.sample_rate = int(self.cfg["output_format"].split("_")[1])
         self.usd_per_1k_credits = self.cfg.get("usd_per_1k_credits", 0.0)
         self.tags = tags_enabled(cfg)
+        self.context = not self.model.startswith(NO_CONTEXT_MODELS)
 
     def resolve_voice(self, name: str) -> str:
         """Genre files name voices; the library maps names to IDs.
@@ -237,9 +245,14 @@ class ElevenLabs:
         # Continuity across segment joins. Each narrator/dialogue switch is a
         # separate request, and without this the model restarts its prosody cold
         # at every one — the join is audible as a reset in pace and pitch.
-        if previous:
+        #
+        # v3 rejects both outright. Solo narration softens the loss — 16 long
+        # generations rather than 182 short ones, so there are far fewer joins
+        # to smooth — but it is a real trade against v3's performance, and worth
+        # knowing you are making it.
+        if self.context and previous:
             body["previous_text"] = previous[-500:]
-        if following:
+        if self.context and following:
             body["next_text"] = following[:500]
         if self.cfg.get("seed") is not None:
             body["seed"] = self.cfg["seed"]
@@ -300,11 +313,19 @@ class ElevenLabs:
         and the video sync, and whether a given model returns it is a question
         the docs do not answer. Paying a few hundred credits to find out beats
         discovering it eight chapters into a story.
+
+        It sends the continuity fields too, exactly as `record` would. The first
+        v3 run died on those rather than on anything this check had looked at —
+        a probe that exercises less than the real thing is a probe that passes
+        and then lets the real thing fail.
         """
-        clip = self.synthesize(text, self.resolve_voice(voice))
+        clip = self.synthesize(text, self.resolve_voice(voice),
+                               previous="The parish had waited two months.",
+                               following="She read it twice before she answered.")
         return {
             "model": self.model,
             "tags": self.tags,
+            "context": self.context,
             "pcm": clip.pcm,
             "sample_rate": clip.sample_rate,
             "billed": clip.billed_units,

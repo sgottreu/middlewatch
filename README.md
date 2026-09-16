@@ -17,7 +17,9 @@ story_pipeline/     stories code + prompts (prompts must stay inside the package
 ambience_pipeline/  ambience code
 ledger/             spend and revenue, shared
 brand/              launch checklist, merch reference — reference, not code
+site/               the middlewatch.co landing page — one file, no build step
 bibles/             series canon and shared cast portraits
+scripts/deploy/     deploy, backup and review-server operations
 docs/story/         stories documentation
 docs/ambience/      ambience documentation
 assets/sfx_cache/   generated audio, shared across projects
@@ -87,6 +89,13 @@ see `LENGTHS` in `story_pipeline/agents/text.py` for what each one implies.
 
 Four commands cost nothing and need no credentials: `genres`, `bibles`, `lint`,
 and `record --dry-run`.
+
+## Where it runs
+
+Everything up to `design` runs on the AWS box, from a browser — `direct` renders
+on the laptop, because the instance has 412 MiB of RAM. `stories/` lives on its
+own volume there and is swept to S3 hourly by `scripts/deploy/mw-sync`. See
+[docs/story/aws.md](docs/story/aws.md).
 
 ## Ledger
 

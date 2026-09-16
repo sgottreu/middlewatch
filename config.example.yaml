@@ -59,6 +59,7 @@ polly:                       # kept working; not the default
 gemini:
   model: gemini-3.1-flash-image
   aspect_ratio: "16:9"
+  image_mime: image/jpeg      # the API refuses image/png
   image_size: 2K
   thinking_level: high
   # null derives this from length_min — 3 at 15 minutes, 4 at 30 — which holds

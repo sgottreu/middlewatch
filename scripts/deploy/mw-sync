@@ -1,0 +1,164 @@
+#!/usr/bin/env bash
+#
+# mw-sync — back up the gitignored half of every story bundle to S3.
+#
+#   mw-sync push     <slug>...   audio, images and video for these stories
+#   mw-sync push-all             every story in stories/, then the SFX cache
+#   mw-sync pull     <slug>...   bring these stories' binaries back down
+#   mw-sync pull-all             every story git knows about, then the SFX cache
+#   mw-sync push-sfx             assets/sfx_cache/ only
+#   mw-sync pull-sfx
+#
+#   -n, --dry-run    list what would transfer, change nothing
+#   --kinds a,b      limit to some of audio,images,video (default: all three)
+#
+# git holds the text of every story. What it ignores — narration, images, the
+# rendered video — has no second copy anywhere, and the first two cost money to
+# make again. This is that second copy.
+#
+# The server runs every stage up to `design` and sweeps hourly (mw-sync.timer).
+# Video is rendered on the laptop, so it is pushed from there after `direct`.
+# --kinds narrows what moves: the server has no use for video.
+#
+# It never deletes. There is no --delete here, and the IAM policy in
+# docs/story/aws.md withholds s3:DeleteObject, so a wrong path can add objects to
+# the bucket but cannot remove any.
+#
+# A slug may be given as `stories/<slug>`, the form the cli takes. Set MW_BUCKET,
+# MW_REPO, MW_STORIES or MW_SFX to override the defaults below.
+
+set -euo pipefail
+
+BUCKET=${MW_BUCKET:-middlewatch-assets}
+REPO=${MW_REPO:-$(git rev-parse --show-toplevel 2>/dev/null || echo /srv/middlewatch)}
+STORIES=${MW_STORIES:-$REPO/stories}
+SFX=${MW_SFX:-$REPO/assets/sfx_cache}
+DRY=""
+KINDS="audio images video"
+
+EXCLUDES=(--exclude ".DS_Store" --exclude ".gitkeep" --exclude "*.tmp" --exclude "*.part")
+
+die() { echo "mw-sync: $*" >&2; exit 1; }
+
+sync() {
+    # ${DRY:+...} unquoted, not an empty array: bash 3.2 on macOS treats an
+    # empty "${arr[@]}" as unbound under set -u.
+    aws s3 sync "$@" "${EXCLUDES[@]}" --no-progress ${DRY:+--dryrun}
+}
+
+slug_of() {
+    local s=${1%/}
+    echo "${s##*/}"
+}
+
+# A bundle is a directory with a manifest. Checking for one turns a typo into an
+# error rather than a push that finds nothing and exits clean.
+bundle_dir() {
+    local dir="$STORIES/$1"
+    [ -f "$dir/manifest.json" ] || die "no story bundle at $dir"
+    echo "$dir"
+}
+
+push_story() {
+    local slug dir kind class found=0
+    slug=$(slug_of "$1")
+    dir=$(bundle_dir "$slug")
+    echo "push $slug"
+    for kind in $KINDS; do
+        # A stage creates its directory before it writes anything, so an empty
+        # one is common and not worth a line of output.
+        [ -n "$(ls -A "$dir/$kind" 2>/dev/null)" ] || continue
+        found=1
+        # Video is rebuilt from audio and images by ffmpeg with no API call, and
+        # is read back only on a restore, so it goes straight to Infrequent Access.
+        class=""
+        [ "$kind" = video ] && class=STANDARD_IA
+        sync "$dir/$kind/" "s3://$BUCKET/stories/$slug/$kind/" \
+            ${class:+--storage-class $class}
+    done
+    [ "$found" = 1 ] || echo "  nothing to push yet — no audio, images or video"
+}
+
+pull_story() {
+    local slug dir kind
+    slug=$(slug_of "$1")
+    dir=$(bundle_dir "$slug")
+    echo "pull $slug"
+    for kind in $KINDS; do
+        sync "s3://$BUCKET/stories/$slug/$kind/" "$dir/$kind/"
+    done
+}
+
+push_sfx() {
+    if [ ! -d "$SFX" ]; then
+        echo "push sfx: skipped, no $SFX"
+        return 0
+    fi
+    echo "push sfx"
+    sync "$SFX/" "s3://$BUCKET/assets/sfx_cache/"
+}
+
+pull_sfx() {
+    echo "pull sfx"
+    mkdir -p "$SFX"
+    sync "s3://$BUCKET/assets/sfx_cache/" "$SFX/"
+}
+
+# Every bundle on disk. Zero is an error, not a quiet success: it almost always
+# means the wrong MW_REPO, and a backup that silently covers nothing is the one
+# failure this script exists to prevent.
+each_story() {
+    local fn=$1 dir n=0
+    [ -d "$STORIES" ] || die "no stories directory at $STORIES — set MW_REPO"
+    for dir in "$STORIES"/*/; do
+        [ -f "$dir/manifest.json" ] || continue
+        "$fn" "$(basename "$dir")"
+        n=$((n + 1))
+    done
+    [ "$n" -gt 0 ] || die "no story bundles under $STORIES — set MW_REPO"
+    echo "$n stories"
+}
+
+main() {
+    local cmd="" slugs=() s k
+    while [ $# -gt 0 ]; do
+        case "$1" in
+            -n|--dry-run) DRY=1 ;;
+            --kinds)
+                shift
+                [ $# -gt 0 ] || die "--kinds needs a list, e.g. --kinds audio,images"
+                KINDS=$(echo "$1" | tr ',' ' ')
+                for k in $KINDS; do
+                    case "$k" in
+                        audio|images|video) ;;
+                        *) die "unknown kind: $k (audio, images, video)" ;;
+                    esac
+                done ;;
+            -h|--help)
+                awk 'NR == 1 { next } !/^#/ { exit } { sub(/^# ?/, ""); print }' "$0"
+                exit 0 ;;
+            -*) die "unknown option: $1" ;;
+            *) if [ -z "$cmd" ]; then cmd=$1; else slugs+=("$1"); fi ;;
+        esac
+        shift
+    done
+
+    [ -n "$cmd" ] || die "no command given; mw-sync --help for usage"
+    command -v aws >/dev/null 2>&1 || die "aws CLI not found on PATH"
+    [ -z "$DRY" ] || echo "(dry run — nothing will transfer)"
+
+    case "$cmd" in
+        push|pull)
+            [ "${#slugs[@]}" -gt 0 ] || die "$cmd needs at least one story slug"
+            for s in "${slugs[@]}"; do "${cmd}_story" "$s"; done ;;
+        push-all) each_story push_story; push_sfx ;;
+        pull-all) each_story pull_story; pull_sfx ;;
+        push-sfx) push_sfx ;;
+        pull-sfx) pull_sfx ;;
+        *) die "unknown command: $cmd; mw-sync --help for usage" ;;
+    esac
+
+    echo "done $(date -u +%Y-%m-%dT%H:%MZ)"
+}
+
+main "$@"

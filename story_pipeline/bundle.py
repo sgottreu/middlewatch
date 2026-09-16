@@ -160,15 +160,30 @@ class Bundle:
     def timeline_path(self, n: int) -> Path:
         return self.root / "audio" / f"{n:02d}.timeline.json"
 
+    # The image API returns JPEG — it refuses `image/png` outright — so new
+    # files are .jpg. Portraits generated before that, and any promoted into a
+    # series bible as .png, are still found: a face on disk is a face on disk,
+    # and regenerating one costs money and returns a different person.
+    IMAGE_EXTS = ("jpg", "png")
+
+    def _image(self, path: Path) -> Path:
+        if path.exists():
+            return path
+        for ext in self.IMAGE_EXTS:
+            alt = path.with_suffix(f".{ext}")
+            if alt.exists():
+                return alt
+        return path
+
     def cast_image(self, name: str) -> Path:
-        return self.root / "images" / "cast" / f"{slugify(name)}.png"
+        return self._image(self.root / "images" / "cast" / f"{slugify(name)}.jpg")
 
     @property
     def scenes_path(self) -> Path:
         return self.root / "images" / "scenes.json"
 
     def scene_image(self, chapter: int, idx: int) -> Path:
-        return self.root / "images" / f"{chapter:02d}-{idx:02d}.png"
+        return self._image(self.root / "images" / f"{chapter:02d}-{idx:02d}.jpg")
 
     @property
     def srt_path(self) -> Path:

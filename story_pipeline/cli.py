@@ -471,6 +471,10 @@ def cmd_tts_check(args, cfg):
     tags = getattr(provider, "tags", False)
     print(f"model:  {cfg['elevenlabs']['model']}")
     print(f"tags:   {'sent — this model performs them' if tags else 'STRIPPED before sending'}")
+    joins = ("previous/next text sent — prosody carries across a join"
+             if getattr(provider, "context", False)
+             else "no continuity fields — this model refuses them")
+    print(f"joins:  {joins}")
     print(f"voice:  {voice}")
     print(f"text:   {line}\n")
     r = provider.probe(line, voice)
@@ -514,7 +518,7 @@ def cmd_voices(args, cfg):
 
 def cmd_design(args, cfg):
     b = _bundle(args)
-    designer.design_all(cfg, b)
+    designer.design_all(cfg, b, replan=getattr(args, "replan", False))
     print(f"Next:   python3 -m story_pipeline.cli direct {b.root}")
 
 
@@ -821,8 +825,14 @@ def main(argv=None):
                     help="rewrite chapters already done instead of resuming")
     wr.set_defaults(fn=cmd_write)
 
+    dz = sub.add_parser("design", help="cast sheet and scene images")
+    dz.add_argument("story")
+    dz.add_argument("--replan", action="store_true",
+                    help="choose the shots again instead of keeping the plan on "
+                         "disk; a paid call per chapter")
+    dz.set_defaults(fn=cmd_design)
+
     for name, fn, helptext in [
-        ("design", cmd_design, "cast sheet and scene images"),
         ("status", cmd_status, "show stage state and spend"),
         ("lint", cmd_lint, "check drafts for machine register (free, no API calls)"),
     ]:

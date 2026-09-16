@@ -66,8 +66,16 @@ class Bible:
         member = self.member(name)
         if not member:
             return None
-        path = self.cast_dir / (member.get("portrait") or f"{_slug(name)}.png")
-        return path if path.exists() else None
+        named = member.get("portrait")
+        if named:
+            path = self.cast_dir / named
+            return path if path.exists() else None
+        # No explicit filename: whichever format the portrait was generated in.
+        for ext in ("jpg", "png"):
+            path = self.cast_dir / f"{_slug(name)}.{ext}"
+            if path.exists():
+                return path
+        return None
 
     def save_portrait(self, name: str, image: Path) -> Path | None:
         """Promote a freshly generated portrait into the series, so story two
@@ -80,8 +88,9 @@ class Bible:
         if not self.member(name):
             return None
         self.cast_dir.mkdir(parents=True, exist_ok=True)
-        target = self.cast_dir / (self.member(name).get("portrait") or f"{_slug(name)}.png")
-        if target.exists():
+        target = self.cast_dir / (self.member(name).get("portrait")
+                                  or f"{_slug(name)}{image.suffix or '.jpg'}")
+        if self.portrait(name):
             return None
         shutil.copy(image, target)
         return target
@@ -380,9 +389,11 @@ def validate(path: Path, cfg: dict | None = None) -> list[Problem]:
 
     # --- portraits on disk with nobody to own them ------------------------
     if bible.cast_dir.exists():
-        claimed = {(m.get("portrait") or f"{_slug(str(m['name']))}.png")
-                   for m in cast if isinstance(m, dict) and m.get("name")}
-        for png in sorted(bible.cast_dir.glob("*.png")):
+        claimed = {(m.get("portrait") or f"{_slug(str(m['name']))}{ext}")
+                   for m in cast if isinstance(m, dict) and m.get("name")
+                   for ext in (".jpg", ".png")}
+        for png in sorted(p for ext in ("*.jpg", "*.png")
+                          for p in bible.cast_dir.glob(ext)):
             if png.name not in claimed:
                 warn(f"{bible.cast_dir.name}/{png.name}", "no cast member claims this portrait",
                      "A renamed character leaves its old face behind. Delete it, "

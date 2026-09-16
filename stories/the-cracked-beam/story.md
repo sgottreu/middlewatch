@@ -11,7 +11,11 @@ regency / slice_of_life · Middle Watch: Amberlight
 | Target (30 min) | 4,500 | 30:00 |
 | Planned | 4,500 | 30:00 |
 | Written | 5,113 | 34:05 |
-| **Narrated** | | *not yet recorded* |
+| **Narrated** | | **31:00** |
+
+Measured pace **165 wpm** against an assumed 150. Runtime is +3% for a 30-minute story.
+
+This is the figure the length table is built on. See [calibration](../../docs/story/calibration.md) before changing it on the strength of one story.
 
 ## Chapters
 
@@ -19,14 +23,14 @@ regency / slice_of_life · Middle Watch: Amberlight
 
 | # | Title | Beats | Target | Written | Narrated |
 |---|---|---|---|---|---|
-| 1 | The Cracked Beam | 5 | 570 | 649 (+14%) | — |
-| 2 | Old Grievances | 5 | 560 | 665 (+19%) | — |
-| 3 | An Evening Arranged | 5 | 560 | 632 (+13%) | — |
-| 4 | The Bramdean Road | 5 | 570 | 659 (+16%) | — |
-| 5 | What Was Seen | 5 | 560 | 624 (+11%) | — |
-| 6 | The Apothecary's Question | 5 | 560 | 615 (+10%) | — |
-| 7 | A Proposal Not Required | 5 | 560 | 619 (+11%) | — |
-| 8 | Subscriptions Closed | 5 | 560 | 650 (+16%) | — |
+| 1 | The Cracked Beam | 5 | 570 | 649 (+14%) | 4:04 |
+| 2 | Old Grievances | 5 | 560 | 665 (+19%) | 4:00 |
+| 3 | An Evening Arranged | 5 | 560 | 632 (+13%) | 3:35 |
+| 4 | The Bramdean Road | 5 | 570 | 659 (+16%) | 4:12 |
+| 5 | What Was Seen | 5 | 560 | 624 (+11%) | 3:43 |
+| 6 | The Apothecary's Question | 5 | 560 | 615 (+10%) | 3:49 |
+| 7 | A Proposal Not Required | 5 | 560 | 619 (+11%) | 3:44 |
+| 8 | Subscriptions Closed | 5 | 560 | 650 (+16%) | 3:53 |
 
 ## Cast
 
@@ -58,7 +62,7 @@ regency / slice_of_life · Middle Watch: Amberlight
 
 | Spend | |
 |---|---|
-| elevenlabs_credits | 25878.0 |
+| elevenlabs_credits | 52162.0 |
 
 ---
 

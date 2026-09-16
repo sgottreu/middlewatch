@@ -1,0 +1,14 @@
+[Unit]
+# Hourly is the most work you can lose: one chapter of narration and the images
+# for it. A sweep with nothing to do costs one ListObjects call per story, so
+# raising the frequency is cheap and lowering it only widens that window.
+Description=Back up story assets to S3 every hour
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=1h
+# Catch up after a reboot rather than waiting for the next full interval.
+Persistent=true
+
+[Install]
+WantedBy=timers.target

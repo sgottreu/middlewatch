@@ -153,18 +153,59 @@ impression.
 Tags change the audio, so they are in `chapter_hash` — but only when present, so
 nothing already approved or narrated lapsed the day this shipped.
 
+## What each model can and cannot do
+
+| | `eleven_multilingual_v2` | `eleven_v3` |
+|---|---|---|
+| Character alignment | yes | yes |
+| Audio tags | billed and read aloud — stripped before sending | performed |
+| `previous_text` / `next_text` | accepted | **400, refused outright** |
+
+The last row is a real trade, not a detail. Those fields are what carries pace
+and pitch across a join, so on v3 every generation starts cold. Solo narration
+is what makes that affordable — 16 long generations per story instead of 182
+short ones, so there are far fewer joins to smooth. On a cast, v3 would sound
+worse than v2 for exactly this reason.
+
+Both capabilities are lists in `tts.py` (`TAG_MODELS`, `NO_CONTEXT_MODELS`)
+rather than one "is it v3" test, because they point opposite ways and a single
+flag would eventually be read as meaning the other one.
+
 ## Check the model before you trust it
 
 ```bash
 python3 -m story_pipeline.cli tts-check          # a few hundred credits
 ```
 
-Synthesizes one tagged line and prints the sentence spans it got back. Two
+Synthesizes one tagged line **with the continuity fields attached, exactly as
+`record` sends them**, and prints the sentence spans it got back. The first v3
+run died on those fields rather than on anything the check had looked at: a
+probe that exercises less than the real thing passes, and then lets the real
+thing fail. Two
 things it settles that documentation will not: whether the configured model
 returns character alignment at all — the timeline, the subtitles and the video
 sync are all built from it — and whether an audio tag is performed or read out
 loud. Both cost cents here and a whole story to discover later. Run it after any
 change to `elevenlabs.model`.
+
+## Design resumes, and what it costs when it cannot
+
+`design` skips any image already on disk, so a stopped run picks up where it
+left off. Two things make that honest rather than approximate:
+
+- **The shot plan is written to `scenes.json` before a single image of that
+  chapter is paid for.** It used to be saved only when the chapter finished, so
+  a run that stopped part-way left images with no plan to describe them — and
+  planning is a model call, so the resumed run bought a new one. A new plan can
+  choose different moments, and the images keep their numbers, so they would be
+  quietly adopted for moments they were never drawn for.
+- **A plan is kept unless the narration changed.** It carries the chapter's
+  timeline hash: re-record a chapter and it is planned again, because the
+  sentences it anchored to are gone. `--replan` forces it for every chapter.
+
+If images are ever found with no plan — a run stopped before this existed —
+`design` names the files, explains that a fresh plan may not match them, and
+gives the price of redrawing. It does not decide for you.
 
 ## The voice ids are yours, not ours
 

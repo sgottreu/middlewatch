@@ -7,11 +7,12 @@
     "write": "done",
     "edit": "approved",
     "record": "done",
-    "design": "pending",
-    "direct": "pending"
+    "design": "done",
+    "direct": "done"
   },
   "spend": {
-    "elevenlabs_credits": 25878.0
+    "elevenlabs_credits": 52162.0,
+    "gemini_images": 41.0
   },
   "pinned": {
     "art_style": "Romantic-era English watercolour and ink illustration, in the manner of early nineteenth-century hand-coloured aquatint book plates. Soft muted palette of sage, dove grey, cream and dusty rose. Visible paper tooth. Gentle diffused daylight.",

@@ -121,6 +121,11 @@ DEFAULTS: dict[str, Any] = {
     "gemini": {
         "model": "gemini-3.1-flash-image",
         "aspect_ratio": "16:9",
+        # The image API accepts JPEG only; PNG is refused with a 400.
+        "image_mime": "image/jpeg",
+        # Only for the "this will cost about" line. The ledger prices images
+        # from ledger/rates.json, which is the figure that has to be right.
+        "usd_per_image": 0.05,
         "image_size": "2K",
         "thinking_level": "high",
         # null derives the count from the story's length, holding the cadence at

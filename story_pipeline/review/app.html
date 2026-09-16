@@ -140,10 +140,10 @@
         border-radius:3px; padding:0 4px; color:var(--dim); margin-left:5px; }
   .empty { color:var(--dim); padding:40px 34px; }
   /* revise dialog ------------------------------------------------------ */
-  #scrim, #wscrim { position:fixed; inset:0; background:rgba(0,0,0,.55);
+  #scrim, #wscrim, #sscrim { position:fixed; inset:0; background:rgba(0,0,0,.55);
                     display:none; align-items:center; justify-content:center;
                     z-index:10; }
-  #scrim.show, #wscrim.show { display:flex; }
+  #scrim.show, #wscrim.show, #sscrim.show { display:flex; }
   #revise { background:var(--panel); border:1px solid var(--line); border-radius:8px;
             width:min(560px, 92vw); max-height:88vh; overflow-y:auto; padding:22px 24px; }
   #revise h2 { margin:0 0 4px; font-size:19px; }
@@ -197,6 +197,25 @@
             transition:width .3s; }
   #proglog { font-family:var(--mono); font-size:12px; color:var(--dim);
              margin-top:8px; max-height:140px; overflow-y:auto; }
+  /* record / design dialog: the same box as #write, one counter each ------ */
+  #stage { background:var(--panel); border:1px solid var(--line); border-radius:8px;
+           width:min(520px, 92vw); max-height:88vh; overflow-y:auto; padding:22px 24px; }
+  #stage h2 { margin:0 0 4px; font-size:19px; }
+  #stage .lede { color:var(--dim); font-size:13px; margin:0 0 16px; }
+  #stage .cost { border:1px solid var(--accent); background:rgba(201,162,39,.09);
+                 border-radius:6px; padding:12px 14px; margin:0 0 14px; }
+  #stage .big { font-size:22px; display:block; margin-bottom:2px; }
+  #stage .m2 { font-family:var(--mono); font-size:12px; color:var(--dim); display:block; }
+  #stage .redo2 { display:flex; gap:8px; align-items:center; cursor:pointer;
+                  font-size:14px; margin:0 0 4px; }
+  #stage .row2 { display:flex; gap:9px; justify-content:flex-end; margin-top:16px; }
+  #sprog { display:none; margin:14px 0 0; }
+  #sprog.show { display:block; }
+  #bar3 { height:6px; border-radius:3px; background:var(--line); overflow:hidden; }
+  #bar3 i { display:block; height:100%; background:var(--ok); width:0;
+            transition:width .3s; }
+  #sproglog { font-family:var(--mono); font-size:12px; color:var(--dim);
+              margin-top:8px; max-height:140px; overflow-y:auto; }
   /* note-to-writer dialog ---------------------------------------------- */
   #nscrim { position:fixed; inset:0; background:rgba(0,0,0,.55); display:none;
             align-items:center; justify-content:center; z-index:10; }
@@ -296,12 +315,13 @@
 
     /* Dialogs become sheets: full width, off the bottom edge, thumb-reachable
        buttons, and never taller than the visible viewport. */
-    #scrim, #wscrim, #nscrim { align-items:flex-end; }
-    #revise, #write, #notef { width:100%; max-width:none; max-height:88dvh;
+    #scrim, #wscrim, #nscrim, #sscrim { align-items:flex-end; }
+    #revise, #write, #notef, #stage { width:100%; max-width:none; max-height:88dvh;
                               border-radius:14px 14px 0 0;
                               padding:18px 16px calc(18px + env(safe-area-inset-bottom)); }
-    #revise .row2, #write .row2, #notef .row2 { flex-wrap:wrap; }
-    #revise .row2 button, #write .row2 button, #notef .row2 button { flex:1 1 auto; }
+    #revise .row2, #write .row2, #notef .row2, #stage .row2 { flex-wrap:wrap; }
+    #revise .row2 button, #write .row2 button, #notef .row2 button,
+    #stage .row2 button { flex:1 1 auto; }
     #notef textarea, #revise textarea { font-size:16px; }
     #notef select { min-height:40px; font-size:16px; }
 
@@ -330,6 +350,9 @@
       <button type="button" id="approve" class="primary" disabled>Approve<kbd>a</kbd></button>
       <button type="button" id="reviseBtn" disabled>Revise…<kbd>e</kbd></button>
       <button type="button" id="writeBtn" disabled>Write…<kbd>w</kbd></button>
+      <button type="button" id="recordBtn" disabled>Record…<kbd>n</kbd></button>
+      <button type="button" id="designBtn" disabled>Design…<kbd>g</kbd></button>
+      <button type="button" id="zipBtn" disabled>Assets .zip</button>
       <button type="button" id="reject" class="danger" disabled>Reject<kbd>r</kbd></button>
     </div>
   </main>
@@ -360,6 +383,18 @@
     <div class="row2">
       <button type="button" id="wcancel">Cancel</button>
       <button type="submit" id="wgo" class="primary">Write it</button>
+    </div>
+  </form></div>
+  <div id="sscrim"><form id="stage">
+    <h2 id="stitle"></h2>
+    <p class="lede" id="slede"></p>
+    <div class="cost" id="scost"></div>
+    <label class="redo2" id="sopt" hidden>
+      <input type="checkbox" id="soptbox"><span id="sopttext"></span></label>
+    <div id="sprog"><div id="bar3"><i></i></div><div id="sproglog"></div></div>
+    <div class="row2">
+      <button type="button" id="scancel">Cancel</button>
+      <button type="submit" id="sgo" class="primary"></button>
     </div>
   </form></div>
   <div id="nscrim"><form id="notef">
@@ -405,11 +440,15 @@ const esc = s => String(s ?? "").replace(/[&<>"]/g, c =>
 // So after a pull the page can offer a button the running server has never
 // heard of, and the server's answer is a bare "not found". Say what it means.
 function explain(err) {
-  return /^not found$/i.test(String(err || "").trim())
+  // The server reports "ValueError: 0 of 8 chapters are approved…". The class
+  // name is noise to someone who needs the sentence after it, and the sentences
+  // are written to be read — so the prefix goes and the message stays.
+  const msg = String(err || "").trim().replace(/^[A-Za-z_][\w.]*(Error|Exception):\s*/, "");
+  return /^not found$/i.test(msg)
     ? "The review server is running older code than this page — it has no " +
       "route for this action yet. Restart it (sudo systemctl restart mw-review, " +
       "or mw-deploy) and try again."
-    : err;
+    : msg;
 }
 
 function toast(msg) {
@@ -788,8 +827,12 @@ function setActions(d) {
   const facts = document.getElementById("facts");
   const rv = document.getElementById("reviseBtn");
   const wr = document.getElementById("writeBtn");
+  const rec = document.getElementById("recordBtn");
+  const dsg = document.getElementById("designBtn");
+  const zip = document.getElementById("zipBtn");
   if (!d) {
-    ap.disabled = rj.disabled = rv.disabled = wr.disabled = true;
+    ap.disabled = rj.disabled = rv.disabled = wr.disabled =
+      rec.disabled = dsg.disabled = zip.disabled = true;
     facts.textContent = ""; return; }
 
   // Derive from the real stage pair, not from "not awaiting an outline".
@@ -827,6 +870,25 @@ function setActions(d) {
                 !(ideate === "approved" && (edit === "pending" || edit === "running"));
   wr.innerHTML = !writing ? `Write…<kbd>w</kbd>`
     : d.job.kind === "redraft" ? `Redrafting ${d.job.n}…` : `Writing…`;
+
+  // The two paid stages that run on the server. The real gates live there —
+  // unapproved chapters, missing timelines — because a button is not a
+  // safeguard. These only stop the click that cannot possibly be right, and
+  // show progress while one is in flight.
+  const jkind = (d.job || {}).kind;
+  const at = () => `${(d.job || {}).done || 0}/${(d.job || {}).total || "?"}`;
+  rec.disabled = writing || !written;
+  rec.innerHTML = writing && jkind === "record"
+    ? `Narrating ${at()}…` : `Record…<kbd>n</kbd>`;
+  dsg.disabled = writing || d.stages.record !== "done";
+  dsg.innerHTML = writing && jkind === "design"
+    ? `Drawing ${at()}…` : `Design…<kbd>g</kbd>`;
+
+  // Rendering happens off this box, so the assets are a deliverable of their
+  // own — see docs/story/aws.md.
+  const have = ((d.assets || {}).audio || 0) + ((d.assets || {}).images || 0);
+  zip.disabled = !have;
+  zip.textContent = have ? `Assets .zip (${have})` : `Assets .zip`;
   const lapsed = chs.filter(c => c.approval_lapsed).length;
   facts.textContent =
     `${d.chapters} chapters · ${d.beats} beats · ${d.per_beat} w/beat · ` +
@@ -1133,6 +1195,147 @@ document.getElementById("write").onsubmit = async e => {
   pollTimer = setInterval(pollJob, 1500);
 };
 
+// --- record and design ---------------------------------------------------
+// One dialog for both. They differ in what they cost, what they count and what
+// comes next, and in nothing else. `direct` is deliberately absent: it renders
+// on a real machine, so the page hands over the assets instead — docs/story/aws.md.
+const sscrim = document.getElementById("sscrim");
+let sKind = null, sPoll = null;
+
+const STAGE = {
+  record: {
+    title: "Narrate every chapter",
+    lede: "One mp3 and one timeline per chapter. The largest single cost here, " +
+          "which is why it is gated on approving the chapters first.",
+    go: "Record it",
+    unit: "chapters narrated",
+    opt: "narrate unapproved chapters anyway",
+    next: "Next: <b>Design</b> — shot timings are read from these timelines.",
+  },
+  design: {
+    title: "Draw the cast and scenes",
+    lede: "The cast sheet first, then scene images for every chapter, timed " +
+          "against the narration.",
+    go: "Design it",
+    unit: "images drawn",
+    opt: "re-plan shots that already have a picture",
+    next: "Next: <b>Assets .zip</b>, then render it on your laptop.",
+  },
+};
+
+async function openStage(kind) {
+  if (!state.detail) return;
+  sKind = kind;
+  const s = STAGE[kind];
+  document.getElementById("stitle").textContent = s.title;
+  document.getElementById("slede").textContent = s.lede;
+  document.getElementById("sopttext").textContent = s.opt;
+  document.getElementById("sopt").hidden = false;
+  document.getElementById("soptbox").checked = false;
+  const go = document.getElementById("sgo");
+  go.disabled = false; go.textContent = s.go;
+  document.getElementById("scancel").textContent = "Cancel";
+  document.getElementById("sprog").className = "";
+  document.getElementById("sproglog").innerHTML = "";
+  document.querySelector("#bar3 i").style.width = "0";
+  document.getElementById("scost").innerHTML =
+    `<span class="m2">working out what it costs…</span>`;
+  sscrim.classList.add("show");
+
+  // Free and credential-free on the server, so the figure is always available
+  // even on a box that cannot reach the provider at all.
+  const est = await (await fetch("/api/estimate/" +
+                                 encodeURIComponent(state.sel))).json();
+  const e = (est || {})[kind] || {};
+  document.getElementById("scost").innerHTML =
+    kind === "record"
+      ? (e.unavailable
+          ? `<span class="m2">${esc(e.unavailable)}</span>`
+          : `<span class="big">about $${(e.usd || 0).toFixed(2)}</span>` +
+            `<span class="m2">${(e.billed_units || 0).toLocaleString()} ` +
+            `${esc(e.unit || "")} on ${esc(e.engine || "")} · ` +
+            `~${e.runtime_min || 0} min of narration</span>`)
+      : `<span class="big">about $${(e.usd || 0).toFixed(2)}</span>` +
+        `<span class="m2">${e.images || 0} image(s) still to draw · ` +
+        `${e.per_chapter || 0} per chapter</span>`;
+}
+
+function renderStage(j) {
+  document.getElementById("sprog").className = "show";
+  const pct = j.total ? Math.round((j.done || 0) / j.total * 100) : 0;
+  document.querySelector("#bar3 i").style.width = pct + "%";
+  // Counted off disk by the server, so a resumed run reports what is really
+  // there rather than starting from zero.
+  document.getElementById("sproglog").textContent =
+    `${j.done || 0} of ${j.total || "?"} ${STAGE[sKind].unit}` +
+    (j.state === "running" ? "…" : "");
+}
+
+async function pollStage() {
+  const j = await (await fetch("/api/job/" +
+                               encodeURIComponent(state.sel))).json();
+  renderStage(j);
+  if (j.state === "running") return;
+
+  clearInterval(sPoll); sPoll = null;
+  const go = document.getElementById("sgo");
+  if (j.state === "failed") {
+    go.disabled = false; go.textContent = "Try again";
+    document.getElementById("sproglog").innerHTML +=
+      `<br><span style="color:var(--danger)">${esc(explain(j.error || "failed"))}</span>` +
+      `<br>What finished is on disk — running it again carries on from there.`;
+    return;
+  }
+  go.textContent = "Done"; go.disabled = false;
+  document.getElementById("scancel").textContent = "Close";
+  document.getElementById("sproglog").innerHTML +=
+    `<br><br><b>Done.</b>` +
+    (j.spend ? ` $${j.spend.toFixed(2)} spent on this story so far.` : ``) +
+    `<br>` + STAGE[sKind].next;
+  await loadQueue(state.sel);
+}
+
+document.getElementById("stage").onsubmit = async e => {
+  e.preventDefault();
+  const go = document.getElementById("sgo");
+  if (go.textContent === "Done") { document.getElementById("scancel").click(); return; }
+  const body = { slug: state.sel };
+  if (document.getElementById("soptbox").checked)
+    body[sKind === "record" ? "force" : "replan"] = true;
+  go.disabled = true;
+  go.textContent = sKind === "record" ? "Narrating…" : "Drawing…";
+  const res = await (await fetch("/api/" + sKind, {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body) })).json();
+  if (res.error) {
+    go.disabled = false; go.textContent = STAGE[sKind].go;
+    document.getElementById("sprog").className = "show";
+    document.getElementById("sproglog").innerHTML =
+      `<span style="color:var(--danger)">${esc(explain(res.error))}</span>`;
+    return;
+  }
+  renderStage(res);
+  sPoll = setInterval(pollStage, 2000);
+};
+
+document.getElementById("scancel").onclick = () => {
+  // Like write: closing the dialog does not stop the thread.
+  if (sPoll) toast(sKind === "record" ? "Still narrating in the background."
+                                      : "Still drawing in the background.");
+  sscrim.classList.remove("show");
+};
+sscrim.onclick = e => {
+  if (e.target === sscrim) document.getElementById("scancel").click(); };
+
+document.getElementById("recordBtn").onclick = () => openStage("record");
+document.getElementById("designBtn").onclick = () => openStage("design");
+document.getElementById("zipBtn").onclick = () => {
+  if (!state.sel) return;
+  // A navigation, not a fetch: 150 MB belongs on disk, not in the tab's memory.
+  window.location = "/api/package/" + encodeURIComponent(state.sel);
+  toast("Unzip it into stories/ on the machine that renders.");
+};
+
 // --- note to writer ------------------------------------------------------
 // For what only a reader of the whole story sees — a chapter that ends on a
 // question the next one never answers. The writer sees every earlier chapter
@@ -1284,12 +1487,14 @@ document.addEventListener("keydown", e => {
       document.getElementById("ncancel").click(); return; }
     if (wscrim.classList.contains("show")) {
       document.getElementById("wcancel").click(); return; }
+    if (sscrim.classList.contains("show")) {
+      document.getElementById("scancel").click(); return; }
     if (scrim.classList.contains("show")) {
       scrim.classList.remove("show"); return; }
   }
   if (e.metaKey || e.ctrlKey || e.altKey) return;
   if (scrim.classList.contains("show") || wscrim.classList.contains("show")
-      || nscrim.classList.contains("show")) return;
+      || nscrim.classList.contains("show") || sscrim.classList.contains("show")) return;
   if (/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) return;
   const i = state.rows.indexOf(state.sel);
   if (e.key === "j" || e.key === "ArrowDown") {
@@ -1303,8 +1508,16 @@ document.addEventListener("keydown", e => {
     e.preventDefault();
     if (!document.getElementById("writeBtn").disabled) openWrite();
   }
+  else if (e.key === "n") {
+    e.preventDefault();
+    if (!document.getElementById("recordBtn").disabled) openStage("record");
+  }
+  else if (e.key === "g") {
+    e.preventDefault();
+    if (!document.getElementById("designBtn").disabled) openStage("design");
+  }
   else if (e.key === "?") {
-    toast("j/k move · a approve · e revise · w write · r reject"); }
+    toast("j/k move · a approve · e revise · w write · n record · g design · r reject"); }
 });
 
 loadQueue();

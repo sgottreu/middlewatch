@@ -542,6 +542,38 @@ Three guards:
   story looking neither finished nor runnable. The job reports how many chapters
   survived.
 
+### Record and design
+
+The two paid stages after the chapters are approved. Both run as jobs, exactly
+like write, and both open the same dialog — they differ only in what they cost,
+what they count, and what comes next.
+
+| | Record | Design |
+|---|---|---|
+| Gate | Every chapter approved, or tick "narrate unapproved chapters anyway" | Every chapter has a narration timeline |
+| Cost shown first | Credits, engine, and the runtime it implies | Images still to draw, at the configured rate |
+| Option | Narrate anyway | Re-plan shots that already have a picture |
+| Counts | Chapters with an mp3 | Cast portraits plus scene images on disk |
+
+**The gates are enforced on the server**, not by the disabled button. `record`
+checks approvals the same way the CLI does, and `design` refuses before spending
+anything if a timeline is missing — shot timings come from the narration, so a
+design run without it would pay for a cast sheet and then fail.
+
+**Progress is counted off disk**, not tracked in memory. Both agents write one
+file at a time and skip what already exists, so counting files is correct for a
+resumed run, where an in-memory counter would start at zero and look like it was
+redoing work it actually skips.
+
+**A failed run resets the stage to `pending`** and keeps what finished, the same
+reasoning as write: the story stays startable and the next run carries on.
+
+`direct` is deliberately not here. It is the one stage that needs real hardware,
+and the review box has 412 MiB of RAM — see [running on AWS](aws.md). The page
+offers **Assets .zip** instead: the audio and images, streamed as a zip, to
+unzip into `stories/` on the machine that renders. The prose is not in it, since
+that arrives by `git pull`.
+
 ### What revise does to the bundle
 
 **No new bundle, and no new slug.** It is the same directory throughout:
@@ -679,9 +711,11 @@ disagree with the first.
 and five buttons. Adding a toolchain means the UI can break in ways the pipeline
 cannot, and `story.md` already proves the content renders fine as plain markup.
 
-**A live-updating view of a running stage.** The stages print progress to a
-terminal already, and a job runner is a much larger thing than a review queue.
-Refreshing after a sweep is enough.
+**A live-updating view of a running stage.** ~~The stages print progress to a
+terminal already.~~ Overtaken: once the box that runs the stages is in a data
+centre there is no terminal to watch, so write, redraft, record and design all
+report progress to the page. It stayed small — a count polled every second or
+two, read off the files each stage writes — rather than becoming a job runner.
 
 **Video preview.** The mp4 is on disk; the operating system has a video player.
 

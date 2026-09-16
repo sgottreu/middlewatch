@@ -159,7 +159,8 @@ else
     echo "mw-deploy not installed — bootstrapping"
     git pull --ff-only
     sudo install -m 755 scripts/deploy/mw-commit-stories scripts/deploy/mw-deploy \\
-        scripts/deploy/mw-restart scripts/deploy/mw-write-running /usr/local/bin/
+        scripts/deploy/mw-restart scripts/deploy/mw-write-running \\
+        scripts/deploy/mw-sync /usr/local/bin/
     echo "installed the deploy scripts"
     mw-restart
 fi
@@ -171,7 +172,8 @@ after=\$(git rev-parse HEAD)
 if [ "\$before" != "\$after" ] && git diff --name-only "\$before" "\$after" | grep -q '^scripts/deploy/'; then
     echo "==> deploy scripts changed, reinstalling"
     sudo install -m 755 scripts/deploy/mw-commit-stories scripts/deploy/mw-deploy \\
-        scripts/deploy/mw-restart scripts/deploy/mw-write-running /usr/local/bin/
+        scripts/deploy/mw-restart scripts/deploy/mw-write-running \\
+        scripts/deploy/mw-sync /usr/local/bin/
 fi
 EOF
 )

@@ -60,13 +60,20 @@ def main() -> int:
             continue
         if job.get("state") != "running":
             continue
-        if job.get("kind") == "redraft":
+        kind = job.get("kind")
+        done = job.get("done", 0)
+        if kind == "redraft":
             # One chapter sent back with a note from the review page.
             passes = len(job.get("passes") or [])
             print(f"{slug} (redrafting chapter {job.get('n', '?')}, "
                   f"{passes} pass{'es' if passes != 1 else ''} done)")
+        elif kind in ("record", "design"):
+            # Paid stages that run on the server too. Restarting through one
+            # loses the chapter or image in flight and what it cost, so they
+            # block a deploy exactly like a write — but say what they are.
+            unit = "chapters narrated" if kind == "record" else "images drawn"
+            print(f"{slug} ({kind}: {done} of {job.get('total', '?')} {unit})")
         else:
-            done = job.get("done", 0)
             total = job.get("to_write") or job.get("total", "?")
             print(f"{slug} ({done} of {total} chapters)")
 

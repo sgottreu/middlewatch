@@ -21,7 +21,14 @@ Routes:
     POST /api/chapter          save an edited chapter's segments — free
     POST /api/redraft          send one chapter back to the writer with your
                                note — paid; runs as a job like write
+    POST /api/record           narrate the approved chapters — paid; a job
+    POST /api/design           draw the cast and scenes — paid; a job
+    GET  /api/estimate/<slug>  what record and design would cost; free
+    GET  /api/package/<slug>   audio and images as a zip, to render elsewhere
     POST /api/reject           delete the bundle
+
+`direct` is deliberately absent. It is the one stage that needs real hardware —
+see docs/story/aws.md — so the page hands you the assets instead.
 """
 
 from __future__ import annotations
@@ -32,6 +39,7 @@ import sys
 import threading
 import time
 import webbrowser
+import zipfile
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlparse
@@ -265,7 +273,15 @@ def story_detail(cfg: dict, slug: str) -> dict:
         # Both, so the dialog can re-price the "rewrite everything" checkbox
         # without another round trip. Neither costs anything to compute.
         "write_estimate_restart": textagent.estimate_write(cfg, b, restart=True),
-        "job": job(b.root.name),
+        "job": job_view(cfg, b.root.name),
+        # What the zip would contain. The button is dark until there is
+        # something in it, rather than handing over an empty archive.
+        "assets": {
+            "audio": sum(1 for n in b.chapter_numbers() if b.audio_path(n).exists()),
+            "images": (len([p for p in (b.root / "images").rglob("*")
+                            if p.is_file() and p.suffix in (".jpg", ".png")])
+                       if (b.root / "images").is_dir() else 0),
+        },
     }
 
 
@@ -670,6 +686,177 @@ def redraft_start(cfg: dict, slug: str, n, note: str) -> dict:
     return {"ok": True, "slug": slug, **job(slug)}
 
 
+# --------------------------------------------------------------------------- #
+# Record and design, the two paid stages that run on the server
+# --------------------------------------------------------------------------- #
+
+# Both write their output one file at a time, so progress is countable from disk
+# without either agent growing a callback. That also makes the count correct for
+# a run resumed after a failure, where a counter kept in memory would start at
+# zero and look like it was redoing work it skips.
+STAGE_KINDS = ("record", "design")
+
+
+def _scenes_per(cfg: dict, b: Bundle) -> int:
+    return (b.pinned("scenes_per_chapter")
+            or textagent._scenes_per_chapter(cfg, textagent._length_of(b)))
+
+
+def _stage_counts(cfg: dict, slug: str, kind: str) -> dict:
+    try:
+        b = Bundle.open(Path(cfg["stories_dir"]) / slug)
+        if kind == "record":
+            ns = b.chapter_numbers()
+            return {"done": sum(1 for n in ns if b.audio_path(n).exists()),
+                    "total": len(ns)}
+        cast = [m["name"] for m in b.outline().get("cast", [])]
+        per = _scenes_per(cfg, b)
+        done = sum(1 for name in cast if b.cast_image(name).exists())
+        done += sum(1 for n in b.chapter_numbers() for i in range(per)
+                    if b.scene_image(n, i).exists())
+        return {"done": done, "total": len(cast) + len(b.chapter_numbers()) * per}
+    except Exception:
+        # Progress is decoration. A bundle that cannot be read is the running
+        # job's problem to report, not this function's.
+        return {}
+
+
+def job_view(cfg: dict, slug: str) -> dict:
+    """The job, with disk-counted progress for the two stages that have it."""
+    j = job(slug)
+    if j.get("state") == "running" and j.get("kind") in STAGE_KINDS:
+        j.update(_stage_counts(cfg, slug, j["kind"]))
+    return j
+
+
+def estimates(cfg: dict, slug: str) -> dict:
+    """What record and design would cost, before either is started.
+
+    Free and credential-free by design — this is the figure the confirm dialogs
+    put on screen, and it has to work on a box where the provider SDKs may not
+    even be installed.
+    """
+    b = Bundle.open(Path(cfg["stories_dir"]) / slug)
+    out: dict = {"slug": slug}
+
+    try:
+        from ..agents import actor
+        out["record"] = actor.estimate(cfg, b)
+    except ImportError as e:
+        out["record"] = {"unavailable": f"{e}"}
+
+    cast = [m["name"] for m in b.outline().get("cast", [])]
+    per = _scenes_per(cfg, b)
+    todo = sum(1 for name in cast if not b.cast_image(name).exists())
+    todo += sum(1 for n in b.chapter_numbers() for i in range(per)
+                if not b.scene_image(n, i).exists())
+    rate = cfg.get("gemini", {}).get("usd_per_image", 0.05)
+    out["design"] = {"images": todo, "usd": round(todo * rate, 2),
+                     "per_chapter": per}
+    return out
+
+
+def _run_stage(cfg: dict, slug: str, kind: str, force: bool = False,
+               replan: bool = False) -> None:
+    b = Bundle.open(Path(cfg["stories_dir"]) / slug)
+    try:
+        # Imported here, not at module scope: `cli review` is free and needs no
+        # credentials, and the review box installs only the packages it uses.
+        # A missing provider SDK should fail this job, not the whole page.
+        if kind == "record":
+            from ..agents import actor
+            actor.record_all(cfg, b, verbose=False, force=force)
+        else:
+            from ..agents import designer
+            designer.design_all(cfg, b, verbose=False, replan=replan)
+        summary.write(b)
+        with _jobs_lock:
+            _jobs[slug].update(state="done", spend=_spend(b.manifest())["usd"],
+                               **_stage_counts(cfg, slug, kind))
+    except Exception as e:
+        # Both stages skip what is already on disk, so putting the stage back to
+        # pending makes the next run resume rather than repeat — and leaves the
+        # story startable instead of stuck at "running" forever.
+        try:
+            b.set_stage(kind, "pending")
+            summary.write(b)
+        except Exception:
+            pass
+        with _jobs_lock:
+            _jobs[slug].update(state="failed", error=f"{type(e).__name__}: {e}",
+                               **_stage_counts(cfg, slug, kind))
+
+
+def _start_stage(cfg: dict, slug: str, kind: str, **kw) -> dict:
+    with _jobs_lock:
+        if (_jobs.get(slug) or {}).get("state") == "running":
+            raise ValueError(f"{slug} already has a job running.")
+        _jobs[slug] = {"state": "running", "kind": kind, "done": 0, "total": 0,
+                       "started": time.time()}
+    threading.Thread(target=_run_stage, args=(cfg, slug, kind), kwargs=kw,
+                     daemon=True).start()
+    return {"ok": True, "slug": slug, **job_view(cfg, slug)}
+
+
+def record_start(cfg: dict, slug: str, force: bool = False) -> dict:
+    """Narrate the approved chapters. **This spends money** — the largest single
+    cost in the pipeline, which is why the approval gate is checked here as well
+    as in the CLI."""
+    b = Bundle.open(Path(cfg["stories_dir"]) / slug)
+    if not force and not b.all_chapters_approved():
+        written = [n for n in b.chapter_numbers() if b.chapter_json(n).exists()]
+        left = [n for n in written if not b.chapter_approved(n)]
+        raise ValueError(
+            f"{len(written) - len(left)} of {len(written)} chapters are approved. "
+            f"Not yet: {', '.join(str(n) for n in left)}. Approve them first, or "
+            "tick 'narrate anyway'."
+        )
+    return _start_stage(cfg, slug, "record", force=force)
+
+
+def design_start(cfg: dict, slug: str, replan: bool = False) -> dict:
+    """Draw the cast sheet and the scene images. **This spends money.**
+
+    Shot timing comes from the narration timelines, so this cannot run before
+    `record` — the agent raises on the first missing one, which would spend the
+    cast sheet before finding out.
+    """
+    b = Bundle.open(Path(cfg["stories_dir"]) / slug)
+    missing = [n for n in b.chapter_numbers() if not b.timeline_path(n).exists()]
+    if missing:
+        raise ValueError(
+            f"chapters {missing} have no narration yet. Shot timings come from "
+            "the audio timelines, so record before designing."
+        )
+    return _start_stage(cfg, slug, "design", replan=replan)
+
+
+def package_files(cfg: dict, slug: str) -> tuple[Path, list[Path]]:
+    """The bundle root and every asset file to put in the zip.
+
+    Only what git ignores: the prose is already on the laptop through a pull, so
+    shipping it again would mean two copies of the text and a merge question
+    nobody asked for.
+    """
+    root = (Path(cfg["stories_dir"]) / slug).resolve()
+    stories = Path(cfg["stories_dir"]).resolve()
+    # Same guard as reject(): a slug arrives over HTTP and `../..` should not
+    # read outside stories_dir.
+    if root.parent != stories or not (root / "manifest.json").exists():
+        raise ValueError(f"not a story bundle: {slug}")
+
+    files = []
+    for kind in ("audio", "images"):
+        d = root / kind
+        if d.is_dir():
+            files += [p for p in sorted(d.rglob("*"))
+                      if p.is_file() and p.name != ".DS_Store"]
+    if not files:
+        raise ValueError(
+            f"{slug} has no audio or images yet — record and design first.")
+    return root, files
+
+
 def reject(cfg: dict, slug: str) -> dict:
     """Delete the bundle. Free to regenerate, and a rejected outline should leave
     no trace — the history weights deliberately count approvals only."""
@@ -705,6 +892,33 @@ def _handler(cfg: dict):
         def _json(self, payload, code: int = 200) -> None:
             self._send(code, json.dumps(payload).encode(), "application/json")
 
+        def _zip(self, cfg: dict, slug: str) -> None:
+            """Stream the assets as a zip, rather than building one in memory.
+
+            A 30-minute story is about 150 MB of audio and images and the server
+            has 412 MiB of RAM, so this writes straight to the socket. The files
+            are mp3 and jpg — already compressed — so it stores rather than
+            deflates: same size, none of the CPU.
+            """
+            try:
+                root, files = package_files(cfg, slug)
+            except ValueError as e:
+                self._json({"error": str(e)}, 404)
+                return
+            self.send_response(200)
+            self.send_header("Content-Type", "application/zip")
+            self.send_header("Content-Disposition",
+                             f'attachment; filename="{slug}-assets.zip"')
+            # No Content-Length is known up front, so the client learns the body
+            # ended when the connection does.
+            self.send_header("Connection", "close")
+            self.end_headers()
+            with zipfile.ZipFile(self.wfile, "w", zipfile.ZIP_STORED) as z:
+                for p in files:
+                    # Arcnames start with the slug, so `unzip -d stories` puts
+                    # every file back exactly where it came from.
+                    z.write(p, str(p.relative_to(root.parent)))
+
         def _enter(self):
             global _inflight_count
             with _inflight_lock:
@@ -726,7 +940,11 @@ def _handler(cfg: dict):
                 elif path.startswith("/api/story/"):
                     self._json(story_detail(cfg, path.rsplit("/", 1)[-1]))
                 elif path.startswith("/api/job/"):
-                    self._json(job(path.rsplit("/", 1)[-1]))
+                    self._json(job_view(cfg, path.rsplit("/", 1)[-1]))
+                elif path.startswith("/api/estimate/"):
+                    self._json(estimates(cfg, path.rsplit("/", 1)[-1]))
+                elif path.startswith("/api/package/"):
+                    self._zip(cfg, path.rsplit("/", 1)[-1])
                 elif path == "/api/keepable":
                     self._json([{"key": k, "label": l} for k, l in KEEPABLE])
                 elif path == "/manifest.webmanifest":
@@ -767,6 +985,12 @@ def _handler(cfg: dict):
                 elif path == "/api/redraft":
                     self._json(redraft_start(cfg, body["slug"], body["n"],
                                              body.get("note", "")))
+                elif path == "/api/record":
+                    self._json(record_start(cfg, body["slug"],
+                                            force=bool(body.get("force"))))
+                elif path == "/api/design":
+                    self._json(design_start(cfg, body["slug"],
+                                            replan=bool(body.get("replan"))))
                 elif path == "/api/reject":
                     self._json(reject(cfg, body["slug"]))
                 else:

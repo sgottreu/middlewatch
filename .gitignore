@@ -33,3 +33,12 @@ __pycache__/
 # Audition renders from `python3 -m ambience_pipeline.synth`. Regenerable from a
 # seed in one command, and large.
 auditions/
+
+calibration-sweep.sh
+cleanup.sh
+config.yaml.bak
+oauth.txt
+working/
+
+
+	

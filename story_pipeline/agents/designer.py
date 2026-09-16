@@ -13,6 +13,9 @@ from __future__ import annotations
 import base64
 import json
 import shutil
+import threading
+import time
+from contextlib import contextmanager
 from pathlib import Path
 
 from google import genai
@@ -32,6 +35,68 @@ def _client():
     return genai.Client()  # reads GEMINI_API_KEY
 
 
+MIME = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg"}
+
+
+# --------------------------------------------------------------------------- #
+# Saying what is happening
+# --------------------------------------------------------------------------- #
+#
+# An image is the better part of a minute and a story is nearly forty of them,
+# so `design` is half an hour of a terminal doing nothing visible. Without a
+# heartbeat there is no way to tell a slow call from a hung one, and the honest
+# answer to "is it stuck?" was to wait and find out.
+
+
+class Progress:
+    """Counts images against an estimate, and can say how long is left."""
+
+    def __init__(self, total: int, verbose: bool = True):
+        self.total, self.done, self.verbose = total, 0, verbose
+        self.started = time.monotonic()
+
+    def tick(self) -> None:
+        self.done += 1
+
+    def line(self) -> str:
+        elapsed = time.monotonic() - self.started
+        if not self.done:
+            return f"0/{self.total}"
+        each = elapsed / self.done
+        left = max(self.total - self.done, 0) * each
+        return (f"{self.done}/{self.total} · {each:.0f}s each · "
+                + (f"~{left / 60:.0f} min left" if left > 90 else f"~{left:.0f}s left"))
+
+    def say(self, text: str) -> None:
+        if self.verbose:
+            print(text, flush=True)
+
+
+@contextmanager
+def waiting(p: Progress, every: float = 15.0):
+    """Print a heartbeat while a single call is in flight.
+
+    A daemon thread rather than a spinner: this output is read live in a
+    terminal and later in a log, and a carriage-return animation is unreadable
+    in the second one.
+    """
+    stop = threading.Event()
+
+    def beat():
+        t0 = time.monotonic()
+        while not stop.wait(every):
+            p.say(f"      ...still generating ({time.monotonic() - t0:.0f}s)")
+
+    thread = threading.Thread(target=beat, daemon=True)
+    thread.start()
+    t0 = time.monotonic()
+    try:
+        yield
+    finally:
+        stop.set()
+        p.last_call = time.monotonic() - t0
+
+
 def _generate(client, cfg: dict, prompt: str, refs: list[Path]) -> bytes:
     g = cfg["gemini"]
     parts: list[dict] = [{"type": "text", "text": prompt}]
@@ -40,7 +105,9 @@ def _generate(client, cfg: dict, prompt: str, refs: list[Path]) -> bytes:
             {
                 "type": "image",
                 "data": base64.b64encode(ref.read_bytes()).decode(),
-                "mime_type": "image/png",
+                # Whatever that portrait actually is. References come off disk
+                # and predate this — a .png labelled image/jpeg is rejected.
+                "mime_type": MIME.get(ref.suffix.lower(), "image/jpeg"),
             }
         )
 
@@ -49,7 +116,10 @@ def _generate(client, cfg: dict, prompt: str, refs: list[Path]) -> bytes:
         input=parts,
         response_format={
             "type": "image",
-            "mime_type": "image/png",
+            # The API supports JPEG only — asking for PNG is a 400 before a
+            # single image is generated. Config carries it so a later format
+            # is a config change rather than a code change.
+            "mime_type": g.get("image_mime", "image/jpeg"),
             "aspect_ratio": g["aspect_ratio"],
             "image_size": g["image_size"],
         },
@@ -85,8 +155,10 @@ def _art_style(cfg: dict, b: Bundle) -> str:
 # --------------------------------------------------------------------------- #
 
 
-def build_cast_sheet(cfg: dict, b: Bundle, verbose: bool = True) -> dict[str, Path]:
+def build_cast_sheet(cfg: dict, b: Bundle, verbose: bool = True,
+                     p: Progress | None = None) -> dict[str, Path]:
     client = _client()
+    p = p or Progress(len(b.outline().get("cast", [])), verbose)
     outline = b.outline()
     style = _art_style(cfg, b)
     bible = bibles.load(outline["bible"], cfg["bibles_dir"]) if outline.get("bible") else None
@@ -122,11 +194,15 @@ def build_cast_sheet(cfg: dict, b: Bundle, verbose: bool = True) -> dict[str, Pa
             f"plain pale background, even light, full face clearly visible. "
             f"Style: {style}{NEGATIVE}"
         )
-        if verbose:
-            print(f"  cast: generating {member['name']}...")
+        p.say(f"  cast: {member['name']}... [{p.line()}]")
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_bytes(_generate(client, cfg, prompt, refs=[]))
+        with waiting(p):
+            data = _generate(client, cfg, prompt, refs=[])
+        path.write_bytes(data)
         b.add_spend("gemini_images", 1)
+        p.tick()
+        p.say(f"    wrote {path.name} ({len(data) / 1e6:.1f} MB) "
+              f"in {getattr(p, 'last_call', 0):.0f}s")
 
         # Promote it into the series so the next story inherits the same face.
         # This mutates the bible's cast directory, so it goes in the changelog —
@@ -143,8 +219,13 @@ def build_cast_sheet(cfg: dict, b: Bundle, verbose: bool = True) -> dict[str, Pa
                     kind="portrait",
                     series=bible.series,
                 )
-                if verbose:
-                    print(f"  cast: {member['name']} saved to {bible.series}")
+                p.say(f"    promoted into {bible.series} — every later story "
+                      f"reuses this face")
+        elif bible:
+            # Not in the bible's recurring cast, so the face belongs to this
+            # story alone. Said out loud because the silence here looked exactly
+            # like a portrait that failed to save.
+            p.say(f"    guest of this story — not added to {bible.series}")
 
     return sheet
 
@@ -203,15 +284,59 @@ def plan_shots(cfg: dict, b: Bundle, n: int) -> dict:
     return plan
 
 
-def render_chapter(cfg: dict, b: Bundle, n: int, sheet: dict[str, Path], verbose=True) -> dict:
+def render_chapter(cfg: dict, b: Bundle, n: int, sheet: dict[str, Path], verbose=True,
+                   p: Progress | None = None, cached: dict | None = None,
+                   replan: bool = False, save=None) -> dict:
     client = _client()
     style = _art_style(cfg, b)
-    plan = plan_shots(cfg, b, n)
+    p = p or Progress(0, verbose)
+
+    # Re-use the plan rather than paying for a new one. Planning is a model call,
+    # so a resumed run was buying a fresh set of shots for chapters whose images
+    # already existed — and a new plan can choose different moments, which would
+    # leave `scenes.json` describing pictures that were never drawn. The plan is
+    # tied to the narration it was built from: re-record a chapter and it is
+    # planned again, because the moments it picked are gone.
+    stamp = b.timeline(n).get("chapter_hash")
+    # A plan written before stamping existed carries no hash and is trusted
+    # rather than bought again — the same fallback the timeline and the editor's
+    # verdict already use, for the same reason: it was right when it was made.
+    keep = cached and not replan and cached.get("chapter_hash", stamp) == stamp
+    if keep:
+        plan = cached
+        plan["chapter_hash"] = stamp
+        p.say(f"  chapter {n}: keeping the shot plan already on disk")
+    else:
+        drawn = [b.scene_image(n, i).name for i in range(12) if b.scene_image(n, i).exists()]
+        if drawn and not replan:
+            # Images without the plan that produced them. They keep their
+            # numbers, so a fresh plan would quietly adopt them for moments they
+            # were never drawn for. Say it plainly rather than shipping a
+            # picture that does not match its sentence.
+            p.say(f"  chapter {n}: !! {len(drawn)} image(s) on disk with no plan "
+                  f"to go with them — {', '.join(drawn)}")
+            p.say(f"     They were drawn from a plan lost when a run stopped "
+                  f"part-way. A new plan may choose different moments, and they "
+                  f"would be reused for the wrong ones.")
+            p.say(f"     Delete them and re-run to redraw at "
+                  f"${len(drawn) * cfg.get('gemini', {}).get('usd_per_image', 0.05):.2f}, "
+                  f"or keep them knowing the mismatch.")
+        with waiting(p):
+            plan = plan_shots(cfg, b, n)
+        plan["chapter_hash"] = stamp
+
+    # On disk before a single image is paid for. The plan is the cheap half and
+    # the recoverable half: losing it is what stranded chapter two's images with
+    # nothing to describe them.
+    if save:
+        save(plan)
 
     for i, shot in enumerate(plan["shots"]):
         path = b.scene_image(n, i)
         shot["image"] = str(path.relative_to(b.root))
         if path.exists():
+            p.say(f"  chapter {n} shot {i + 1}/{len(plan['shots'])}: "
+                  f"{path.name} exists, skipping")
             continue
 
         refs = [sheet[c] for c in shot.get("characters", []) if c in sheet and sheet[c].exists()]
@@ -224,18 +349,40 @@ def render_chapter(cfg: dict, b: Bundle, n: int, sheet: dict[str, Path], verbose
             )
 
         prompt = f"{shot['prompt']}{who} Style: {style}{NEGATIVE}"
-        if verbose:
-            print(f"  chapter {n} shot {i} at {shot['at_ms'] / 1000:.0f}s...")
+        p.say(f"  chapter {n} shot {i + 1}/{len(plan['shots'])} "
+              f"at {shot['at_ms'] / 1000:.0f}s... [{p.line()}]")
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_bytes(_generate(client, cfg, prompt, refs))
+        with waiting(p):
+            data = _generate(client, cfg, prompt, refs)
+        # Written before the line that announces it. The old order printed the
+        # shot it was about to start, so the last line on screen named a file
+        # that did not exist yet — which reads as a lost image rather than as
+        # one in flight.
+        path.write_bytes(data)
         b.add_spend("gemini_images", 1)
+        p.tick()
+        p.say(f"    wrote {path.name} ({len(data) / 1e6:.1f} MB) "
+              f"in {getattr(p, 'last_call', 0):.0f}s")
 
     return plan
 
 
-def design_all(cfg: dict, b: Bundle, verbose: bool = True) -> None:
+def design_all(cfg: dict, b: Bundle, verbose: bool = True, replan: bool = False) -> None:
     b.set_stage("design", "running")
-    sheet = build_cast_sheet(cfg, b, verbose)
+
+    # What is left to draw, so the count and the estimate mean something on a
+    # resumed run as well as a fresh one.
+    outline = b.outline()
+    lspec = textagent._length_of(b)
+    per_chapter = b.pinned("scenes_per_chapter") or textagent._scenes_per_chapter(cfg, lspec)
+    todo = sum(1 for m in outline.get("cast", []) if not b.cast_image(m["name"]).exists())
+    for n in b.chapter_numbers():
+        todo += sum(1 for i in range(per_chapter) if not b.scene_image(n, i).exists())
+    p = Progress(todo, verbose)
+    rate = cfg.get("gemini", {}).get("usd_per_image", 0.05)
+    p.say(f"  {todo} image(s) to generate, about ${todo * rate:.2f}")
+
+    sheet = build_cast_sheet(cfg, b, verbose, p)
 
     scenes = {}
     if b.scenes_path.exists():
@@ -244,7 +391,16 @@ def design_all(cfg: dict, b: Bundle, verbose: bool = True) -> None:
     for n in b.chapter_numbers():
         if not b.timeline_path(n).exists():
             raise RuntimeError(f"chapter {n} has no timeline; run the record stage first")
-        scenes[str(n)] = render_chapter(cfg, b, n, sheet, verbose)
-        b.scenes_path.write_text(json.dumps(scenes, indent=2) + "\n")
+        def save(plan, _n=n):
+            scenes[str(_n)] = plan
+            b.scenes_path.parent.mkdir(parents=True, exist_ok=True)
+            b.scenes_path.write_text(json.dumps(scenes, indent=2) + "\n")
+
+        scenes[str(n)] = render_chapter(cfg, b, n, sheet, verbose, p,
+                                        cached=scenes.get(str(n)), replan=replan,
+                                        save=save)
+        save(scenes[str(n)])
 
     b.set_stage("design", "done")
+    p.say(f"  done — {p.done} image(s) in "
+          f"{(time.monotonic() - p.started) / 60:.1f} min")
