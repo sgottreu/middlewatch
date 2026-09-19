@@ -10,7 +10,7 @@ regency / mystery · Middle Watch: Amberlight
 |---|---|---|
 | Target (30 min) | 4,500 | 30:00 |
 | Planned | 4,500 | 30:00 |
-| Written | 6,117 | 40:47 |
+| Written | 5,566 | 37:06 |
 | **Narrated** | | *not yet recorded* |
 
 ## Chapters
@@ -23,8 +23,8 @@ regency / mystery · Middle Watch: Amberlight
 | 2 | Oakmere Farm | 5 | 560 | 721 (+29%) | — |
 | 3 | The Dispensing Book | 5 | 560 | 744 (+33%) | — |
 | 4 | What Mrs Whitlow Knew | 5 | 560 | 742 (+32%) | — |
-| 5 | The Road to Winchester | 5 | 560 | 879 (+57%) | — |
-| 6 | The Wayside House | 5 | 560 | 965 (+72%) | — |
+| 5 | The Road to Winchester | 5 | 560 | 603 (+8%) | — |
+| 6 | The Wayside House | 5 | 560 | 690 (+23%) | — |
 | 7 | The Attorney's Pigeonhole | 5 | 560 | 797 (+42%) | — |
 | 8 | Oakmere Reclaimed | 5 | 560 | 653 (+17%) | — |
 
