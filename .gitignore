@@ -22,6 +22,12 @@ assets/sfx_cache/
 # until a migration is confirmed good; there is no reason to commit them.
 ledger/*.bak.csv
 
+# Job state from the review UI: one directory per run, holding the stage's log
+# and its meta.json. Local to whichever machine ran the stage, and deliberately
+# not under stories/ — mw-commit-stories commits that wholesale every fifteen
+# minutes, and a job log is not approval history.
+runs/
+
 config.yaml
 .env
 .venv/

@@ -12,7 +12,9 @@ Routes:
     GET  /api/story/<slug>     one story: outline, chapters, reviews, spend
     POST /api/approve          outline, all chapters, or {"chapters": [3]} for
                                one at a time; {"undo": true} withdraws it
-    GET  /api/job/<slug>       progress of a running write
+    GET  /api/job/<slug>       progress of the running (or last) stage
+    GET  /api/log/<slug>       that stage's own output; ?from=<byte offset>
+    POST /api/cancel           stop it — kills the process group
     POST /api/revise           regenerate the outline — a paid call
     POST /api/write            draft the chapters not yet written; the most
                                expensive action. {"restart": true} rewrites all
@@ -42,8 +44,9 @@ import webbrowser
 import zipfile
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, urlparse
 
+from . import runner
 from .. import genres, history, summary
 from ..agents import text as textagent
 from ..bundle import Bundle, real_answer
@@ -519,182 +522,28 @@ def revise(cfg: dict, slug: str, keep: list[str], note: str) -> dict:
 
 
 # --------------------------------------------------------------------------- #
-# Writing, which is the one action long enough to need a job
+# Stages, which run as detached processes
 # --------------------------------------------------------------------------- #
+#
+# Every slow action here — write, redraft, record, design — is several minutes
+# and real money. They used to be threads inside this server, which meant a
+# deploy took the run down with it, there was no way to stop one, and the only
+# record of what happened lived in memory and vanished on restart. They are
+# child processes now: see `runner.py`.
+#
+# The split is deliberate. The runner knows about processes, logs and pids and
+# nothing else; everything below is the part that knows what a chapter is, what
+# a run costs, and which gate each stage sits behind.
 
-# A write is several minutes and a dozen or more model calls. Holding an HTTP
-# request open for that would hang the browser and lose the run to any timeout,
-# so it goes to a thread and the page polls.
-_jobs: dict[str, dict] = {}
-_jobs_lock = threading.Lock()
-
-
-def job(slug: str) -> dict:
-    with _jobs_lock:
-        return dict(_jobs.get(slug) or {"state": "none"})
-
-
-def _run_write(cfg: dict, slug: str, restart: bool = False) -> None:
-    b = Bundle.open(Path(cfg["stories_dir"]) / slug)
-    resumed = set() if restart else {
-        n for n in b.chapter_numbers() if textagent.chapter_done(b, n)}
-
-    def progress(n, total, review):
-        with _jobs_lock:
-            j = _jobs[slug]
-            j["done"] = n
-            j["total"] = total
-            j["chapters"] = j.get("chapters", [])
-            j["chapters"].append({
-                "n": n,
-                "pass": bool(review.get("pass")),
-                "score": review.get("score"),
-                "exhausted": bool(review.get("exhausted")),
-                # So the progress list distinguishes a chapter written just now
-                # from one loaded off disk — otherwise a resumed run looks like
-                # it rewrote everything, which is exactly the confusion this
-                # whole change exists to remove.
-                "resumed": n in resumed,
-            })
-
-    try:
-        reviews = textagent.run_text_stages(cfg, b, verbose=False,
-                                            on_chapter=progress, restart=restart)
-        summary.write(b)
-        unpassed = [n for n, r in reviews.items() if not r.get("pass")]
-        with _jobs_lock:
-            words = b.word_count()
-            spec = textagent.length_spec(
-                b.manifest().get("pinned", {}).get("length_min"))
-            _jobs[slug].update(
-                state="done", unpassed=unpassed, words=words,
-                # The run ending is not the same as the run being right. A
-                # story 29% over its target is a fact worth putting in front of
-                # you here, while re-writing is still cheap — after narration
-                # it is not.
-                minutes=round(words / textagent.WPM, 1),
-                target_minutes=spec["minutes"],
-                chapters_written=len([n for n in b.chapter_numbers()
-                                      if b.chapter_json(n).exists()]),
-                spend=_spend(b.manifest())["usd"])
-    except Exception as e:
-        # `run_text_stages` sets write=running on entry and only clears it on
-        # success, so a crash leaves the stage stuck there forever — the story
-        # then looks neither finished nor startable. Put it back to pending: the
-        # chapters that completed stay on disk and re-running resumes from them.
-        try:
-            b.set_stage("write", "pending")
-            summary.write(b)
-        except Exception:
-            pass
-        with _jobs_lock:
-            _jobs[slug].update(state="failed", error=f"{type(e).__name__}: {e}",
-                               kept=len([n for n in b.chapter_numbers()
-                                         if b.chapter_json(n).exists()]))
-
-
-def write_start(cfg: dict, slug: str, restart: bool = False) -> dict:
-    """Kick off `write`. **This spends money** — the most of any action here.
-
-    Resumes by default: chapters already through the write/edit loop are loaded
-    from disk rather than paid for again. `restart` writes them all afresh.
-    """
-    b = Bundle.open(Path(cfg["stories_dir"]) / slug)
-
-    if b.stage_status("ideate") != "approved":
-        raise ValueError(
-            f"{slug} has not been approved yet — approve the outline first, "
-            "which is the gate that stops the writer running against something "
-            "you have not read."
-        )
-    with _jobs_lock:
-        if (_jobs.get(slug) or {}).get("state") == "running":
-            raise ValueError(f"{slug} already has a write or redraft running.")
-        pending = textagent.pending_chapters(b, restart)
-        _jobs[slug] = {"state": "running", "kind": "write", "done": 0,
-                       "total": len(b.outline().get("chapters", [])),
-                       "to_write": len(pending), "restart": restart,
-                       "chapters": [], "started": time.time()}
-
-    threading.Thread(target=_run_write, args=(cfg, slug, restart),
-                     daemon=True).start()
-    return {"ok": True, "slug": slug, **job(slug)}
-
-
-def _run_redraft(cfg: dict, slug: str, n: int, note: str) -> None:
-    b = Bundle.open(Path(cfg["stories_dir"]) / slug)
-
-    def on_pass(attempt, review):
-        with _jobs_lock:
-            _jobs[slug]["passes"].append({
-                "attempt": attempt,
-                "pass": bool(review.get("pass")),
-                "score": review.get("score"),
-                "words": b.chapter_words(n),
-            })
-
-    try:
-        review = textagent.redraft_chapter(cfg, b, n, note, verbose=False,
-                                           on_pass=on_pass)
-        summary.write(b)
-        target = next((c.get("target_words", 0) for c in b.outline()["chapters"]
-                       if c["n"] == n), 0)
-        with _jobs_lock:
-            _jobs[slug].update(
-                state="done",
-                passed=bool(review.get("pass")),
-                score=review.get("score"),
-                exhausted=bool(review.get("exhausted")),
-                words=b.chapter_words(n),
-                target=target,
-                # Written with the old version of this chapter as context, and
-                # not rewritten. Named so you know what to reread.
-                later=[m for m in b.chapter_numbers()
-                       if m > n and b.chapter_json(m).exists()],
-                approval_lapsed=(str(n) in b.chapter_approvals()
-                                 and not b.chapter_approved(n)),
-                narration_stale=b.narration_stale(n),
-            )
-    except Exception as e:
-        # Every pass that got through validation is already in drafts/ and the
-        # last one is chapters/NN.json, so nothing billed is lost.
-        with _jobs_lock:
-            _jobs[slug].update(state="failed", error=f"{type(e).__name__}: {e}")
-
-
-def redraft_start(cfg: dict, slug: str, n, note: str) -> dict:
-    """Send chapter `n` back to the writer with a note. **This spends money.**
-
-    A job rather than a request, like `write`: up to three writer-and-editor
-    passes is a minute or more, and the page should not hang on it.
-    """
-    b = Bundle.open(Path(cfg["stories_dir"]) / slug)
-    n = int(n)
-    note = (note or "").strip()
-    if not note:
-        raise ValueError("The note is empty — say what the writer should change.")
-    if not b.chapter_json(n).exists():
-        raise ValueError(f"chapter {n} has not been written yet.")
-    with _jobs_lock:
-        if (_jobs.get(slug) or {}).get("state") == "running":
-            raise ValueError(f"{slug} already has a write or redraft running.")
-        _jobs[slug] = {"state": "running", "kind": "redraft", "n": n,
-                       "passes": [], "max_passes": cfg.get("max_edit_passes", 2),
-                       "started": time.time()}
-    threading.Thread(target=_run_redraft, args=(cfg, slug, n, note),
-                     daemon=True).start()
-    return {"ok": True, "slug": slug, **job(slug)}
-
-
-# --------------------------------------------------------------------------- #
-# Record and design, the two paid stages that run on the server
-# --------------------------------------------------------------------------- #
-
-# Both write their output one file at a time, so progress is countable from disk
-# without either agent growing a callback. That also makes the count correct for
-# a run resumed after a failure, where a counter kept in memory would start at
-# zero and look like it was redoing work it skips.
+# Both record and design write their output one file at a time and skip what is
+# already there, so progress is counted off disk rather than tracked. That is
+# also what makes a resumed run report honestly: a counter would start at zero
+# and look like it was redoing work it actually skips.
 STAGE_KINDS = ("record", "design")
+
+# Stages that stamp `running` into the manifest on entry and clear it only on
+# success. A killed run leaves that behind, so it has to be released.
+RELEASABLE = ("write", "record", "design")
 
 
 def _scenes_per(cfg: dict, b: Bundle) -> int:
@@ -721,12 +570,150 @@ def _stage_counts(cfg: dict, slug: str, kind: str) -> dict:
         return {}
 
 
+def _release_stage(cfg: dict, slug: str, stage: str) -> None:
+    """Put a stage that a killed run left `running` back to `pending`.
+
+    Without this the story looks neither finished nor startable, which is the
+    state a crash used to leave behind. Whatever completed stays on disk and the
+    next run resumes from it — that is what makes cancelling cheap.
+    """
+    if stage not in RELEASABLE:
+        return
+    try:
+        b = Bundle.open(Path(cfg["stories_dir"]) / slug)
+        if b.stage_status(stage) == "running":
+            b.set_stage(stage, "pending")
+            summary.write(b)
+    except Exception:
+        pass
+
+
+def recover(cfg: dict) -> list[dict]:
+    """Settle jobs that outlived the server that started them.
+
+    A deploy restarts this process while the children keep running; those are
+    found again by pid and left alone. The ones that are genuinely gone are
+    marked failed here and their stages released, so the queue never shows work
+    that stopped hours ago.
+    """
+    settled = runner.reap_dead()
+    for meta in settled:
+        _release_stage(cfg, meta.get("slug", ""), meta.get("stage", ""))
+    return settled
+
+
+def _write_done(b: Bundle) -> dict:
+    """What the page says after a write, read back off disk.
+
+    The numbers used to be collected by the thread that did the writing. Read
+    from the bundle instead, they are also correct for a run this server never
+    saw — one started before a deploy, or finished after it.
+    """
+    words = b.word_count()
+    spec = textagent.length_spec(b.manifest().get("pinned", {}).get("length_min"))
+    unpassed = []
+    for n in b.chapter_numbers():
+        if not b.review_path(n).exists():
+            continue
+        try:
+            if not json.loads(b.review_path(n).read_text()).get("pass"):
+                unpassed.append(n)
+        except json.JSONDecodeError:
+            pass
+    return {
+        "words": words,
+        # A story well over its target is worth saying while rewriting is still
+        # cheap — after narration it is not.
+        "minutes": round(words / textagent.WPM, 1),
+        "target_minutes": spec["minutes"],
+        "unpassed": unpassed,
+        "chapters_written": len([n for n in b.chapter_numbers()
+                                 if b.chapter_json(n).exists()]),
+        "spend": _spend(b.manifest())["usd"],
+    }
+
+
+def _redraft_done(b: Bundle, n: int) -> dict:
+    review = {}
+    if b.review_path(n).exists():
+        try:
+            review = json.loads(b.review_path(n).read_text())
+        except json.JSONDecodeError:
+            review = {}
+    target = next((c.get("target_words", 0) for c in b.outline()["chapters"]
+                   if c["n"] == n), 0)
+    return {
+        "passed": bool(review.get("pass")),
+        "score": review.get("score"),
+        "exhausted": bool(review.get("exhausted")),
+        "words": b.chapter_words(n),
+        "target": target,
+        # Written with the old version of this chapter as context, and not
+        # rewritten. Named so you know what to reread.
+        "later": [m for m in b.chapter_numbers()
+                  if m > n and b.chapter_json(m).exists()],
+        "approval_lapsed": (str(n) in b.chapter_approvals()
+                            and not b.chapter_approved(n)),
+        "narration_stale": b.narration_stale(n),
+        "spend": _spend(b.manifest())["usd"],
+    }
+
+
 def job_view(cfg: dict, slug: str) -> dict:
-    """The job, with disk-counted progress for the two stages that have it."""
-    j = job(slug)
-    if j.get("state") == "running" and j.get("kind") in STAGE_KINDS:
-        j.update(_stage_counts(cfg, slug, j["kind"]))
+    """The running (or last) job for a story, in the shape the page reads."""
+    j = runner.status(slug)
+    if j.get("state") == "none":
+        return {"state": "none"}
+
+    kind = j.get("kind")
+    marks = j.pop("progress", []) or []
+    try:
+        b = Bundle.open(Path(cfg["stories_dir"]) / slug)
+    except Exception:
+        return j
+
+    if kind == "write":
+        chapters = [{"n": m.get("n"), "pass": bool(m.get("ok")),
+                     "score": m.get("score"),
+                     "exhausted": bool(m.get("exhausted"))}
+                    for m in marks if m.get("event") == "chapter"]
+        total = next((m["total"] for m in reversed(marks) if m.get("total")),
+                     len(b.outline().get("chapters", [])))
+        j.update(chapters=chapters, done=len(chapters), total=total)
+        if j["state"] == "done":
+            j.update(_write_done(b))
+        elif j["state"] in ("failed", "cancelled"):
+            j["kept"] = len([n for n in b.chapter_numbers()
+                             if b.chapter_json(n).exists()])
+    elif kind == "redraft":
+        j["passes"] = [{"attempt": m.get("attempt"), "pass": bool(m.get("ok")),
+                        "score": m.get("score"), "words": m.get("words")}
+                       for m in marks if m.get("event") == "pass"]
+        j["max_passes"] = cfg.get("max_edit_passes", 2)
+        if j["state"] == "done" and j.get("n"):
+            j.update(_redraft_done(b, int(j["n"])))
+    elif kind in STAGE_KINDS:
+        j.update(_stage_counts(cfg, slug, kind))
+        if j["state"] == "done":
+            j["spend"] = _spend(b.manifest())["usd"]
     return j
+
+
+def cancel_job(cfg: dict, slug: str) -> dict:
+    """Stop the running stage.
+
+    The whole process group goes, so the provider call and ffmpeg stop with it.
+    Everything already written stays on disk and the stage is released, so
+    starting again carries on rather than repeating what was paid for.
+    """
+    meta = runner.cancel(slug)
+    _release_stage(cfg, slug, meta.get("stage", ""))
+    return {"ok": True, "slug": slug, **job_view(cfg, slug)}
+
+
+def job_log(cfg: dict, slug: str, offset: int = 0) -> dict:
+    """The stage's own output, from `offset`. This is what the CLI printed."""
+    return runner.log_chunk(slug, offset)
 
 
 def estimates(cfg: dict, slug: str) -> dict:
@@ -756,45 +743,33 @@ def estimates(cfg: dict, slug: str) -> dict:
     return out
 
 
-def _run_stage(cfg: dict, slug: str, kind: str, force: bool = False,
-               replan: bool = False) -> None:
+def write_start(cfg: dict, slug: str, restart: bool = False) -> dict:
+    """Kick off `write`. **This spends money** — the most of any action here.
+
+    Resumes by default: chapters already through the write/edit loop are loaded
+    from disk rather than paid for again. `restart` writes them all afresh.
+    """
     b = Bundle.open(Path(cfg["stories_dir"]) / slug)
-    try:
-        # Imported here, not at module scope: `cli review` is free and needs no
-        # credentials, and the review box installs only the packages it uses.
-        # A missing provider SDK should fail this job, not the whole page.
-        if kind == "record":
-            from ..agents import actor
-            actor.record_all(cfg, b, verbose=False, force=force)
-        else:
-            from ..agents import designer
-            designer.design_all(cfg, b, verbose=False, replan=replan)
-        summary.write(b)
-        with _jobs_lock:
-            _jobs[slug].update(state="done", spend=_spend(b.manifest())["usd"],
-                               **_stage_counts(cfg, slug, kind))
-    except Exception as e:
-        # Both stages skip what is already on disk, so putting the stage back to
-        # pending makes the next run resume rather than repeat — and leaves the
-        # story startable instead of stuck at "running" forever.
-        try:
-            b.set_stage(kind, "pending")
-            summary.write(b)
-        except Exception:
-            pass
-        with _jobs_lock:
-            _jobs[slug].update(state="failed", error=f"{type(e).__name__}: {e}",
-                               **_stage_counts(cfg, slug, kind))
+    if b.stage_status("ideate") != "approved":
+        raise ValueError(
+            f"{slug} has not been approved yet — approve the outline first, "
+            "which is the gate that stops the writer running against something "
+            "you have not read."
+        )
+    runner.start(cfg, slug, "write", restart=restart)
+    return {"ok": True, "slug": slug, **job_view(cfg, slug)}
 
 
-def _start_stage(cfg: dict, slug: str, kind: str, **kw) -> dict:
-    with _jobs_lock:
-        if (_jobs.get(slug) or {}).get("state") == "running":
-            raise ValueError(f"{slug} already has a job running.")
-        _jobs[slug] = {"state": "running", "kind": kind, "done": 0, "total": 0,
-                       "started": time.time()}
-    threading.Thread(target=_run_stage, args=(cfg, slug, kind), kwargs=kw,
-                     daemon=True).start()
+def redraft_start(cfg: dict, slug: str, n, note: str) -> dict:
+    """Send chapter `n` back to the writer with a note. **This spends money.**"""
+    b = Bundle.open(Path(cfg["stories_dir"]) / slug)
+    n = int(n)
+    note = (note or "").strip()
+    if not note:
+        raise ValueError("The note is empty — say what the writer should change.")
+    if not b.chapter_json(n).exists():
+        raise ValueError(f"chapter {n} has not been written yet.")
+    runner.start(cfg, slug, "redraft", chapter=n, note=note)
     return {"ok": True, "slug": slug, **job_view(cfg, slug)}
 
 
@@ -811,7 +786,8 @@ def record_start(cfg: dict, slug: str, force: bool = False) -> dict:
             f"Not yet: {', '.join(str(n) for n in left)}. Approve them first, or "
             "tick 'narrate anyway'."
         )
-    return _start_stage(cfg, slug, "record", force=force)
+    runner.start(cfg, slug, "record", force=force)
+    return {"ok": True, "slug": slug, **job_view(cfg, slug)}
 
 
 def design_start(cfg: dict, slug: str, replan: bool = False) -> dict:
@@ -828,7 +804,8 @@ def design_start(cfg: dict, slug: str, replan: bool = False) -> dict:
             f"chapters {missing} have no narration yet. Shot timings come from "
             "the audio timelines, so record before designing."
         )
-    return _start_stage(cfg, slug, "design", replan=replan)
+    runner.start(cfg, slug, "design", replan=replan)
+    return {"ok": True, "slug": slug, **job_view(cfg, slug)}
 
 
 def package_files(cfg: dict, slug: str) -> tuple[Path, list[Path]]:
@@ -941,6 +918,10 @@ def _handler(cfg: dict):
                     self._json(story_detail(cfg, path.rsplit("/", 1)[-1]))
                 elif path.startswith("/api/job/"):
                     self._json(job_view(cfg, path.rsplit("/", 1)[-1]))
+                elif path.startswith("/api/log/"):
+                    q = parse_qs(urlparse(self.path).query)
+                    self._json(job_log(cfg, path.rsplit("/", 1)[-1],
+                                       int((q.get("from") or ["0"])[0])))
                 elif path.startswith("/api/estimate/"):
                     self._json(estimates(cfg, path.rsplit("/", 1)[-1]))
                 elif path.startswith("/api/package/"):
@@ -991,6 +972,8 @@ def _handler(cfg: dict):
                 elif path == "/api/design":
                     self._json(design_start(cfg, body["slug"],
                                             replan=bool(body.get("replan"))))
+                elif path == "/api/cancel":
+                    self._json(cancel_job(cfg, body["slug"]))
                 elif path == "/api/reject":
                     self._json(reject(cfg, body["slug"]))
                 else:
@@ -1049,6 +1032,14 @@ def serve(cfg: dict, port: int = 8765, open_browser: bool = True,
           reload: bool = False) -> None:
     server = ThreadingHTTPServer(("127.0.0.1", port), _handler(cfg))
     url = f"http://127.0.0.1:{port}/"
+
+    # Stages outlive this process, so some of them will have finished — or died
+    # — while it was not running. Settle those before showing anyone a queue.
+    dead = recover(cfg)
+    if dead:
+        print(f"{len(dead)} job(s) did not survive the last restart: "
+              + ", ".join(f"{m['slug']} ({m['stage']})" for m in dead))
+
     q = queue(cfg)
     waiting = len(q["groups"]["outlines"]) + len(q["groups"]["chapters"]) \
         + len(q["groups"]["failed"]) + len(q["groups"]["stale"])

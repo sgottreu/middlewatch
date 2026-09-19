@@ -47,6 +47,7 @@ from inside `story_pipeline/` puts your output somewhere you didn't mean. The
 | [Cost](cost.md) | Per story, across all three services. |
 | [Calibrating the length dial](calibration.md) | What to check once stories exist, and what to change based on the result. |
 | [A review UI](review-ui.md) | `cli review` — the queue, and the three pipeline gaps it closed. |
+| [Review UI roadmap](review-ui-roadmap.md) | What the dashboard does now, and what is next. |
 | [Running on AWS](aws.md) | The server, the stories volume, S3 backups, and which stages run where. |
 | [Troubleshooting](troubleshooting.md) | Symptom → cause. |
 
@@ -169,7 +170,7 @@ Describes the system. Safe to edit freely.
 `bibles.md` · `style.md` · `boundaries.md` · `narration.md` ·
 `architecture.md` · `aws.md` · `cost.md` · `calibration.md` ·
 `bible-format.md` · `continuity.md` · `review-ui.md` ·
-`solo-narration-runbook.md` · `troubleshooting.md`
+`review-ui-roadmap.md` · `solo-narration-runbook.md` · `troubleshooting.md`
 
 ### Prompts — `story_pipeline/prompts/`
 
@@ -278,6 +279,7 @@ cli revise <story> "what to change"
 cli approve <story> [--chapters]
 
 cli write <story> [--force]
+cli redraft <story> --chapter N --note "..."   # one chapter, back to the writer
 cli lint <story>             # free, no API calls
 cli record <story> [--dry-run] [--force]
 cli design <story>

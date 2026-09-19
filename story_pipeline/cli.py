@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -23,6 +24,19 @@ from .bundle import Bundle, STAGES, real_answer
 
 def _bundle(args) -> Bundle:
     return Bundle.open(Path(args.story))
+
+
+def _progress(**fields) -> None:
+    """Emit one progress marker, when something is reading this as a job.
+
+    The review UI runs these commands as detached processes and follows the log,
+    so progress has to survive a process boundary. A marker line keeps that
+    contract explicit — the alternative, parsing the human output, would make
+    every print() in the pipeline load-bearing. Off unless MW_PROGRESS is set,
+    so a terminal run reads the way it always did.
+    """
+    if os.environ.get("MW_PROGRESS"):
+        print("::progress " + json.dumps(fields), flush=True)
 
 
 def _show_outline(b, outline):
@@ -318,8 +332,14 @@ def cmd_write(args, cfg):
             f"  python3 -m story_pipeline.cli approve {b.root}\n"
             "or pass --force to skip the gate."
         )
+    def progress(n, total, review):
+        _progress(event="chapter", n=n, total=total,
+                  ok=bool(review.get("pass")), score=review.get("score"),
+                  exhausted=bool(review.get("exhausted")))
+
     try:
-        reviews = text.run_text_stages(cfg, b, restart=args.restart)
+        reviews = text.run_text_stages(cfg, b, restart=args.restart,
+                                       on_chapter=progress)
     except Exception:
         # Same reason as the UI path: `run_text_stages` sets write=running on
         # entry, so a crash would leave the stage stuck and the story neither
@@ -527,6 +547,34 @@ def cmd_direct(args, cfg):
     if b.video_path.exists() and not args.force:
         sys.exit(f"{b.video_path} exists. Pass --force to overwrite.")
     director.direct(cfg, b)
+
+
+def cmd_redraft(args, cfg):
+    """Send one written chapter back to the writer with a note. **Paid.**
+
+    The same call the review page's *Note to writer* makes. It exists as a
+    command because the page now runs every stage as a subprocess — and because
+    a note worth sending is worth being able to send from a terminal.
+    """
+    b = _bundle(args)
+    note = args.note
+    if args.note_file:
+        note = Path(args.note_file).read_text()
+
+    def progress(attempt, review):
+        _progress(event="pass", attempt=attempt, ok=bool(review.get("pass")),
+                  score=review.get("score"), words=b.chapter_words(args.chapter))
+
+    review = text.redraft_chapter(cfg, b, args.chapter, note, on_pass=progress)
+    summary.write(b)
+    verdict = "passed" if review.get("pass") else "still failing review"
+    print(f"\nChapter {args.chapter}: {verdict}"
+          + (f" ({review['score']})" if review.get("score") else ""))
+    later = [m for m in b.chapter_numbers()
+             if m > args.chapter and b.chapter_json(m).exists()]
+    if later:
+        print(f"Chapters {later} were written with the old version as context "
+              "and are unchanged — worth rereading.")
 
 
 def cmd_lint(args, cfg):
@@ -824,6 +872,14 @@ def main(argv=None):
     wr.add_argument("--restart", action="store_true",
                     help="rewrite chapters already done instead of resuming")
     wr.set_defaults(fn=cmd_write)
+
+    rdf = sub.add_parser("redraft",
+                         help="send one chapter back to the writer with a note")
+    rdf.add_argument("story")
+    rdf.add_argument("--chapter", type=int, required=True)
+    rdf.add_argument("--note", default="", help="what the writer should change")
+    rdf.add_argument("--note-file", help="the same, read from a file")
+    rdf.set_defaults(fn=cmd_redraft)
 
     dz = sub.add_parser("design", help="cast sheet and scene images")
     dz.add_argument("story")

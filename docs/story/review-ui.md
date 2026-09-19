@@ -520,14 +520,16 @@ each chapter and the total is quadratic in chapter count. Prices come from
 model has no price there the dialog says *cost unknown* rather than inventing a
 figure.
 
-**It runs as a background job.** A write is minutes and a dozen or more model
+**It runs as a detached process.** A write is minutes and a dozen or more model
 calls; holding an HTTP request open for that would hang the browser and lose the
-run to any timeout. `POST /api/write` returns in milliseconds and the page polls
-`/api/job/<slug>`, showing a bar and a line per chapter as the editor passes or
-fails it.
+run to any timeout. `POST /api/write` returns in milliseconds, having started
+`cli write` in its own process group, and the page polls `/api/job/<slug>` for a
+bar and a line per chapter as the editor passes or fails each one.
 
 Closing the dialog does not stop the run — the toast says so, because a Cancel
-button that only closes a window should not imply otherwise.
+button that only closes a window should not imply otherwise. **Stop** does stop
+it, and reopening the dialog rejoins a run already in flight rather than
+offering to start a second one.
 
 Three guards:
 
@@ -573,6 +575,44 @@ and the review box has 412 MiB of RAM — see [running on AWS](aws.md). The page
 offers **Assets .zip** instead: the audio and images, streamed as a zip, to
 unzip into `stories/` on the machine that renders. The prose is not in it, since
 that arrives by `git pull`.
+
+### Jobs are processes, and what that buys
+
+Every paid stage runs as a child in its own process group, started by
+`review/runner.py`. They were threads inside the server until the box moved to
+AWS, and three things forced the change: `mw-deploy` restarts the server on any
+Python change and a thread dies with it, a thread cannot be stopped, and job
+state that lives in memory is gone after any restart.
+
+State is files, in the same spirit as the bundles:
+
+    runs/<slug>/<job_id>/meta.json     stage, pid, status, timings, flags
+    runs/<slug>/<job_id>/output.log    stdout and stderr, append-only
+    runs/<slug>/<job_id>/note.txt      redraft only — the note, as sent
+
+`runs/` is gitignored and deliberately **not** under `stories/`, which
+`mw-commit-stories` commits wholesale every fifteen minutes.
+
+What follows from it:
+
+- **A deploy no longer kills a run.** The child is re-found by pid when the
+  server comes back, and the page picks up where it was.
+- **Stop means stop.** `POST /api/cancel` signals the process group, so the
+  provider call and ffmpeg go too. What finished stays on disk and the stage is
+  released back to `pending`, so starting again resumes.
+- **Dead jobs are settled at startup.** Anything still claiming to be running
+  whose pid is gone is marked failed, and its stage released. Without that, one
+  crash leaves a story spinning in the UI forever.
+- **The log is readable afterwards.** `GET /api/log/<slug>?from=<offset>` tails
+  it by byte offset, so a poll appends instead of replaying the run, and a
+  finished job's output is still there days later.
+- **Progress crosses the boundary as markers.** The CLI prints
+  `::progress {...}` lines under `MW_PROGRESS`, which is what keeps the
+  per-chapter detail the write dialog shows. Record and design need none: their
+  output is files, so the server counts those instead.
+
+Redraft became `cli redraft` in the process — the page needed a command to run,
+and a note worth sending is worth being able to send from a terminal.
 
 ### What revise does to the bundle
 

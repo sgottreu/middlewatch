@@ -208,6 +208,9 @@
   #stage .m2 { font-family:var(--mono); font-size:12px; color:var(--dim); display:block; }
   #stage .redo2 { display:flex; gap:8px; align-items:center; cursor:pointer;
                   font-size:14px; margin:0 0 4px; }
+  /* An author `display` beats the browser's own rule for [hidden], so hiding
+     this row from the script would otherwise do nothing. */
+  #stage .redo2[hidden] { display:none; }
   #stage .row2 { display:flex; gap:9px; justify-content:flex-end; margin-top:16px; }
   #sprog { display:none; margin:14px 0 0; }
   #sprog.show { display:block; }
@@ -216,6 +219,12 @@
             transition:width .3s; }
   #sproglog { font-family:var(--mono); font-size:12px; color:var(--dim);
               margin-top:8px; max-height:140px; overflow-y:auto; }
+  /* The stage's own output. Same text the CLI prints, because it is the CLI. */
+  #slog { font-family:var(--mono); font-size:11px; color:var(--dim);
+          background:var(--bg); border:1px solid var(--line); border-radius:6px;
+          margin:10px 0 0; padding:8px 10px; max-height:180px; overflow:auto;
+          white-space:pre-wrap; word-break:break-word; }
+  #sstop, #wstop, #nstop { color:var(--danger); border-color:var(--danger); }
   /* note-to-writer dialog ---------------------------------------------- */
   #nscrim { position:fixed; inset:0; background:rgba(0,0,0,.55); display:none;
             align-items:center; justify-content:center; z-index:10; }
@@ -381,6 +390,7 @@
     <ul id="wfacts"></ul>
     <div id="prog"><div id="bar2"><i></i></div><div id="proglog"></div></div>
     <div class="row2">
+      <button type="button" id="wstop" hidden>Stop</button>
       <button type="button" id="wcancel">Cancel</button>
       <button type="submit" id="wgo" class="primary">Write it</button>
     </div>
@@ -392,7 +402,9 @@
     <label class="redo2" id="sopt" hidden>
       <input type="checkbox" id="soptbox"><span id="sopttext"></span></label>
     <div id="sprog"><div id="bar3"><i></i></div><div id="sproglog"></div></div>
+    <pre id="slog" hidden></pre>
     <div class="row2">
+      <button type="button" id="sstop" hidden>Stop</button>
       <button type="button" id="scancel">Cancel</button>
       <button type="submit" id="sgo" class="primary"></button>
     </div>
@@ -408,6 +420,7 @@
     <div class="cost" id="ncost"></div>
     <div id="nstatus"></div>
     <div class="row2">
+      <button type="button" id="nstop" hidden>Stop</button>
       <button type="button" id="ncancel">Cancel</button>
       <button type="submit" id="ngo" class="primary">Send to writer</button>
     </div>
@@ -866,8 +879,9 @@ function setActions(d) {
   // Write is the step between the two gates: the outline is approved and no
   // chapters exist yet. A run already in flight keeps it disabled.
   const writing = (d.job || {}).state === "running";
-  wr.disabled = writing ||
-                !(ideate === "approved" && (edit === "pending" || edit === "running"));
+  wr.disabled = writing
+    ? (d.job.kind !== "write")
+    : !(ideate === "approved" && (edit === "pending" || edit === "running"));
   wr.innerHTML = !writing ? `Write…<kbd>w</kbd>`
     : d.job.kind === "redraft" ? `Redrafting ${d.job.n}…` : `Writing…`;
 
@@ -877,10 +891,13 @@ function setActions(d) {
   // show progress while one is in flight.
   const jkind = (d.job || {}).kind;
   const at = () => `${(d.job || {}).done || 0}/${(d.job || {}).total || "?"}`;
-  rec.disabled = writing || !written;
+  // A running stage keeps its own button live: it is the way back to the
+  // progress and to Stop, which is the whole point of the run being a process
+  // rather than a page that has to stay open. The other buttons go dark.
+  rec.disabled = writing ? jkind !== "record" : !written;
   rec.innerHTML = writing && jkind === "record"
     ? `Narrating ${at()}…` : `Record…<kbd>n</kbd>`;
-  dsg.disabled = writing || d.stages.record !== "done";
+  dsg.disabled = writing ? jkind !== "design" : d.stages.record !== "done";
   dsg.innerHTML = writing && jkind === "design"
     ? `Drawing ${at()}…` : `Design…<kbd>g</kbd>`;
 
@@ -1065,6 +1082,20 @@ function refreshEstimate(restart) {
 function openWrite() {
   const d = state.detail;
   if (!d) return;
+
+  // Same as the stage dialog: a write already in flight is a process, so this
+  // rejoins it — progress, log and Stop — instead of offering to start another.
+  if ((d.job || {}).state === "running" && d.job.kind === "write") {
+    const go = document.getElementById("wgo");
+    go.disabled = true; go.textContent = "Writing…";
+    renderProgress(d.job);
+    document.getElementById("wstop").hidden = false;
+    wscrim.classList.add("show");
+    if (pollTimer) clearInterval(pollTimer);
+    pollTimer = setInterval(pollJob, 1500);
+    return;
+  }
+
   const e = refreshEstimate(false) || {};
 
   // Say what is actually going to be written. A part-written story resumes,
@@ -1122,14 +1153,17 @@ function renderProgress(j) {
 async function pollJob() {
   const j = await (await fetch("/api/job/" + encodeURIComponent(state.sel))).json();
   renderProgress(j);
+  document.getElementById("wstop").hidden = !j.can_cancel;
   if (j.state === "running") return;
 
   clearInterval(pollTimer); pollTimer = null;
   const go = document.getElementById("wgo");
-  if (j.state === "failed") {
+  if (j.state === "failed" || j.state === "cancelled") {
     go.textContent = "Try again"; go.disabled = false;
     document.getElementById("proglog").innerHTML +=
-      `<br><span style="color:var(--danger)">${esc(j.error || "failed")}</span>`;
+      `<br><span style="color:var(--danger)">` +
+      `${esc(j.state === "cancelled" ? "Stopped." : explain(j.error || "failed"))}</span>` +
+      (j.kept ? `<br>${j.kept} chapter(s) on disk — writing again resumes from them.` : ``);
     return;
   }
   go.textContent = "Done";
@@ -1192,15 +1226,43 @@ document.getElementById("write").onsubmit = async e => {
     return;
   }
   renderProgress(res);
+  document.getElementById("wstop").hidden = false;
   pollTimer = setInterval(pollJob, 1500);
 };
+
+document.getElementById("wstop").onclick = () => stopJob(state.sel);
 
 // --- record and design ---------------------------------------------------
 // One dialog for both. They differ in what they cost, what they count and what
 // comes next, and in nothing else. `direct` is deliberately absent: it renders
 // on a real machine, so the page hands over the assets instead — docs/story/aws.md.
 const sscrim = document.getElementById("sscrim");
-let sKind = null, sPoll = null;
+let sKind = null, sPoll = null, sLogAt = 0;
+
+// Stop the stage. The server kills the process group, so the provider call and
+// ffmpeg go with it; whatever is already on disk stays and the next run resumes
+// from there. Shared by all three dialogs because it is the same one request.
+async function stopJob(slug) {
+  if (!slug) return;
+  const res = await (await fetch("/api/cancel", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ slug }) })).json();
+  if (res.error) { toast(explain(res.error)); return; }
+  toast("Stopping — what finished is kept.");
+}
+
+// The stage's own output, tailed by byte offset so a poll appends rather than
+// replaying the run.
+async function pumpLog() {
+  const r = await (await fetch(`/api/log/${encodeURIComponent(state.sel)}` +
+                               `?from=${sLogAt}`)).json();
+  sLogAt = r.offset || sLogAt;
+  if (!r.text) return;
+  const el = document.getElementById("slog");
+  el.hidden = false;
+  el.textContent += (el.textContent ? "\n" : "") + r.text;
+  el.scrollTop = el.scrollHeight;
+}
 
 const STAGE = {
   record: {
@@ -1238,9 +1300,31 @@ async function openStage(kind) {
   document.getElementById("sprog").className = "";
   document.getElementById("sproglog").innerHTML = "";
   document.querySelector("#bar3 i").style.width = "0";
+  const slog = document.getElementById("slog");
+  slog.textContent = ""; slog.hidden = true; sLogAt = 0;
+  document.getElementById("sstop").hidden = true;
   document.getElementById("scost").innerHTML =
     `<span class="m2">working out what it costs…</span>`;
   sscrim.classList.add("show");
+
+  // The run is a detached process, so one may well already be going — started
+  // before a deploy, or from another browser. Reopening the dialog joins it
+  // rather than offering to start a second and spend twice.
+  const live = state.detail.job || {};
+  if (live.state === "running" && live.kind === kind) {
+    go.disabled = true;
+    go.textContent = kind === "record" ? "Narrating…" : "Drawing…";
+    document.getElementById("scost").innerHTML =
+      `<span class="m2">already running — started ` +
+      `${live.started ? new Date(live.started * 1000).toLocaleTimeString() : "earlier"}` +
+      `</span>`;
+    document.getElementById("sopt").hidden = true;
+    renderStage(live);
+    document.getElementById("sstop").hidden = false;
+    if (sPoll) clearInterval(sPoll);
+    sPoll = setInterval(pollStage, 2000);
+    return;
+  }
 
   // Free and credential-free on the server, so the figure is always available
   // even on a box that cannot reach the provider at all.
@@ -1275,15 +1359,20 @@ async function pollStage() {
   const j = await (await fetch("/api/job/" +
                                encodeURIComponent(state.sel))).json();
   renderStage(j);
+  await pumpLog();
+  document.getElementById("sstop").hidden = !j.can_cancel;
   if (j.state === "running") return;
 
   clearInterval(sPoll); sPoll = null;
   const go = document.getElementById("sgo");
-  if (j.state === "failed") {
+  if (j.state === "failed" || j.state === "cancelled") {
     go.disabled = false; go.textContent = "Try again";
     document.getElementById("sproglog").innerHTML +=
-      `<br><span style="color:var(--danger)">${esc(explain(j.error || "failed"))}</span>` +
+      `<br><span style="color:var(--danger)">` +
+      `${esc(j.state === "cancelled" ? "Stopped." : explain(j.error || "failed"))}</span>` +
       `<br>What finished is on disk — running it again carries on from there.`;
+    // The bar still says "Narrating…" until the story is re-read.
+    await loadQueue(state.sel);
     return;
   }
   go.textContent = "Done"; go.disabled = false;
@@ -1315,8 +1404,11 @@ document.getElementById("stage").onsubmit = async e => {
     return;
   }
   renderStage(res);
+  document.getElementById("sstop").hidden = false;
   sPoll = setInterval(pollStage, 2000);
 };
+
+document.getElementById("sstop").onclick = () => stopJob(state.sel);
 
 document.getElementById("scancel").onclick = () => {
   // Like write: closing the dialog does not stop the thread.
@@ -1406,6 +1498,7 @@ async function pollNote() {
   const passes = (j.passes || []).map(p =>
     `pass ${p.attempt + 1}: ${p.pass ? "passed" : "sent back"}` +
     (p.score ? ` (${p.score})` : ``) + ` · ${p.words}w`);
+  document.getElementById("nstop").hidden = !j.can_cancel;
   if (j.state === "running") {
     st.className = "working";
     st.innerHTML = `The writer is revising chapter ${j.n}…` +
@@ -1414,10 +1507,13 @@ async function pollNote() {
     return;
   }
   clearInterval(npoll); npoll = null;
+  document.getElementById("nstop").hidden = true;
   const go = document.getElementById("ngo");
-  if (j.state === "failed") {
+  if (j.state === "failed" || j.state === "cancelled") {
     st.className = "bad";
-    st.innerHTML = `<b>That didn't finish.</b> ${esc(j.error || "failed")}`;
+    st.innerHTML = j.state === "cancelled"
+      ? `<b>Stopped.</b> The chapter on disk is whichever pass finished last.`
+      : `<b>That didn't finish.</b> ${esc(explain(j.error || "failed"))}`;
     go.textContent = "Try again"; go.disabled = false;
     document.getElementById("ntext").disabled =
       document.getElementById("ntarget").disabled = false;
@@ -1444,6 +1540,8 @@ async function pollNote() {
   if (state.sel === slug) state.anchor = "ch-" + j.n;
   await loadQueue(state.sel);
 }
+
+document.getElementById("nstop").onclick = () => stopJob(nslug);
 
 document.getElementById("notef").onsubmit = async e => {
   e.preventDefault();

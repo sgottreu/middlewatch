@@ -15,12 +15,13 @@
 # step on its own, for a pull done by hand, an edit made on the box, or a server
 # that has wedged.
 #
-# The guard is the point. `run_text_stages` writes chapters to disk one at a
-# time across several minutes and sets `stages.write = "running"` on entry,
-# clearing it only on success — so a restart mid-write loses the chapter being
-# drafted, along with what it cost, and leaves the manifest claiming a run that
-# no longer exists. `_jobs` is rebuilt empty on start, so the job simply
-# vanishes from the page with no error anywhere.
+# The guard is the point — though it is now belt and braces rather than the only
+# thing standing between you and a lost chapter. Stages run as detached
+# processes (`story_pipeline/review/runner.py`), so a restart no longer takes a
+# run down with it: the child keeps going, keeps writing its log, and the
+# restarted server finds it again by pid. What the guard still buys is not
+# interrupting the moment a chapter lands, and not restarting into a deploy that
+# changes the very code the running child is part way through.
 
 set -euo pipefail
 
