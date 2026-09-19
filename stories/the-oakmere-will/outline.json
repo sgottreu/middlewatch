@@ -16,7 +16,7 @@
     {
       "name": "Miss Judith Vane",
       "role": "protagonist",
-      "age": 27,
+      "age": 26,
       "gender": "female",
       "station": "keeps house for her brother, the apothecary; no fortune of her own",
       "want": "to see the truth of the will established before an honest man is cheated of everything",
@@ -29,7 +29,7 @@
     {
       "name": "Mr Silas Rowe",
       "role": "supporting",
-      "age": 34,
+      "age": 33,
       "gender": "male",
       "station": "curate of Amberlight; eighty a year and no expectations",
       "want": "to help without making the matter worse through his own clumsiness",
@@ -42,7 +42,7 @@
     {
       "name": "Mrs Honoria Pike",
       "role": "supporting",
-      "age": 58,
+      "age": 57,
       "gender": "female",
       "station": "widow of a naval surgeon; three hundred a year and a house on the green",
       "want": "to be the first in the parish to know how the will affair ends, and to take some credit for the outcome",
@@ -61,7 +61,7 @@
       "want": "to reclaim the home and the promise his great-uncle made him before he went for a soldier",
       "appearance": "weathered and lean, sun-darkened where an Englishman is usually pale, with a slight limp and a scar along one hand.",
       "dress": "a faded regimental coat at first, plain and unmarked of rank, worn thin at the cuffs.",
-      "voice_note": "spare, direct, softens only when speaking of the farm or of Judith"
+      "voice_note": "spare, direct, softens only when speaking of the farm or of Hester"
     },
     {
       "name": "Mr Vernon Hartwell",
@@ -86,15 +86,15 @@
       "voice_note": "hesitant, drops her voice when frightened, speaks in short bursts"
     },
     {
-      "name": "Mr Owen Vane",
-      "role": "supporting",
-      "age": 30,
-      "gender": "male",
-      "station": "apothecary of Amberlight; modest income from his shop",
-      "want": "to be believed by the gentry without being made to quarrel with them",
-      "appearance": "slight, bespectacled, with herb stains permanently on his cuffs and an ink-stained thumb.",
-      "dress": "a plain brown coat, often still in his apothecary's apron when called upon suddenly.",
-      "voice_note": "careful, exact with dates and numbers, uneasy outside his shop"
+      "name": "Miss Hester Lamb",
+      "role": "love_interest",
+      "age": 28,
+      "gender": "female",
+      "station": "keeps house and dairy for her widowed father at Upper Barton, the farm next to Oakmere; no fortune to speak of",
+      "want": "to have Nathaniel Farr home and settled, and not to have to say aloud what his being reported dead cost her",
+      "appearance": "dark-haired and brown from the dairy yard, with strong capable hands and a straight, unhurried way of standing.",
+      "dress": "a blue print gown under a dairy apron, a brown cloak for the road, a straw bonnet more mended than trimmed.",
+      "voice_note": "warm, dry, practical; sharp with him when she is most moved"
     }
   ],
   "chapters": [
@@ -106,7 +106,7 @@
         "She reports that his cousin's son, Mr Vernon Hartwell, has already moved into the farmhouse under a will drawn up only weeks before Fenner's death.",
         "Judith Vane observes that the will cuts out Fenner's great-nephew, Captain Nathaniel Farr, believed killed abroad three years since.",
         "Mrs Pike declares the captain certainly dead, since no letter has come from him in all that time.",
-        "The Friday coach draws up at the Bell, and a sun-browned stranger steps down asking the way to Oakmere Farm \u2014 Captain Farr himself, very much alive."
+        "The Friday coach draws up at the Bell, and a sun-browned stranger steps down asking the way to Oakmere Farm — Captain Farr himself, very much alive."
       ],
       "target_words": 580
     },
@@ -126,8 +126,8 @@
       "n": 3,
       "title": "The Dispensing Book",
       "beats": [
-        "Lodging at the Bell on credit he can ill afford, Farr seeks out Judith Vane, who knew him before he went to war.",
-        "Judith takes him to her brother Owen's shop, where Owen is reluctant to be drawn into a quarrel with gentry.",
+        "Lodging at the Bell on credit he can ill afford, Farr is sent by Hester Lamb of Upper Barton, who never believed him dead, to Judith Vane, who knew him before he went to war and checks a story before she repeats it.",
+        "Judith takes him to her brother Owen's shop, where Owen says flatly what it will cost him with Hartwell's account and then shuts the shop in the middle of the morning.",
         "Owen consults his dispensing book and finds the entry for the very date the will was signed.",
         "The entry shows Fenner was given a heavy dose against pain that same morning, and Owen recalls the old man could scarcely say his own name that day.",
         "Judith concludes that a dispensing book alone will not answer, and that they need someone who was inside Oakmere on the day of the signing."
@@ -140,7 +140,7 @@
       "beats": [
         "Judith and Mr Rowe call at Oakmere under pretence of parish almsgiving, and are received stiffly by Hartwell in the hall.",
         "Alone with Whitlow in the kitchen, Judith learns the housekeeper was told exactly what account to give of the day of the signing.",
-        "Whitlow admits, her voice dropping, that months before the death she wrote herself to Farr's regiment warning that his great-uncle was failing.",
+        "Whitlow admits, her voice dropping, that months before the death she wrote herself to Farr's regiment warning that his great-uncle was failing, with Hester Lamb at Upper Barton to read it over and spell the regiment.",
         "She recalls handing that letter to Hartwell to go with the rest of the post, since he had by then taken charge of it.",
         "Frightened at having said so much, Whitlow cannot say whether the letter was ever sent at all."
       ],
@@ -150,10 +150,10 @@
       "n": 5,
       "title": "The Road to Winchester",
       "beats": [
-        "Judith carries Owen's dispensing book and Whitlow's account to Farr at the Bell.",
+        "Judith carries Owen's dispensing book and Whitlow's account to Farr at the Bell, where Hester confirms she read Whitlow's letter in April.",
         "Farr resolves to lay the evidence before the Winchester attorney who holds Fenner's papers.",
-        "Mr Rowe warns that Farr alone would be taken for a fortune hunter telling a convenient story, and proposes Judith go too, with the book in her own keeping.",
-        "Judith agrees, over Mrs Pike's loud objections about a lady travelling with a strange captain.",
+        "Mr Rowe warns that Farr alone would be taken for a fortune hunter telling a convenient story, and proposes Judith go too with the book in her own keeping, and Hester, who can swear to the letter.",
+        "Judith and Hester agree, over Mrs Pike's loud objections about two young women travelling with a strange captain.",
         "A few miles short of Winchester a wheel gives way on their hired chaise, and the driver says no other conveyance will pass before morning."
       ],
       "target_words": 560
@@ -162,9 +162,9 @@
       "n": 6,
       "title": "The Wayside House",
       "beats": [
-        "Stranded at a farmhouse by the road while a wheelwright is fetched, Farr tells Judith what became of him after the battle that was reported his death.",
+        "Stranded at a farmhouse by the road while a wheelwright is fetched, Farr tells Hester what became of him after the battle that was reported his death, while Judith reads at the far settle.",
         "He describes a year in a foreign hospital, and letters gone astray once his regiment moved on without a fixed direction for him.",
-        "Judith admits, for the first time, that she had heard him reported dead and grieved it more than she let the parish see.",
+        "Hester admits, for the first time, that she had heard him reported dead and grieved it more than she let the parish see.",
         "Working through the dates together by the fire, they realize Whitlow's letter, if it was ever sent, would have passed through Hartwell's own hands first.",
         "They agree that Hartwell alone had both the means and the reason to see that letter never leave the house."
       ],
@@ -175,10 +175,10 @@
       "title": "The Attorney's Pigeonhole",
       "beats": [
         "In Winchester the next morning, the attorney confirms that the earlier will naming Farr was never formally revoked, only set aside as superseded.",
-        "He permits Judith and Farr to search a shelf of unclaimed correspondence kept at his office for want of a clear direction.",
-        "Among the letters they find Whitlow's own, misdirected there through a clerk's error rather than destroyed.",
+        "He permits Judith, Hester and Farr to search a shelf of unclaimed correspondence kept at his office for want of a clear direction.",
+        "Among the letters Hester knows Whitlow's own on sight, misdirected there through a clerk's error rather than destroyed.",
         "Its date proves that Fenner was already failing months before Hartwell's will was ever drawn up.",
-        "The attorney agrees to summon Hartwell to account, and Farr and Judith hurry back toward Amberlight before he can sell off the farm's stock."
+        "The attorney agrees to summon Hartwell to account, and the three of them hurry back toward Amberlight before he can sell off the farm's stock."
       ],
       "target_words": 560
     },
@@ -190,7 +190,7 @@
         "Hartwell cannot account for the letter's date, nor explain why it never left the house.",
         "With the attorney's authority behind them, Hartwell quits Oakmere before nightfall rather than face a suit.",
         "Mrs Pike carries the whole affair through the parish within a day, casting herself as the one who first doubted the will.",
-        "Confirmed at last in his inheritance, Farr asks Judith what he could not honestly have asked her with nothing to his name, and she accepts."
+        "Confirmed at last in his inheritance, Farr asks Hester what he could not honestly have asked her with nothing to his name, and she accepts."
       ],
       "target_words": 560
     }
@@ -201,7 +201,7 @@
   "slug": "the-oakmere-will",
   "revisions": [
     {
-      "feedback": "Keep these exactly as they are, word for word where they are text: the logline; the promise; the setting; the tropes, exactly as named; the title; the cast, including their names, ages and stations.\n\nReplace these wholesale rather than adjusting what is there: the chapters and their beats.\n\nThe new chapters must carry 4 to 5 concrete beats each \u2014 things that happen, not moods. That density is what stops the prose stretching to fill the words rather than the story getting bigger.",
+      "feedback": "Keep these exactly as they are, word for word where they are text: the logline; the promise; the setting; the tropes, exactly as named; the title; the cast, including their names, ages and stations.\n\nReplace these wholesale rather than adjusting what is there: the chapters and their beats.\n\nThe new chapters must carry 4 to 5 concrete beats each — things that happen, not moods. That density is what stops the prose stretching to fill the words rather than the story getting bigger.",
       "previous_title": "The Oakmere Will"
     }
   ]

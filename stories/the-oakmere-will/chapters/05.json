@@ -4,15 +4,19 @@
   "segments": [
     {
       "speaker": "narrator",
-      "text": "Owen Vane parted with his dispensing book as a man parts with a tooth, and only upon three conditions: that it be carried flat, that it be back upon his counter by Friday, and that nobody in Winchester be told whose shop it came out of. Judith agreed to two of these. She put it under her arm and walked down to the Bell before the light went."
+      "text": "Owen Vane gave up his dispensing book upon one condition, stated once: that it be back on his counter by Friday, because half the parish's physic was written in it and he would not dispense from memory for anybody. Judith put it under her arm and walked down to the Bell before the light went."
     },
     {
       "speaker": "narrator",
-      "text": "Captain Farr heard her through without once interrupting, which was not a thing she was used to. When she came to the letter he set down his cup."
+      "text": "She found Captain Farr in the parlour, and Miss Hester Lamb with him, who had walked over from Upper Barton with a basket of eggs he had not asked for and was taking him to task about the fire he had not lit. He heard Judith through without once interrupting, which was not a thing she was used to. When she came to the letter he set down his cup."
     },
     {
       "speaker": "Captain Nathaniel Farr",
       "text": "April. She wrote in April, and burnt two before she got one to please her, and I was at Lisbon in April doing nothing whatever but learning to walk again."
+    },
+    {
+      "speaker": "Miss Hester Lamb",
+      "text": "I read it. She brought it to our kitchen in April and I spelt the regiment for her, and she blotted the outside with her thumb and cried over the second sheet. I never asked what became of it. I thought it had gone."
     },
     {
       "speaker": "Miss Judith Vane",
@@ -48,7 +52,7 @@
     },
     {
       "speaker": "Mr Silas Rowe",
-      "text": "Yes. That is precisely the trouble with it. But if Miss Vane went, and the book were in her keeping and not yours, and she said, my brother wrote this line and will swear to it, that is not a convenient story. That is a ledger in the hand of somebody who gets nothing whatever by it."
+      "text": "Yes. That is precisely the trouble with it. But if Miss Vane went, and the book were in her keeping and not yours, and she said, my brother wrote this line and will swear to it, that is not a convenient story. That is a ledger in the hand of somebody who gets nothing whatever by it. And Miss Lamb, who read the letter in April and will say so."
     },
     {
       "speaker": "narrator",
@@ -59,12 +63,16 @@
       "text": "That is the first sensible thing anybody has said since Friday. I will go."
     },
     {
+      "speaker": "Miss Hester Lamb",
+      "text": "And so shall I. It is my spelling on the outside of it."
+    },
+    {
       "speaker": "narrator",
       "text": "Mrs Pike had it by nine the next morning, being at the Bell about a parcel she was not expecting, and gave her opinion in the yard where it would carry."
     },
     {
       "speaker": "Mrs Honoria Pike",
-      "text": "Eleven miles, in a hired chaise, with a gentleman this parish has not clapped eyes on since the year nine. My dear, I do not doubt him and I do not doubt you, and that is nothing at all to the purpose. It is what is said. Send the curate."
+      "text": "Eleven miles, in a hired chaise, two young women and a gentleman this parish has not clapped eyes on since the year nine. My dear, I do not doubt him and I do not doubt either of you, and that is nothing at all to the purpose. It is what is said. Send the curate."
     },
     {
       "speaker": "Miss Judith Vane",
@@ -76,7 +84,7 @@
     },
     {
       "speaker": "Miss Judith Vane",
-      "text": "Owen would not sleep for a week and would say so in the office. Ma'am, I am seven and twenty and I keep house for an apothecary. There is very little left of me to be ruined that Amberlight has not already had the pleasure of."
+      "text": "Owen would shut the shop and go, ma'am, and half the parish would be without its physic till he came back, and I will not have it. Ma'am, I am six and twenty and I keep house for an apothecary. There is very little left of me to be ruined that Amberlight has not already had the pleasure of."
     },
     {
       "speaker": "narrator",
@@ -84,7 +92,7 @@
     },
     {
       "speaker": "narrator",
-      "text": "They went at ten. The road was cut up from the week's rain and the near hind wheel had been complaining since the Alresford turning, and about three miles short of the city it stopped complaining and went. The chaise came down slowly and sideways into the ditch grass, and the dispensing book slid off Judith's lap into the straw, and nobody was hurt at all."
+      "text": "They went at ten. The road was cut up from the week's rain and the near hind wheel had been complaining since the Alresford turning, and about three miles short of the city it stopped complaining and went. The chaise came down slowly and sideways into the ditch grass, and the dispensing book slid off Judith's lap into the straw, and Hester caught it, and nobody was hurt at all."
     },
     {
       "speaker": "narrator",
