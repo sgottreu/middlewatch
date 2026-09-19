@@ -5,8 +5,9 @@ also written to by the machine — the designer promotes a generated portrait in
 the series the first time a character is drawn, and nothing else records that it
 happened. Six months later, "why does Mrs Pike look like that" has no answer.
 
-The log lives beside the bible as `bibles/<name>.changelog.md`, matching the
-`<name>.cast/` convention. It is deliberately *not* frontmatter: the bible's YAML
+The log lives beside the bible as `bibles/<name>/<name>.changelog.md`, matching
+the `<name>.cast/` convention — found relative to the bible file, so it moves
+with it. It is deliberately *not* frontmatter: the bible's YAML
 is hand-edited constantly and an unbounded list at the top of it would be in the
 way. Nothing in the pipeline reads the changelog — it is for you.
 

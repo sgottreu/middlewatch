@@ -1,6 +1,6 @@
 # Writing a series bible by hand
 
-The reference for authoring `bibles/<name>.md` yourself — either preloading one
+The reference for authoring `bibles/<name>/<name>.md` yourself — either preloading one
 before the ideator has ever seen it, or editing a scaffold before the first story
 in the series. [Series bibles](bibles.md) covers what a bible is *for*; this
 covers what the loader accepts and what each field actually reaches.
@@ -18,7 +18,7 @@ python3 -m story_pipeline.cli bible new amberlight --genre regency \
     --series "Middle Watch: Amberlight"
 ```
 
-Writes `bibles/amberlight.md` from a commented template and refuses if the file
+Writes `bibles/amberlight/amberlight.md` from a commented template and refuses if the file
 already exists. `--genre` is required and must be one of the installed genres;
 `--series` is optional and defaults to the filename with hyphens turned to spaces
 and title-cased.
@@ -32,8 +32,15 @@ generic on purpose: it is a shape to edit, not a series to keep.
 You do not have to use the command. A hand-written file that parses is
 indistinguishable from a scaffolded one — `bible new` only saves you typing.
 
-The **filename stem is the bible's name**. `bibles/amberlight.md` is
-`--bible amberlight`. Nothing inside the file changes that.
+The **folder and the file share the bible's name**. `bibles/amberlight/amberlight.md`
+is `--bible amberlight`, and a folder without a matching `.md` inside is not
+listed as a bible at all. Nothing inside the file changes the name. The folder
+also holds the series' portraits (`amberlight.cast/`) and its changelog, so a
+series moves, copies or deletes as one thing.
+
+A bible still at the old flat path, `bibles/<name>.md`, keeps working — the
+loader falls back to it — but move it into its own folder, with its `.cast/` and
+`.changelog.md` beside it, when convenient.
 
 ---
 
@@ -116,7 +123,7 @@ same route and two of them never reach the ideator at all.
 | `appearance` | no | **Not shown to any agent.** Forced onto the outline, then used verbatim in the portrait prompt. |
 | `dress` | no | Same as `appearance`. Appears as `Wearing: <dress>`. |
 | `voice` | no | **Not shown to any agent.** Forced onto the outline, where the actor honours it as an explicit casting override. |
-| `portrait` | no | Filename inside `bibles/<name>.cast/`. Manual override only — see below. |
+| `portrait` | no | Filename inside `bibles/<name>/<name>.cast/`. Manual override only — see below. |
 
 ### Only four fields reach the ideator
 
@@ -168,13 +175,13 @@ A bible `voice` outranks turn-count casting and does not consume one of the
 ### `portrait` is not filled in for you
 
 `save_portrait()` copies the
-generated image to `bibles/<name>.cast/<slugified-name>.png` and never edits the
+generated image to `bibles/<name>/<name>.cast/<slugified-name>.png` and never edits the
 YAML. Set `portrait:` only when you want a filename other than the slug — for
 instance to point two bible entries at one image, or to drop in a portrait you
 made yourself.
 
 To preload a face by hand: put the file at
-`bibles/<bible>.cast/<slugified-name>.png` — lowercase, every non-alphanumeric
+`bibles/<bible>/<bible>.cast/<slugified-name>.png` — lowercase, every non-alphanumeric
 character replaced with a hyphen. `Mrs Honoria Pike` becomes `mrs-honoria-pike.png`.
 The designer finds it and skips generation.
 
@@ -201,14 +208,14 @@ first story runs.** Canon and prose can grow as the series does; that is what
 they are for.
 
 Portraits are the exception that works in your favour. The first story to
-generate a face promotes it into `bibles/<name>.cast/`, and every later story
+generate a face promotes it into `bibles/<name>/<name>.cast/`, and every later story
 reuses it. Delete the png to force a regeneration.
 
 ---
 
 ## The changelog
 
-Every bible has a sidecar at `bibles/<name>.changelog.md`, alongside
+Every bible has a sidecar at `bibles/<name>/<name>.changelog.md`, alongside
 `<name>.cast/`. Nothing in the pipeline reads it — it is for you.
 
 ```bash
@@ -291,7 +298,7 @@ empty prose body, a leftover scaffold placeholder, a `portrait:` pointing at a
 file that isn't there, or a png in `<name>.cast/` that no cast member claims —
 usually the old face of a character you renamed.
 
-Then read `bibles/amberlight.md`. It ships filled in rather than as a stub
+Then read `bibles/amberlight/amberlight.md`. It ships filled in rather than as a stub
 precisely so there is a worked example of the format.
 
 ---

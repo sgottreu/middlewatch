@@ -152,7 +152,7 @@ def cmd_bible_check(args, cfg):
 
     worst = 0
     for name in names:
-        path = Path(cfg["bibles_dir"]) / f"{name}.md"
+        path = bibles.path_for(name, cfg["bibles_dir"])
         if not path.exists():
             sys.exit(f"no bible {name!r} in {cfg['bibles_dir']}/")
         problems = bibles.validate(path, cfg)
@@ -188,7 +188,7 @@ def cmd_bible_check(args, cfg):
 
 def cmd_bible_log(args, cfg):
     """Append an entry, or show the history."""
-    path = Path(cfg["bibles_dir"]) / f"{args.name}.md"
+    path = bibles.path_for(args.name, cfg["bibles_dir"])
     if not path.exists():
         sys.exit(f"no bible {args.name!r} in {cfg['bibles_dir']}/")
 

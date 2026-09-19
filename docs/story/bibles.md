@@ -38,7 +38,7 @@ continuity failure, and the designer gets it too.
 
 **Recurring characters keep their face and their voice across stories.** That's
 the part that earns the feature. A portrait generated for Mrs Pike in story one
-is promoted into `bibles/amberlight.cast/` and reused in story four — because two
+is promoted into `bibles/amberlight/amberlight.cast/` and reused in story four — because two
 portraits from the same description are not the same person, and across a
 playlist that reads as recasting the role between episodes. A `voice` in the
 bible flows through as an explicit casting override, so she sounds the same even
@@ -81,7 +81,7 @@ match "Mrs Honoria Pike".
 
 ## The shipped example
 
-`bibles/amberlight.md` is filled in as a working example rather than a stub — the format matters more than the loader. Read it before writing your own.
+`bibles/amberlight/amberlight.md` is filled in as a working example rather than a stub — the format matters more than the loader. Read it before writing your own.
 
 
 ---

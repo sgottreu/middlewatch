@@ -20,6 +20,11 @@
   :root {
     --bg: #14140f; --panel: #1c1c16; --line: #2e2e24; --ink: #e8e4d8;
     --dim: #97917f; --accent: #c9a227; --danger: #d4674a; --ok: #7ea05a;
+    /* Live action buttons are blue, not merely lighter: blue against grey holds
+       up under the common colour-vision deficiencies, where a shade difference
+       does not. Disabled ones are also dashed, so the cue survives without
+       colour at all. */
+    --btn: #25405f; --btn-hi: #2f5078; --btn-line: #5a8bc4; --btn-ink: #e6eef8;
     --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
   }
   /* Dark only. This is a night-watch tool read in the evening, and a second
@@ -126,9 +131,13 @@
   .chend .chapok { margin-left:auto; }
 
   /* action bar --------------------------------------------------------- */
+  /* Two rows: what you can do, then where the story stands. The facts used to
+     share the row and squeezed the buttons as the story grew more of them. */
   #bar { flex:none; border-top:1px solid var(--line); background:var(--panel);
-         padding:12px 34px; display:flex; align-items:center; gap:10px; }
-  #bar .facts { flex:1; font-family:var(--mono); font-size:11px; color:var(--dim); }
+         padding:12px 34px; display:flex; flex-direction:column; gap:9px; }
+  #bar .actions { display:flex; flex-wrap:wrap; gap:8px; }
+  #bar .facts { font-family:var(--mono); font-size:11px; color:var(--dim); }
+  #bar .facts:empty { display:none; }
   button { font:inherit; font-size:14px; padding:7px 15px; border-radius:5px;
            border:1px solid var(--line); background:transparent; color:var(--ink);
            cursor:pointer; }
@@ -138,6 +147,36 @@
   button.danger { border-color:var(--danger); color:var(--danger); }
   kbd { font-family:var(--mono); font-size:10px; border:1px solid var(--line);
         border-radius:3px; padding:0 4px; color:var(--dim); margin-left:5px; }
+  /* Bar buttons get a fill and a lip of shadow. Primary and danger keep their
+     colours; disabled ones go flat and dim, so the raised look itself says
+     "this one works". Order matters: equal specificity, last rule wins. */
+  #bar button { background:var(--btn); border-color:var(--btn-line); color:var(--btn-ink);
+                box-shadow:inset 0 1px 0 rgba(255,255,255,.08), 0 1px 2px rgba(0,0,0,.45); }
+  #bar button kbd { color:#b9cce3; border-color:rgba(185,204,227,.4); }
+  #bar button:hover:not(:disabled) { background:var(--btn-hi); border-color:var(--accent); }
+  #bar button:active:not(:disabled) { transform:translateY(1px);
+                                      box-shadow:inset 0 1px 2px rgba(0,0,0,.4); }
+  #bar button.primary { background:var(--ok); border-color:var(--ok); color:#0f120b; }
+  #bar button.primary:hover:not(:disabled) { background:#8db466; border-color:#8db466; }
+  #bar button.danger { background:rgba(212,103,74,.12); border-color:var(--danger);
+                       color:var(--danger); }
+  #bar button.danger:hover:not(:disabled) { background:rgba(212,103,74,.22); }
+  /* Disabled: still clearly a button, just not a live one. Explicit muted
+     colours instead of the global opacity, which faded the fill into the bar
+     until the button all but vanished. */
+  /* Disabled is judged against the bar, not against the live buttons: a fill
+     well clear of --panel in lightness, so the button's edge is visible without
+     telling hues apart. The dashed border and the flat face are what say "not
+     now"; the hue difference from the blue live buttons is only a third cue. */
+  #bar button:disabled { opacity:1; box-shadow:none; background:#4a4943;
+                         border:1px dashed #8d8a7c; color:#cdc9bc;
+                         cursor:not-allowed; }
+  #bar button.primary:disabled { background:#4d5b40; border-color:#8a9c74;
+                                 color:#dbe4cc; }
+  #bar button.danger:disabled { background:#4a3a33;
+                                border:1px dashed #b07a66; color:#e0b3a2; }
+  #bar button:disabled kbd { color:inherit; border-color:currentColor; opacity:.6; }
+  #bar button.primary kbd { color:#0f120b; border-color:rgba(15,18,11,.35); }
   .empty { color:var(--dim); padding:40px 34px; }
   /* revise dialog ------------------------------------------------------ */
   #scrim, #wscrim, #sscrim { position:fixed; inset:0; background:rgba(0,0,0,.55);
@@ -288,11 +327,9 @@
     table { font-size:12px; }
     th, td { padding:4px 6px; }
 
-    /* The bar wraps rather than crushing five labels onto one line: the facts
-       take their own row, the actions share the one under it. */
-    #bar { flex-wrap:wrap; padding:10px 16px calc(10px + env(safe-area-inset-bottom));
-           gap:8px; }
-    #bar .facts { flex-basis:100%; flex-grow:0; }
+    /* Same two rows as the desktop; the buttons stretch to share each line
+       rather than leaving ragged gaps under a thumb. */
+    #bar { padding:10px 16px calc(10px + env(safe-area-inset-bottom)); gap:8px; }
     #bar button { flex:1 1 auto; }
 
     .chend { flex-wrap:wrap; gap:8px; }
@@ -355,14 +392,16 @@
     </div>
     <div id="docbody"><p class="empty">Select a story.</p></div>
     <div id="bar">
+      <div class="actions">
+        <button type="button" id="approve" class="primary" disabled>Approve<kbd>a</kbd></button>
+        <button type="button" id="reviseBtn" disabled>Revise…<kbd>e</kbd></button>
+        <button type="button" id="writeBtn" disabled>Write…<kbd>w</kbd></button>
+        <button type="button" id="recordBtn" disabled>Record…<kbd>n</kbd></button>
+        <button type="button" id="designBtn" disabled>Design…<kbd>g</kbd></button>
+        <button type="button" id="zipBtn" disabled>Assets .zip</button>
+        <button type="button" id="reject" class="danger" disabled>Reject<kbd>r</kbd></button>
+      </div>
       <span class="facts" id="facts"></span>
-      <button type="button" id="approve" class="primary" disabled>Approve<kbd>a</kbd></button>
-      <button type="button" id="reviseBtn" disabled>Revise…<kbd>e</kbd></button>
-      <button type="button" id="writeBtn" disabled>Write…<kbd>w</kbd></button>
-      <button type="button" id="recordBtn" disabled>Record…<kbd>n</kbd></button>
-      <button type="button" id="designBtn" disabled>Design…<kbd>g</kbd></button>
-      <button type="button" id="zipBtn" disabled>Assets .zip</button>
-      <button type="button" id="reject" class="danger" disabled>Reject<kbd>r</kbd></button>
     </div>
   </main>
   <div id="scrim"><form id="revise">
@@ -378,7 +417,7 @@
     <div class="cost"><b>This spends about $0.07.</b> The outline it replaces is
       saved to <code>drafts/</code>, so a worse revision is recoverable.</div>
     <div class="row2">
-      <button type="button" id="cancel">Cancel</button>
+      <button type="button" id="cancel" title="Close this dialog. A run already started keeps going in the background.">Cancel</button>
       <button type="submit" id="go" class="primary">Revise</button>
     </div>
   </form></div>
@@ -390,8 +429,8 @@
     <ul id="wfacts"></ul>
     <div id="prog"><div id="bar2"><i></i></div><div id="proglog"></div></div>
     <div class="row2">
-      <button type="button" id="wstop" hidden>Stop</button>
-      <button type="button" id="wcancel">Cancel</button>
+      <button type="button" id="wstop" hidden title="Stop the run. What has finished stays on disk, and running it again picks up from there.">Stop</button>
+      <button type="button" id="wcancel" title="Close this dialog. A run already started keeps going in the background.">Cancel</button>
       <button type="submit" id="wgo" class="primary">Write it</button>
     </div>
   </form></div>
@@ -404,8 +443,8 @@
     <div id="sprog"><div id="bar3"><i></i></div><div id="sproglog"></div></div>
     <pre id="slog" hidden></pre>
     <div class="row2">
-      <button type="button" id="sstop" hidden>Stop</button>
-      <button type="button" id="scancel">Cancel</button>
+      <button type="button" id="sstop" hidden title="Stop the run. What has finished stays on disk, and running it again picks up from there.">Stop</button>
+      <button type="button" id="scancel" title="Close this dialog. A run already started keeps going in the background.">Cancel</button>
       <button type="submit" id="sgo" class="primary"></button>
     </div>
   </form></div>
@@ -420,8 +459,8 @@
     <div class="cost" id="ncost"></div>
     <div id="nstatus"></div>
     <div class="row2">
-      <button type="button" id="nstop" hidden>Stop</button>
-      <button type="button" id="ncancel">Cancel</button>
+      <button type="button" id="nstop" hidden title="Stop the run. What has finished stays on disk, and running it again picks up from there.">Stop</button>
+      <button type="button" id="ncancel" title="Close this dialog. A run already started keeps going in the background.">Cancel</button>
       <button type="submit" id="ngo" class="primary">Send to writer</button>
     </div>
   </form></div>
@@ -835,6 +874,13 @@ function segRead() {
       });
 }
 
+// A tooltip in two parts: what the button does, then — if it is disabled — why.
+// A dark button with no explanation is a puzzle; this answers it on hover.
+// Browsers show `title` on disabled buttons too.
+function tip(el, does, why) {
+  el.title = why ? `${does}\n\nNot available: ${why}` : does;
+}
+
 function setActions(d) {
   const ap = document.getElementById("approve"), rj = document.getElementById("reject");
   const facts = document.getElementById("facts");
@@ -846,7 +892,11 @@ function setActions(d) {
   if (!d) {
     ap.disabled = rj.disabled = rv.disabled = wr.disabled =
       rec.disabled = dsg.disabled = zip.disabled = true;
-    facts.textContent = ""; return; }
+    for (const b of [ap, rv, wr, rec, dsg, zip, rj])
+      b.title = "Select a story in the queue first.";
+    // Always a line here, so the row is visibly the status row even before
+    // anything is selected — an empty one looked like it had gone missing.
+    facts.textContent = "no story selected"; return; }
 
   // Derive from the real stage pair, not from "not awaiting an outline".
   // An approved outline that has not been written yet has nothing to approve —
@@ -894,7 +944,11 @@ function setActions(d) {
   // A running stage keeps its own button live: it is the way back to the
   // progress and to Stop, which is the whole point of the run being a process
   // rather than a page that has to stay open. The other buttons go dark.
-  rec.disabled = writing ? jkind !== "record" : !written;
+  // Narration is the largest single cost, so the button waits for the same
+  // gate the server enforces: every written chapter approved. The CLI's
+  // `record --force` is the way round it, deliberately not a click.
+  const allApproved = written > 0 && okd === written;
+  rec.disabled = writing ? jkind !== "record" : !allApproved;
   rec.innerHTML = writing && jkind === "record"
     ? `Narrating ${at()}…` : `Record…<kbd>n</kbd>`;
   dsg.disabled = writing ? jkind !== "design" : d.stages.record !== "done";
@@ -906,6 +960,34 @@ function setActions(d) {
   const have = ((d.assets || {}).audio || 0) + ((d.assets || {}).images || 0);
   zip.disabled = !have;
   zip.textContent = have ? `Assets .zip (${have})` : `Assets .zip`;
+
+  // Tooltips last, once every button's state is settled. The "why" is worked
+  // out from the same facts that disabled the button, so the two cannot
+  // disagree.
+  const other = writing ? `a ${jkind} is running for this story — wait for it, or open it and press Stop.` : "";
+  const mine = k => writing && jkind === k;
+  const live = "Running now — open it to see progress, or to stop it.";
+  tip(ap, what === "outline" ? "Approve this outline. Unlocks Write."
+        : what === "chapters" ? "Approve the chapters not yet approved. Once every chapter is approved, Record unlocks."
+        : "Approves the outline, and later the chapters, when either is waiting for you.",
+      what ? "" : "nothing is waiting for your approval at this stage.");
+  tip(rv, "Regenerate the outline, keeping the parts you tick. Paid, about $0.07 — the old outline is saved to drafts/.",
+      rv.disabled ? "chapters have been written against this outline; revising it now would leave them behind." : "");
+  tip(wr, mine("write") ? live
+        : "Draft and edit every chapter not yet written. Paid — the dialog shows the cost before anything starts.",
+      !wr.disabled ? "" : other || (ideate !== "approved" ? "approve the outline first."
+        : "every chapter is written. To change one, use Note to writer on that chapter."));
+  tip(rec, mine("record") ? live
+        : "Narrate every chapter with text-to-speech. Paid, and the largest single cost — the dialog shows it before anything starts.",
+      !rec.disabled ? "" : other || (written ? `approve every chapter first — ${okd} of ${written} approved.`
+                                             : "no chapters written yet."));
+  tip(dsg, mine("design") ? live
+        : "Draw the cast portraits and the scene images, timed to the narration. Paid — the dialog shows the cost before anything starts.",
+      !dsg.disabled ? "" : other || "record the narration first; the shot timings come from it.");
+  tip(zip, "Download this story's audio and images as one zip, to render the video on your laptop. Free.",
+      zip.disabled ? "no audio or images yet — record and design first." : "");
+  tip(rj, "Delete this story and everything in its folder. Asks first. Free to regenerate, and a rejected outline is not counted in the history.", "");
+
   const lapsed = chs.filter(c => c.approval_lapsed).length;
   facts.textContent =
     `${d.chapters} chapters · ${d.beats} beats · ${d.per_beat} w/beat · ` +
@@ -1271,7 +1353,9 @@ const STAGE = {
           "which is why it is gated on approving the chapters first.",
     go: "Record it",
     unit: "chapters narrated",
-    opt: "narrate unapproved chapters anyway",
+    // No override here: the button stays dark until every chapter is approved.
+    // `cli record --force` is the way round it, deliberately not a checkbox.
+    opt: null,
     next: "Next: <b>Design</b> — shot timings are read from these timelines.",
   },
   design: {
@@ -1292,7 +1376,7 @@ async function openStage(kind) {
   document.getElementById("stitle").textContent = s.title;
   document.getElementById("slede").textContent = s.lede;
   document.getElementById("sopttext").textContent = s.opt;
-  document.getElementById("sopt").hidden = false;
+  document.getElementById("sopt").hidden = !s.opt;
   document.getElementById("soptbox").checked = false;
   const go = document.getElementById("sgo");
   go.disabled = false; go.textContent = s.go;

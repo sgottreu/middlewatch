@@ -111,12 +111,12 @@ edit to one file, not a code change.
 |---|---|
 | Start a series | `cli bible new <name> --genre <genre> --example`, then edit. Format: [bible-format.md](bible-format.md). |
 | Check a bible before spending | `cli bible check [<name>]`. Free. The ideator runs the same error checks. |
-| Record why a bible changed | `cli bible log <name> -m "..."`. Sidecar at `bibles/<name>.changelog.md`. |
+| Record why a bible changed | `cli bible log <name> -m "..."`. Sidecar at `bibles/<name>/<name>.changelog.md`. |
 | See what a write will cost before running it | The Write dialog in `cli review`, or `estimate_write()` in `story_pipeline/agents/text.py`. |
-| Preload a character's face | Drop a png at `bibles/<name>.cast/<slugified-name>.png` before the first story. |
+| Preload a character's face | Drop a png at `bibles/<name>/<name>.cast/<slugified-name>.png` before the first story. |
 | Add a fact every story must respect | `canon:` in the bible. Nothing writes back automatically — see [continuity](continuity.md). |
 | Add a recurring character | `recurring_cast:` in the bible |
-| Change a recurring character's face | Delete their png from `bibles/<name>.cast/`; the next `design` regenerates it |
+| Change a recurring character's face | Delete their png from `bibles/<name>/<name>.cast/`; the next `design` regenerates it |
 | Give a series its own look or voices | `art_style:` / `voices:` in the bible frontmatter |
 
 ### Sound and pictures
@@ -210,8 +210,8 @@ be committed — a series bible and its cast portraits are content.
 
 | File | What it is |
 |---|---|
-| `bibles/<name>.md` | A series: canon, recurring cast, optional art and voice overrides. |
-| `bibles/<name>.cast/` | Shared character portraits. Generated once, reused across every story in the series. |
+| `bibles/<name>/<name>.md` | A series: canon, recurring cast, optional art and voice overrides. |
+| `bibles/<name>/<name>.cast/` | Shared character portraits. Generated once, reused across every story in the series. |
 | `config.example.yaml` | Every setting with its default. Copy to `config.yaml`. |
 | `.env.example` | The three API keys. Copy to `.env`. |
 

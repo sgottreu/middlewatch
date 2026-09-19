@@ -194,7 +194,7 @@ on YouTube is a different product from an anthology.
 ## What stays true in both modes
 
 - Recurring characters keep their **face and voice** across stories. That is
-  `bibles/<name>.cast/` and the `voice:` field, and it has nothing to do with
+  `bibles/<name>/<name>.cast/` and the `voice:` field, and it has nothing to do with
   plot consequences.
 - The bible's `canon` is still the only place a fact is enforced.
 - Nothing enters canon without you approving it.

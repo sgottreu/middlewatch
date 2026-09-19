@@ -30,7 +30,7 @@
 | `write` refuses to start | Outline not approved; `approve` it or pass `--force` |
 | Outline rejected on tropes | Model invented one or stacked four; it regenerates on retry |
 | `--genre` refused beside `--bible` | They disagree; drop `--genre`, the bible declares one |
-| Recurring character's face changed | No portrait in `bibles/<name>.cast/` yet; the first story to run `design` creates it |
+| Recurring character's face changed | No portrait in `bibles/<name>/<name>.cast/` yet; the first story to run `design` creates it |
 | Every story feels the same | Raise `trope_sample`, or the genre needs more tropes |
 | Wrong accent in narration | Casting comes from the genre file's `voices`, pinned at ideation |
 

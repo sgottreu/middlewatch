@@ -5,8 +5,10 @@ the same parish, the same recurring busybody, the fact established three stories
 ago that the living at Combe is worth two hundred a year.
 
 Bibles are yours, not shipped with the package, so they live in `bibles/` at the
-repo root rather than under `story_pipeline/prompts/`. Same format as a genre file —
-YAML frontmatter for the structured parts, prose below for what the agents read.
+repo root rather than under `story_pipeline/prompts/` — one folder per series,
+holding the bible, its portraits and its changelog (see `path_for`). Same format
+as a genre file — YAML frontmatter for the structured parts, prose below for what
+the agents read.
 
 The recurring cast is the part that earns its keep. A character listed here keeps
 their voice and their face across every story in the series, because both are
@@ -138,8 +140,32 @@ def _parse(path: Path) -> Bible:
                  guide=body.strip(), path=path)
 
 
+def path_for(name: str, bibles_dir: str | Path = "bibles") -> Path:
+    """Where bible `name` lives. The one place that knows the layout.
+
+    Each series has its own folder, so its portraits and changelog sit with it:
+
+        bibles/<name>/<name>.md
+        bibles/<name>/<name>.cast/
+        bibles/<name>/<name>.changelog.md
+
+    The cast folder and the changelog are found relative to the `.md` itself,
+    so nothing else needs to know this. The flat layout this replaced —
+    `bibles/<name>.md` beside `bibles/<name>.cast/` — is still read, so a bible
+    not yet moved keeps working; a folder wins if both exist.
+
+    Returns the folder path when neither exists, which is where a new one goes.
+    """
+    d = Path(bibles_dir)
+    nested = d / name / f"{name}.md"
+    flat = d / f"{name}.md"
+    if nested.exists() or not flat.exists():
+        return nested
+    return flat
+
+
 def load(name: str, bibles_dir: str | Path = "bibles") -> Bible:
-    path = Path(bibles_dir) / f"{name}.md"
+    path = path_for(name, bibles_dir)
     if not path.exists():
         found = available(bibles_dir)
         raise ValueError(
@@ -151,7 +177,16 @@ def load(name: str, bibles_dir: str | Path = "bibles") -> Bible:
 
 def available(bibles_dir: str | Path = "bibles") -> list[str]:
     d = Path(bibles_dir)
-    return sorted(p.stem for p in d.glob("*.md")) if d.exists() else []
+    if not d.exists():
+        return []
+    # A folder counts only if it holds a bible named after it — a stray
+    # directory is not a series.
+    nested = {p.name for p in d.iterdir()
+              if p.is_dir() and (p / f"{p.name}.md").exists()}
+    # The changelog is markdown too and would otherwise list as a bible of its
+    # own in the flat layout.
+    flat = {p.stem for p in d.glob("*.md") if not p.name.endswith(".changelog.md")}
+    return sorted(nested | flat)
 
 
 TEMPLATE = '''---
@@ -482,11 +517,10 @@ only pay off elsewhere. The series is a shared world, not a serial.
 
 def scaffold(name: str, genre: str, series: str | None, bibles_dir: str | Path,
              example: bool = False) -> Path:
-    d = Path(bibles_dir)
-    d.mkdir(parents=True, exist_ok=True)
-    path = d / f"{name}.md"
+    path = path_for(name, bibles_dir)
     if path.exists():
         raise ValueError(f"{path} already exists")
+    path.parent.mkdir(parents=True, exist_ok=True)
     body = EXAMPLE if example else TEMPLATE
     path.write_text(body.format(series=series or name.replace("-", " ").title(),
                                 genre=genre))

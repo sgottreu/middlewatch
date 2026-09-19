@@ -552,9 +552,9 @@ what they count, and what comes next.
 
 | | Record | Design |
 |---|---|---|
-| Gate | Every chapter approved, or tick "narrate unapproved chapters anyway" | Every chapter has a narration timeline |
+| Gate | Every chapter approved — the button stays disabled until then. `cli record --force` overrides it from a terminal | Every chapter has a narration timeline |
 | Cost shown first | Credits, engine, and the runtime it implies | Images still to draw, at the configured rate |
-| Option | Narrate anyway | Re-plan shots that already have a picture |
+| Option | None | Re-plan shots that already have a picture |
 | Counts | Chapters with an mp3 | Cast portraits plus scene images on disk |
 
 **The gates are enforced on the server**, not by the disabled button. `record`

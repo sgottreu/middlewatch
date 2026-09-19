@@ -783,8 +783,8 @@ def record_start(cfg: dict, slug: str, force: bool = False) -> dict:
         left = [n for n in written if not b.chapter_approved(n)]
         raise ValueError(
             f"{len(written) - len(left)} of {len(written)} chapters are approved. "
-            f"Not yet: {', '.join(str(n) for n in left)}. Approve them first, or "
-            "tick 'narrate anyway'."
+            f"Not yet: {', '.join(str(n) for n in left)}. Approve them first — "
+            "or, from a terminal, `cli record --force` to narrate them anyway."
         )
     runner.start(cfg, slug, "record", force=force)
     return {"ok": True, "slug": slug, **job_view(cfg, slug)}
