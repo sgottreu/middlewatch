@@ -12,6 +12,10 @@ story that caused them.
 
 ---
 
+## 2026-09-18 20:06 · Scott Gottreu · edit · sha=8bc3b90e
+
+Canon from The Cracked Beam: engagement, schoolroom, three new cast
+
 ## 2026-09-13 08:59 · pipeline (the-cracked-beam) · portrait · sha=740f2d0f
 
 Promoted portrait for Mrs Honoria Pike into `amberlight.cast/`. Every later story in this series reuses this face; delete the png to regenerate it.
