@@ -4,7 +4,7 @@
   "stages": {
     "ideate": "approved",
     "write": "done",
-    "edit": "awaiting_review",
+    "edit": "approved",
     "record": "pending",
     "design": "pending",
     "direct": "pending"
@@ -42,6 +42,9 @@
     "2": "b76938b5d081d583",
     "3": "1981b832f9702626",
     "4": "8542bbe0430c4ee3",
-    "5": "64013d2074624480"
+    "5": "64013d2074624480",
+    "6": "ba0b49de9b6d4625",
+    "7": "6735138312946ba7",
+    "8": "2bcb4ec5979781e0"
   }
 }

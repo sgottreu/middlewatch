@@ -52,7 +52,7 @@ regency / mystery · Middle Watch: Amberlight
 |---|---|
 | ideate | approved |
 | write | done |
-| edit | awaiting_review |
+| edit | approved |
 | record | pending |
 | design | pending |
 | direct | pending |
