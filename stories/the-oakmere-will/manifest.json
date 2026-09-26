@@ -36,5 +36,9 @@
     "edit": {
       "unpassed": []
     }
+  },
+  "chapter_approvals": {
+    "1": "3aef087bc8579ff8",
+    "2": "b76938b5d081d583"
   }
 }
