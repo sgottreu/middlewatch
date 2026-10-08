@@ -3,7 +3,7 @@
 # mw-sync — back up the gitignored half of every story bundle to S3.
 #
 #   mw-sync push     <slug>...   audio, images and video for these stories
-#   mw-sync push-all             every story in stories/, then the SFX cache
+#   mw-sync push-all             every story in stories/<arc>/, then the SFX cache
 #   mw-sync pull     <slug>...   bring these stories' binaries back down
 #   mw-sync pull-all             every story git knows about, then the SFX cache
 #   mw-sync push-sfx             assets/sfx_cache/ only
@@ -24,8 +24,11 @@
 # docs/story/aws.md withholds s3:DeleteObject, so a wrong path can add objects to
 # the bucket but cannot remove any.
 #
-# A slug may be given as `stories/<slug>`, the form the cli takes. Set MW_BUCKET,
-# MW_REPO, MW_STORIES or MW_SFX to override the defaults below.
+# Bundles live at stories/<arc>/<slug>, and S3 mirrors that under
+# s3://$BUCKET/stories/<arc>/<slug>/ — the same prefix `cli archive` writes. A
+# slug is enough on its own; slugs are unique across arcs. It may also be given
+# as `stories/<arc>/<slug>`, the form the cli takes. Set MW_BUCKET, MW_REPO,
+# MW_STORIES or MW_SFX to override the defaults below.
 
 set -euo pipefail
 
@@ -51,19 +54,30 @@ slug_of() {
     echo "${s##*/}"
 }
 
-# A bundle is a directory with a manifest. Checking for one turns a typo into an
-# error rather than a push that finds nothing and exits clean.
+# A bundle is a directory with a manifest, one arc down. Checking for one turns
+# a typo into an error rather than a push that finds nothing and exits clean.
 bundle_dir() {
-    local dir="$STORIES/$1"
-    [ -f "$dir/manifest.json" ] || die "no story bundle at $dir"
-    echo "$dir"
+    local m hits=()
+    for m in "$STORIES"/*/"$1"/manifest.json; do
+        [ -f "$m" ] && hits+=("${m%/manifest.json}")
+    done
+    [ "${#hits[@]}" -gt 0 ] || die "no story bundle for $1 under $STORIES/<arc>/"
+    [ "${#hits[@]}" -eq 1 ] || die "$1 exists in several arcs: ${hits[*]}"
+    echo "${hits[0]}"
+}
+
+# stories/<arc>/<slug> on disk -> stories/<arc>/<slug> in the bucket.
+prefix_of() {
+    local dir=$1
+    echo "stories/$(basename "$(dirname "$dir")")/$(basename "$dir")"
 }
 
 push_story() {
-    local slug dir kind class found=0
+    local slug dir prefix kind class found=0
     slug=$(slug_of "$1")
     dir=$(bundle_dir "$slug")
-    echo "push $slug"
+    prefix=$(prefix_of "$dir")
+    echo "push $prefix"
     for kind in $KINDS; do
         # A stage creates its directory before it writes anything, so an empty
         # one is common and not worth a line of output.
@@ -73,19 +87,20 @@ push_story() {
         # is read back only on a restore, so it goes straight to Infrequent Access.
         class=""
         [ "$kind" = video ] && class=STANDARD_IA
-        sync "$dir/$kind/" "s3://$BUCKET/stories/$slug/$kind/" \
+        sync "$dir/$kind/" "s3://$BUCKET/$prefix/$kind/" \
             ${class:+--storage-class $class}
     done
     [ "$found" = 1 ] || echo "  nothing to push yet — no audio, images or video"
 }
 
 pull_story() {
-    local slug dir kind
+    local slug dir prefix kind
     slug=$(slug_of "$1")
     dir=$(bundle_dir "$slug")
-    echo "pull $slug"
+    prefix=$(prefix_of "$dir")
+    echo "pull $prefix"
     for kind in $KINDS; do
-        sync "s3://$BUCKET/stories/$slug/$kind/" "$dir/$kind/"
+        sync "s3://$BUCKET/$prefix/$kind/" "$dir/$kind/"
     done
 }
 
@@ -110,7 +125,7 @@ pull_sfx() {
 each_story() {
     local fn=$1 dir n=0
     [ -d "$STORIES" ] || die "no stories directory at $STORIES — set MW_REPO"
-    for dir in "$STORIES"/*/; do
+    for dir in "$STORIES"/*/*/; do
         [ -f "$dir/manifest.json" ] || continue
         "$fn" "$(basename "$dir")"
         n=$((n + 1))

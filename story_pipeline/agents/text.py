@@ -441,7 +441,8 @@ def ideate(
     genre = genres.load(outline["genre"])
     bible = bibles.load(bible_name, cfg["bibles_dir"]) if bible_name else None
 
-    b = Bundle.create(stories_dir, slugify(outline["title"]))
+    b = Bundle.create(stories_dir, slugify(outline["title"]),
+                      arc=bible.name if bible else None)
     outline["slug"] = b.root.name
     b.outline_path.write_text(json.dumps(outline, indent=2) + "\n")
 

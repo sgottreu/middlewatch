@@ -73,7 +73,7 @@ def scan(stories_dir: str | Path, bible: str | None = None) -> History:
     if not root.exists():
         return h
 
-    for manifest_path in sorted(root.glob("*/manifest.json")):
+    for manifest_path in sorted(root.glob("*/*/manifest.json")):
         try:
             manifest = json.loads(manifest_path.read_text())
             if not _approved(manifest):

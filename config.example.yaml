@@ -74,3 +74,11 @@ video:
   ken_burns: true
   crossfade_ms: 800
   burn_subtitles: false      # false ships an .srt to upload separately
+
+# `cli archive` — where a story's audio, images and video go. Flags override,
+# then these, then MIDDLEWATCH_S3_BUCKET / AWS_PROFILE. Leave profile null on the
+# server so the instance role is used; set it on the laptop if your credentials
+# are not the default profile.
+s3:
+  bucket: middlewatch-assets
+  profile: null

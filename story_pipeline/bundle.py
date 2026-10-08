@@ -30,6 +30,35 @@ STAGES = ["ideate", "write", "edit", "record", "design", "direct"]
 BREAK = "break"
 
 
+# Bundles live at stories_dir/<arc>/<slug>. A series story's arc is its bible;
+# anything without one goes here.
+STANDALONE_ARC = "standalone"
+_SLUG = re.compile(r"[a-z0-9][a-z0-9-]*")
+
+
+def bundle_roots(stories_dir: str | Path) -> list[Path]:
+    """Every bundle under stories_dir, across all arcs."""
+    return sorted(p.parent for p in Path(stories_dir).glob("*/*/manifest.json"))
+
+
+def find_bundle(stories_dir: str | Path, slug: str) -> Path:
+    """The bundle root for a slug, whichever arc it is in.
+
+    Slugs are unique across arcs — create() enforces it — so the review UI and
+    the ledger can keep keying on slug alone. The pattern check matters: a slug
+    arrives over HTTP, and `../..` must resolve to nothing.
+    """
+    if not _SLUG.fullmatch(slug or ""):
+        raise ValueError(f"not a story slug: {slug!r}")
+    hits = [p.parent for p in Path(stories_dir).glob(f"*/{slug}/manifest.json")]
+    if not hits:
+        raise FileNotFoundError(f"no story bundle for {slug} under {stories_dir}/<arc>/")
+    if len(hits) > 1:
+        raise ValueError(f"{slug} exists in several arcs: "
+                         f"{', '.join(sorted(p.parent.name for p in hits))}")
+    return hits[0]
+
+
 def slugify(text: str) -> str:
     s = re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
     return s[:60] or "untitled"
@@ -200,8 +229,13 @@ class Bundle:
     # --- lifecycle ---------------------------------------------------------
 
     @classmethod
-    def create(cls, stories_dir: Path, slug: str) -> "Bundle":
-        root = Path(stories_dir) / slug
+    def create(cls, stories_dir: Path, slug: str, arc: str | None = None) -> "Bundle":
+        arc = arc or STANDALONE_ARC
+        root = Path(stories_dir) / arc / slug
+        elsewhere = [p for p in Path(stories_dir).glob(f"*/{slug}") if p != root]
+        if elsewhere:
+            raise ValueError(f"{slug} already exists at {elsewhere[0]}; slugs must "
+                             "be unique across arcs")
         b = cls(root)
         for sub in ("chapters", "drafts", "reviews", "audio", "images/cast", "video"):
             (root / sub).mkdir(parents=True, exist_ok=True)

@@ -49,7 +49,7 @@ from urllib.parse import parse_qs, urlparse
 from . import runner
 from .. import genres, history, summary
 from ..agents import text as textagent
-from ..bundle import Bundle, real_answer
+from ..bundle import Bundle, bundle_roots, find_bundle, real_answer
 
 APP_HTML = Path(__file__).with_name("app.html")
 
@@ -186,8 +186,8 @@ def _story_row(root: Path) -> dict | None:
 def queue(cfg: dict) -> dict:
     """Everything waiting on a human, grouped by what kind of waiting it is."""
     root = Path(cfg["stories_dir"])
-    rows = [r for r in (_story_row(p.parent)
-                        for p in sorted(root.glob("*/manifest.json"))) if r]
+    rows = [r for r in (_story_row(p)
+                        for p in bundle_roots(root)) if r]
 
     groups = {"outlines": [], "approved": [], "chapters": [], "failed": [],
               "stale": [], "done": []}
@@ -213,7 +213,7 @@ def queue(cfg: dict) -> dict:
 
 
 def story_detail(cfg: dict, slug: str) -> dict:
-    b = Bundle.open(Path(cfg["stories_dir"]) / slug)
+    b = Bundle.open(find_bundle(cfg["stories_dir"], slug))
     row = _story_row(b.root)
     outline = b.outline()
 
@@ -328,7 +328,7 @@ def critique(cfg: dict, slug: str, chapters: list | None = None) -> dict:
     gained checks the chapters on disk were never judged against, and re-reading
     one costs an editor call where rewriting it costs writer plus editor.
     """
-    b = Bundle.open(Path(cfg["stories_dir"]) / slug)
+    b = Bundle.open(find_bundle(cfg["stories_dir"], slug))
     ns = ([int(n) for n in chapters] if chapters
           else [n for n in b.chapter_numbers() if b.chapter_json(n).exists()])
     missing = [n for n in ns if not b.chapter_json(n).exists()]
@@ -364,7 +364,7 @@ def critique(cfg: dict, slug: str, chapters: list | None = None) -> dict:
 
 def save_chapter(cfg: dict, slug: str, n: int, segments: list) -> dict:
     """Write an edited chapter back. Free — no model is called."""
-    b = Bundle.open(Path(cfg["stories_dir"]) / slug)
+    b = Bundle.open(find_bundle(cfg["stories_dir"], slug))
     if not b.chapter_json(int(n)).exists():
         raise ValueError(f"chapter {n} has not been written yet.")
     chapter = textagent.save_chapter(b, int(n), segments or [])
@@ -388,7 +388,7 @@ def save_chapter(cfg: dict, slug: str, n: int, segments: list) -> dict:
 
 def approve(cfg: dict, slug: str, what: str, chapters: list | None = None,
             undo: bool = False) -> dict:
-    b = Bundle.open(Path(cfg["stories_dir"]) / slug)
+    b = Bundle.open(find_bundle(cfg["stories_dir"], slug))
     if what == "chapters" and chapters:
         # One chapter at a time, so a story can be read across several sittings
         # instead of all at once. Only the chapters named are touched.
@@ -486,7 +486,7 @@ def compose_feedback(keep: list[str], note: str, spec: dict) -> str:
 
 def revise(cfg: dict, slug: str, keep: list[str], note: str) -> dict:
     """Regenerate the outline. **This spends money** — one ideator call."""
-    b = Bundle.open(Path(cfg["stories_dir"]) / slug)
+    b = Bundle.open(find_bundle(cfg["stories_dir"], slug))
     spec = textagent._length_of(b)
     keep = keep or []
 
@@ -553,7 +553,7 @@ def _scenes_per(cfg: dict, b: Bundle) -> int:
 
 def _stage_counts(cfg: dict, slug: str, kind: str) -> dict:
     try:
-        b = Bundle.open(Path(cfg["stories_dir"]) / slug)
+        b = Bundle.open(find_bundle(cfg["stories_dir"], slug))
         if kind == "record":
             ns = b.chapter_numbers()
             return {"done": sum(1 for n in ns if b.audio_path(n).exists()),
@@ -580,7 +580,7 @@ def _release_stage(cfg: dict, slug: str, stage: str) -> None:
     if stage not in RELEASABLE:
         return
     try:
-        b = Bundle.open(Path(cfg["stories_dir"]) / slug)
+        b = Bundle.open(find_bundle(cfg["stories_dir"], slug))
         if b.stage_status(stage) == "running":
             b.set_stage(stage, "pending")
             summary.write(b)
@@ -668,7 +668,7 @@ def job_view(cfg: dict, slug: str) -> dict:
     kind = j.get("kind")
     marks = j.pop("progress", []) or []
     try:
-        b = Bundle.open(Path(cfg["stories_dir"]) / slug)
+        b = Bundle.open(find_bundle(cfg["stories_dir"], slug))
     except Exception:
         return j
 
@@ -723,7 +723,7 @@ def estimates(cfg: dict, slug: str) -> dict:
     put on screen, and it has to work on a box where the provider SDKs may not
     even be installed.
     """
-    b = Bundle.open(Path(cfg["stories_dir"]) / slug)
+    b = Bundle.open(find_bundle(cfg["stories_dir"], slug))
     out: dict = {"slug": slug}
 
     try:
@@ -749,7 +749,7 @@ def write_start(cfg: dict, slug: str, restart: bool = False) -> dict:
     Resumes by default: chapters already through the write/edit loop are loaded
     from disk rather than paid for again. `restart` writes them all afresh.
     """
-    b = Bundle.open(Path(cfg["stories_dir"]) / slug)
+    b = Bundle.open(find_bundle(cfg["stories_dir"], slug))
     if b.stage_status("ideate") != "approved":
         raise ValueError(
             f"{slug} has not been approved yet — approve the outline first, "
@@ -762,7 +762,7 @@ def write_start(cfg: dict, slug: str, restart: bool = False) -> dict:
 
 def redraft_start(cfg: dict, slug: str, n, note: str) -> dict:
     """Send chapter `n` back to the writer with a note. **This spends money.**"""
-    b = Bundle.open(Path(cfg["stories_dir"]) / slug)
+    b = Bundle.open(find_bundle(cfg["stories_dir"], slug))
     n = int(n)
     note = (note or "").strip()
     if not note:
@@ -777,7 +777,7 @@ def record_start(cfg: dict, slug: str, force: bool = False) -> dict:
     """Narrate the approved chapters. **This spends money** — the largest single
     cost in the pipeline, which is why the approval gate is checked here as well
     as in the CLI."""
-    b = Bundle.open(Path(cfg["stories_dir"]) / slug)
+    b = Bundle.open(find_bundle(cfg["stories_dir"], slug))
     if not force and not b.all_chapters_approved():
         written = [n for n in b.chapter_numbers() if b.chapter_json(n).exists()]
         left = [n for n in written if not b.chapter_approved(n)]
@@ -797,7 +797,7 @@ def design_start(cfg: dict, slug: str, replan: bool = False) -> dict:
     `record` — the agent raises on the first missing one, which would spend the
     cast sheet before finding out.
     """
-    b = Bundle.open(Path(cfg["stories_dir"]) / slug)
+    b = Bundle.open(find_bundle(cfg["stories_dir"], slug))
     missing = [n for n in b.chapter_numbers() if not b.timeline_path(n).exists()]
     if missing:
         raise ValueError(
@@ -815,12 +815,9 @@ def package_files(cfg: dict, slug: str) -> tuple[Path, list[Path]]:
     shipping it again would mean two copies of the text and a merge question
     nobody asked for.
     """
-    root = (Path(cfg["stories_dir"]) / slug).resolve()
-    stories = Path(cfg["stories_dir"]).resolve()
-    # Same guard as reject(): a slug arrives over HTTP and `../..` should not
-    # read outside stories_dir.
-    if root.parent != stories or not (root / "manifest.json").exists():
-        raise ValueError(f"not a story bundle: {slug}")
+    # find_bundle refuses anything that is not a plain slug, so `../..` from
+    # HTTP reads nothing outside stories_dir.
+    root = find_bundle(cfg["stories_dir"], slug).resolve()
 
     files = []
     for kind in ("audio", "images"):
@@ -839,12 +836,9 @@ def reject(cfg: dict, slug: str) -> dict:
     no trace — the history weights deliberately count approvals only."""
     import shutil
 
-    root = (Path(cfg["stories_dir"]) / slug).resolve()
-    stories = Path(cfg["stories_dir"]).resolve()
-    # Refuse anything that is not directly inside stories_dir. A slug arrives
+    # find_bundle refuses anything that is not a plain slug. A slug arrives
     # over HTTP, and `../..` should delete nothing.
-    if root.parent != stories or not (root / "manifest.json").exists():
-        raise ValueError(f"not a story bundle: {slug}")
+    root = find_bundle(cfg["stories_dir"], slug)
     shutil.rmtree(root)
     return {"ok": True, "slug": slug}
 
@@ -892,9 +886,9 @@ def _handler(cfg: dict):
             self.end_headers()
             with zipfile.ZipFile(self.wfile, "w", zipfile.ZIP_STORED) as z:
                 for p in files:
-                    # Arcnames start with the slug, so `unzip -d stories` puts
-                    # every file back exactly where it came from.
-                    z.write(p, str(p.relative_to(root.parent)))
+                    # Arcnames start with <arc>/<slug>, so `unzip -d stories`
+                    # puts every file back exactly where it came from.
+                    z.write(p, str(p.relative_to(root.parent.parent)))
 
         def _enter(self):
             global _inflight_count

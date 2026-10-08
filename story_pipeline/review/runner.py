@@ -31,6 +31,8 @@ import threading
 import time
 from pathlib import Path
 
+from ..bundle import find_bundle
+
 # One line per event, emitted by the CLI under MW_PROGRESS. Progress has to
 # cross a process boundary now, and parsing human output would make every
 # print() in the pipeline load-bearing.
@@ -139,7 +141,7 @@ def start(cfg: dict, slug: str, stage: str, *, force: bool = False,
             "if you want to start something else."
         )
 
-    root = Path(cfg["stories_dir"]) / slug
+    root = find_bundle(cfg["stories_dir"], slug)
     # Timestamp first so a plain sort is chronological — the stage name leading
     # would sort `design` before `write` regardless of when either ran.
     stamp = time.strftime("%Y%m%dT%H%M%S")

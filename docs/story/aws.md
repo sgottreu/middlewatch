@@ -212,9 +212,17 @@ mw-sync --kinds audio,images pull-all         # on the server
    ```bash
    git pull                                 # the prose, from the server's commits
    unzip ~/Downloads/<slug>-assets.zip -d stories/
-   python3 -m story_pipeline.cli direct stories/<slug>
+   python3 -m story_pipeline.cli direct stories/<arc>/<slug>
    ```
-4. Upload the mp4 by hand, then `mw-sync push <slug>` to back up the master.
+4. Upload the mp4 by hand, then archive the story's audio, images and video:
+   ```bash
+   python3 -m story_pipeline.cli archive <slug> --dry-run
+   python3 -m story_pipeline.cli archive <slug>
+   ```
+   It uploads to `s3://middlewatch-assets/stories/<arc>/<slug>/`, checks every
+   file landed at the same size, and writes `archive.json` into the bundle —
+   commit that. `--delete-local` then frees the disk, but only after every file
+   verified.
 
 Nothing in steps 1 and 2 needs the laptop, which is the point of all of this.
 

@@ -96,7 +96,7 @@ def wanted_names(cfg: dict, root: Path) -> dict[str, list[str]]:
 
     # Stories pin casting at creation, so an old story can still want a name the
     # config no longer mentions.
-    for man in sorted((root / Path(cfg.get("stories_dir", "stories"))).glob("*/manifest.json")):
+    for man in sorted((root / Path(cfg.get("stories_dir", "stories"))).glob("*/*/manifest.json")):
         try:
             m = json.loads(man.read_text())
         except (OSError, json.JSONDecodeError):

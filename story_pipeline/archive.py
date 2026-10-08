@@ -3,6 +3,7 @@
     python3 -m story_pipeline.cli archive the-cracked-beam --dry-run
     python3 -m story_pipeline.cli archive the-cracked-beam
     python3 -m story_pipeline.cli archive the-cracked-beam --delete-local
+    python3 -m story_pipeline.cli archive stories/amberlight/the-cracked-beam
 
 Uploads with `aws s3 sync`, then checks that every local asset is in S3 at the
 same size. --delete-local removes only files that passed that check, and only
@@ -10,7 +11,11 @@ after all of them did. Writes archive.json into the story folder — that file i
 text and belongs in git; it records where the assets went.
 
 Bucket and profile come from, in order: the flags, cfg["s3"], the
-MIDDLEWATCH_S3_BUCKET / AWS_PROFILE env vars, then the defaults below.
+MIDDLEWATCH_S3_BUCKET / AWS_PROFILE env vars, then the defaults below. No
+profile means the CLI's own default chain — the instance role on the server.
+
+Stories are found under cfg["stories_dir"], which resolves against the working
+directory like every other command. Run from the repo root.
 """
 from __future__ import annotations
 
@@ -26,8 +31,7 @@ ASSET_EXTS = (".mp3", ".wav", ".flac", ".m4a",
               ".png", ".jpg", ".jpeg", ".webp",
               ".mp4", ".mov")
 DEFAULT_BUCKET = "middlewatch-assets"
-DEFAULT_PROFILE = "middlewatch"
-REPO_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_PROFILE = None
 
 
 class ArchiveError(RuntimeError):
@@ -47,8 +51,13 @@ def _aws(profile: str | None, *args: str, capture: bool = False) -> str:
     return result.stdout if capture else ""
 
 
-def find_story(root: Path, slug: str, arc: str | None = None) -> Path:
-    stories = root / "stories"
+def find_story(stories: Path, slug: str, arc: str | None = None) -> Path:
+    # The path form the other commands take, e.g. stories/amberlight/<slug>.
+    given = Path(slug)
+    if len(given.parts) > 1:
+        if (given / "manifest.json").is_file():
+            return given
+        raise ArchiveError(f"No story bundle at {given}")
     if arc:
         path = stories / arc / slug
         if path.is_dir():
@@ -87,18 +96,18 @@ def _remove_empty_dirs(story_dir: Path) -> None:
 # --- the command -------------------------------------------------------------
 
 def archive_story(slug: str, *, bucket: str, profile: str | None,
-                  arc: str | None = None, root: Path = REPO_ROOT,
+                  arc: str | None = None, stories: Path = Path("stories"),
                   dry_run: bool = False, delete_local: bool = False,
                   log=print) -> dict | None:
-    story_dir = find_story(root, slug, arc)
-    arc = story_dir.parent.name
+    story_dir = find_story(stories, slug, arc)
+    slug, arc = story_dir.name, story_dir.parent.name
     prefix = f"stories/{arc}/{slug}/"
     record_path = story_dir / "archive.json"
 
     assets = local_assets(story_dir)
     if not assets:
         if record_path.exists():
-            log(f"Nothing local to archive — {record_path.relative_to(root)} says it's already in S3.")
+            log(f"Nothing local to archive — {record_path} says it's already in S3.")
             return json.loads(record_path.read_text())
         raise ArchiveError(f"No asset files in {story_dir}")
 
@@ -142,7 +151,7 @@ def archive_story(slug: str, *, bucket: str, profile: str | None,
         log(f"Deleted {len(assets)} local copies ({total / 1e6:.1f} MB freed).")
 
     record_path.write_text(json.dumps(record, indent=2) + "\n")
-    log(f"Wrote {record_path.relative_to(root)} — commit it.")
+    log(f"Wrote {record_path} — commit it.")
     return record
 
 
@@ -157,10 +166,9 @@ def _setting(cfg, key: str, env: str, default: str | None) -> str | None:
 def cmd_archive(args, cfg) -> None:
     bucket = args.bucket or _setting(cfg, "bucket", "MIDDLEWATCH_S3_BUCKET", DEFAULT_BUCKET)
     profile = args.profile or _setting(cfg, "profile", "AWS_PROFILE", DEFAULT_PROFILE)
-    root = Path(args.root).resolve() if args.root else REPO_ROOT
     try:
         archive_story(args.slug, bucket=bucket, profile=profile, arc=args.arc,
-                      root=root, dry_run=args.dry_run, delete_local=args.delete_local)
+                      stories=Path(cfg["stories_dir"]), dry_run=args.dry_run, delete_local=args.delete_local)
     except ArchiveError as e:
         print(f"archive: {e}", file=sys.stderr)
         sys.exit(1)
@@ -168,11 +176,10 @@ def cmd_archive(args, cfg) -> None:
 
 def register(subparsers) -> None:
     p = subparsers.add_parser("archive", help="copy a story's audio/graphics/video to S3")
-    p.add_argument("slug", help="story slug, e.g. the-cracked-beam")
+    p.add_argument("slug", help="story slug or bundle path, e.g. the-cracked-beam")
     p.add_argument("--arc", help="arc slug; only needed if the slug exists in more than one arc")
     p.add_argument("--bucket", help=f"S3 bucket (default {DEFAULT_BUCKET})")
-    p.add_argument("--profile", help=f"AWS CLI profile (default {DEFAULT_PROFILE})")
-    p.add_argument("--root", help="repo root (default: the folder above story_pipeline)")
+    p.add_argument("--profile", help="AWS CLI profile (default: the CLI's own credential chain)")
     p.add_argument("--dry-run", action="store_true", help="show what would upload; change nothing")
     p.add_argument("--delete-local", action="store_true",
                    help="after every file is verified in S3, delete the local copies")

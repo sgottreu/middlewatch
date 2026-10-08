@@ -8,6 +8,7 @@ import os
 import sys
 from pathlib import Path
 
+from . import archive
 from . import config as cfgmod
 from . import bibles
 from . import calibration
@@ -943,6 +944,8 @@ def main(argv=None):
     dr.add_argument("story")
     dr.add_argument("--force", action="store_true")
     dr.set_defaults(fn=cmd_direct)
+
+    archive.register(sub)
 
     allp = sub.add_parser("all", help="every stage end to end, no review gate")
     add_idea_args(allp)
