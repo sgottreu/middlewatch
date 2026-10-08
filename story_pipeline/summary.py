@@ -145,8 +145,12 @@ def render(b: Bundle) -> str:
     add("")
     add("| Stage | |")
     add("|---|---|")
+    stages = b.stages()
     for stage in STAGES:
-        add(f"| {stage} | {m['stages'].get(stage, 'pending')} |")
+        add(f"| {stage} | {stages[stage]} |")
+    pub = b.publish_info()
+    if pub.get("url"):
+        add(f"\nPublished {pub.get('published', '')}: {pub['url']}")
     add("")
     if m.get("spend"):
         add("| Spend | |")

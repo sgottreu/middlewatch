@@ -109,6 +109,8 @@ voice never says, and nothing would tell you.
 | Record | `record` | chapters | `audio/NN.mp3`, `audio/NN.timeline.json` |
 | Design | `design` | chapters + timelines | `images/` |
 | Direct | `direct` | audio + images + timelines | `video/final.mp4` |
+| Approve | `approve --video` | you, watching the video | `manifest.json` stage |
+| Publish | `publish <url>` | the YouTube URL | `manifest.json` stage + URL, id, date |
 
 Each is independently resumable — see [Architecture](architecture.md).
 

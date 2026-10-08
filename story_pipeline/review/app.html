@@ -398,7 +398,9 @@
         <button type="button" id="writeBtn" disabled>Write…<kbd>w</kbd></button>
         <button type="button" id="recordBtn" disabled>Record…<kbd>n</kbd></button>
         <button type="button" id="designBtn" disabled>Design…<kbd>g</kbd></button>
+        <button type="button" id="renderBtn" disabled>Render…<kbd>v</kbd></button>
         <button type="button" id="zipBtn" disabled>Assets .zip</button>
+        <button type="button" id="publishBtn" disabled>Publish…<kbd>p</kbd></button>
         <button type="button" id="reject" class="danger" disabled>Reject<kbd>r</kbd></button>
       </div>
       <span class="facts" id="facts"></span>
@@ -473,8 +475,13 @@ const GROUPS = [
   ["chapters", "Chapters awaiting review"],
   ["failed",   "Failed editor review"],
   ["stale",    "Narration out of date"],
+  ["video",    "Videos awaiting approval"],
+  ["publish",  "Video approved — waiting to be published"],
   ["done",     "Written and approved"],
+  ["published","Published"],
 ];
+// Groups that are finished rather than waiting on you.
+const SETTLED = new Set(["done", "published"]);
 let state = { rows: [], sel: null, detail: null, keepable: [], editing: null,
               anchor: null };
 
@@ -517,7 +524,7 @@ async function loadQueue(keep) {
   for (const [key, label] of GROUPS) {
     const rows = q.groups[key] || [];
     if (!rows.length) continue;
-    if (key !== "done") waiting += rows.length;
+    if (!SETTLED.has(key)) waiting += rows.length;
     const el = document.createElement("div");
     el.className = "group";
     el.innerHTML = `<h3>${label} (${rows.length})</h3>`;
@@ -638,6 +645,18 @@ function render(d) {
     if (d.impact.leader && d.impact.leader[1] > 1)
       h += `<p class="m">${esc(d.impact.leader[0])} has led ${d.impact.leader[1]} ` +
            `of them.</p>`;
+  }
+
+  // The two steps after the render. Only shown once there is a video, so an
+  // outline under review is not crowded with stages years away.
+  if (d.stages.direct === "done") {
+    const pub = d.published || {};
+    const vs = d.stages.publish === "done"
+      ? `Published ${esc(pub.published || "")} · ` +
+        `<a href="${esc(pub.url)}" target="_blank" rel="noopener">${esc(pub.url)}</a>`
+      : d.stages.approve === "approved" ? "Approved — upload it, then press Publish."
+      : "Rendered — watch it, then approve it.";
+    h += `<h2>Video</h2><p>${vs}</p>`;
   }
 
   h += `<h2>Chapters</h2>`;
@@ -888,11 +907,13 @@ function setActions(d) {
   const wr = document.getElementById("writeBtn");
   const rec = document.getElementById("recordBtn");
   const dsg = document.getElementById("designBtn");
+  const ren = document.getElementById("renderBtn");
   const zip = document.getElementById("zipBtn");
+  const pb = document.getElementById("publishBtn");
   if (!d) {
     ap.disabled = rj.disabled = rv.disabled = wr.disabled =
-      rec.disabled = dsg.disabled = zip.disabled = true;
-    for (const b of [ap, rv, wr, rec, dsg, zip, rj])
+      rec.disabled = dsg.disabled = ren.disabled = zip.disabled = pb.disabled = true;
+    for (const b of [ap, rv, wr, rec, dsg, ren, zip, pb, rj])
       b.title = "Select a story in the queue first.";
     // Always a line here, so the row is visibly the status row even before
     // anything is selected — an empty one looked like it had gone missing.
@@ -906,6 +927,7 @@ function setActions(d) {
   let what = null;
   if (ideate === "awaiting_review") what = "outline";
   else if (edit === "awaiting_review") what = "chapters";
+  else if (d.stages.approve === "awaiting_review") what = "video";
 
   const chs = d.chapter_detail || [];
   const written = chs.filter(c => c.words).length;
@@ -913,6 +935,7 @@ function setActions(d) {
 
   ap.disabled = !what;
   ap.innerHTML = !what ? `Nothing to approve`
+    : what === "video" ? `Approve video<kbd>a</kbd>`
     : what === "chapters"
       ? `Approve ${written - okd === written ? "all " : ""}` +
         `${written - okd} chapter${written - okd === 1 ? "" : "s"}<kbd>a</kbd>`
@@ -955,11 +978,23 @@ function setActions(d) {
   dsg.innerHTML = writing && jkind === "design"
     ? `Drawing ${at()}…` : `Design…<kbd>g</kbd>`;
 
-  // Rendering happens off this box, so the assets are a deliverable of their
-  // own — see docs/story/aws.md.
+  // Render: ffmpeg on the box serving this page. No provider bill, so the only
+  // gate is design being finished. A second render replaces the cut and resets
+  // the video approval, so the dialog asks before overwriting.
+  const rendered = d.stages.direct === "done";
+  ren.disabled = writing ? jkind !== "direct" : d.stages.design !== "done";
+  ren.innerHTML = writing && jkind === "direct"
+    ? ((d.job || {}).phase === "stitch" ? `Stitching…` : `Rendering ${at()}…`)
+    : `${rendered ? "Re-render" : "Render"}…<kbd>v</kbd>`;
+
+  // The assets are still a deliverable of their own, for rendering elsewhere.
   const have = ((d.assets || {}).audio || 0) + ((d.assets || {}).images || 0);
   zip.disabled = !have;
   zip.textContent = have ? `Assets .zip (${have})` : `Assets .zip`;
+
+  const published = d.stages.publish === "done";
+  pb.disabled = published || d.stages.approve !== "approved";
+  pb.innerHTML = published ? `Published ✓` : `Publish…<kbd>p</kbd>`;
 
   // Tooltips last, once every button's state is settled. The "why" is worked
   // out from the same facts that disabled the button, so the two cannot
@@ -969,6 +1004,7 @@ function setActions(d) {
   const live = "Running now — open it to see progress, or to stop it.";
   tip(ap, what === "outline" ? "Approve this outline. Unlocks Write."
         : what === "chapters" ? "Approve the chapters not yet approved. Once every chapter is approved, Record unlocks."
+        : what === "video" ? "Approve the rendered video. Unlocks Publish."
         : "Approves the outline, and later the chapters, when either is waiting for you.",
       what ? "" : "nothing is waiting for your approval at this stage.");
   tip(rv, "Regenerate the outline, keeping the parts you tick. Paid, about $0.07 — the old outline is saved to drafts/.",
@@ -984,8 +1020,16 @@ function setActions(d) {
   tip(dsg, mine("design") ? live
         : "Draw the cast portraits and the scene images, timed to the narration. Paid — the dialog shows the cost before anything starts.",
       !dsg.disabled ? "" : other || "record the narration first; the shot timings come from it.");
-  tip(zip, "Download this story's audio and images as one zip, to render the video on your laptop. Free.",
+  tip(ren, mine("direct") ? live
+        : rendered ? "Render the video again, replacing the current cut. Free, but minutes of full CPU — and the new cut needs approving again."
+        : "Render the video from the narration and scene images. Free, but minutes of full CPU on the server.",
+      !ren.disabled ? "" : other || "finish design first; every cut is a scene image.");
+  tip(zip, "Download this story's audio and images as one zip, to render the video somewhere else. Free.",
       zip.disabled ? "no audio or images yet — record and design first." : "");
+  tip(pb, "Mark this story published, recording its YouTube URL. Free — it uploads nothing; upload the video first.",
+      !pb.disabled ? "" : published ? `already published: ${(d.published || {}).url || ""}`
+        : d.stages.direct !== "done" ? "there is no rendered video yet."
+        : "approve the video first.");
   tip(rj, "Delete this story and everything in its folder. Asks first. Free to regenerate, and a rejected outline is not counted in the history.", "");
 
   const lapsed = chs.filter(c => c.approval_lapsed).length;
@@ -1021,6 +1065,20 @@ async function act(kind) {
   const next = state.rows[idx + 1] || state.rows[idx - 1] || null;
   state.sel = null;
   await loadQueue(next);
+}
+
+async function openPublish() {
+  const pb = document.getElementById("publishBtn");
+  if (!state.sel || pb.disabled) return;
+  const d = state.detail;
+  const url = prompt(`YouTube URL for "${d.title}":`);
+  if (!url || !url.trim()) return;
+  const res = await (await fetch("/api/publish", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ slug: state.sel, url: url.trim() }) })).json();
+  if (res.error) { toast(explain(res.error)); return; }
+  toast(`Published: ${d.title}`);
+  await loadQueue(state.sel);
 }
 
 // --- revise dialog -------------------------------------------------------
@@ -1314,10 +1372,9 @@ document.getElementById("write").onsubmit = async e => {
 
 document.getElementById("wstop").onclick = () => stopJob(state.sel);
 
-// --- record and design ---------------------------------------------------
-// One dialog for both. They differ in what they cost, what they count and what
-// comes next, and in nothing else. `direct` is deliberately absent: it renders
-// on a real machine, so the page hands over the assets instead — docs/story/aws.md.
+// --- record, design and render --------------------------------------------
+// One dialog for all three. They differ in what they cost, what they count and
+// what comes next, and in nothing else.
 const sscrim = document.getElementById("sscrim");
 let sKind = null, sPoll = null, sLogAt = 0;
 
@@ -1365,9 +1422,20 @@ const STAGE = {
     go: "Design it",
     unit: "images drawn",
     opt: "re-plan shots that already have a picture",
-    next: "Next: <b>Assets .zip</b>, then render it on your laptop.",
+    next: "Next: <b>Render</b>.",
+  },
+  direct: {
+    title: "Render the video",
+    lede: "ffmpeg renders a clip per shot, stitches them with crossfades and " +
+          "lays the narration under it. No provider cost — just CPU time.",
+    go: "Render it",
+    unit: "shots rendered",
+    opt: "replace the existing video",
+    next: "Next: watch it, then <b>Approve video</b>.",
   },
 };
+// What the go button says while each one runs.
+const RUNNING = { record: "Narrating…", design: "Drawing…", direct: "Rendering…" };
 
 async function openStage(kind) {
   if (!state.detail) return;
@@ -1397,7 +1465,7 @@ async function openStage(kind) {
   const live = state.detail.job || {};
   if (live.state === "running" && live.kind === kind) {
     go.disabled = true;
-    go.textContent = kind === "record" ? "Narrating…" : "Drawing…";
+    go.textContent = RUNNING[kind];
     document.getElementById("scost").innerHTML =
       `<span class="m2">already running — started ` +
       `${live.started ? new Date(live.started * 1000).toLocaleTimeString() : "earlier"}` +
@@ -1415,6 +1483,20 @@ async function openStage(kind) {
   const est = await (await fetch("/api/estimate/" +
                                  encodeURIComponent(state.sel))).json();
   const e = (est || {})[kind] || {};
+  if (kind === "direct") {
+    // Only offer the overwrite when there is something to overwrite; the
+    // server refuses a second render without it.
+    document.getElementById("sopt").hidden = !e.exists;
+    document.getElementById("soptbox").checked = !!e.exists;
+    go.disabled = !!e.unavailable;
+    document.getElementById("scost").innerHTML = e.unavailable
+      ? `<span class="m2">${esc(e.unavailable)}</span>`
+      : `<span class="big">free</span>` +
+        `<span class="m2">${e.shots || 0} shots · ~${e.minutes || 0} min of video` +
+        `${e.exists ? " · replaces the current cut, which then needs approving again" : ""}` +
+        `</span>`;
+    return;
+  }
   document.getElementById("scost").innerHTML =
     kind === "record"
       ? (e.unavailable
@@ -1435,8 +1517,10 @@ function renderStage(j) {
   // Counted off disk by the server, so a resumed run reports what is really
   // there rather than starting from zero.
   document.getElementById("sproglog").textContent =
-    `${j.done || 0} of ${j.total || "?"} ${STAGE[sKind].unit}` +
-    (j.state === "running" ? "…" : "");
+    j.phase === "stitch" && j.state === "running"
+      ? `all ${j.total} shots rendered — stitching and adding the narration…`
+      : `${j.done || 0} of ${j.total || "?"} ${STAGE[sKind].unit}` +
+        (j.state === "running" ? "…" : "");
 }
 
 async function pollStage() {
@@ -1474,9 +1558,9 @@ document.getElementById("stage").onsubmit = async e => {
   if (go.textContent === "Done") { document.getElementById("scancel").click(); return; }
   const body = { slug: state.sel };
   if (document.getElementById("soptbox").checked)
-    body[sKind === "record" ? "force" : "replan"] = true;
+    body[sKind === "design" ? "replan" : "force"] = true;
   go.disabled = true;
-  go.textContent = sKind === "record" ? "Narrating…" : "Drawing…";
+  go.textContent = RUNNING[sKind];
   const res = await (await fetch("/api/" + sKind, {
     method: "POST", headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body) })).json();
@@ -1496,8 +1580,9 @@ document.getElementById("sstop").onclick = () => stopJob(state.sel);
 
 document.getElementById("scancel").onclick = () => {
   // Like write: closing the dialog does not stop the thread.
-  if (sPoll) toast(sKind === "record" ? "Still narrating in the background."
-                                      : "Still drawing in the background.");
+  if (sPoll) toast({ record: "Still narrating in the background.",
+                     design: "Still drawing in the background.",
+                     direct: "Still rendering in the background." }[sKind]);
   sscrim.classList.remove("show");
 };
 sscrim.onclick = e => {
@@ -1505,6 +1590,7 @@ sscrim.onclick = e => {
 
 document.getElementById("recordBtn").onclick = () => openStage("record");
 document.getElementById("designBtn").onclick = () => openStage("design");
+document.getElementById("renderBtn").onclick = () => openStage("direct");
 document.getElementById("zipBtn").onclick = () => {
   if (!state.sel) return;
   // A navigation, not a fetch: 150 MB belongs on disk, not in the tab's memory.
@@ -1662,6 +1748,7 @@ document.getElementById("writeBtn").onclick = openWrite;
 document.getElementById("reviseBtn").onclick = openRevise;
 document.getElementById("approve").onclick = () => act("approve");
 document.getElementById("reject").onclick = () => act("reject");
+document.getElementById("publishBtn").onclick = openPublish;
 
 document.addEventListener("keydown", e => {
   if (e.key === "Escape") {
@@ -1685,6 +1772,7 @@ document.addEventListener("keydown", e => {
     e.preventDefault(); if (state.rows.length) select(state.rows[Math.max(i - 1, 0)]);
   } else if (e.key === "a") { e.preventDefault(); act("approve"); }
   else if (e.key === "r") { e.preventDefault(); act("reject"); }
+  else if (e.key === "p") { e.preventDefault(); openPublish(); }
   else if (e.key === "e") { e.preventDefault(); openRevise(); }
   else if (e.key === "w") {
     e.preventDefault();
@@ -1698,8 +1786,12 @@ document.addEventListener("keydown", e => {
     e.preventDefault();
     if (!document.getElementById("designBtn").disabled) openStage("design");
   }
+  else if (e.key === "v") {
+    e.preventDefault();
+    if (!document.getElementById("renderBtn").disabled) openStage("direct");
+  }
   else if (e.key === "?") {
-    toast("j/k move · a approve · e revise · w write · n record · g design · r reject"); }
+    toast("j/k move · a approve · e revise · w write · n record · g design · v render · p publish · r reject"); }
 });
 
 loadQueue();

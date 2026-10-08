@@ -284,6 +284,8 @@ cli lint <story>             # free, no API calls
 cli record <story> [--dry-run] [--force]
 cli design <story>
 cli direct <story> [--force]
+cli approve <story> --video [--undo]          # sign off the rendered video
+cli publish <story> <youtube-url> [--date YYYY-MM-DD] [--force] [--undo]
 
 cli status <story>
 cli all --genre <g> [--length {15,30}]   # every stage, no review gate

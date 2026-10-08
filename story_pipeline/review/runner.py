@@ -38,7 +38,7 @@ from ..bundle import find_bundle
 # print() in the pipeline load-bearing.
 MARKER = "::progress "
 
-STAGES = ("write", "redraft", "record", "design")
+STAGES = ("write", "redraft", "record", "design", "direct")
 
 # How much log a page gets when it asks from the start. Enough to see what
 # happened, not so much that a long write blocks first paint.
@@ -160,7 +160,8 @@ def start(cfg: dict, slug: str, stage: str, *, force: bool = False,
             argv.append("--force")
         if restart:
             argv.append("--restart")
-    elif stage == "record":
+    elif stage in ("record", "direct"):
+        # record: skip the chapter gate. direct: overwrite an existing mp4.
         if force:
             argv.append("--force")
     elif stage == "design":

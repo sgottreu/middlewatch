@@ -25,12 +25,19 @@ Routes:
                                note — paid; runs as a job like write
     POST /api/record           narrate the approved chapters — paid; a job
     POST /api/design           draw the cast and scenes — paid; a job
+    POST /api/direct           render the video with ffmpeg — free, but slow
+                               and CPU-heavy; a job. {"force": true} replaces
+                               an existing mp4
     GET  /api/estimate/<slug>  what record and design would cost; free
     GET  /api/package/<slug>   audio and images as a zip, to render elsewhere
     POST /api/reject           delete the bundle
+    POST /api/approve {"what": "video"}
+                               sign off the rendered video; unlocks publish
+    POST /api/publish          {"slug", "url", "date"?} mark it published on
+                               YouTube; {"undo": true} reverses it — free
 
-`direct` is deliberately absent. It is the one stage that needs real hardware —
-see docs/story/aws.md — so the page hands you the assets instead.
+`direct` runs on whatever box serves this page, so that box needs the RAM for an
+x264 encode. The Assets .zip is still there for rendering somewhere else.
 """
 
 from __future__ import annotations
@@ -47,7 +54,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
 from . import runner
-from .. import genres, history, summary
+from .. import genres, history, release, summary
 from ..agents import text as textagent
 from ..bundle import Bundle, bundle_roots, find_bundle, real_answer
 
@@ -143,7 +150,7 @@ def _story_row(root: Path) -> dict | None:
     except (OSError, ValueError, KeyError, json.JSONDecodeError):
         return None
 
-    stages = m.get("stages", {})
+    stages = b.stages()
     spec = textagent.length_spec(
         m.get("pinned", {}).get("length_min", outline.get("length_min")))
     beats = sum(len(c.get("beats", [])) for c in outline.get("chapters", []))
@@ -180,6 +187,7 @@ def _story_row(root: Path) -> dict | None:
         "stale": stale,
         "spend": _spend(m),
         "flags": _outline_flags(outline, spec),
+        "published": b.publish_info(),
     }
 
 
@@ -190,7 +198,8 @@ def queue(cfg: dict) -> dict:
                         for p in bundle_roots(root)) if r]
 
     groups = {"outlines": [], "approved": [], "chapters": [], "failed": [],
-              "stale": [], "done": []}
+              "stale": [], "video": [], "publish": [], "done": [],
+              "published": []}
     for r in rows:
         st = r["stages"]
         if st.get("ideate") == "awaiting_review":
@@ -206,6 +215,12 @@ def queue(cfg: dict) -> dict:
             groups["failed"].append(r)
         elif st.get("edit") == "awaiting_review":
             groups["chapters"].append(r)
+        elif st.get("publish") == "done":
+            groups["published"].append(r)
+        elif st.get("approve") == "awaiting_review":
+            groups["video"].append(r)
+        elif st.get("approve") == "approved":
+            groups["publish"].append(r)
         else:
             groups["done"].append(r)
 
@@ -389,6 +404,10 @@ def save_chapter(cfg: dict, slug: str, n: int, segments: list) -> dict:
 def approve(cfg: dict, slug: str, what: str, chapters: list | None = None,
             undo: bool = False) -> dict:
     b = Bundle.open(find_bundle(cfg["stories_dir"], slug))
+    if what == "video":
+        state = release.approve_video(b, undo=undo)
+        summary.write(b)
+        return {"ok": True, "slug": slug, "what": what, "approve": state}
     if what == "chapters" and chapters:
         # One chapter at a time, so a story can be read across several sittings
         # instead of all at once. Only the chapters named are touched.
@@ -543,7 +562,7 @@ STAGE_KINDS = ("record", "design")
 
 # Stages that stamp `running` into the manifest on entry and clear it only on
 # success. A killed run leaves that behind, so it has to be released.
-RELEASABLE = ("write", "record", "design")
+RELEASABLE = ("write", "record", "design", "direct")
 
 
 def _scenes_per(cfg: dict, b: Bundle) -> int:
@@ -692,6 +711,13 @@ def job_view(cfg: dict, slug: str) -> dict:
         j["max_passes"] = cfg.get("max_edit_passes", 2)
         if j["state"] == "done" and j.get("n"):
             j.update(_redraft_done(b, int(j["n"])))
+    elif kind == "direct":
+        # Clips render into a temp dir, so the markers are the only count.
+        last = next((m for m in reversed(marks) if m.get("total")), {})
+        j.update(done=last.get("done", 0), total=last.get("total"),
+                 phase=last.get("event", "start"))
+        if j["state"] == "done":
+            j["video"] = b.video_path.name
     elif kind in STAGE_KINDS:
         j.update(_stage_counts(cfg, slug, kind))
         if j["state"] == "done":
@@ -740,6 +766,18 @@ def estimates(cfg: dict, slug: str) -> dict:
     rate = cfg.get("gemini", {}).get("usd_per_image", 0.05)
     out["design"] = {"images": todo, "usd": round(todo * rate, 2),
                      "per_chapter": per}
+
+    # Rendering is ffmpeg on this box: no provider bill, so the useful figures
+    # are how much there is to render and whether a cut already exists.
+    try:
+        from ..agents import director
+        shots = director.build_shot_list(b)
+        out["direct"] = {"shots": len(shots),
+                         "minutes": round(sum(x["duration_ms"] for x in shots)
+                                          / 60000, 1),
+                         "exists": b.video_path.exists()}
+    except Exception as e:
+        out["direct"] = {"unavailable": f"not ready to render: {e}"}
     return out
 
 
@@ -808,6 +846,24 @@ def design_start(cfg: dict, slug: str, replan: bool = False) -> dict:
     return {"ok": True, "slug": slug, **job_view(cfg, slug)}
 
 
+def direct_start(cfg: dict, slug: str, force: bool = False) -> dict:
+    """Render the video. No provider cost, but minutes of full CPU.
+
+    Gated on design being done, since every cut is a scene image. An existing
+    mp4 is only replaced with `force` — a re-render resets the video approval,
+    and a cut that is already published would need re-uploading by hand.
+    """
+    b = Bundle.open(find_bundle(cfg["stories_dir"], slug))
+    if b.stage_status("design") != "done":
+        raise ValueError("design is not finished. Every cut is a scene image, "
+                         "so design before rendering.")
+    if b.video_path.exists() and not force:
+        raise ValueError(f"{b.video_path.name} already exists. Tick "
+                         "\"replace the existing video\" to render it again.")
+    runner.start(cfg, slug, "direct", force=force)
+    return {"ok": True, "slug": slug, **job_view(cfg, slug)}
+
+
 def package_files(cfg: dict, slug: str) -> tuple[Path, list[Path]]:
     """The bundle root and every asset file to put in the zip.
 
@@ -829,6 +885,16 @@ def package_files(cfg: dict, slug: str) -> tuple[Path, list[Path]]:
         raise ValueError(
             f"{slug} has no audio or images yet — record and design first.")
     return root, files
+
+
+def publish(cfg: dict, slug: str, url: str, when: str | None = None,
+            undo: bool = False) -> dict:
+    """Mark the story published. No --force here: the page only offers it
+    once the video is approved, and the CLI is the way round that gate."""
+    b = Bundle.open(find_bundle(cfg["stories_dir"], slug))
+    info = release.publish(b, url, when, undo=undo)
+    summary.write(b)
+    return {"ok": True, "slug": slug, "published": info}
 
 
 def reject(cfg: dict, slug: str) -> dict:
@@ -966,8 +1032,15 @@ def _handler(cfg: dict):
                 elif path == "/api/design":
                     self._json(design_start(cfg, body["slug"],
                                             replan=bool(body.get("replan"))))
+                elif path == "/api/direct":
+                    self._json(direct_start(cfg, body["slug"],
+                                            force=bool(body.get("force"))))
                 elif path == "/api/cancel":
                     self._json(cancel_job(cfg, body["slug"]))
+                elif path == "/api/publish":
+                    self._json(publish(cfg, body["slug"], body.get("url", ""),
+                                       body.get("date"),
+                                       undo=bool(body.get("undo"))))
                 elif path == "/api/reject":
                     self._json(reject(cfg, body["slug"]))
                 else:

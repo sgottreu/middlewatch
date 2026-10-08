@@ -15,7 +15,17 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-STAGES = ["ideate", "write", "edit", "record", "design", "direct"]
+STAGES = ["ideate", "write", "edit", "record", "design", "direct",
+          "approve", "publish"]
+
+# After the video exists, two human steps that are not jobs:
+#
+#   approve  awaiting_review once `direct` is done -> approved
+#   publish  pending -> done, with the YouTube URL and date in stage_info
+#
+# Both are instant writes to the manifest, from `cli approve --video` /
+# `cli publish` or the review page. Publish waits on approve, so nothing goes
+# up that nobody watched.
 
 # A scene break: a jump in time or place inside a chapter. It is a segment with
 # this in the speaker field and no text, rather than a flag on the segment after
@@ -278,7 +288,27 @@ class Bundle:
         self.write_manifest(m)
 
     def stage_status(self, stage: str) -> str:
-        return self.manifest()["stages"].get(stage, "pending")
+        return self.stages()[stage] if stage in STAGES else \
+            self.manifest()["stages"].get(stage, "pending")
+
+    def stages(self) -> dict[str, str]:
+        """Every stage's status, with the ones a manifest may not hold filled in.
+
+        Manifests written before `approve` and `publish` existed have neither
+        key. A story whose video is already rendered is waiting for approval,
+        whatever its manifest predates, so that is derived rather than stored —
+        the same reason `edit` is derived from the chapter approvals.
+        """
+        stored = self.manifest().get("stages", {})
+        out = {s: stored.get(s, "pending") for s in STAGES}
+        out.update({k: v for k, v in stored.items() if k not in out})
+        if out["direct"] == "done" and out["approve"] == "pending":
+            out["approve"] = "awaiting_review"
+        return out
+
+    def publish_info(self) -> dict[str, Any]:
+        """URL, video id and date recorded when the story was published."""
+        return self.manifest().get("stage_info", {}).get("publish", {}) or {}
 
     # ----------------------------------------------------------------- #
     # Per-chapter approval

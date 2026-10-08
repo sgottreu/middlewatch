@@ -570,11 +570,17 @@ redoing work it actually skips.
 **A failed run resets the stage to `pending`** and keeps what finished, the same
 reasoning as write: the story stays startable and the next run carries on.
 
-`direct` is deliberately not here. It is the one stage that needs real hardware,
-and the review box has 412 MiB of RAM — see [running on AWS](aws.md). The page
-offers **Assets .zip** instead: the audio and images, streamed as a zip, to
-unzip into `stories/` on the machine that renders. The prose is not in it, since
-that arrives by `git pull`.
+**Render** (`v`) runs `direct` as a job on the box serving the page, once
+design is done. It costs nothing from a provider but holds the CPU for minutes,
+so it gets the same dialog, live log and Stop as the paid stages. Shot clips
+render into a temp directory, so progress comes from `::progress` markers the
+director emits per shot rather than from counting files. A second render needs
+**replace the existing video** ticked — the server refuses without it — and
+resets the video approval, because a new cut needs watching again.
+
+**Assets .zip** is still offered: the audio and images, streamed as a zip, for
+rendering on another machine. The prose is not in it, since that arrives by
+`git pull`.
 
 ### Jobs are processes, and what that buys
 

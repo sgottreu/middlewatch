@@ -39,7 +39,7 @@ A monorepo with two pipelines and the operations shared between them.
 
 | Path | What |
 |---|---|
-| `story_pipeline/` | Narrated short fiction → YouTube video. Six stages. |
+| `story_pipeline/` | Narrated short fiction → YouTube video. Six stages, then approve and publish (manual, `release.py`). |
 | `ambience_pipeline/` | Long-form soundscapes. Design only, not built. |
 | `ledger/` | Shared spend and revenue, both pipelines. |
 | `docs/story/`, `docs/ambience/` | Documentation. `docs/story/index.md` is the wiki. |

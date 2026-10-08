@@ -11,7 +11,7 @@ render comes home.
 | `new`, `write`, `critique`, redraft | server | Text and API calls. Already there. |
 | `record` | server | Needs ffmpeg, but only to encode mp3 from PCM. Cheap in memory. |
 | `design` | server | Downloads images. Cheap in memory. |
-| `direct` | **laptop** | ffmpeg renders a clip per shot, then joins them. The box has 412 MiB of RAM; this would not finish. |
+| `direct` | server | ffmpeg renders a clip per shot, then joins them. The review page's **Render** button runs it. Needs a box with real RAM — not the original nano. |
 | Upload to YouTube | laptop | Manual anyway — nothing here uploads yet. |
 
 The box is a **t3.nano in us-east-1a**: 2 vCPU, 412 MiB RAM, 20 GB root disk.

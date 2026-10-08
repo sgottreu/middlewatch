@@ -14,6 +14,7 @@ from . import bibles
 from . import calibration
 from . import changelog
 from . import genres
+from . import release
 from . import history
 from . import tts
 from . import lint as linter
@@ -304,6 +305,21 @@ def cmd_revise(args, cfg):
 
 def cmd_approve(args, cfg):
     b = _bundle(args)
+    if args.video:
+        try:
+            release.approve_video(b, undo=args.undo)
+        except ValueError as e:
+            sys.exit(str(e))
+        summary.write(b)
+        if args.undo:
+            print("Video approval withdrawn.")
+        else:
+            print("Video approved. Upload it, then: python3 -m story_pipeline.cli "
+                  f"publish {b.root} <youtube-url>")
+        return
+    if args.undo:
+        sys.exit("--undo only applies with --video here; the review page "
+                 "withdraws chapter approvals.")
     if args.chapters or args.chapter:
         picked = args.chapter or None
         approved = text.approve_chapters(b, picked)
@@ -543,6 +559,22 @@ def cmd_design(args, cfg):
     print(f"Next:   python3 -m story_pipeline.cli direct {b.root}")
 
 
+def cmd_publish(args, cfg):
+    b = _bundle(args)
+    if not args.undo and not args.url:
+        sys.exit("give the YouTube URL: publish <story> <url>")
+    try:
+        info = release.publish(b, args.url, args.date, force=args.force,
+                               undo=args.undo)
+    except ValueError as e:
+        sys.exit(str(e))
+    summary.write(b)
+    if args.undo:
+        print("Marked unpublished.")
+    else:
+        print(f"Published {info['published']}: {info['url']}")
+
+
 def cmd_direct(args, cfg):
     b = _bundle(args)
     if b.video_path.exists() and not args.force:
@@ -691,8 +723,12 @@ def cmd_status(args, cfg):
     b = _bundle(args)
     m = b.manifest()
     print(f"{m['slug']}\n")
+    stages = b.stages()
     for stage in STAGES:
-        print(f"  {stage:8} {m['stages'].get(stage, 'pending')}")
+        print(f"  {stage:8} {stages[stage]}")
+    if b.publish_info().get("url"):
+        pub = b.publish_info()
+        print(f"  {'':8} {pub['url']} ({pub.get('published', '')})")
     # Per-chapter state lives in reviews/NN.json, which is neither the prose nor
     # the chapter JSON — so it was effectively invisible unless you went looking
     # for a directory nothing mentions. This is the place to read it.
@@ -865,7 +901,21 @@ def main(argv=None):
     app.add_argument("--chapter", type=int, action="append", metavar="N",
                      help="approve one chapter; repeatable, and how to work "
                           "through a story a chapter at a time")
+    app.add_argument("--video", action="store_true",
+                     help="approve the rendered video, unlocking publish")
+    app.add_argument("--undo", action="store_true",
+                     help="with --video, withdraw the approval")
     app.set_defaults(fn=cmd_approve)
+
+    pub = sub.add_parser("publish",
+                         help="mark the story published, recording its YouTube URL")
+    pub.add_argument("story")
+    pub.add_argument("url", nargs="?", help="the YouTube video URL, or its id")
+    pub.add_argument("--date", help="publish date, YYYY-MM-DD; defaults to today")
+    pub.add_argument("--force", action="store_true",
+                     help="skip the video approval gate")
+    pub.add_argument("--undo", action="store_true", help="mark it unpublished")
+    pub.set_defaults(fn=cmd_publish)
 
     wr = sub.add_parser("write", help="draft and edit every chapter")
     wr.add_argument("story")

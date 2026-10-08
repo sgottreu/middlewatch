@@ -7,6 +7,7 @@ image changes on the sentence the designer chose rather than on a guess.
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import tempfile
 from pathlib import Path
@@ -19,6 +20,17 @@ def _run(args: list[str]) -> None:
     if proc.returncode != 0:
         tail = "\n".join(proc.stderr.strip().splitlines()[-15:])
         raise RuntimeError(f"ffmpeg failed:\n{' '.join(args[:8])} ...\n{tail}")
+
+
+def _progress(**fields) -> None:
+    """One progress marker for the review page — same contract as cli._progress.
+
+    Shot clips render into a temp directory, so unlike record and design there
+    is nothing on disk to count; the marker is the only way the page can see how
+    far a render has got. Off unless MW_PROGRESS is set.
+    """
+    if os.environ.get("MW_PROGRESS"):
+        print("::progress " + json.dumps(fields), flush=True)
 
 
 # --------------------------------------------------------------------------- #
@@ -195,6 +207,11 @@ def direct(cfg: dict, b: Bundle, verbose: bool = True) -> Path:
                       f"({shot['duration_ms'] / 1000:.1f}s)...")
             _ken_burns(shot, cfg, clip, extra, i)
             clips.append(clip)
+            _progress(event="shot", done=i + 1, total=len(shots))
+
+        if verbose:
+            print("  stitching shots and laying in the narration...")
+        _progress(event="stitch", done=len(shots), total=len(shots))
 
         silent = Path(tmp) / "silent.mp4"
         _stitch(clips, shots, fade_ms, silent)
@@ -211,8 +228,15 @@ def direct(cfg: dict, b: Bundle, verbose: bool = True) -> Path:
         _run(args)
 
     b.set_stage("direct", "done")
+    # A new cut needs watching again, even if an earlier one was approved.
+    b.set_stage("approve", "awaiting_review")
     if verbose:
         print(f"  wrote {b.video_path}")
+        if b.stage_status("publish") == "done":
+            print(f"  note: already published at {b.publish_info().get('url', '?')}"
+                  " — re-upload by hand if this cut replaces it")
+        print(f"Next: watch it, then python3 -m story_pipeline.cli approve "
+              f"{b.root} --video")
         if not cfg["video"]["burn_subtitles"]:
             print(f"  upload {srt.name} to YouTube as the caption track")
     return b.video_path
