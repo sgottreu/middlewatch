@@ -58,12 +58,15 @@ This is the figure the length table is built on. See [calibration](../../docs/st
 | write | done |
 | edit | approved |
 | record | done |
-| design | pending |
+| design | done |
 | direct | pending |
+| approve | pending |
+| publish | pending |
 
 | Spend | |
 |---|---|
 | elevenlabs_credits | 28736.0 |
+| gemini_images | 36.0 |
 
 ---
 
