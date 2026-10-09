@@ -137,6 +137,7 @@ edit to one file, not a code change.
 |---|---|
 | Resolution, frame rate, crossfade length | `video:` in `config.yaml` |
 | Turn off the Ken Burns motion | `video.ken_burns: false` |
+| Faster, lighter Ken Burns render | `video.ken_burns: lite` |
 | Burn subtitles in rather than shipping an `.srt` | `video.burn_subtitles: true` |
 | Change subtitle styling | The `force_style` string in `story_pipeline/agents/director.py` |
 

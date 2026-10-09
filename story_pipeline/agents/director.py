@@ -120,7 +120,15 @@ def _ken_burns(shot: dict, cfg: dict, out: Path, extra_ms: int, index: int) -> N
     seconds = (shot["duration_ms"] + extra_ms) / 1000
     frames = max(int(seconds * fps), 2)
 
-    if v["ken_burns"]:
+    # true renders at 4x supersample; "lite" at 2x with a faster encode — about
+    # a quarter of the pixels through zoompan, at the cost of a little shimmer
+    # on very slow zooms.
+    mode = v["ken_burns"]
+    lite = mode == "lite"
+    ss = 2 if lite else 4
+    preset = "veryfast" if lite else "medium"
+
+    if mode:
         # Upscaling before zoompan is what stops the pan from stuttering —
         # zoompan quantises its crop to integer source pixels.
         rate = 0.14 / frames
@@ -129,8 +137,8 @@ def _ken_burns(shot: dict, cfg: dict, out: Path, extra_ms: int, index: int) -> N
         else:
             z = f"'max(1.14-{rate}*on,1.001)'"      # pull out
         vf = (
-            f"scale={w * 4}:{h * 4}:force_original_aspect_ratio=increase,"
-            f"crop={w * 4}:{h * 4},"
+            f"scale={w * ss}:{h * ss}:force_original_aspect_ratio=increase,"
+            f"crop={w * ss}:{h * ss},"
             f"zoompan=z={z}:d={frames}"
             f":x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
             f":s={w}x{h}:fps={fps},"
@@ -144,7 +152,7 @@ def _ken_burns(shot: dict, cfg: dict, out: Path, extra_ms: int, index: int) -> N
 
     _run(["ffmpeg", "-y", "-loop", "1", "-i", str(shot["image"]),
           "-t", f"{seconds:.3f}", "-vf", vf,
-          "-c:v", "libx264", "-preset", "medium", "-crf", "18", str(out)])
+          "-c:v", "libx264", "-preset", preset, "-crf", "18", str(out)])
 
 
 def _stitch(clips: list[Path], shots: list[dict], fade_ms: int, out: Path) -> None:
