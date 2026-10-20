@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+#
+# mw-asset-sync — copy story binaries straight off the review server onto this laptop.
+#
+#   mw-asset-sync <slug>...              dry run: list what would copy
+#   mw-asset-sync <slug>... --go         copy audio and images
+#   mw-asset-sync <slug>... --go --video also copy the rendered video
+#   mw-asset-sync --all --go             every bundle on the server
+#
+# Runs on the laptop, in the repo. It is the fresh, direct counterpart to
+# `mw-s3-archive pull`, which restores the same files from S3 but only as of the
+# server's last hourly push (mw-s3-archive.timer). Use this when you want what the
+# server has right now; use mw-s3-archive when the server no longer has it.
+#
+# It moves only the gitignored halves of a bundle — stories/<arc>/<slug>/
+# {audio,images,video}/ — into the same place locally. Text arrives by
+# `git pull`; run that first so the bundle exists here. It never deletes, and
+# it never writes on the server.
+#
+# Same knobs as mw-ship:
+#   MW_SSH          ssh target          (default: ubuntu@review.middlewatch.co)
+#   MW_REMOTE_REPO  repo on the server  (default: /srv/middlewatch)
+
+set -euo pipefail
+
+SSH_TARGET=${MW_SSH:-ubuntu@review.middlewatch.co}
+REMOTE_REPO=${MW_REMOTE_REPO:-/srv/middlewatch}
+LOCAL_REPO=$(git rev-parse --show-toplevel)
+KINDS="audio images"
+ALL=0; GO=0; slugs=()
+
+die() { echo "mw-asset-sync: $*" >&2; exit 1; }
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --all)   ALL=1 ;;
+        --go)    GO=1 ;;
+        --video) KINDS="audio images video" ;;
+        -h|--help) awk 'NR == 1 { next } !/^#/ { exit } { sub(/^# ?/, ""); print }' "$0"; exit 0 ;;
+        -*)      die "unknown option: $1" ;;
+        *)       s=${1%/}; slugs+=("${s##*/}") ;;
+    esac
+    shift
+done
+[ "$ALL" = 1 ] || [ "${#slugs[@]}" -gt 0 ] || die "give one or more slugs, or --all"
+command -v rsync >/dev/null || die "rsync not found"
+
+# Ask the server for bundle paths (stories/<arc>/<slug>), identified the same
+# way mw-s3-archive does it: a directory with a manifest, one arc down.
+if [ "$ALL" = 1 ]; then pattern='*'; else pattern=$(printf '%s ' "${slugs[@]}"); fi
+bundles=$(ssh -o ConnectTimeout=8 "$SSH_TARGET" "cd '$REMOTE_REPO' && for s in $pattern; do for m in stories/*/\$s/manifest.json; do [ -f \"\$m\" ] && dirname \"\$m\"; done; done") \
+    || die "cannot list bundles on $SSH_TARGET:$REMOTE_REPO — set MW_SSH / MW_REMOTE_REPO"
+
+if [ "$ALL" = 0 ]; then
+    for s in "${slugs[@]}"; do
+        n=$(grep -c "/$s\$" <<<"$bundles" || true)
+        [ "$n" = 1 ] || die "expected one bundle named $s on the server, found $n"
+    done
+fi
+[ -n "$bundles" ] || die "no bundles found on the server"
+
+opts=(-ah --partial --itemize-changes --exclude=.DS_Store --exclude='*.tmp' --exclude='*.part')
+[ "$GO" = 1 ] || { opts+=(--dry-run); echo "(dry run — add --go to copy)"; }
+
+for b in $bundles; do
+    [ -f "$LOCAL_REPO/$b/manifest.json" ] || { echo "skip $b — not here yet, git pull first"; continue; }
+    echo "pull $b"
+    for kind in $KINDS; do
+        ssh "$SSH_TARGET" "[ -n \"\$(ls -A '$REMOTE_REPO/$b/$kind' 2>/dev/null)\" ]" || continue
+        rsync "${opts[@]}" "$SSH_TARGET:$REMOTE_REPO/$b/$kind/" "$LOCAL_REPO/$b/$kind/" | sed 's/^/    /'
+    done
+done
+echo "done"

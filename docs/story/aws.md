@@ -151,7 +151,7 @@ aws ec2 associate-iam-instance-profile --instance-id i-XXXX \
 ```
 
 **No `s3:DeleteObject`.** A wrong path can add objects but not remove them, which
-is the second layer under "mw-sync never passes `--delete`".
+is the second layer under "mw-s3-archive never passes `--delete`".
 
 The laptop needs its own credentials — an IAM user with the same policy, then
 `aws configure`. Create the access key in the console and paste it in yourself;
@@ -172,21 +172,32 @@ install it before the first record.
 
 The apt CLI is v1. `s3 sync` is all that is used here and v1 does it fine.
 
-## 5. mw-sync and the hourly sweep
+## 5. mw-s3-archive and the hourly sweep
 
 ```bash
 cd /srv/middlewatch
-sudo install -m 755 scripts/deploy/mw-sync /usr/local/bin/
-sudo install -m 644 scripts/deploy/mw-sync.service scripts/deploy/mw-sync.timer /etc/systemd/system/
+sudo install -m 755 scripts/deploy/mw-s3-archive /usr/local/bin/
+sudo install -m 644 scripts/deploy/mw-s3-archive.service scripts/deploy/mw-s3-archive.timer /etc/systemd/system/
 sudo systemctl daemon-reload
-sudo systemctl enable --now mw-sync.timer
+sudo systemctl enable --now mw-s3-archive.timer
 
-mw-sync -n push-all          # dry run: what it would upload
-systemctl list-timers mw-sync.timer
+mw-s3-archive -n push-all          # dry run: what it would upload
+systemctl list-timers mw-s3-archive.timer
 ```
 
-`mw-sync --help` lists the commands. It refuses to run against a directory with
+`mw-s3-archive --help` lists the commands. It refuses to run against a directory with
 no bundles in it rather than reporting a successful backup of nothing.
+
+### Renamed from mw-sync
+
+On a box set up before the rename, swap the old units for the new ones once:
+
+```bash
+sudo systemctl disable --now mw-sync.timer
+sudo rm /etc/systemd/system/mw-sync.service /etc/systemd/system/mw-sync.timer /usr/local/bin/mw-sync
+```
+
+then run the install block above.
 
 ## 6. Moving what is already on the laptop
 
@@ -195,10 +206,10 @@ up, then pull down only what the server needs — it has no use for video and th
 volume is 10 GB:
 
 ```bash
-mw-sync push-all                              # on the laptop
+mw-s3-archive push-all                              # on the laptop
 ```
 ```bash
-mw-sync --kinds audio,images pull-all         # on the server
+mw-s3-archive --kinds audio,images pull-all         # on the server
 ```
 
 ## 7. The loop, from anywhere
@@ -206,8 +217,10 @@ mw-sync --kinds audio,images pull-all         # on the server
 1. Open `review.middlewatch.co`. Approve the outline, write, read the chapters,
    approve them. Then **Record** and **Design** — both show what they will cost
    before they start, and both keep running if you close the tab.
-2. **Assets .zip** hands you the audio and images. Or, on a machine with
-   credentials, `mw-sync --kinds audio,images pull <slug>` instead.
+2. **Assets .zip** hands you the audio and images. Or, from the laptop,
+   `scripts/mw-asset-sync <slug> --go` copies them straight off this box over
+   ssh, current to the minute; `mw-s3-archive --kinds audio,images pull <slug>`
+   gets them from S3 as of the last hourly sweep, for a story the box no longer has.
 3. On the laptop, render:
    ```bash
    git pull                                 # the prose, from the server's commits
@@ -238,8 +251,8 @@ pipeline touches ffmpeg's expensive path. So the change is where that one call
 runs, not what it does:
 
 - **Spot instance, started for the job.** A c7a.large at roughly $0.05/hr spot
-  renders a 30-minute story in minutes. Start it, `git clone`, `mw-sync pull`,
-  `cli direct`, `mw-sync push`, terminate. A shell script, no code change.
+  renders a 30-minute story in minutes. Start it, `git clone`, `mw-s3-archive pull`,
+  `cli direct`, `mw-s3-archive push`, terminate. A shell script, no code change.
 - **Container on ECS or Batch.** Same steps, a queue in front, and worth it only
   when several stories are waiting at once.
 
@@ -254,7 +267,7 @@ python3 -m venv .venv && .venv/bin/python3 -m pip install -r requirements.txt
 cp config.example.yaml config.yaml    # then edit
 cp .env.example .env                  # then paste the three keys
 # section 1 for the volume, section 3 for the role, section 4 for ffmpeg
-mw-sync --kinds audio,images pull-all
+mw-s3-archive --kinds audio,images pull-all
 ```
 
 If something is missing after that, it was stored somewhere this document does

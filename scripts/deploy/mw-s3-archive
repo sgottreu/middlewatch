@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 #
-# mw-sync — back up the gitignored half of every story bundle to S3.
+# mw-s3-archive — back up the gitignored half of every story bundle to S3.
 #
-#   mw-sync push     <slug>...   audio, images and video for these stories
-#   mw-sync push-all             every story in stories/<arc>/, then the SFX cache
-#   mw-sync pull     <slug>...   bring these stories' binaries back down
-#   mw-sync pull-all             every story git knows about, then the SFX cache
-#   mw-sync push-sfx             assets/sfx_cache/ only
-#   mw-sync pull-sfx
+#   mw-s3-archive push     <slug>...   audio, images and video for these stories
+#   mw-s3-archive push-all             every story in stories/<arc>/, then the SFX cache
+#   mw-s3-archive pull     <slug>...   bring these stories' binaries back down
+#   mw-s3-archive pull-all             every story git knows about, then the SFX cache
+#   mw-s3-archive push-sfx             assets/sfx_cache/ only
+#   mw-s3-archive pull-sfx
 #
 #   -n, --dry-run    list what would transfer, change nothing
 #   --kinds a,b      limit to some of audio,images,video (default: all three)
@@ -16,7 +16,7 @@
 # rendered video — has no second copy anywhere, and the first two cost money to
 # make again. This is that second copy.
 #
-# The server runs every stage up to `design` and sweeps hourly (mw-sync.timer).
+# The server runs every stage up to `design` and sweeps hourly (mw-s3-archive.timer).
 # Video is rendered on the laptop, so it is pushed from there after `direct`.
 # --kinds narrows what moves: the server has no use for video.
 #
@@ -41,7 +41,7 @@ KINDS="audio images video"
 
 EXCLUDES=(--exclude ".DS_Store" --exclude ".gitkeep" --exclude "*.tmp" --exclude "*.part")
 
-die() { echo "mw-sync: $*" >&2; exit 1; }
+die() { echo "mw-s3-archive: $*" >&2; exit 1; }
 
 sync() {
     # ${DRY:+...} unquoted, not an empty array: bash 3.2 on macOS treats an
@@ -158,7 +158,7 @@ main() {
         shift
     done
 
-    [ -n "$cmd" ] || die "no command given; mw-sync --help for usage"
+    [ -n "$cmd" ] || die "no command given; mw-s3-archive --help for usage"
     command -v aws >/dev/null 2>&1 || die "aws CLI not found on PATH"
     [ -z "$DRY" ] || echo "(dry run — nothing will transfer)"
 
@@ -170,7 +170,7 @@ main() {
         pull-all) each_story pull_story; pull_sfx ;;
         push-sfx) push_sfx ;;
         pull-sfx) pull_sfx ;;
-        *) die "unknown command: $cmd; mw-sync --help for usage" ;;
+        *) die "unknown command: $cmd; mw-s3-archive --help for usage" ;;
     esac
 
     echo "done $(date -u +%Y-%m-%dT%H:%MZ)"

@@ -1,10 +1,10 @@
 [Unit]
 # One backup sweep: every story's audio and images to S3, then the SFX cache.
-# Driven by mw-sync.timer; also safe to run by hand with
-# `sudo systemctl start mw-sync`.
+# Driven by mw-s3-archive.timer; also safe to run by hand with
+# `sudo systemctl start mw-s3-archive`.
 #
-# Install:  sudo install -m 644 scripts/deploy/mw-sync.{service,timer} /etc/systemd/system/
-#           sudo systemctl daemon-reload && sudo systemctl enable --now mw-sync.timer
+# Install:  sudo install -m 644 scripts/deploy/mw-s3-archive.{service,timer} /etc/systemd/system/
+#           sudo systemctl daemon-reload && sudo systemctl enable --now mw-s3-archive.timer
 #
 # No credentials here. The instance has an IAM role, so the aws CLI picks up
 # temporary credentials from the instance metadata service and there is nothing
@@ -17,7 +17,7 @@ Wants=network-online.target
 Type=oneshot
 User=ubuntu
 WorkingDirectory=/srv/middlewatch
-ExecStart=/usr/local/bin/mw-sync push-all
+ExecStart=/usr/local/bin/mw-s3-archive push-all
 
 NoNewPrivileges=yes
 PrivateTmp=yes

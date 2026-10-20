@@ -69,7 +69,7 @@ writes — while the stage field stays stored.
 2. **Auto-push on stage success** — the strongest operational argument in the
    handoff, and the reason to do it before anything cosmetic: a lost asset that
    gets regenerated writes a *second* ledger row for the same story, both rows
-   legitimate, break-even quietly wrong. One `mw-sync push <slug>` at the tail
+   legitimate, break-even quietly wrong. One `mw-s3-archive push <slug>` at the tail
    of a successful record or design run closes the hour-wide window the timer
    leaves. See [running on AWS](aws.md).
 3. **Cost delta per run.** Snapshot the manifest spend into `meta.json` at

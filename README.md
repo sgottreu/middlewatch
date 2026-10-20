@@ -94,7 +94,7 @@ and `record --dry-run`.
 
 Everything up to `design` runs on the AWS box, from a browser — `direct` renders
 on the laptop, because the instance has 412 MiB of RAM. `stories/` lives on its
-own volume there and is swept to S3 hourly by `scripts/deploy/mw-sync`. See
+own volume there and is swept to S3 hourly by `scripts/deploy/mw-s3-archive`. See
 [docs/story/aws.md](docs/story/aws.md).
 
 ## Ledger
