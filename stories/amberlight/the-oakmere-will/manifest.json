@@ -7,7 +7,8 @@
     "edit": "approved",
     "record": "done",
     "design": "done",
-    "direct": "pending"
+    "direct": "done",
+    "approve": "awaiting_review"
   },
   "spend": {
     "elevenlabs_credits": 28736.0,

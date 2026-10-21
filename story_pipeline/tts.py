@@ -172,16 +172,22 @@ ELEVEN_URL = "https://api.elevenlabs.io/v1/text-to-speech/{voice}/with-timestamp
 CREDIT_RATE = {
     "eleven_multilingual_v2": 1.0,
     "eleven_v3": 1.0,
+    # v4 bills the full rate and v4 Turbo half (ElevenLabs, Sept 2026).
+    "eleven_v4": 1.0,
+    "eleven_v4_turbo": 0.5,
     "eleven_turbo_v2_5": 0.5,
     "eleven_flash_v2_5": 0.5,
 }
 
 
-# Audio tags are an Eleven v3 feature. Sent to any other model they are billed
-# as characters and read out loud as words, which is the worst of both.
-TAG_MODELS = ("eleven_v3",)
+# Audio tags are an Eleven v3 and v4 feature. Sent to any other model they are
+# billed as characters and read out loud as words, which is the worst of both.
+# A prefix match, so "eleven_v4" also covers "eleven_v4_turbo".
+TAG_MODELS = ("eleven_v3", "eleven_v4")
 
-# ...and v3 is the one model that refuses the continuity fields, with a 400:
+# ...and v3 is the one model that refuses the continuity fields, with a 400.
+# v4 takes them (ElevenLabs' own v4 examples send previous_text/next_text), so
+# it is deliberately not listed here:
 # "Providing previous_text or next_text is not yet supported with the
 # 'eleven_v3' model." Two capabilities, opposite ways round, which is why each
 # is a list rather than one "is it v3" test that would eventually be read as

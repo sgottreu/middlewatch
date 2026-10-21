@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Middle Watch — casting</title>
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon-180.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#14140f">
+<style>
+  /* Same palette and button language as the review page (app.html), so the two
+     read as one tool. Dark only, for the same reason. */
+  :root {
+    --bg: #14140f; --panel: #1c1c16; --line: #2e2e24; --ink: #e8e4d8;
+    --dim: #97917f; --accent: #c9a227; --danger: #d4674a; --ok: #7ea05a;
+    --btn: #25405f; --btn-hi: #2f5078; --btn-line: #5a8bc4; --btn-ink: #e6eef8;
+    --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+         font: 15px/1.55 Charter, Georgia, serif; }
+  a { color:var(--accent); }
+  h1,h2,h3 { font-weight:600; line-height:1.25; margin:0; }
+
+  header.top { position:sticky; top:0; z-index:5; background:var(--panel);
+               border-bottom:1px solid var(--line); padding:10px 24px;
+               display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; }
+  header.top h1 { font-size:18px; }
+  header.top .back { font-family:var(--mono); font-size:12px; text-decoration:none; }
+  header.top label { font-family:var(--mono); font-size:11px; color:var(--dim);
+                     display:flex; align-items:center; gap:6px; text-transform:uppercase;
+                     letter-spacing:.06em; }
+  select, input[type=text] { font:inherit; font-size:14px; background:var(--bg);
+           color:var(--ink); border:1px solid var(--line); border-radius:5px; padding:5px 7px; }
+  select { text-transform:none; letter-spacing:0; }
+  .spacer { flex:1; }
+
+  button { font:inherit; font-size:13px; padding:6px 13px; border-radius:5px; cursor:pointer;
+           border:1px solid var(--btn-line); background:var(--btn); color:var(--btn-ink);
+           box-shadow:inset 0 1px 0 rgba(255,255,255,.08), 0 1px 2px rgba(0,0,0,.45); }
+  button:hover:not(:disabled) { background:var(--btn-hi); border-color:var(--accent); }
+  button:disabled { box-shadow:none; background:#4a4943; border:1px dashed #8d8a7c;
+                    color:#cdc9bc; cursor:not-allowed; }
+  button.primary { background:var(--ok); border-color:var(--ok); color:#0f120b; }
+  button.primary:hover:not(:disabled) { background:#8db466; border-color:#8db466; }
+  button.armed { background:var(--accent); border-color:var(--accent); color:#14140f; }
+  button.sel { background:rgba(201,162,39,.15); border-color:var(--accent); color:var(--ink); }
+  button.quiet { background:transparent; border-color:var(--line); color:var(--dim); box-shadow:none; }
+  button.quiet:hover:not(:disabled) { color:var(--ink); background:transparent; }
+  button.stop { background:rgba(212,103,74,.12); border-color:var(--danger); color:var(--danger); }
+
+  main { max-width:1100px; margin:0 auto; padding:18px 24px 80px; }
+  .lede { color:var(--dim); font-size:14px; margin:0 0 16px; max-width:80ch; }
+
+  /* job panel */
+  #job { display:none; border:1px solid var(--accent); background:rgba(201,162,39,.07);
+         border-radius:8px; padding:12px 14px; margin:0 0 18px; }
+  #job.show { display:block; }
+  #job.bad { border-color:var(--danger); background:rgba(212,103,74,.08); }
+  #job.done { border-color:var(--ok); background:rgba(126,160,90,.08); }
+  #job .row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  #job .what { flex:1; font-size:14px; }
+  .bar { height:6px; border-radius:3px; background:var(--line); overflow:hidden; margin:9px 0 0; }
+  .bar i { display:block; height:100%; width:0; background:var(--ok); transition:width .3s; }
+  #log { font-family:var(--mono); font-size:11px; color:var(--dim); background:var(--bg);
+         border:1px solid var(--line); border-radius:6px; margin:10px 0 0; padding:8px 10px;
+         max-height:200px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+
+  /* speakers */
+  section.sp { border:1px solid var(--line); border-radius:8px; background:var(--panel);
+               margin:0 0 18px; }
+  section.sp > .hd { display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px;
+                     padding:12px 16px; border-bottom:1px solid var(--line); }
+  section.sp > .hd h2 { font-size:17px; }
+  .chip { font-family:var(--mono); font-size:11px; border:1px solid var(--line);
+          border-radius:20px; padding:1px 8px; color:var(--dim); white-space:nowrap; }
+  .chip.cast { border-color:var(--ok); color:var(--ok); }
+  .chip.cur { border-color:var(--btn-line); color:#b9cce3; }
+  .chip.warn { border-color:var(--accent); color:var(--accent); }
+  .chip.bad { border-color:var(--danger); color:var(--danger); }
+  .line { margin:0; padding:10px 16px; font-style:italic; border-bottom:1px solid var(--line);
+          color:#d8d3c4; }
+  .line.none { font-style:normal; color:var(--dim); font-size:13px; }
+
+  .ent { display:grid; grid-template-columns: minmax(170px, 1.1fr) 2fr auto;
+         gap:10px 16px; padding:11px 16px; border-bottom:1px solid var(--line);
+         align-items:start; }
+  .ent:last-of-type { border-bottom:none; }
+  .ent.v-cast { border-left:3px solid var(--ok); padding-left:13px; }
+  .ent.v-no { opacity:.62; }
+  .ent .nm b { display:block; font-size:15px; }
+  .ent .nm .lb { font-family:var(--mono); font-size:11px; color:var(--dim); display:block; }
+  .ent .nm .nt { font-size:12px; color:var(--dim); display:block; margin-top:2px; }
+  .takes { display:flex; flex-direction:column; gap:6px; }
+  .take { display:flex; align-items:center; gap:8px; }
+  .take span { font-family:var(--mono); font-size:11px; color:var(--dim); width:110px; flex:none; }
+  .take audio { height:32px; flex:1; min-width:0; }
+  .takes .empty { font-size:13px; color:var(--dim); display:flex; gap:10px; align-items:center;
+                  flex-wrap:wrap; }
+  .takes .why { color:var(--danger); font-size:12px; }
+
+  .judge { display:flex; flex-direction:column; gap:6px; align-items:stretch; min-width:210px; }
+  .seg3 { display:flex; }
+  .seg3 button { flex:1; border-radius:0; background:transparent; border-color:var(--line);
+                 color:var(--dim); box-shadow:none; padding:5px 10px; }
+  .seg3 button:first-child { border-radius:5px 0 0 5px; }
+  .seg3 button:last-child { border-radius:0 5px 5px 0; }
+  .seg3 button + button { border-left:none; }
+  .seg3 button.on.cast { background:var(--ok); border-color:var(--ok); color:#0f120b; }
+  .seg3 button.on.maybe { background:var(--accent); border-color:var(--accent); color:#14140f; }
+  .seg3 button.on.no { background:var(--danger); border-color:var(--danger); color:#14140f; }
+  .judge input { width:100%; font-size:13px; }
+  .judge .rm { align-self:flex-end; font-size:11px; padding:2px 8px; }
+
+  .add { display:flex; flex-wrap:wrap; gap:8px; padding:11px 16px; border-top:1px dashed var(--line);
+         align-items:center; }
+  .add input { flex:1 1 140px; }
+  .add .idf { flex:1 1 210px; font-family:var(--mono); font-size:13px; }
+  .add .t { font-family:var(--mono); font-size:11px; color:var(--dim); flex-basis:100%; }
+
+  /* pool */
+  #pool table { width:100%; border-collapse:collapse; font-size:13px; }
+  #pool th, #pool td { text-align:left; padding:6px 9px; border-bottom:1px solid var(--line);
+                       vertical-align:middle; }
+  #pool th { color:var(--dim); font-family:var(--mono); font-size:11px; font-weight:400;
+             text-transform:uppercase; letter-spacing:.06em; }
+  #pool audio { height:30px; width:220px; }
+  #pool .id { font-family:var(--mono); font-size:11px; color:var(--dim); }
+  h2.sec { font-size:13px; font-family:var(--mono); font-weight:400; text-transform:uppercase;
+           letter-spacing:.09em; color:var(--dim); margin:30px 0 10px; }
+  .filters { display:flex; gap:8px; margin:0 0 8px; }
+
+  /* apply panel */
+  #ascrim { position:fixed; inset:0; background:rgba(0,0,0,.55); display:none; z-index:10;
+            align-items:center; justify-content:center; }
+  #ascrim.show { display:flex; }
+  #apanel { background:var(--panel); border:1px solid var(--line); border-radius:8px;
+            width:min(760px, 94vw); max-height:90vh; overflow-y:auto; padding:22px 24px; }
+  #apanel h2 { font-size:19px; margin:0 0 4px; }
+  #apanel h3 { font-size:12px; font-family:var(--mono); font-weight:400; color:var(--dim);
+               text-transform:uppercase; letter-spacing:.08em; margin:18px 0 6px; }
+  #apanel .lede { margin:0 0 10px; }
+  #apanel table { width:100%; border-collapse:collapse; font-size:13px; }
+  #apanel th, #apanel td { text-align:left; padding:5px 8px; border-bottom:1px solid var(--line);
+                           vertical-align:top; }
+  #apanel th { color:var(--dim); font-family:var(--mono); font-size:11px; font-weight:400;
+               text-transform:uppercase; letter-spacing:.06em; }
+  #apanel code { font-family:var(--mono); font-size:12px; }
+  #apanel .opts { display:flex; flex-direction:column; gap:6px; margin:6px 0 0; font-size:14px; }
+  #apanel .opts label { display:flex; gap:9px; align-items:flex-start; cursor:pointer; }
+  #apanel .opts small { display:block; color:var(--dim); font-size:12px; }
+  #apanel .warn { border:1px solid var(--accent); background:rgba(201,162,39,.08);
+                  border-radius:6px; padding:8px 11px; font-size:13px; margin:6px 0; }
+  #apanel .bad { border-color:var(--danger); background:rgba(212,103,74,.1); }
+  #apanel .okbox { border:1px solid var(--ok); background:rgba(126,160,90,.1);
+                   border-radius:6px; padding:10px 12px; font-size:14px; margin:12px 0 0; }
+  #apanel .row2 { display:flex; gap:9px; justify-content:flex-end; margin-top:18px; flex-wrap:wrap; }
+  .arrow { color:var(--accent); }
+  .tag { font-family:var(--mono); font-size:11px; border-radius:3px; padding:0 5px;
+         border:1px solid var(--danger); color:var(--danger); white-space:nowrap; }
+
+  #toast { position:fixed; bottom:24px; right:24px; background:var(--panel);
+           border:1px solid var(--line); border-left:3px solid var(--accent);
+           padding:10px 15px; border-radius:5px; font-size:14px; opacity:0;
+           transition:opacity .18s; pointer-events:none; max-width:46ch; z-index:20; }
+  #toast.show { opacity:1; }
+  #toast.bad { border-left-color:var(--danger); }
+
+  @media (max-width: 760px) {
+    header.top { padding:10px 14px; }
+    main { padding:14px 12px 60px; }
+    .ent { grid-template-columns: 1fr; }
+    .judge { min-width:0; }
+    .take span { width:84px; }
+    button { min-height:38px; }
+    select, input[type=text] { font-size:16px; }   /* stops iOS zooming on focus */
+    #pool audio { width:150px; }
+    #pool .hide-sm { display:none; }
+    #toast { left:12px; right:12px; bottom:16px; max-width:none; }
+    #ascrim { align-items:flex-end; }
+    #apanel { width:100%; max-height:92dvh; border-radius:14px 14px 0 0;
+              padding:18px 14px calc(18px + env(safe-area-inset-bottom)); }
+    #apanel .row2 button { flex:1 1 auto; }
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="back" href="/">‹ Review</a>
+  <h1>Casting</h1>
+  <label>Arc <select id="arc"></select></label>
+  <label title="Each character is auditioned on one of their own lines from this story">Lines from <select id="story"></select></label>
+  <span class="spacer"></span>
+  <button type="button" id="runAll" class="primary" disabled>Run new auditions</button>
+  <button type="button" id="applyBtn" disabled title="Write the voices you've cast into config.yaml, the bible and the stories, then commit">Apply casting…</button>
+</header>
+<main>
+  <p class="lede" id="lede">Loading…</p>
+  <div id="job"><div class="row"><span class="what" id="jobwhat"></span>
+      <button type="button" class="quiet" id="logBtn">Log</button>
+      <button type="button" class="stop" id="stopBtn" hidden>Stop</button></div>
+    <div class="bar"><i id="jobbar"></i></div>
+    <pre id="log" hidden></pre></div>
+  <div id="speakers"></div>
+  <h2 class="sec">Voice pool — auditioned in this arc, not cast</h2>
+  <p class="lede">Start here for a new character: every voice already heard in this arc that isn't playing anyone.</p>
+  <div id="pool"></div>
+</main>
+<div id="ascrim"><div id="apanel" role="dialog" aria-labelledby="atitle">
+  <h2 id="atitle">Apply casting</h2>
+  <p class="lede">Writes the voices you've cast everywhere a character's voice is decided, logs it
+    in the bible's changelog, and commits. Nothing is written until you press Apply.</p>
+  <div class="opts">
+    <label><input type="checkbox" id="optV4" checked><span>Narrate with Eleven v4
+      <small>Sets <code>elevenlabs.model: eleven_v4</code>. Audio tags carry over.</small></span></label>
+    <label><input type="checkbox" id="optCast" checked><span>One voice per character
+      <small>Sets <code>casting.mode: cast</code>. Off keeps a single reader, and the cast is only stored.</small></span></label>
+    <label><input type="checkbox" id="optCommit" checked><span>Commit the changed files
+      <small>Only the files below. config.yaml isn't in git.</small></span></label>
+    <label><input type="checkbox" id="optPush" checked><span>…and push
+      <small>Without force. If it's refused, the commit stays here and this says so.</small></span></label>
+  </div>
+  <div id="aplan"><p class="lede">Working out the changes…</p></div>
+  <div id="aresult"></div>
+  <div class="row2">
+    <button type="button" class="quiet" id="aclose">Close</button>
+    <button type="button" class="primary" id="ago" disabled>Apply</button>
+  </div>
+</div></div>
+<div id="toast"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c =>
+  ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const money = n => "$" + (Number(n) || 0).toFixed(2);
+let S = { arc: null, story: null, view: null, poll: null, logFrom: 0, wasRunning: false,
+          poolGender: "" };
+
+function toast(msg, bad) {
+  const t = $("toast"); t.textContent = msg; t.classList.toggle("bad", !!bad);
+  t.classList.add("show"); clearTimeout(t._h);
+  t._h = setTimeout(() => t.classList.remove("show"), bad ? 6000 : 2600);
+}
+function explain(err) {
+  const msg = String(err || "").trim().replace(/^[A-Za-z_][\w.]*(Error|Exception):\s*/, "");
+  return /^not found$/i.test(msg)
+    ? "The review server is running older code than this page. Restart it (mw-deploy, or sudo systemctl restart mw-review) and reload."
+    : msg;
+}
+async function api(path, body) {
+  const r = await fetch(path, body ? { method: "POST", headers: { "Content-Type": "application/json" },
+                                       body: JSON.stringify(body) } : undefined);
+  const j = await r.json().catch(() => ({ error: `HTTP ${r.status}` }));
+  if (!r.ok || j.error) throw new Error(explain(j.error || `HTTP ${r.status}`));
+  return j;
+}
+
+// A paid button arms on the first press and runs on the second, so a stray tap
+// never spends money and nobody has to dismiss a dialog to get on with it.
+function armed(btn, label, fn) {
+  if (btn.classList.contains("armed")) {
+    btn.classList.remove("armed"); clearTimeout(btn._t); fn(); return;
+  }
+  document.querySelectorAll("button.armed").forEach(b => { b.classList.remove("armed"); b.textContent = b._label; });
+  btn._label = btn.textContent; btn.textContent = label; btn.classList.add("armed");
+  btn._t = setTimeout(() => { btn.classList.remove("armed"); btn.textContent = btn._label; }, 5000);
+}
+
+function syncUrl() {
+  const u = new URL(location.href);
+  u.searchParams.set("arc", S.arc || ""); u.searchParams.set("story", S.story || "");
+  history.replaceState(null, "", u);
+}
+
+async function boot() {
+  const q = new URLSearchParams(location.search);
+  const { arcs } = await api("/api/casting");
+  if (!arcs.length) { $("lede").textContent = "No arcs with stories yet."; return; }
+  $("arc").innerHTML = arcs.map(a =>
+    `<option value="${esc(a.arc)}">${esc(a.arc)} — ${a.auditioned} heard, ${a.cast} cast</option>`).join("");
+  S.arc = arcs.some(a => a.arc === q.get("arc")) ? q.get("arc") : arcs[0].arc;
+  $("arc").value = S.arc;
+  S.story = q.get("story") || null;
+  await load();
+}
+
+async function load(keepScroll) {
+  const y = window.scrollY;
+  try {
+    S.view = await api(`/api/casting/${encodeURIComponent(S.arc)}` +
+                       (S.story ? `?story=${encodeURIComponent(S.story)}` : ""));
+  } catch (e) { $("lede").textContent = e.message; return; }
+  S.story = S.view.story;
+  syncUrl();
+  render();
+  if (keepScroll) window.scrollTo(0, y);
+  showJob(S.view.job);
+}
+
+function render() {
+  const v = S.view, est = v.estimate;
+  $("story").innerHTML = v.stories.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join("");
+  $("story").value = v.story || "";
+  const running = v.job && v.job.state === "running";
+  const ra = $("runAll");
+  ra.disabled = running || !est.takes;
+  ra.textContent = est.takes ? `Run ${est.takes} new audition${est.takes > 1 ? "s" : ""} · ~${money(est.usd)}`
+                             : "Everything here has been auditioned";
+  ra._label = ra.textContent;
+  $("applyBtn").disabled = !v.speakers.some(sp => sp.cast) || running;
+  $("lede").innerHTML =
+    `Each character speaks one of their own lines from <b>${esc(v.story || "—")}</b>. ` +
+    `The current voice is heard on <code>${esc(est.baseline_model)}</code> and on v4; every candidate on v4. ` +
+    `Takes already recorded are reused, so a run only pays for what's new. ` +
+    `Verdicts save as you click and land in <code>stories/${esc(v.arc)}/_casting/CASTING.md</code>.`;
+
+  $("speakers").innerHTML = v.speakers.map(sp => speakerHtml(sp, est.per_speaker[sp.speaker], running)).join("");
+  renderPool();
+}
+
+function speakerHtml(sp, cost, running) {
+  const id = "sp-" + btoa(unescape(encodeURIComponent(sp.speaker))).replace(/=/g, "");
+  const chips = [];
+  if (sp.current) chips.push(`<span class="chip cur">now: ${esc(sp.current)}</span>`);
+  chips.push(sp.cast ? `<span class="chip cast">cast: ${esc(sp.cast.name)}</span>`
+                     : `<span class="chip warn">not cast</span>`);
+  if (sp.in_stories.length) chips.push(`<span class="chip">speaks in ${sp.in_stories.length} stor${sp.in_stories.length > 1 ? "ies" : "y"}</span>`);
+  const n = cost ? cost.takes : 0;
+  const runBtn = sp.line
+    ? `<button type="button" data-run-speaker="${esc(sp.speaker)}" ${running || !n ? "disabled" : ""}>${
+        n ? `Run ${n} · ~${money(cost.usd)}` : "All heard"}</button>`
+    : "";
+  const line = sp.line
+    ? `<p class="line">“${esc(sp.line)}”</p>`
+    : `<p class="line none">No lines in ${esc(S.view.story)}. ${
+        sp.in_stories.length ? "Speaks in: " + sp.in_stories.map(esc).join(", ") + " — pick one under “Lines from”." : "Not in any written story yet."}</p>`;
+  return `<section class="sp" id="${id}" data-speaker="${esc(sp.speaker)}">
+    <div class="hd"><h2>${esc(sp.speaker)}</h2>${chips.join("")}<span class="spacer"></span>${runBtn}</div>
+    ${line}
+    ${sp.entries.map(e => entryHtml(sp, e, running)).join("") ||
+      `<p class="line none">No candidates yet — add a voice below.</p>`}
+    <form class="add" data-add="${esc(sp.speaker)}">
+      <input class="idf" name="id" type="text" placeholder="Voice id (20 characters)" autocomplete="off" spellcheck="false">
+      <input name="name" type="text" placeholder="Name">
+      <input name="note" type="text" placeholder="Note (optional)">
+      <button type="submit" class="quiet">Add candidate</button>
+      <span class="t">Add a voice to audition for ${esc(sp.speaker)}. Library voices are added to My Voices when they're first run, which uses a voice slot.</span>
+    </form>
+  </section>`;
+}
+
+function labelsText(lb) {
+  return ["gender", "age", "accent", "descriptive"].map(k => lb && lb[k]).filter(Boolean)
+    .map(x => String(x).replace(/_/g, " ")).join(" · ");
+}
+
+function entryHtml(sp, e, running) {
+  const role = e.role === "current" ? `<span class="chip cur">current</span>`
+             : e.role === "other" ? `<span class="chip">no longer listed</span>` : "";
+  const here = e.takes.filter(t => t.story === S.view.story);
+  const elsewhere = e.takes.filter(t => t.story !== S.view.story);
+  const show = here.length ? here : elsewhere;
+  const takes = show.map(t => `<div class="take"><span>${esc(t.model.replace("eleven_", ""))}${
+      t.story !== S.view.story ? " · " + esc(t.story) : ""}</span>
+      <audio controls preload="none" src="${esc(t.url)}"></audio></div>`).join("");
+  let status = "";
+  if (e.unavailable) status = `<span class="why">Couldn't audition: ${esc(e.unavailable)}</span>`;
+  const canRun = sp.line && e.id && !running && (e.pending || !here.length);
+  const runOne = e.id && sp.line
+    ? `<button type="button" class="quiet" data-run-voice="${esc(e.id)}" data-speaker="${esc(sp.speaker)}" ${canRun ? "" : "disabled"}>${
+        here.length ? "Heard" : "Run this one"}</button>` : "";
+  const empty = !show.length
+    ? `<div class="empty">${e.id ? "Not auditioned yet." : "No voice id — add one to audition it."} ${runOne} ${status}</div>`
+    : (status ? `<div class="empty">${status}</div>` : "");
+  const v = e.verdict;
+  const judge = e.id && (e.auditioned || v) ? `
+      <div class="seg3" role="group" aria-label="Verdict">
+        ${["cast", "maybe", "no"].map(k => `<button type="button" class="${k} ${v === k ? "on" : ""}"
+            data-verdict="${k}" data-voice="${esc(e.id)}" data-speaker="${esc(sp.speaker)}"
+            aria-pressed="${v === k}">${k === "cast" ? "Cast" : k === "maybe" ? "Maybe" : "No"}</button>`).join("")}
+      </div>
+      <input type="text" placeholder="Note — why" value="${esc(e.verdict_note)}"
+             data-note-voice="${esc(e.id)}" data-speaker="${esc(sp.speaker)}" ${v ? "" : "disabled"}>`
+    : `<span class="chip">judge after hearing</span>`;
+  const rm = e.role === "candidate" && e.id
+    ? `<button type="button" class="quiet rm" data-remove="${esc(e.id)}" data-speaker="${esc(sp.speaker)}">Remove from list</button>` : "";
+  return `<div class="ent ${v ? "v-" + v : ""}">
+    <div class="nm"><b>${esc(e.name)} ${role}</b>
+      ${labelsText(e.labels) ? `<span class="lb">${esc(labelsText(e.labels))}</span>` : ""}
+      ${e.id ? `<span class="lb">${esc(e.id)}</span>` : ""}
+      ${e.note ? `<span class="nt">${esc(e.note)}</span>` : ""}</div>
+    <div class="takes">${takes}${empty}</div>
+    <div class="judge">${judge}${rm}</div>
+  </div>`;
+}
+
+function renderPool() {
+  const pool = S.view.pool.filter(p => !S.poolGender ||
+    (p.labels.gender || "").toLowerCase() === S.poolGender);
+  const genders = [...new Set(S.view.pool.map(p => (p.labels.gender || "").toLowerCase()).filter(Boolean))];
+  $("pool").innerHTML = S.view.pool.length ? `
+    <div class="filters">${["", ...genders].map(g => `<button type="button" class="quiet ${S.poolGender === g ? "sel" : ""}"
+       data-pool="${esc(g)}">${g ? esc(g) : "everyone"}</button>`).join("")}</div>
+    <table><thead><tr><th>Voice</th><th class="hide-sm">Gender · age · accent</th><th>Tried for</th><th>Hear</th></tr></thead>
+    <tbody>${pool.map(p => `<tr><td>${esc(p.name)}<br><span class="id">${esc(p.id)}</span></td>
+      <td class="hide-sm">${esc(labelsText(p.labels)) || "—"}</td>
+      <td>${p.tried_for.map(s => esc(s) + (p.verdicts[s] ? ` <span class="chip">${esc(p.verdicts[s])}</span>` : "")).join("<br>")}</td>
+      <td>${p.sample ? `<audio controls preload="none" src="${esc(p.sample)}"></audio>` : ""}</td></tr>`).join("")}
+    </tbody></table>`
+    : `<p class="lede">Nothing yet — run some auditions.</p>`;
+}
+
+// --- actions ---------------------------------------------------------------
+
+async function run(body, btn, label) {
+  armed(btn, label, async () => {
+    try {
+      const r = await api("/api/casting/run", { arc: S.arc, story: S.story, ...body });
+      S.logFrom = 0; $("log").textContent = "";
+      showJob(r.job); toast("Auditions started — they keep going if you close this page.");
+      document.querySelectorAll("[data-run-speaker],[data-run-voice],#runAll").forEach(b => b.disabled = true);
+    } catch (e) { toast(e.message, true); }
+  });
+}
+
+$("runAll").onclick = e => run({}, e.currentTarget,
+  `Spend ~${money(S.view.estimate.usd)}? Click again`);
+
+document.addEventListener("click", async ev => {
+  const b = ev.target.closest("button");
+  if (!b) return;
+  if (b.dataset.runSpeaker) {
+    const c = S.view.estimate.per_speaker[b.dataset.runSpeaker];
+    run({ speakers: [b.dataset.runSpeaker] }, b, `Spend ~${money(c.usd)}? Again`);
+  } else if (b.dataset.runVoice) {
+    run({ speakers: [b.dataset.speaker], voices: [b.dataset.runVoice] }, b, "Spend a few cents? Again");
+  } else if (b.dataset.verdict) {
+    const on = b.classList.contains("on");
+    const note = b.closest(".judge").querySelector("input")?.value || "";
+    try {
+      await api("/api/casting/verdict", { arc: S.arc, speaker: b.dataset.speaker, voice: b.dataset.voice,
+                                          verdict: on ? "clear" : b.dataset.verdict, note });
+      await load(true);
+      if (!on && b.dataset.verdict === "cast")
+        toast(`Cast for ${b.dataset.speaker}. Copy it to the bible and config.yaml when you're sure.`);
+    } catch (e) { toast(e.message, true); }
+  } else if (b.dataset.remove) {
+    if (b.dataset.armed !== "1") { b.dataset.armed = "1"; b.textContent = "Remove? Click again";
+      setTimeout(() => { b.dataset.armed = ""; b.textContent = "Remove from list"; }, 4000); return; }
+    try {
+      await api("/api/casting/candidate", { arc: S.arc, speaker: b.dataset.speaker, id: b.dataset.remove, remove: true });
+      await load(true); toast("Removed from the audition list. Takes and verdicts stay in the record.");
+    } catch (e) { toast(e.message, true); }
+  } else if ("pool" in b.dataset) {
+    S.poolGender = b.dataset.pool; renderPool();
+  }
+});
+
+document.addEventListener("change", async ev => {
+  const i = ev.target;
+  if (!i.dataset || !i.dataset.noteVoice) return;
+  const on = i.closest(".judge").querySelector(".seg3 button.on");
+  if (!on) return;
+  try {
+    await api("/api/casting/verdict", { arc: S.arc, speaker: i.dataset.speaker, voice: i.dataset.noteVoice,
+                                        verdict: on.dataset.verdict, note: i.value });
+    toast("Note saved.");
+  } catch (e) { toast(e.message, true); }
+});
+
+document.addEventListener("submit", async ev => {
+  const f = ev.target.closest("form[data-add]");
+  if (!f) return;
+  ev.preventDefault();
+  const d = Object.fromEntries(new FormData(f));
+  try {
+    await api("/api/casting/candidate", { arc: S.arc, speaker: f.dataset.add, ...d });
+    await load(true); toast(`Added to ${f.dataset.add}'s list.`);
+  } catch (e) { toast(e.message, true); }
+});
+
+$("arc").onchange = () => { S.arc = $("arc").value; S.story = null; load(); };
+$("story").onchange = () => { S.story = $("story").value; load(true); };
+$("logBtn").onclick = () => { $("log").hidden = !$("log").hidden; if (!$("log").hidden) tailLog(); };
+$("stopBtn").onclick = async () => {
+  try { showJob((await api("/api/casting/cancel", { arc: S.arc })).job); toast("Stopped. Finished takes are kept."); }
+  catch (e) { toast(e.message, true); }
+};
+
+// --- job ---------------------------------------------------------------------
+
+function showJob(j) {
+  const box = $("job");
+  clearTimeout(S.poll);
+  if (!j || j.state === "none") { box.className = ""; S.wasRunning = false; return; }
+  const running = j.state === "running";
+  box.className = "show" + (running ? "" : j.state === "done" ? (j.failed ? " bad" : " done") : " bad");
+  const pct = j.total ? Math.round(100 * j.done / j.total) : (running ? 4 : 100);
+  $("jobbar").style.width = pct + "%";
+  $("stopBtn").hidden = !running;
+  const when = j.finished ? new Date(j.finished * 1000).toLocaleTimeString() : "";
+  $("jobwhat").textContent =
+    running ? (j.total ? `Auditioning — ${j.done} of ${j.total} takes` : "Looking up voices…")
+    : j.state === "done" ? `Last run finished ${when}: ${j.done} take${j.done === 1 ? "" : "s"}` +
+                           (j.failed ? `, ${j.failed} failed — see the log` : "")
+    : j.state === "cancelled" ? `Stopped at ${when}. Finished takes are kept.`
+    : `Failed: ${(j.error || "").split("\n").pop()}`;
+  if (j.state === "failed" && j.error) { $("log").hidden = false; $("log").textContent = j.error; }
+  if (running) {
+    S.wasRunning = true;
+    if (!$("log").hidden) tailLog();
+    S.poll = setTimeout(async () => {
+      try { showJob(await api(`/api/casting/${encodeURIComponent(S.arc)}/job`)); } catch (e) {}
+    }, 1500);
+  } else if (S.wasRunning) {
+    S.wasRunning = false;
+    load(true);   // new takes and record lines are on disk now
+  }
+}
+
+async function tailLog() {
+  try {
+    const c = await api(`/api/casting/${encodeURIComponent(S.arc)}/log?from=${S.logFrom}`);
+    if (c.text) { const l = $("log"); l.textContent += (l.textContent ? "\n" : "") + c.text; l.scrollTop = l.scrollHeight; }
+    S.logFrom = c.offset;
+  } catch (e) {}
+}
+
+// --- apply -------------------------------------------------------------------
+
+const opts = () => ({ v4: $("optV4").checked, cast_mode: $("optCast").checked,
+                      commit: $("optCommit").checked, push: $("optPush").checked && $("optCommit").checked });
+
+async function openApply() {
+  $("ascrim").classList.add("show"); $("aresult").innerHTML = ""; $("ago").hidden = false;
+  await refreshPlan();
+}
+
+async function refreshPlan() {
+  const o = opts();
+  $("optPush").disabled = !o.commit;
+  $("ago").disabled = true;
+  $("aplan").innerHTML = `<p class="lede">Working out the changes…</p>`;
+  let p;
+  try {
+    p = await api(`/api/casting/${encodeURIComponent(S.arc)}/apply?v4=${o.v4 ? 1 : 0}&cast=${o.cast_mode ? 1 : 0}`);
+  } catch (e) { $("aplan").innerHTML = `<div class="warn bad">${esc(e.message)}</div>`; return; }
+  const c = p.config, arrow = `<span class="arrow">→</span>`;
+  const cfgRows = [
+    ...Object.entries(c.library_add).map(([k, v]) => `<tr><td>voice_library</td><td>add <code>${esc(k)}: ${esc(v)}</code></td></tr>`),
+    c.mode ? `<tr><td>casting.mode</td><td>${esc(c.mode[0])} ${arrow} ${esc(c.mode[1])}</td></tr>` : "",
+    c.max_named_voices ? `<tr><td>casting.max_named_voices</td><td>${esc(c.max_named_voices[0])} ${arrow} ${esc(c.max_named_voices[1])}</td></tr>` : "",
+    c.model ? `<tr><td>elevenlabs.model</td><td>${esc(c.model[0])} ${arrow} ${esc(c.model[1])}</td></tr>` : "",
+  ].join("");
+  const b = p.bible;
+  const bibleRows = b.changes.map(x => `<tr><td>${esc(x.character)}</td><td>${esc(x.from || "—")} ${arrow} ${esc(x.to)}</td></tr>`).join("")
+    + (b.narrator ? `<tr><td>narrator</td><td>${esc(b.narrator.from || "genre default")} ${arrow} ${esc(b.narrator.to)}</td></tr>` : "");
+  const storyRows = p.stories.map(s => {
+    const ch = [...s.outline.map(x => x.character), ...s.pinned.map(x => x.character)];
+    return `<tr><td>${esc(s.title)}<br><code>${esc(s.slug)}</code></td>
+      <td>${[...new Set(ch)].map(esc).join(", ") || "—"}${s.genre_narrator ? (ch.length ? ", " : "") + "narrator" : ""}</td>
+      <td>${s.rerecord ? `<span class="tag">re-record</span>` : ""}
+          ${s.uncast.length ? `<br><small>not cast: ${s.uncast.map(esc).join(", ")}</small>` : ""}</td></tr>`;
+  }).join("");
+  const rerec = p.stories.filter(s => s.rerecord).length;
+  $("aplan").innerHTML = `
+    <h3>The cast</h3>
+    <table><tbody>${p.cast.map(x => `<tr><td>${esc(x.speaker)}</td><td>${esc(x.name)}</td><td><code>${esc(x.voice)}</code></td></tr>`).join("")}</tbody></table>
+    <h3>config.yaml — this machine only</h3>
+    ${cfgRows ? `<table><tbody>${cfgRows}</tbody></table>` : `<p class="lede">No change.</p>`}
+    <h3>Bible${b.name ? " — " + esc(b.name) : ""}</h3>
+    ${bibleRows ? `<table><tbody>${bibleRows}</tbody></table>` : `<p class="lede">No change.</p>`}
+    ${b.notes.map(n => `<div class="warn">${esc(n)}</div>`).join("")}
+    <h3>Stories in ${esc(p.arc)}</h3>
+    ${storyRows ? `<table><thead><tr><th>Story</th><th>Voices changed</th><th></th></tr></thead><tbody>${storyRows}</tbody></table>` : `<p class="lede">No change.</p>`}
+    ${rerec ? `<div class="warn">${rerec} recorded stor${rerec > 1 ? "ies" : "y"} will show as <b>Narration out of date</b> in the review queue.
+      Re-recording is a separate step there, and it's the part that costs.</div>` : ""}
+    ${p.warnings.map(w => `<div class="warn">${esc(w)}</div>`).join("")}
+    ${p.busy.length ? `<div class="warn bad">Running now: ${p.busy.map(esc).join(", ")}. Apply once they finish.</div>` : ""}`;
+  $("ago").disabled = !!p.busy.length;
+  $("ago").textContent = o.commit ? (o.push ? "Apply, commit and push" : "Apply and commit") : "Apply";
+  $("ago")._label = $("ago").textContent;
+}
+
+["optV4", "optCast", "optCommit", "optPush"].forEach(id => $(id).onchange = refreshPlan);
+$("applyBtn").onclick = openApply;
+$("aclose").onclick = () => $("ascrim").classList.remove("show");
+$("ascrim").onclick = e => { if (e.target.id === "ascrim") $("ascrim").classList.remove("show"); };
+$("ago").onclick = e => armed(e.currentTarget, "Write the changes? Click again", async () => {
+  $("ago").disabled = true;
+  try {
+    const r = await api("/api/casting/apply", { arc: S.arc, ...opts() });
+    const g = r.git || {};
+    const gitLine = !opts().commit ? "Not committed."
+      : g.committed ? `Committed <code>${esc(g.sha)}</code> (${g.files.length} files). ` +
+          (g.pushed ? "Pushed." : opts().push ? `<b>Push refused</b> — the commit is safe here: ${esc(g.push_error || "")}` : "Not pushed.")
+      : esc(g.message || "Not committed.");
+    $("aresult").innerHTML = `<div class="okbox"><b>Applied.</b> ${gitLine}
+      ${r.rerecord.length ? `<br>Next: re-record ${r.rerecord.map(esc).join(", ")} from the <a href="/">review queue</a>.` : ""}
+      <br><small>Restart the review server on any other machine that narrates, and copy the new voice_library lines to its config.yaml.</small></div>`;
+    $("ago").hidden = true;
+    load(true);
+  } catch (err) {
+    $("aresult").innerHTML = `<div class="warn bad">${esc(err.message)}</div>`;
+    $("ago").disabled = false;
+  }
+});
+
+boot().catch(e => { $("lede").textContent = e.message; });
+</script>
+</body>
+</html>

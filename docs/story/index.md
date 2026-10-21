@@ -48,6 +48,7 @@ from inside `story_pipeline/` puts your output somewhere you didn't mean. The
 | [Calibrating the length dial](calibration.md) | What to check once stories exist, and what to change based on the result. |
 | [A review UI](review-ui.md) | `cli review` — the queue, and the three pipeline gaps it closed. |
 | [Review UI roadmap](review-ui-roadmap.md) | What the dashboard does now, and what is next. |
+| [Casting](casting.md) | Voice auditions per arc: the Casting page, the record in `_casting/`, verdicts and the voice pool. |
 | [Running on AWS](aws.md) | The server, the stories volume, S3 backups, and which stages run where. |
 | [Troubleshooting](troubleshooting.md) | Symptom → cause. |
 

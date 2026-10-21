@@ -274,6 +274,8 @@ def cmd_history(args, cfg):
 def cmd_review(args, cfg):
     """Open the review queue in a browser. Free — it reads bundles and writes
     stage state, and calls no model."""
+    # The casting page runs check_voices.py, which reads the same config file.
+    cfg["_config_path"] = getattr(args, "config", "config.yaml")
     serve_review(cfg, port=args.port, open_browser=not args.no_open,
                  reload=args.reload)
 

@@ -41,6 +41,9 @@
   #queue header { padding:14px 16px; border-bottom:1px solid var(--line); }
   #queue header b { display:block; font-size:15px; }
   #queue header span { color:var(--dim); font-size:12px; font-family:var(--mono); }
+  #queue header .navlink { display:block; margin-top:6px; font-family:var(--mono);
+                           font-size:12px; color:var(--accent); text-decoration:none; }
+  #queue header .navlink:hover { text-decoration:underline; }
   .group > h3 { margin:0; padding:10px 16px 6px; font-size:11px; letter-spacing:.09em;
                 text-transform:uppercase; color:var(--dim); font-family:var(--mono); }
   .row { padding:9px 16px; border-left:3px solid transparent; cursor:pointer; }
@@ -383,7 +386,8 @@
 </style>
 </head>
 <body>
-  <nav id="queue"><header><b>Review</b><span id="count">loading…</span></header>
+  <nav id="queue"><header><b>Review</b><span id="count">loading…</span>
+    <a class="navlink" href="/casting">Casting — voice auditions ›</a></header>
     <div id="groups"></div></nav>
   <main id="doc">
     <div id="dochead">

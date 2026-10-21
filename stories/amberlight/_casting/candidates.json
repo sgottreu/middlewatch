@@ -1,0 +1,132 @@
+{
+  "_about": "Voices to audition for the Amberlight cast, on Eleven v4. Add to it freely; scripts/audition-cast.sh renders only what's new. The record of what was tried lives in auditions.json and CASTING.md beside this file. Values are voice IDs (names work too). IDs came from third-party listings on 2026-10-20; check_voices.py confirms each one. The first entry under a character is ElevenLabs' official replacement for that character's retiring Default voice, where one exists.",
+  "narrator": [
+    {
+      "id": "19STyYD15bswVz51nqLf",
+      "name": "Samara X",
+      "note": "smooth British female VO"
+    },
+    {
+      "id": "1hlpeD1ydbI2ow0Tt3EW",
+      "name": "Verity X",
+      "note": "calm British narration"
+    }
+  ],
+  "Mrs Honoria Pike": [
+    {
+      "id": "QtY3JBOUKEB5xzrRfOKc",
+      "name": "Maisie",
+      "note": "official Matilda replacement; may read young"
+    },
+    {
+      "id": "RILOU7YmBhvwJGDGjNmP",
+      "name": "Jeanette",
+      "note": "British, older, audiobook"
+    },
+    {
+      "id": "kBag1HOZlaVBH7ICPE8x",
+      "name": "Sally Ford",
+      "note": "British, mature, well-spoken"
+    },
+    {
+      "id": "9TwzC887zQyDD4yBthzD",
+      "name": "Meera",
+      "note": "British, middle-aged, calm"
+    }
+  ],
+  "Mr Silas Rowe": [
+    {
+      "id": "uxut3IsZzAX3ycGl84pJ",
+      "name": "Finley",
+      "note": "official Daniel replacement"
+    },
+    {
+      "id": "8JVbfL6oEdmuxKn5DK2C",
+      "name": "Johnny Kid Serious",
+      "note": "young British, serious, audiobooks"
+    },
+    {
+      "id": "G7ILShrCNLfmS0A37SXS",
+      "name": "Sam",
+      "note": "young British, warm, articulate"
+    }
+  ],
+  "Miss Judith Vane": [
+    {
+      "id": "DNYvvkdiu5NYK2rSLwDL",
+      "name": "Alicia",
+      "note": "official Alice replacement; accent unstated"
+    },
+    {
+      "id": "rCmVtv8cYU60uhlsOo1M",
+      "name": "Ana",
+      "note": "British, young, warm, expressive"
+    },
+    {
+      "id": "wJqPPQ618aTW29mptyoc",
+      "name": "Ana-Rita2",
+      "note": "British, young, book narration"
+    },
+    {
+      "id": "E4IXevHtHpKGh0bvrPPr",
+      "name": "Emilia",
+      "note": "British, young, engaging"
+    }
+  ],
+  "Mr Owen Vane": [
+    {
+      "id": "6WwXjDDEMyNmFG95zycZ",
+      "name": "Eldrin",
+      "note": "official George replacement"
+    },
+    {
+      "id": "giAoKpl5weRTCJK7uB9b",
+      "name": "Owen",
+      "note": "British, clear storyteller"
+    },
+    {
+      "id": "Fahco4VZzobUeiPqni1S",
+      "name": "Archer",
+      "note": "British, conversational"
+    }
+  ],
+  "Miss Louisa Marchmont": [
+    {
+      "id": "22N9cF8z0o7y23njdyaY",
+      "name": "Florence",
+      "note": "official Lily replacement; may be too stately"
+    },
+    {
+      "id": "4CrZuIW9am7gYAxgo2Af",
+      "name": "Shelley",
+      "note": "British, young, clear, confident"
+    },
+    {
+      "id": "ZF6FPAbjXT4488VcRRnw",
+      "name": "Amelia",
+      "note": "British, young, enthusiastic"
+    },
+    {
+      "id": "lcMyyd2HUfFzxdCaC4Ta",
+      "name": "Lucy",
+      "note": "British, young, fresh"
+    }
+  ],
+  "Mrs Hale": [
+    {
+      "id": "AXdMgz6evoL7OPd7eU12",
+      "name": "Elizabeth",
+      "note": "British, middle-aged, precise"
+    },
+    {
+      "id": "oW8bn5YtBB89X2nJ0DT9",
+      "name": "Verity",
+      "note": "British, chatty storyteller; listed young"
+    },
+    {
+      "id": "9TwzC887zQyDD4yBthzD",
+      "name": "Meera",
+      "note": "only if Mrs Pike doesn't get her"
+    }
+  ]
+}

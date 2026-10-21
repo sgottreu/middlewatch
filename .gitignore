@@ -43,8 +43,13 @@ auditions/
 calibration-sweep.sh
 cleanup.sh
 config.yaml.bak
+# Backups the Casting page's Apply leaves before it edits config.yaml.
+config.yaml.*.bak
 oauth.txt
 working/
 
 
 	
+
+# check_voices.py --sample scratch audio
+voice-samples/

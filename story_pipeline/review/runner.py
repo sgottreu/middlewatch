@@ -180,7 +180,37 @@ def start(cfg: dict, slug: str, stage: str, *, force: bool = False,
         "finished": None, "exit_code": None, "pid": None, "chapter": chapter,
         "force": force, "restart": restart, "replan": replan,
     }
+    return _launch(d, argv, meta)
 
+
+def start_command(key: str, stage: str, argv: list[str], busy: str | None = None,
+                  **extra) -> dict:
+    """Launch an arbitrary command as a job under runs/<key>/.
+
+    For work that is not a story stage — voice auditions, keyed by arc — but
+    wants the same guarantees: detached, cancellable, its log and state on disk.
+    One job per key at a time, as for stories.
+    """
+    current = latest(key)
+    if current and current.get("status") == "running":
+        raise ValueError(busy or f"{key} already has a {current['stage']} running. "
+                         "Cancel it first if you want to start something else.")
+    stamp = time.strftime("%Y%m%dT%H%M%S")
+    job_id = f"{stamp}-{stage}"
+    d = job_dir(key, job_id)
+    n = 2
+    while d.exists():
+        job_id = f"{stamp}-{stage}-{n}"
+        d = job_dir(key, job_id)
+        n += 1
+    d.mkdir(parents=True)
+    meta = {"job_id": job_id, "slug": key, "stage": stage, "kind": stage,
+            "argv": argv, "status": "running", "started": time.time(),
+            "finished": None, "exit_code": None, "pid": None, **extra}
+    return _launch(d, argv, meta)
+
+
+def _launch(d: Path, argv: list[str], meta: dict) -> dict:
     log = (d / "output.log").open("ab")
     try:
         proc = subprocess.Popen(

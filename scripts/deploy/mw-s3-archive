@@ -8,6 +8,8 @@
 #   mw-s3-archive pull-all             every story git knows about, then the SFX cache
 #   mw-s3-archive push-sfx             assets/sfx_cache/ only
 #   mw-s3-archive pull-sfx
+#   mw-s3-archive push-casting         voice-audition audio for every arc
+#   mw-s3-archive pull-casting
 #
 #   -n, --dry-run    list what would transfer, change nothing
 #   --kinds a,b      limit to some of audio,images,video (default: all three)
@@ -104,6 +106,32 @@ pull_story() {
     done
 }
 
+# Voice auditions: stories/<arc>/_casting/audio/ -> s3://$BUCKET/stories/<arc>/_casting/audio/.
+# The record beside it (auditions.json, CASTING.md) is text and goes through git;
+# this is the audio it points at. Takes are paid renders, so they get the same
+# second copy as narration. push-all and pull-all include it.
+push_casting() {
+    local dir arc n=0
+    for dir in "$STORIES"/*/_casting/audio/; do
+        [ -d "$dir" ] && [ -n "$(ls -A "$dir" 2>/dev/null)" ] || continue
+        arc=$(basename "$(dirname "$(dirname "$dir")")")
+        echo "push stories/$arc/_casting/audio"
+        sync "$dir" "s3://$BUCKET/stories/$arc/_casting/audio/"
+        n=$((n + 1))
+    done
+    [ "$n" -gt 0 ] || echo "push casting: nothing yet"
+}
+
+pull_casting() {
+    local dir arc
+    for dir in "$STORIES"/*/_casting/; do
+        [ -d "$dir" ] || continue
+        arc=$(basename "$(dirname "$dir")")
+        echo "pull stories/$arc/_casting/audio"
+        sync "s3://$BUCKET/stories/$arc/_casting/audio/" "${dir}audio/"
+    done
+}
+
 push_sfx() {
     if [ ! -d "$SFX" ]; then
         echo "push sfx: skipped, no $SFX"
@@ -166,8 +194,10 @@ main() {
         push|pull)
             [ "${#slugs[@]}" -gt 0 ] || die "$cmd needs at least one story slug"
             for s in "${slugs[@]}"; do "${cmd}_story" "$s"; done ;;
-        push-all) each_story push_story; push_sfx ;;
-        pull-all) each_story pull_story; pull_sfx ;;
+        push-all) each_story push_story; push_casting; push_sfx ;;
+        pull-all) each_story pull_story; pull_casting; pull_sfx ;;
+        push-casting) push_casting ;;
+        pull-casting) pull_casting ;;
         push-sfx) push_sfx ;;
         pull-sfx) pull_sfx ;;
         *) die "unknown command: $cmd; mw-s3-archive --help for usage" ;;

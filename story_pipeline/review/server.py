@@ -36,6 +36,28 @@ Routes:
     POST /api/publish          {"slug", "url", "date"?} mark it published on
                                YouTube; {"undo": true} reverses it — free
 
+  Casting (casting.html; see casting_api.py and story_pipeline/casting.py):
+
+    GET  /casting                     the page
+    GET  /api/casting                 arcs, with audition counts
+    GET  /api/casting/<arc>?story=    speakers, candidates, takes, verdicts, pool,
+                                      and what running the rest would cost
+    GET  /api/casting/<arc>/job       the audition job's progress
+    GET  /api/casting/<arc>/log       its output; ?from=<byte offset>
+    GET  /casting-audio/<arc>/<path>  a take, from stories/<arc>/_casting/audio/
+    POST /api/casting/run             {"arc", "story", "speakers"?, "voices"?,
+                                      "force"?} render auditions — paid; a job
+    POST /api/casting/cancel          {"arc"}
+    POST /api/casting/verdict         {"arc", "speaker", "voice", "verdict":
+                                      cast|maybe|no|clear, "note"?} — free
+    POST /api/casting/candidate       {"arc", "speaker", "id", "name"?, "note"?,
+                                      "remove"?} edit the audition list — free
+    GET  /api/casting/<arc>/apply     what Apply would change; ?v4=0 / ?cast=0
+    POST /api/casting/apply           {"arc", "v4"?, "cast_mode"?, "commit"?, "push"?}
+                                      write the cast into config.yaml, the bible
+                                      and the stories, then commit — free, but
+                                      recorded stories come back for re-recording
+
 `direct` runs on whatever box serves this page, so that box needs the RAM for an
 x264 encode. The Assets .zip is still there for rendering somewhere else.
 """
@@ -51,14 +73,15 @@ import webbrowser
 import zipfile
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, unquote, urlparse
 
-from . import runner
+from . import casting_api, runner
 from .. import genres, history, release, summary
 from ..agents import text as textagent
 from ..bundle import Bundle, bundle_roots, find_bundle, real_answer
 
 APP_HTML = Path(__file__).with_name("app.html")
+CASTING_HTML = Path(__file__).with_name("casting.html")
 
 # The only static files this server has. Named explicitly rather than serving the
 # directory: `app.html` sits here too, and so would anything else that ever lands
@@ -929,6 +952,64 @@ def _handler(cfg: dict):
         def _json(self, payload, code: int = 200) -> None:
             self._send(code, json.dumps(payload).encode(), "application/json")
 
+        def _file(self, p: Path, ctype: str) -> None:
+            """A file, honouring a single byte Range. Safari will not play or
+            seek an <audio> source that ignores Range, and the review page is
+            used from a phone."""
+            size = p.stat().st_size
+            rng = self.headers.get("Range") or ""
+            start, end = 0, size - 1
+            partial = rng.startswith("bytes=") and "," not in rng
+            if partial:
+                a, _, b = rng[6:].partition("-")
+                try:
+                    if a:
+                        start = int(a)
+                        end = min(int(b), size - 1) if b else size - 1
+                    else:
+                        start = max(0, size - int(b))
+                except ValueError:
+                    partial = False
+                    start, end = 0, size - 1
+                if partial and start > end:
+                    self.send_response(416)
+                    self.send_header("Content-Range", f"bytes */{size}")
+                    self.end_headers()
+                    return
+            self.send_response(206 if partial else 200)
+            self.send_header("Content-Type", ctype)
+            self.send_header("Accept-Ranges", "bytes")
+            self.send_header("Content-Length", str(end - start + 1))
+            if partial:
+                self.send_header("Content-Range", f"bytes {start}-{end}/{size}")
+            self.end_headers()
+            with p.open("rb") as fh:
+                fh.seek(start)
+                left = end - start + 1
+                while left > 0:
+                    chunk = fh.read(min(65536, left))
+                    if not chunk:
+                        break
+                    self.wfile.write(chunk)
+                    left -= len(chunk)
+
+        def _casting_get(self, path: str) -> None:
+            q = parse_qs(urlparse(self.path).query)
+            parts = [unquote(x) for x in path.split("/")[3:]]   # after /api/casting/
+            arc = parts[0]
+            if len(parts) == 1:
+                self._json(casting_api.view(cfg, arc, (q.get("story") or [None])[0]))
+            elif parts[1:] == ["job"]:
+                self._json(casting_api.job(cfg, arc))
+            elif parts[1:] == ["apply"]:
+                flag = lambda k: (q.get(k) or ["1"])[0] not in ("0", "false", "")
+                self._json(casting_api.apply_plan(cfg, arc, use_v4=flag("v4"),
+                                                  cast_mode=flag("cast")))
+            elif parts[1:] == ["log"]:
+                self._json(casting_api.log(cfg, arc, int((q.get("from") or ["0"])[0])))
+            else:
+                self._json({"error": "not found"}, 404)
+
         def _zip(self, cfg: dict, slug: str) -> None:
             """Stream the assets as a zip, rather than building one in memory.
 
@@ -972,6 +1053,18 @@ def _handler(cfg: dict):
             try:
                 if path in ("/", "/index.html"):
                     self._send(200, APP_HTML.read_bytes(), "text/html; charset=utf-8")
+                elif path in ("/casting", "/casting.html"):
+                    self._send(200, CASTING_HTML.read_bytes(), "text/html; charset=utf-8")
+                elif path == "/api/casting":
+                    self._json(casting_api.index(cfg))
+                elif path.startswith("/api/casting/"):
+                    self._casting_get(path)
+                elif path.startswith("/casting-audio/"):
+                    arc, _, rel = unquote(path[len("/casting-audio/"):]).partition("/")
+                    try:
+                        self._file(casting_api.audio_path(cfg, arc, rel), "audio/mpeg")
+                    except (FileNotFoundError, ValueError):
+                        self._json({"error": "not found"}, 404)
                 elif path == "/api/queue":
                     self._json(queue(cfg))
                 elif path.startswith("/api/story/"):
@@ -1043,6 +1136,28 @@ def _handler(cfg: dict):
                                        undo=bool(body.get("undo"))))
                 elif path == "/api/reject":
                     self._json(reject(cfg, body["slug"]))
+                elif path == "/api/casting/run":
+                    self._json(casting_api.run(cfg, body["arc"], body["story"],
+                                               speakers=body.get("speakers"),
+                                               voices=body.get("voices"),
+                                               force=bool(body.get("force"))))
+                elif path == "/api/casting/apply":
+                    self._json(casting_api.apply(cfg, body["arc"],
+                                                 use_v4=body.get("v4", True) is not False,
+                                                 cast_mode=body.get("cast_mode", True) is not False,
+                                                 commit=body.get("commit", True) is not False,
+                                                 push=body.get("push", True) is not False))
+                elif path == "/api/casting/cancel":
+                    self._json(casting_api.cancel(cfg, body["arc"]))
+                elif path == "/api/casting/verdict":
+                    self._json(casting_api.verdict(cfg, body["arc"], body["speaker"],
+                                                   body["voice"], body.get("verdict"),
+                                                   body.get("note")))
+                elif path == "/api/casting/candidate":
+                    self._json(casting_api.candidate(cfg, body["arc"], body.get("speaker", ""),
+                                                     body.get("id", ""), body.get("name", ""),
+                                                     body.get("note", ""),
+                                                     remove=bool(body.get("remove"))))
                 else:
                     self._json({"error": "not found"}, 404)
             except Exception as e:
