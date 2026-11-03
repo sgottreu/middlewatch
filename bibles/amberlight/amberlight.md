@@ -1,6 +1,8 @@
 ---
 series: "Middle Watch: Amberlight"
 genre: regency
+voices:
+  narrator: Samara X
 
 canon:
   - "Amberlight is a parish of some four hundred souls, eleven miles east of Winchester on the Alresford road."
@@ -19,7 +21,7 @@ recurring_cast:
     station: widow of a naval surgeon; three hundred a year and a house on the green
     appearance: Short and broad, with grey hair pinned severely under a lace cap, and small quick eyes set in a round weathered face.
     dress: Black bombazine with a plain white fichu, ten years out of fashion and immaculately kept.
-    voice: Matilda
+    voice: Meera
     note: Knows everything in the parish first and is wrong about a third of it. Never malicious, which is what makes her impossible to stop. Takes credit for the schoolroom and the engagement both, and is not finished.
   - name: Mr Silas Rowe
     age: 34
@@ -27,7 +29,7 @@ recurring_cast:
     station: curate of Amberlight; eighty a year and no expectations. Two rooms over Mrs Copp's, looking at the churchyard wall.
     appearance: Tall and thin, dark hair worn slightly too long, with the stoop of a man used to low doorways and a face that gives away more than he intends.
     dress: Worn black coat, carefully brushed, and linen that has been turned at the cuffs.
-    voice: Daniel
+    voice: Sam
     note: Genuinely good at the work and hopeless at everything adjacent to it, particularly money and his own interests. Engaged to Miss Vane from June 1817.
   - name: Miss Judith Vane
     age: 27
@@ -35,7 +37,7 @@ recurring_cast:
     station: keeps house for her brother, the apothecary; no fortune of her own
     appearance: Fair, freckled, of middling height, with reddish hair she cannot keep pinned and a habit of looking directly at whoever is speaking.
     dress: Sprigged muslin in summer, a grey wool pelisse in winter, both mended with more thrift than skill.
-    voice: Alice
+    voice: Emilia
     note: Reads everything the library has and says less than she thinks. The one person in Amberlight who checks a story before repeating it. Engaged to Mr Rowe from June 1817; she marries him and no one else. Addressed as Miss Vane before that summer and as Mrs Rowe after it. Corresponds with Miss Marchmont.
   - name: Mr Owen Vane
     age: 30
@@ -43,7 +45,7 @@ recurring_cast:
     station: apothecary of Amberlight; modest trade income. Judith's brother and only guardian since their father died.
     appearance: Broad-shouldered with his sister's dark colouring, sleeves always rolled to the elbow from the dispensary.
     dress: A brown workaday coat and an apron dusted with chalk and powders.
-    voice: George
+    voice: Archer
     note: Plain-spoken and dry, says the blunt thing his sister only thinks. Will shut the shop in the middle of a working day if something matters enough, and it very rarely does.
   - name: Mrs Hale
     age: 45
@@ -51,7 +53,7 @@ recurring_cast:
     station: draper's wife; keeps the counter of the circulating library above the shop
     appearance: Round-faced and pink, with spectacles pushed up into hair the colour of weak tea.
     dress: A striped apron over her gown, never removed even to serve customers upstairs.
-    voice: Charlotte
+    voice: Elizabeth
     note: Reports gossip as news and news as gossip, with no malice and no filter. Repeats a thing precisely as it happened, which is what makes her dangerous. The parish's real information system runs through her window.
   - name: Miss Louisa Marchmont
     age: 22
@@ -59,7 +61,7 @@ recurring_cast:
     station: niece of the family that holds the Amberlight living; lives in town
     appearance: Fair, freckled across the nose, with a quick way of walking that outpaces whoever she is with.
     dress: Sensible travelling brown, unadorned, more suited to a farm inspection than a parlour.
-    voice: Lily
+    voice: Shelley
     note: Brisk and direct, answers questions no one has quite asked yet. Spent a fortnight at the Amberlight gatehouse in 1817 and got her uncle's promise on the schoolroom in writing. Away from the parish unless a story brings her back; present by letter to Judith.
 
 minor_names:

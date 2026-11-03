@@ -20,7 +20,7 @@
     "length_min": 30,
     "scenes_per_chapter": 4,
     "genre_voices": {
-      "narrator": "Charlotte",
+      "narrator": "Samara X",
       "character_voices": {
         "female": [
           "Alice",
@@ -36,7 +36,10 @@
     },
     "bible": "amberlight",
     "voices": {
-      "narrator": "Charlotte"
+      "narrator": "Samara X",
+      "Miss Judith Vane": "Emilia",
+      "Mr Silas Rowe": "Sam",
+      "Mrs Honoria Pike": "Meera"
     },
     "tts_provider": "elevenlabs"
   },

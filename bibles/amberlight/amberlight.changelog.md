@@ -12,6 +12,19 @@ story that caused them.
 
 ---
 
+## 2026-11-02 20:09 · Scott Gottreu · voices · sha=4b5a81b0
+
+Voices recast from the casting page (amberlight).
+
+- Miss Judith Vane: Emilia - Young, British and Engaging (`E4IXevHtHpKGh0bvrPPr`) as `Emilia`
+- Miss Louisa Marchmont: Shelley - Clear, Confident and British (`4CrZuIW9am7gYAxgo2Af`) as `Shelley`
+- Mr Owen Vane: Archer - Conversational (`Fahco4VZzobUeiPqni1S`) as `Archer`
+- Mr Silas Rowe: Sam - Neutral, Friendly and Clear (`G7ILShrCNLfmS0A37SXS`) as `Sam`
+- Mrs Hale: Elizabeth - Precise, Clear and Natural (`AXdMgz6evoL7OPd7eU12`) as `Elizabeth`
+- Mrs Honoria Pike: Meera (`9TwzC887zQyDD4yBthzD`) as `Meera`
+- narrator: Samara X - Smooth Classy British (`19STyYD15bswVz51nqLf`) as `Samara X`
+- Narration model: eleven_v3 → eleven_v4
+
 ## 2026-09-18 20:06 · Scott Gottreu · edit · sha=8bc3b90e
 
 Canon from The Cracked Beam: engagement, schoolroom, three new cast

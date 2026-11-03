@@ -1,0 +1,827 @@
+{
+  "arc": "amberlight",
+  "updated": "2026-11-03T02:09:21+00:00",
+  "voices": {
+    "wScwPA1qCkWo5R2dmlS8": {
+      "name": "Charlotte - Storytelling & Narration",
+      "labels": {
+        "gender": "female",
+        "age": "middle_aged",
+        "accent": "australian",
+        "descriptive": "calm",
+        "use_case": "narrative_story"
+      },
+      "first_tried": "2026-11-03T01:31:28+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "narrator",
+          "model": "eleven_v3",
+          "line": "Mrs Pike knew nothing of the letter. Her own arrangement was made. Fenner the mason would put no figure on paper for a man who had not stood in his yard, and Bramdean is six miles, so Rowe had the loan of the Ludds' donkey cart on Friday.",
+          "file": "audio/the-cracked-beam/narrator__now__eleven_v3.mp3",
+          "date": "2026-11-03T01:31:39+00:00"
+        },
+        {
+          "story": "the-cracked-beam",
+          "speaker": "narrator",
+          "model": "eleven_v4",
+          "line": "Mrs Pike knew nothing of the letter. Her own arrangement was made. Fenner the mason would put no figure on paper for a man who had not stood in his yard, and Bramdean is six miles, so Rowe had the loan of the Ludds' donkey cart on Friday.",
+          "file": "audio/the-cracked-beam/narrator__now__eleven_v4.mp3",
+          "date": "2026-11-03T01:31:39+00:00"
+        },
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Mrs Hale",
+          "model": "eleven_v3",
+          "line": "The estate is to fit the east wing for a school. Floor, glazing and a stove, and a man coming from Alresford on the twentieth to measure it. And the curate is to marry Miss Vane. No. The curate is to marry Miss Vane, and the estate is to fit the east wing.",
+          "file": "audio/the-cracked-beam/mrs-hale__now__eleven_v3.mp3",
+          "date": "2026-11-03T01:59:07+00:00"
+        },
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Mrs Hale",
+          "model": "eleven_v4",
+          "line": "The estate is to fit the east wing for a school. Floor, glazing and a stove, and a man coming from Alresford on the twentieth to measure it. And the curate is to marry Miss Vane. No. The curate is to marry Miss Vane, and the estate is to fit the east wing.",
+          "file": "audio/the-cracked-beam/mrs-hale__now__eleven_v4.mp3",
+          "date": "2026-11-03T01:59:07+00:00"
+        }
+      ],
+      "verdicts": {},
+      "sources": [
+        "current"
+      ]
+    },
+    "19STyYD15bswVz51nqLf": {
+      "name": "Samara X - Smooth Classy British",
+      "labels": {
+        "gender": "female",
+        "age": "middle_aged",
+        "accent": "british",
+        "descriptive": "calm",
+        "use_case": "social_media"
+      },
+      "first_tried": "2026-11-03T01:31:35+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "narrator",
+          "model": "eleven_v4",
+          "line": "Mrs Pike knew nothing of the letter. Her own arrangement was made. Fenner the mason would put no figure on paper for a man who had not stood in his yard, and Bramdean is six miles, so Rowe had the loan of the Ludds' donkey cart on Friday.",
+          "file": "audio/the-cracked-beam/narrator__try-samara-x-19styy__eleven_v4.mp3",
+          "date": "2026-11-03T01:31:39+00:00"
+        }
+      ],
+      "verdicts": {
+        "narrator": {
+          "verdict": "cast",
+          "note": null,
+          "date": "2026-11-03T01:33:59+00:00"
+        }
+      },
+      "sources": [
+        "your pick"
+      ]
+    },
+    "1hlpeD1ydbI2ow0Tt3EW": {
+      "name": "Verity X - Calm British Narration",
+      "labels": {
+        "gender": "female",
+        "age": "middle_aged",
+        "accent": "british",
+        "descriptive": "calm",
+        "use_case": "narrative_story"
+      },
+      "first_tried": "2026-11-03T01:31:39+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "narrator",
+          "model": "eleven_v4",
+          "line": "Mrs Pike knew nothing of the letter. Her own arrangement was made. Fenner the mason would put no figure on paper for a man who had not stood in his yard, and Bramdean is six miles, so Rowe had the loan of the Ludds' donkey cart on Friday.",
+          "file": "audio/the-cracked-beam/narrator__try-verity-x-1hlped__eleven_v4.mp3",
+          "date": "2026-11-03T01:31:39+00:00"
+        }
+      ],
+      "verdicts": {},
+      "sources": [
+        "your pick"
+      ]
+    },
+    "Xb7hH8MSUJpSbSDYk0k2": {
+      "name": "Alice - Clear, Engaging Educator",
+      "labels": {
+        "gender": "female",
+        "age": "middle_aged",
+        "accent": "british",
+        "descriptive": "professional",
+        "use_case": "informative_educational"
+      },
+      "first_tried": "2026-11-03T01:34:24+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Miss Judith Vane",
+          "model": "eleven_v3",
+          "line": "The hour we set off, the place the wheel went, Nye's name and the hurdles, and the hour we came in. I mean to say it at the library counter tomorrow with Mrs Hale standing there, and then to Mrs Yardley, and then to Sarah Copp's mother, who is the one that put the crying in.",
+          "file": "audio/the-cracked-beam/miss-judith-vane__now__eleven_v3.mp3",
+          "date": "2026-11-03T02:04:23+00:00"
+        },
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Miss Judith Vane",
+          "model": "eleven_v4",
+          "line": "The hour we set off, the place the wheel went, Nye's name and the hurdles, and the hour we came in. I mean to say it at the library counter tomorrow with Mrs Hale standing there, and then to Mrs Yardley, and then to Sarah Copp's mother, who is the one that put the crying in.",
+          "file": "audio/the-cracked-beam/miss-judith-vane__now__eleven_v4.mp3",
+          "date": "2026-11-03T02:04:23+00:00"
+        }
+      ],
+      "verdicts": {},
+      "sources": [
+        "current"
+      ]
+    },
+    "rCmVtv8cYU60uhlsOo1M": {
+      "name": "Ana - Emotional, Warm and Expressive",
+      "labels": {
+        "gender": "female",
+        "age": "young",
+        "accent": "british",
+        "descriptive": "upbeat",
+        "use_case": "narrative_story"
+      },
+      "first_tried": "2026-11-03T01:34:33+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Miss Judith Vane",
+          "model": "eleven_v4",
+          "line": "The hour we set off, the place the wheel went, Nye's name and the hurdles, and the hour we came in. I mean to say it at the library counter tomorrow with Mrs Hale standing there, and then to Mrs Yardley, and then to Sarah Copp's mother, who is the one that put the crying in.",
+          "file": "audio/the-cracked-beam/miss-judith-vane__try-ana-rcmvtv__eleven_v4.mp3",
+          "date": "2026-11-03T02:04:23+00:00"
+        }
+      ],
+      "verdicts": {},
+      "sources": [
+        "your pick"
+      ]
+    },
+    "E4IXevHtHpKGh0bvrPPr": {
+      "name": "Emilia - Young, British and Engaging",
+      "labels": {
+        "gender": "female",
+        "age": "young",
+        "accent": "british",
+        "descriptive": "calm",
+        "use_case": "narrative_story"
+      },
+      "first_tried": "2026-11-03T01:34:38+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Miss Judith Vane",
+          "model": "eleven_v4",
+          "line": "The hour we set off, the place the wheel went, Nye's name and the hurdles, and the hour we came in. I mean to say it at the library counter tomorrow with Mrs Hale standing there, and then to Mrs Yardley, and then to Sarah Copp's mother, who is the one that put the crying in.",
+          "file": "audio/the-cracked-beam/miss-judith-vane__try-emilia-e4ixev__eleven_v4.mp3",
+          "date": "2026-11-03T02:04:23+00:00"
+        }
+      ],
+      "verdicts": {
+        "Miss Judith Vane": {
+          "verdict": "cast",
+          "note": null,
+          "date": "2026-11-03T02:05:21+00:00"
+        }
+      },
+      "sources": [
+        "your pick"
+      ]
+    },
+    "XrExE9yKIg1WjnnlVkGX": {
+      "name": "Matilda - Knowledgable, Professional",
+      "labels": {
+        "gender": "female",
+        "age": "middle_aged",
+        "accent": "american",
+        "descriptive": "upbeat",
+        "use_case": "informative_educational"
+      },
+      "first_tried": "2026-11-03T01:37:04+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Mrs Honoria Pike",
+          "model": "eleven_v3",
+          "line": "Well. There is your fifteen pounds and a good deal more besides. The black coat will do if the cuffs are seen to, and you must have a new neckcloth, and you are not to wear those buckles. Wednesday. I shall arrange it.",
+          "file": "audio/the-cracked-beam/mrs-honoria-pike__now__eleven_v3.mp3",
+          "date": "2026-11-03T01:53:26+00:00"
+        },
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Mrs Honoria Pike",
+          "model": "eleven_v4",
+          "line": "Well. There is your fifteen pounds and a good deal more besides. The black coat will do if the cuffs are seen to, and you must have a new neckcloth, and you are not to wear those buckles. Wednesday. I shall arrange it.",
+          "file": "audio/the-cracked-beam/mrs-honoria-pike__now__eleven_v4.mp3",
+          "date": "2026-11-03T01:53:26+00:00"
+        }
+      ],
+      "verdicts": {},
+      "sources": [
+        "current"
+      ]
+    },
+    "QtY3JBOUKEB5xzrRfOKc": {
+      "name": "Maisie - Friendly Casual Neighbor",
+      "labels": {
+        "gender": "female",
+        "age": "young",
+        "accent": "american",
+        "descriptive": "pleasant",
+        "use_case": "entertainment_tv"
+      },
+      "first_tried": "2026-11-03T01:37:12+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Mrs Honoria Pike",
+          "model": "eleven_v4",
+          "line": "Well. There is your fifteen pounds and a good deal more besides. The black coat will do if the cuffs are seen to, and you must have a new neckcloth, and you are not to wear those buckles. Wednesday. I shall arrange it.",
+          "file": "audio/the-cracked-beam/mrs-honoria-pike__try-maisie-qty3jb__eleven_v4.mp3",
+          "date": "2026-11-03T01:53:26+00:00"
+        }
+      ],
+      "verdicts": {},
+      "sources": [
+        "your pick"
+      ]
+    },
+    "kBag1HOZlaVBH7ICPE8x": {
+      "name": "Sally Ford - Warm, Friendly and British",
+      "labels": {
+        "gender": "female",
+        "age": "middle_aged",
+        "accent": "british",
+        "descriptive": "pleasant",
+        "use_case": "narrative_story"
+      },
+      "first_tried": "2026-11-03T01:37:16+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Mrs Honoria Pike",
+          "model": "eleven_v4",
+          "line": "Well. There is your fifteen pounds and a good deal more besides. The black coat will do if the cuffs are seen to, and you must have a new neckcloth, and you are not to wear those buckles. Wednesday. I shall arrange it.",
+          "file": "audio/the-cracked-beam/mrs-honoria-pike__try-sally-ford-kbag1h__eleven_v4.mp3",
+          "date": "2026-11-03T01:53:26+00:00"
+        }
+      ],
+      "verdicts": {},
+      "sources": [
+        "your pick"
+      ]
+    },
+    "9TwzC887zQyDD4yBthzD": {
+      "name": "Meera",
+      "labels": {
+        "gender": "female",
+        "age": "middle_aged",
+        "accent": "british",
+        "descriptive": "professional",
+        "use_case": "conversational"
+      },
+      "first_tried": "2026-11-03T01:37:19+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Mrs Honoria Pike",
+          "model": "eleven_v4",
+          "line": "Well. There is your fifteen pounds and a good deal more besides. The black coat will do if the cuffs are seen to, and you must have a new neckcloth, and you are not to wear those buckles. Wednesday. I shall arrange it.",
+          "file": "audio/the-cracked-beam/mrs-honoria-pike__try-meera-9twzc8__eleven_v4.mp3",
+          "date": "2026-11-03T01:53:26+00:00"
+        },
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Mrs Hale",
+          "model": "eleven_v4",
+          "line": "The estate is to fit the east wing for a school. Floor, glazing and a stove, and a man coming from Alresford on the twentieth to measure it. And the curate is to marry Miss Vane. No. The curate is to marry Miss Vane, and the estate is to fit the east wing.",
+          "file": "audio/the-cracked-beam/mrs-hale__try-meera-9twzc8__eleven_v4.mp3",
+          "date": "2026-11-03T01:59:07+00:00"
+        }
+      ],
+      "verdicts": {
+        "Mrs Honoria Pike": {
+          "verdict": "cast",
+          "note": null,
+          "date": "2026-11-03T01:48:53+00:00"
+        }
+      },
+      "sources": [
+        "your pick"
+      ]
+    },
+    "onwK4e9ZLuTAKqWW03F9": {
+      "name": "Daniel - Steady Broadcaster",
+      "labels": {
+        "gender": "male",
+        "age": "middle_aged",
+        "accent": "british",
+        "descriptive": "formal",
+        "use_case": "informative_educational"
+      },
+      "first_tried": "2026-11-03T01:45:29+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Mr Silas Rowe",
+          "model": "eleven_v3",
+          "line": "I would rather it were made true. There is no dinner arranged round this, and nobody has told me what neckcloth to wear, and Mrs Pike does not know I am standing here. I am asking whether you would have me. Eighty a year, no expectations, and two rooms over Mrs Copp's that look at a wall.",
+          "file": "audio/the-cracked-beam/mr-silas-rowe__now__eleven_v3.mp3",
+          "date": "2026-11-03T02:05:52+00:00"
+        },
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Mr Silas Rowe",
+          "model": "eleven_v4",
+          "line": "I would rather it were made true. There is no dinner arranged round this, and nobody has told me what neckcloth to wear, and Mrs Pike does not know I am standing here. I am asking whether you would have me. Eighty a year, no expectations, and two rooms over Mrs Copp's that look at a wall.",
+          "file": "audio/the-cracked-beam/mr-silas-rowe__now__eleven_v4.mp3",
+          "date": "2026-11-03T02:05:52+00:00"
+        }
+      ],
+      "verdicts": {},
+      "sources": [
+        "current"
+      ]
+    },
+    "JBFqnCBsd6RMkjVDRZzb": {
+      "name": "George - Warm, Captivating Storyteller",
+      "labels": {
+        "gender": "male",
+        "age": "middle_aged",
+        "accent": "british",
+        "descriptive": "mature",
+        "use_case": "narrative_story"
+      },
+      "first_tried": "2026-11-03T01:55:24+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Mr Owen Vane",
+          "model": "eleven_v3",
+          "line": "My sister's name was in three kitchens before dinner. By Sunday it will be in the rest of them. I am not asking whether anything happened on the Bramdean road. I know what a broken wheel is; I have mended two. I am asking what you mean to do.",
+          "file": "audio/the-cracked-beam/mr-owen-vane__now__eleven_v3.mp3",
+          "date": "2026-11-03T01:55:40+00:00"
+        },
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Mr Owen Vane",
+          "model": "eleven_v4",
+          "line": "My sister's name was in three kitchens before dinner. By Sunday it will be in the rest of them. I am not asking whether anything happened on the Bramdean road. I know what a broken wheel is; I have mended two. I am asking what you mean to do.",
+          "file": "audio/the-cracked-beam/mr-owen-vane__now__eleven_v4.mp3",
+          "date": "2026-11-03T01:55:40+00:00"
+        }
+      ],
+      "verdicts": {},
+      "sources": [
+        "current"
+      ]
+    },
+    "6WwXjDDEMyNmFG95zycZ": {
+      "name": "Eldrin - Crisp British Baritone",
+      "labels": {
+        "gender": "male",
+        "age": "middle_aged",
+        "accent": "british",
+        "descriptive": "raspy",
+        "use_case": "narrative_story"
+      },
+      "first_tried": "2026-11-03T01:55:32+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Mr Owen Vane",
+          "model": "eleven_v4",
+          "line": "My sister's name was in three kitchens before dinner. By Sunday it will be in the rest of them. I am not asking whether anything happened on the Bramdean road. I know what a broken wheel is; I have mended two. I am asking what you mean to do.",
+          "file": "audio/the-cracked-beam/mr-owen-vane__try-eldrin-6wwxjd__eleven_v4.mp3",
+          "date": "2026-11-03T01:55:40+00:00"
+        }
+      ],
+      "verdicts": {},
+      "sources": [
+        "your pick"
+      ]
+    },
+    "giAoKpl5weRTCJK7uB9b": {
+      "name": "Owen - Engaging and Clear Storyteller",
+      "labels": {
+        "gender": "male",
+        "age": "middle_aged",
+        "accent": "british",
+        "descriptive": "confident",
+        "use_case": "narrative_story"
+      },
+      "first_tried": "2026-11-03T01:55:36+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Mr Owen Vane",
+          "model": "eleven_v4",
+          "line": "My sister's name was in three kitchens before dinner. By Sunday it will be in the rest of them. I am not asking whether anything happened on the Bramdean road. I know what a broken wheel is; I have mended two. I am asking what you mean to do.",
+          "file": "audio/the-cracked-beam/mr-owen-vane__try-owen-giaokp__eleven_v4.mp3",
+          "date": "2026-11-03T01:55:40+00:00"
+        }
+      ],
+      "verdicts": {},
+      "sources": [
+        "your pick"
+      ]
+    },
+    "Fahco4VZzobUeiPqni1S": {
+      "name": "Archer - Conversational",
+      "labels": {
+        "gender": "male",
+        "age": "middle_aged",
+        "accent": "british",
+        "descriptive": "calm",
+        "use_case": "conversational"
+      },
+      "first_tried": "2026-11-03T01:55:40+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Mr Owen Vane",
+          "model": "eleven_v4",
+          "line": "My sister's name was in three kitchens before dinner. By Sunday it will be in the rest of them. I am not asking whether anything happened on the Bramdean road. I know what a broken wheel is; I have mended two. I am asking what you mean to do.",
+          "file": "audio/the-cracked-beam/mr-owen-vane__try-archer-fahco4__eleven_v4.mp3",
+          "date": "2026-11-03T01:55:40+00:00"
+        }
+      ],
+      "verdicts": {
+        "Mr Owen Vane": {
+          "verdict": "cast",
+          "note": null,
+          "date": "2026-11-03T01:56:42+00:00"
+        }
+      },
+      "sources": [
+        "your pick"
+      ]
+    },
+    "pFZP5JQG7iQjIQuC4Bku": {
+      "name": "Lily - Velvety Actress",
+      "labels": {
+        "gender": "female",
+        "age": "middle_aged",
+        "accent": "british",
+        "descriptive": "confident",
+        "use_case": "informative_educational"
+      },
+      "first_tried": "2026-11-03T01:57:16+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Miss Louisa Marchmont",
+          "model": "eleven_v3",
+          "line": "Mrs Pike believes I am to be courted. I am not. My uncle means to sell the house or leave it shut, and I have a fortnight to give him a reason to do neither. So tell me the truth, since you seem to be the only person here who says things once. What does this parish actually want?",
+          "file": "audio/the-cracked-beam/miss-louisa-marchmont__now__eleven_v3.mp3",
+          "date": "2026-11-03T01:57:38+00:00"
+        },
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Miss Louisa Marchmont",
+          "model": "eleven_v4",
+          "line": "Mrs Pike believes I am to be courted. I am not. My uncle means to sell the house or leave it shut, and I have a fortnight to give him a reason to do neither. So tell me the truth, since you seem to be the only person here who says things once. What does this parish actually want?",
+          "file": "audio/the-cracked-beam/miss-louisa-marchmont__now__eleven_v4.mp3",
+          "date": "2026-11-03T01:57:38+00:00"
+        }
+      ],
+      "verdicts": {},
+      "sources": [
+        "current"
+      ]
+    },
+    "22N9cF8z0o7y23njdyaY": {
+      "name": "Florence - Atmospheric Storyteller",
+      "labels": {
+        "gender": "female",
+        "age": "middle_aged",
+        "accent": "british",
+        "descriptive": "gentle",
+        "use_case": "narrative_story"
+      },
+      "first_tried": "2026-11-03T01:57:25+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Miss Louisa Marchmont",
+          "model": "eleven_v4",
+          "line": "Mrs Pike believes I am to be courted. I am not. My uncle means to sell the house or leave it shut, and I have a fortnight to give him a reason to do neither. So tell me the truth, since you seem to be the only person here who says things once. What does this parish actually want?",
+          "file": "audio/the-cracked-beam/miss-louisa-marchmont__try-florence-22n9cf__eleven_v4.mp3",
+          "date": "2026-11-03T01:57:38+00:00"
+        }
+      ],
+      "verdicts": {},
+      "sources": [
+        "your pick"
+      ]
+    },
+    "4CrZuIW9am7gYAxgo2Af": {
+      "name": "Shelley - Clear, Confident and British",
+      "labels": {
+        "gender": "female",
+        "age": "young",
+        "accent": "british",
+        "descriptive": "crisp",
+        "use_case": "informative_educational"
+      },
+      "first_tried": "2026-11-03T01:57:30+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Miss Louisa Marchmont",
+          "model": "eleven_v4",
+          "line": "Mrs Pike believes I am to be courted. I am not. My uncle means to sell the house or leave it shut, and I have a fortnight to give him a reason to do neither. So tell me the truth, since you seem to be the only person here who says things once. What does this parish actually want?",
+          "file": "audio/the-cracked-beam/miss-louisa-marchmont__try-shelley-4crzui__eleven_v4.mp3",
+          "date": "2026-11-03T01:57:38+00:00"
+        }
+      ],
+      "verdicts": {
+        "Miss Louisa Marchmont": {
+          "verdict": "cast",
+          "note": null,
+          "date": "2026-11-03T01:58:21+00:00"
+        }
+      },
+      "sources": [
+        "your pick"
+      ]
+    },
+    "ZF6FPAbjXT4488VcRRnw": {
+      "name": "Amelia - Enthusiastic and Expressive",
+      "labels": {
+        "gender": "female",
+        "age": "young",
+        "accent": "british",
+        "descriptive": "upbeat",
+        "use_case": "narrative_story"
+      },
+      "first_tried": "2026-11-03T01:57:34+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Miss Louisa Marchmont",
+          "model": "eleven_v4",
+          "line": "Mrs Pike believes I am to be courted. I am not. My uncle means to sell the house or leave it shut, and I have a fortnight to give him a reason to do neither. So tell me the truth, since you seem to be the only person here who says things once. What does this parish actually want?",
+          "file": "audio/the-cracked-beam/miss-louisa-marchmont__try-amelia-zf6fpa__eleven_v4.mp3",
+          "date": "2026-11-03T01:57:38+00:00"
+        }
+      ],
+      "verdicts": {},
+      "sources": [
+        "your pick"
+      ]
+    },
+    "lcMyyd2HUfFzxdCaC4Ta": {
+      "name": "Lucy - Fresh & Casual",
+      "labels": {
+        "gender": "female",
+        "age": "young",
+        "accent": "british",
+        "descriptive": "casual",
+        "use_case": "conversational"
+      },
+      "first_tried": "2026-11-03T01:57:38+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Miss Louisa Marchmont",
+          "model": "eleven_v4",
+          "line": "Mrs Pike believes I am to be courted. I am not. My uncle means to sell the house or leave it shut, and I have a fortnight to give him a reason to do neither. So tell me the truth, since you seem to be the only person here who says things once. What does this parish actually want?",
+          "file": "audio/the-cracked-beam/miss-louisa-marchmont__try-lucy-lcmyyd__eleven_v4.mp3",
+          "date": "2026-11-03T01:57:38+00:00"
+        }
+      ],
+      "verdicts": {},
+      "sources": [
+        "your pick"
+      ]
+    },
+    "AXdMgz6evoL7OPd7eU12": {
+      "name": "Elizabeth - Precise, Clear and Natural",
+      "labels": {
+        "gender": "female",
+        "age": "middle_aged",
+        "accent": "british",
+        "descriptive": "pleasant",
+        "use_case": "narrative_story"
+      },
+      "first_tried": "2026-11-03T01:58:58+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Mrs Hale",
+          "model": "eleven_v4",
+          "line": "The estate is to fit the east wing for a school. Floor, glazing and a stove, and a man coming from Alresford on the twentieth to measure it. And the curate is to marry Miss Vane. No. The curate is to marry Miss Vane, and the estate is to fit the east wing.",
+          "file": "audio/the-cracked-beam/mrs-hale__try-elizabeth-axdmgz__eleven_v4.mp3",
+          "date": "2026-11-03T01:59:07+00:00"
+        }
+      ],
+      "verdicts": {
+        "Mrs Hale": {
+          "verdict": "cast",
+          "note": null,
+          "date": "2026-11-03T02:08:52+00:00"
+        }
+      },
+      "sources": [
+        "your pick"
+      ]
+    },
+    "oW8bn5YtBB89X2nJ0DT9": {
+      "name": "Verity - Chatty, Fast-Paced, Fun Storyteller",
+      "labels": {
+        "gender": "female",
+        "age": "young",
+        "accent": "british",
+        "descriptive": "upbeat",
+        "use_case": "conversational"
+      },
+      "first_tried": "2026-11-03T01:59:03+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Mrs Hale",
+          "model": "eleven_v4",
+          "line": "The estate is to fit the east wing for a school. Floor, glazing and a stove, and a man coming from Alresford on the twentieth to measure it. And the curate is to marry Miss Vane. No. The curate is to marry Miss Vane, and the estate is to fit the east wing.",
+          "file": "audio/the-cracked-beam/mrs-hale__try-verity-ow8bn5__eleven_v4.mp3",
+          "date": "2026-11-03T01:59:07+00:00"
+        }
+      ],
+      "verdicts": {},
+      "sources": [
+        "your pick"
+      ]
+    },
+    "wJqPPQ618aTW29mptyoc": {
+      "name": "Ana Rita - Smooth, Expressive and Bright",
+      "labels": {
+        "gender": "female",
+        "age": "young",
+        "accent": "british",
+        "descriptive": "soft",
+        "use_case": "narrative_story"
+      },
+      "first_tried": "2026-11-03T02:04:23+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Miss Judith Vane",
+          "model": "eleven_v4",
+          "line": "The hour we set off, the place the wheel went, Nye's name and the hurdles, and the hour we came in. I mean to say it at the library counter tomorrow with Mrs Hale standing there, and then to Mrs Yardley, and then to Sarah Copp's mother, who is the one that put the crying in.",
+          "file": "audio/the-cracked-beam/miss-judith-vane__try-ana-rita-wjqppq__eleven_v4.mp3",
+          "date": "2026-11-03T02:04:23+00:00"
+        }
+      ],
+      "verdicts": {},
+      "sources": [
+        "your pick"
+      ]
+    },
+    "8JVbfL6oEdmuxKn5DK2C": {
+      "name": "Johnny Kid - Serious and Calm Narrator",
+      "labels": {
+        "gender": "male",
+        "age": "young",
+        "accent": "british",
+        "descriptive": "calm",
+        "use_case": "narrative_story"
+      },
+      "first_tried": "2026-11-03T02:05:48+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Mr Silas Rowe",
+          "model": "eleven_v4",
+          "line": "I would rather it were made true. There is no dinner arranged round this, and nobody has told me what neckcloth to wear, and Mrs Pike does not know I am standing here. I am asking whether you would have me. Eighty a year, no expectations, and two rooms over Mrs Copp's that look at a wall.",
+          "file": "audio/the-cracked-beam/mr-silas-rowe__try-johnny-kid-8jvbfl__eleven_v4.mp3",
+          "date": "2026-11-03T02:05:52+00:00"
+        }
+      ],
+      "verdicts": {},
+      "sources": [
+        "your pick"
+      ]
+    },
+    "G7ILShrCNLfmS0A37SXS": {
+      "name": "Sam - Neutral, Friendly and Clear",
+      "labels": {
+        "gender": "male",
+        "age": "young",
+        "accent": "british",
+        "descriptive": "confident",
+        "use_case": "informative_educational"
+      },
+      "first_tried": "2026-11-03T02:05:52+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Mr Silas Rowe",
+          "model": "eleven_v4",
+          "line": "I would rather it were made true. There is no dinner arranged round this, and nobody has told me what neckcloth to wear, and Mrs Pike does not know I am standing here. I am asking whether you would have me. Eighty a year, no expectations, and two rooms over Mrs Copp's that look at a wall.",
+          "file": "audio/the-cracked-beam/mr-silas-rowe__try-sam-g7ilsh__eleven_v4.mp3",
+          "date": "2026-11-03T02:05:52+00:00"
+        }
+      ],
+      "verdicts": {
+        "Mr Silas Rowe": {
+          "verdict": "cast",
+          "note": null,
+          "date": "2026-11-03T02:08:02+00:00"
+        }
+      },
+      "sources": [
+        "your pick"
+      ]
+    },
+    "IKne3meq5aSn9XLyUdCD": {
+      "name": "Charlie - Deep, Confident, Energetic",
+      "labels": {
+        "gender": "male",
+        "age": "young",
+        "accent": "australian",
+        "descriptive": "hyped",
+        "use_case": "conversational"
+      },
+      "first_tried": "2026-11-03T02:07:12+00:00",
+      "tries": [
+        {
+          "story": "the-cracked-beam",
+          "speaker": "Mr Silas Rowe",
+          "model": "eleven_v4",
+          "line": "I would rather it were made true. There is no dinner arranged round this, and nobody has told me what neckcloth to wear, and Mrs Pike does not know I am standing here. I am asking whether you would have me. Eighty a year, no expectations, and two rooms over Mrs Copp's that look at a wall.",
+          "file": "audio/the-cracked-beam/mr-silas-rowe__try-charlie-ikne3m__eleven_v4.mp3",
+          "date": "2026-11-03T02:07:12+00:00"
+        }
+      ],
+      "verdicts": {},
+      "sources": [
+        "your pick"
+      ]
+    }
+  },
+  "unavailable": [
+    {
+      "speaker": "Miss Judith Vane",
+      "pick": "Alicia (DNYvvkdiu5NYK2rSLwDL)",
+      "note": "DNYvvkdiu5NYK2rSLwDL not in account and not in the Voice Library, by name ('Alicia') or by id — it may be private or withdrawn; add it on elevenlabs.io",
+      "date": "2026-11-03T02:04:23+00:00"
+    },
+    {
+      "speaker": "Mrs Honoria Pike",
+      "pick": "Jeanette (RILOU7YmBhvwJGDGjNmP)",
+      "note": "in Voice Library only (RILOU7YmBhvwJGDGjNmP); rerun with --add-missing to add it to My Voices",
+      "date": "2026-11-03T01:53:26+00:00"
+    },
+    {
+      "speaker": "Mr Silas Rowe",
+      "pick": "Finley (uxut3IsZzAX3ycGl84pJ)",
+      "note": "uxut3IsZzAX3ycGl84pJ not in account and not in the Voice Library, by name ('Finley') or by id — it may be private or withdrawn; add it on elevenlabs.io",
+      "date": "2026-11-03T02:05:52+00:00"
+    }
+  ],
+  "applied": [
+    {
+      "at": "2026-11-03T02:09:21+00:00",
+      "cast": {
+        "Miss Judith Vane": {
+          "id": "E4IXevHtHpKGh0bvrPPr",
+          "voice": "Emilia"
+        },
+        "Miss Louisa Marchmont": {
+          "id": "4CrZuIW9am7gYAxgo2Af",
+          "voice": "Shelley"
+        },
+        "Mr Owen Vane": {
+          "id": "Fahco4VZzobUeiPqni1S",
+          "voice": "Archer"
+        },
+        "Mr Silas Rowe": {
+          "id": "G7ILShrCNLfmS0A37SXS",
+          "voice": "Sam"
+        },
+        "Mrs Hale": {
+          "id": "AXdMgz6evoL7OPd7eU12",
+          "voice": "Elizabeth"
+        },
+        "Mrs Honoria Pike": {
+          "id": "9TwzC887zQyDD4yBthzD",
+          "voice": "Meera"
+        },
+        "narrator": {
+          "id": "19STyYD15bswVz51nqLf",
+          "voice": "Samara X"
+        }
+      },
+      "model": "eleven_v4",
+      "mode": "cast"
+    }
+  ]
+}

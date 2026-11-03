@@ -22,7 +22,7 @@
       "appearance": "Tall and thin, dark hair worn slightly too long, with the stoop of a man used to low doorways and a face that gives away more than he intends.",
       "dress": "Worn black coat, carefully brushed, and linen that has been turned at the cuffs.",
       "voice_note": "earnest, apt to say too little when it matters and too much when it doesn't",
-      "voice": "Daniel",
+      "voice": "Sam",
       "recurring": true
     },
     {
@@ -35,7 +35,7 @@
       "appearance": "Fair, freckled, of middling height, with reddish hair she cannot keep pinned and a habit of looking directly at whoever is speaking.",
       "dress": "Sprigged muslin in summer, a grey wool pelisse in winter, both mended with more thrift than skill.",
       "voice_note": "reads everything, says less than she thinks, and every word she does say is exact",
-      "voice": "Alice",
+      "voice": "Emilia",
       "recurring": true
     },
     {
@@ -48,7 +48,7 @@
       "appearance": "Short and broad, with grey hair pinned severely under a lace cap, and small quick eyes set in a round weathered face.",
       "dress": "Black bombazine with a plain white fichu, ten years out of fashion and immaculately kept.",
       "voice_note": "warm, talks too much, states rumour and fact in exactly the same confident tone",
-      "voice": "Matilda",
+      "voice": "Meera",
       "recurring": true
     },
     {
@@ -60,7 +60,8 @@
       "want": "to persuade her uncle to give the old house a use, rather than let it stand shut",
       "appearance": "fair, freckled across the nose, with a quick way of walking that outpaces whoever she is with",
       "dress": "sensible travelling brown, unadorned, more suited to a farm inspection than a parlour",
-      "voice_note": "brisk and direct, answers questions no one has quite asked yet"
+      "voice_note": "brisk and direct, answers questions no one has quite asked yet",
+      "voice": "Shelley"
     },
     {
       "name": "Mr Owen Vane",
@@ -71,7 +72,8 @@
       "want": "to see his sister settled somewhere she will not be talked about",
       "appearance": "broad-shouldered with his sister's dark colouring, sleeves always rolled to the elbow from the dispensary",
       "dress": "a brown workaday coat and an apron dusted with chalk and powders",
-      "voice_note": "plain-spoken, dry, says the blunt thing his sister only thinks"
+      "voice_note": "plain-spoken, dry, says the blunt thing his sister only thinks",
+      "voice": "Archer"
     },
     {
       "name": "Mrs Hale",
@@ -82,7 +84,8 @@
       "want": "to be the first person in Amberlight to know anything",
       "appearance": "round-faced and pink, with spectacles pushed up into hair the colour of weak tea",
       "dress": "a striped apron over her gown, never removed even to serve customers upstairs",
-      "voice_note": "chatty, reports gossip as news and news as gossip, no malice, no filter"
+      "voice_note": "chatty, reports gossip as news and news as gossip, no malice, no filter",
+      "voice": "Elizabeth"
     }
   ],
   "chapters": [

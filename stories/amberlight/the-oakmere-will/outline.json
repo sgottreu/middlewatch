@@ -23,7 +23,7 @@
       "appearance": "Fair, freckled, of middling height, with reddish hair she cannot keep pinned and a habit of looking directly at whoever is speaking.",
       "dress": "Sprigged muslin in summer, a grey wool pelisse in winter, both mended with more thrift than skill.",
       "voice_note": "quiet, precise, says less than she is thinking",
-      "voice": "Alice",
+      "voice": "Emilia",
       "recurring": true
     },
     {
@@ -36,7 +36,7 @@
       "appearance": "Tall and thin, dark hair worn slightly too long, with the stoop of a man used to low doorways and a face that gives away more than he intends.",
       "dress": "Worn black coat, carefully brushed, and linen that has been turned at the cuffs.",
       "voice_note": "earnest, over-explains, trails off when he loses his nerve",
-      "voice": "Daniel",
+      "voice": "Sam",
       "recurring": true
     },
     {
@@ -49,7 +49,7 @@
       "appearance": "Short and broad, with grey hair pinned severely under a lace cap, and small quick eyes set in a round weathered face.",
       "dress": "Black bombazine with a plain white fichu, ten years out of fashion and immaculately kept.",
       "voice_note": "brisk, delighted by her own certainty, interrupts",
-      "voice": "Matilda",
+      "voice": "Meera",
       "recurring": true
     },
     {
@@ -106,7 +106,7 @@
         "She reports that his cousin's son, Mr Vernon Hartwell, has already moved into the farmhouse under a will drawn up only weeks before Fenner's death.",
         "Judith Vane observes that the will cuts out Fenner's great-nephew, Captain Nathaniel Farr, believed killed abroad three years since.",
         "Mrs Pike declares the captain certainly dead, since no letter has come from him in all that time.",
-        "The Friday coach draws up at the Bell, and a sun-browned stranger steps down asking the way to Oakmere Farm — Captain Farr himself, very much alive."
+        "The Friday coach draws up at the Bell, and a sun-browned stranger steps down asking the way to Oakmere Farm \u2014 Captain Farr himself, very much alive."
       ],
       "target_words": 580
     },
@@ -201,7 +201,7 @@
   "slug": "the-oakmere-will",
   "revisions": [
     {
-      "feedback": "Keep these exactly as they are, word for word where they are text: the logline; the promise; the setting; the tropes, exactly as named; the title; the cast, including their names, ages and stations.\n\nReplace these wholesale rather than adjusting what is there: the chapters and their beats.\n\nThe new chapters must carry 4 to 5 concrete beats each — things that happen, not moods. That density is what stops the prose stretching to fill the words rather than the story getting bigger.",
+      "feedback": "Keep these exactly as they are, word for word where they are text: the logline; the promise; the setting; the tropes, exactly as named; the title; the cast, including their names, ages and stations.\n\nReplace these wholesale rather than adjusting what is there: the chapters and their beats.\n\nThe new chapters must carry 4 to 5 concrete beats each \u2014 things that happen, not moods. That density is what stops the prose stretching to fill the words rather than the story getting bigger.",
       "previous_title": "The Oakmere Will"
     }
   ]
