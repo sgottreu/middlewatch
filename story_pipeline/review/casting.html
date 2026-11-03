@@ -45,7 +45,10 @@
                     color:#cdc9bc; cursor:not-allowed; }
   button.primary { background:var(--ok); border-color:var(--ok); color:#0f120b; }
   button.primary:hover:not(:disabled) { background:#8db466; border-color:#8db466; }
-  button.armed { background:var(--accent); border-color:var(--accent); color:#14140f; }
+  /* Armed = one more click spends money. Warning gold, bold, and a ring so it
+     can't be mistaken for the idle blue button or a hover. */
+  button.armed, button.armed:hover:not(:disabled) { background:var(--accent); border-color:var(--accent);
+           color:#14140f; font-weight:600; box-shadow:0 0 0 2px rgba(201,162,39,.35); }
   button.sel { background:rgba(201,162,39,.15); border-color:var(--accent); color:var(--ink); }
   button.quiet { background:transparent; border-color:var(--line); color:var(--dim); box-shadow:none; }
   button.quiet:hover:not(:disabled) { color:var(--ink); background:transparent; }
@@ -260,14 +263,23 @@ async function api(path, body) {
 
 // A paid button arms on the first press and runs on the second, so a stray tap
 // never spends money and nobody has to dismiss a dialog to get on with it.
+// The armed label says "Confirm — spend $X", never "… again": "again" reads as
+// "you already ran this", and the price is what you're deciding on.
+const disarm = b => { b.classList.remove("armed"); clearTimeout(b._t); b.textContent = b._label; };
 function armed(btn, label, fn) {
   if (btn.classList.contains("armed")) {
     btn.classList.remove("armed"); clearTimeout(btn._t); fn(); return;
   }
-  document.querySelectorAll("button.armed").forEach(b => { b.classList.remove("armed"); b.textContent = b._label; });
+  document.querySelectorAll("button.armed").forEach(disarm);
   btn._label = btn.textContent; btn.textContent = label; btn.classList.add("armed");
-  btn._t = setTimeout(() => { btn.classList.remove("armed"); btn.textContent = btn._label; }, 5000);
+  btn._t = setTimeout(() => disarm(btn), 5000);
 }
+// Clicking anywhere else, or Escape, stands it down — it never sits armed.
+document.addEventListener("click", ev => document.querySelectorAll("button.armed")
+  .forEach(b => { if (!b.contains(ev.target)) disarm(b); }), true);
+document.addEventListener("keydown", ev => {
+  if (ev.key === "Escape") document.querySelectorAll("button.armed").forEach(disarm);
+});
 
 function syncUrl() {
   const u = new URL(location.href);
@@ -427,16 +439,19 @@ async function run(body, btn, label) {
 }
 
 $("runAll").onclick = e => run({}, e.currentTarget,
-  `Spend ~${money(S.view.estimate.usd)}? Click again`);
+  `Confirm — spend ~${money(S.view.estimate.usd)}`);
 
 document.addEventListener("click", async ev => {
   const b = ev.target.closest("button");
   if (!b) return;
   if (b.dataset.runSpeaker) {
     const c = S.view.estimate.per_speaker[b.dataset.runSpeaker];
-    run({ speakers: [b.dataset.runSpeaker] }, b, `Spend ~${money(c.usd)}? Again`);
+    run({ speakers: [b.dataset.runSpeaker] }, b, `Confirm — spend ~${money(c.usd)}`);
   } else if (b.dataset.runVoice) {
-    run({ speakers: [b.dataset.speaker], voices: [b.dataset.runVoice] }, b, "Spend a few cents? Again");
+    // One voice is one v4 take of the speaker's line: the per-take share of the estimate.
+    const c = S.view.estimate.per_speaker[b.dataset.speaker] || {};
+    run({ speakers: [b.dataset.speaker], voices: [b.dataset.runVoice] }, b,
+        c.takes ? `Confirm — spend ~${money(c.usd / c.takes)}` : "Confirm — spend a few cents");
   } else if (b.dataset.verdict) {
     const on = b.classList.contains("on");
     const note = b.closest(".judge").querySelector("input")?.value || "";
@@ -589,7 +604,7 @@ async function refreshPlan() {
 $("applyBtn").onclick = openApply;
 $("aclose").onclick = () => $("ascrim").classList.remove("show");
 $("ascrim").onclick = e => { if (e.target.id === "ascrim") $("ascrim").classList.remove("show"); };
-$("ago").onclick = e => armed(e.currentTarget, "Write the changes? Click again", async () => {
+$("ago").onclick = e => armed(e.currentTarget, "Confirm — write the changes", async () => {
   $("ago").disabled = true;
   try {
     const r = await api("/api/casting/apply", { arc: S.arc, ...opts() });

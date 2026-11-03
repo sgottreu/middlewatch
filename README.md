@@ -28,6 +28,20 @@ ambience/           ambience outputs   (gitignored)
 config.yaml .env    yours              (gitignored)
 ```
 
+## Running the review interface locally
+
+From the repo root, with the virtualenv active:
+
+    source .venv/bin/activate
+    python3 -m story_pipeline.cli review
+
+This starts the review server on http://localhost:8765 and opens it in your browser.
+`bash scripts/review-app.sh` does the same thing as a wrapper.
+Run `python3 -m story_pipeline.cli review --help` for the full option list.
+
+Media (audio, images, video) is gitignored — pull it down with `scripts/mw-asset-sync`
+first, or stages that need it (e.g. render) will fail locally.
+
 ## Run everything from this directory
 
 Not from inside a pipeline folder. Four paths resolve against the current
