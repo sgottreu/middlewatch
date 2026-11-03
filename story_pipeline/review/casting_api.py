@@ -106,6 +106,12 @@ def job(cfg: dict, arc: str) -> dict:
     takes = [m for m in marks if m.get("event") == "take"]
     j.update(total=plan.get("total"), done=len(takes),
              failed=sum(1 for m in takes if not m.get("ok")))
+    # Whose take is in flight (or was last), so the page can put the progress
+    # panel above that character. Before the first take, the first speaker the
+    # run was started for; a run of everyone has none until it starts.
+    said = [m.get("speaker") for m in marks if m.get("event") in ("start", "take")]
+    asked = (runner.latest(_key(arc)) or {}).get("speakers") or [None]
+    j["speaker"] = next((s for s in reversed(said) if s), asked[0])
     return j
 
 

@@ -58,8 +58,10 @@
   .lede { color:var(--dim); font-size:14px; margin:0 0 16px; max-width:80ch; }
 
   /* job panel */
+  /* Sits above whichever character is being auditioned (see placeJob); the
+     scroll margin keeps it clear of the sticky header when scrolled to. */
   #job { display:none; border:1px solid var(--accent); background:rgba(201,162,39,.07);
-         border-radius:8px; padding:12px 14px; margin:0 0 18px; }
+         border-radius:8px; padding:12px 14px; margin:0 0 18px; scroll-margin-top:72px; }
   #job.show { display:block; }
   #job.bad { border-color:var(--danger); background:rgba(212,103,74,.08); }
   #job.done { border-color:var(--ok); background:rgba(126,160,90,.08); }
@@ -314,6 +316,7 @@ async function load(keepScroll) {
 
 function render() {
   const v = S.view, est = v.estimate;
+  $("speakers").before($("job"));   // out of #speakers before it's rebuilt; showJob puts it back
   $("story").innerHTML = v.stories.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join("");
   $("story").value = v.story || "";
   const running = v.job && v.job.state === "running";
@@ -515,6 +518,7 @@ function showJob(j) {
   box.className = "show" + (running ? "" : j.state === "done" ? (j.failed ? " bad" : " done") : " bad");
   const pct = j.total ? Math.round(100 * j.done / j.total) : (running ? 4 : 100);
   $("jobbar").style.width = pct + "%";
+  placeJob(j.speaker, running);
   $("stopBtn").hidden = !running;
   const when = j.finished ? new Date(j.finished * 1000).toLocaleTimeString() : "";
   $("jobwhat").textContent =
@@ -534,6 +538,20 @@ function showJob(j) {
     S.wasRunning = false;
     load(true);   // new takes and record lines are on disk now
   }
+}
+
+// The panel goes directly above the character whose take is in flight, and
+// the page follows it as the run moves from one character to the next, so the
+// log is where you're already looking. No speaker known: back above the list.
+function placeJob(speaker, running) {
+  const box = $("job");
+  const sec = speaker && [...document.querySelectorAll("#speakers section.sp")]
+    .find(s => s.dataset.speaker === speaker);
+  if (sec) { if (box.nextElementSibling !== sec) sec.before(box); }
+  else if (box.nextElementSibling !== $("speakers")) $("speakers").before(box);
+  if (running && speaker && speaker !== S.jobSpeaker)
+    box.scrollIntoView({ block: "start" });
+  S.jobSpeaker = speaker;
 }
 
 async function tailLog() {

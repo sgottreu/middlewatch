@@ -502,6 +502,8 @@ def main():
             cell["file"] = fname
             meta["rendered"] = True
         else:
+            # Before the call, so the page can show whose take is in flight.
+            progress(event="start", speaker=meta.get("speaker"), label=label)
             status, audio = call("POST", f"/v1/text-to-speech/{vid}", key,
                                  {"output_format": "mp3_44100_128"},
                                  {"text": text, "model_id": model}, raw=True)
