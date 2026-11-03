@@ -88,6 +88,12 @@
   .line { margin:0; padding:10px 16px; font-style:italic; border-bottom:1px solid var(--line);
           color:#d8d3c4; }
   .line.none { font-style:normal; color:var(--dim); font-size:13px; }
+  /* The character as written, above the line they audition with. */
+  .bible { margin:0; padding:10px 16px 0; font-size:13px; color:var(--dim); max-width:90ch; }
+  .bible p { margin:0 0 6px; }
+  .bible .who { color:var(--ink); }
+  .bible b { color:#c9c3b2; font-weight:600; }
+  .bible .src { font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.06em; }
 
   .ent { display:grid; grid-template-columns: minmax(170px, 1.1fr) 2fr auto;
          gap:10px 16px; padding:11px 16px; border-bottom:1px solid var(--line);
@@ -336,6 +342,20 @@ function render() {
   renderPool();
 }
 
+// The bible entry (or, for a one-story character, the outline's), so the
+// voice is judged against who the character is rather than from memory.
+function bibleHtml(b) {
+  if (!b) return "";
+  const who = [b.age, b.gender, b.station].filter(Boolean).map(esc).join(" · ");
+  const row = (k, label) => b[k] ? `<p><b>${label}</b> ${esc(b[k])}</p>` : "";
+  return `<div class="bible">
+    ${who ? `<p class="who">${who}</p>` : ""}
+    ${row("note", "Character")}${row("voice_note", "Speaks")}${row("want", "Wants")}
+    ${row("appearance", "Looks")}${row("dress", "Dress")}
+    <p class="src">${b.source === "bible" ? "from the series bible" : "from this story's outline — not in the bible"}</p>
+  </div>`;
+}
+
 function speakerHtml(sp, cost, running) {
   const id = "sp-" + btoa(unescape(encodeURIComponent(sp.speaker))).replace(/=/g, "");
   const chips = [];
@@ -354,6 +374,7 @@ function speakerHtml(sp, cost, running) {
         sp.in_stories.length ? "Speaks in: " + sp.in_stories.map(esc).join(", ") + " — pick one under “Lines from”." : "Not in any written story yet."}</p>`;
   return `<section class="sp" id="${id}" data-speaker="${esc(sp.speaker)}">
     <div class="hd"><h2>${esc(sp.speaker)}</h2>${chips.join("")}<span class="spacer"></span>${runBtn}</div>
+    ${bibleHtml(sp.bible)}
     ${line}
     ${sp.entries.map(e => entryHtml(sp, e, running)).join("") ||
       `<p class="line none">No candidates yet — add a voice below.</p>`}

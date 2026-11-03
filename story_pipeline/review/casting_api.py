@@ -10,11 +10,12 @@ spends ElevenLabs credits. The page shows the estimate before it asks.
 """
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
 from . import runner
-from .. import casting
+from .. import bibles, casting
 
 V4 = "eleven_v4"
 
@@ -96,7 +97,42 @@ def view(cfg: dict, arc: str, story: str | None = None) -> dict:
     v = casting.arc_view(_arc(cfg, arc), story, _stories(cfg))
     v["estimate"] = estimate(cfg, v)
     v["job"] = job(cfg, arc)
+    _attach_bible(cfg, v)
     return v
+
+
+# What the page shows of a character, in this order. Bible entries carry
+# `note`; a story's own cast carries `want` and `voice_note` instead.
+_PROFILE = ("age", "gender", "station", "appearance", "dress", "note", "want", "voice_note")
+
+
+def _attach_bible(cfg: dict, v: dict) -> None:
+    """Give each speaker the character entry to cast against: the series
+    bible's recurring_cast first, else the chosen story's outline cast (a
+    one-story character has no bible entry). Missing files mean no entry, not
+    an error — the page is still usable without them."""
+    outline = {}
+    if v.get("story"):
+        p = _stories(cfg) / v["arc"] / v["story"] / "outline.json"
+        try:
+            outline = json.loads(p.read_text())
+        except (OSError, ValueError):
+            pass
+    try:
+        bible = bibles.load(outline.get("bible") or v["arc"], cfg.get("bibles_dir") or "bibles")
+    except Exception:
+        bible = None
+    story_cast = {c.get("name", "").lower(): c for c in outline.get("cast") or []}
+    for sp in v["speakers"]:
+        name = sp["speaker"].lower()
+        hit = bible and bible.member(sp["speaker"])
+        src = "bible" if hit else "story"
+        hit = hit or story_cast.get(name)
+        if hit and src == "bible" and name in story_cast:
+            # The bible is canon; the story adds what this character wants here.
+            hit = {**{k: story_cast[name].get(k) for k in ("want", "voice_note")}, **hit}
+        sp["bible"] = ({"source": src, **{k: hit[k] for k in _PROFILE if hit.get(k)}}
+                       if hit else None)
 
 
 def job(cfg: dict, arc: str) -> dict:
