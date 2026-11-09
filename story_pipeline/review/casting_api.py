@@ -57,6 +57,11 @@ def estimate(cfg: dict, view: dict) -> dict:
 
     An upper bound: it can't know which library voices will turn out to be
     missing until the run looks them up, and those cost nothing.
+
+    A voice that couldn't be auditioned last time and has no take is counted
+    again (`retry`): it may have been added to My Voices since, or be found by
+    id now. Without that, a run that leaves one unavailable voice switches
+    every Run button off for good.
     """
     stories = _stories(cfg)
     rec = casting.load(view["arc"], stories)
@@ -70,25 +75,27 @@ def estimate(cfg: dict, view: dict) -> dict:
         return any((t["story"], t["speaker"], t["model"]) == (story, speaker, m)
                    for t in v.get("tries", []))
 
-    total_takes, total_chars, per = 0, 0, {}
+    total_takes, total_chars, total_retry, per = 0, 0, 0, {}
     for sp in view["speakers"]:
         line = sp.get("line")
         if not line:
             continue
-        n = 0
+        n = retry = 0
         cur = ids.get(sp.get("current") or "")
         if cur:
             n += sum(1 for m in dict.fromkeys([model, V4]) if not have(cur, sp["speaker"], m))
         for e in sp["entries"]:
-            if e["role"] == "candidate" and e["id"] and e["id"] != cur and not e["unavailable"]:
+            if e["role"] == "candidate" and e["id"] and e["id"] != cur:
                 missing = not have(e["id"], sp["speaker"], V4)
                 e["pending"] = missing
                 n += int(missing)
-        per[sp["speaker"]] = {"takes": n, "chars": n * len(line),
+                retry += int(missing and bool(e["unavailable"]))
+        per[sp["speaker"]] = {"takes": n, "retry": retry, "chars": n * len(line),
                               "usd": round(n * len(line) / 1000 * rate, 2)}
         total_takes += n
+        total_retry += retry
         total_chars += n * len(line)
-    return {"takes": total_takes, "chars": total_chars,
+    return {"takes": total_takes, "retry": total_retry, "chars": total_chars,
             "usd": round(total_chars / 1000 * rate, 2), "per_speaker": per,
             "baseline_model": model}
 

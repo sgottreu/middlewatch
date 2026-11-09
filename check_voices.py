@@ -131,6 +131,16 @@ def name_matches(name, voices):
             or v["name"].lower().startswith(n)]
 
 
+def library_by_id(vid, key):
+    """The Voice Library entry with exactly this id, or None. The library search
+    matches ids as well as names, which catches a pick whose name in
+    candidates.json isn't what the library calls it."""
+    status, data = call("GET", "/v1/shared-voices", key, {"search": vid, "page_size": 10})
+    if status != 200:
+        return None
+    return next((v for v in data.get("voices", []) if v.get("voice_id") == vid), None)
+
+
 def library_matches(name, key):
     status, data = call("GET", "/v1/shared-voices", key,
                         {"search": name, "page_size": 30})
@@ -187,10 +197,11 @@ def resolve(pick, voices, by_id, key, add_missing):
             return acct[0]["voice_id"], acct[0]["name"], v4_flag(acct[0])
     lib = library_matches(first, key) if name != vid else []
     if vid:
-        hit = next((v for v in lib if v["voice_id"] == vid), None)
+        hit = next((v for v in lib if v["voice_id"] == vid), None) or library_by_id(vid, key)
         if not hit:
-            return None, name, (f"{vid} not in account and not found by searching "
-                                f"the Voice Library for '{name}' — add it on elevenlabs.io")
+            return None, name, (f"{vid} not in account and not in the Voice Library, by "
+                                f"name ('{name}') or by id — it may be private or "
+                                "withdrawn; add it on elevenlabs.io")
     else:
         hit = ([v for v in lib if v["name"].lower() == full] or lib or [None])[0]
     if not hit:
@@ -255,7 +266,7 @@ def build_auditions(args, cfg, configured, voices, by_id, key, baseline):
             picks, why = [], "not a Default; kept"
 
         tag = " [Default, expires 2026-12-31]" if is_default else ""
-        print(f"  {speaker:<22} now {vname}{tag}")
+        print(f"  {speaker:<22} now {vname}  [{cur_id or 'no id'}]{tag}")
         if not picks:
             print(f"  {'':<22} try -  ({why})")
 
@@ -276,11 +287,12 @@ def build_auditions(args, cfg, configured, voices, by_id, key, baseline):
                 continue
             cid, cdisplay, note = resolve(pick, voices, by_id, key, args.add_missing)
             if not cid:
-                print(f"  {'':<22} try {cdisplay}  ({why} — {note.strip()})")
+                print(f"  {'':<22} try {cdisplay}  [{pid if pid and pid != cdisplay else 'no id'}]  ({why} — {note.strip()})")
                 jobs.append((row, f"{cdisplay} @ {V4}", None, note.strip(), "", None,
                              {"speaker": speaker, "pick": pick}))
                 continue
-            print(f"  {'':<22} try {cdisplay}  ({why}{note})")
+            # The id in the account: adding a library voice can give it a new one.
+            print(f"  {'':<22} try {cdisplay}  [{cid}]  ({why}{note})")
             if cid in seen:
                 continue
             seen.add(cid)

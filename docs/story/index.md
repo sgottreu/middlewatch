@@ -24,6 +24,7 @@ from inside `story_pipeline/` puts your output somewhere you didn't mean. The
 
 | | |
 |---|---|
+| [Quick reference](quick-reference.md) | Every command and how to start the review UI, on one page. |
 | [Setup](setup.md) | Install, and the three accounts. **Read the licensing notes** — ElevenLabs grants no commercial rights on its free tier. |
 | [Running the pipeline](running.md) | The six stages, the commands that drive them, and the length dial. |
 | [Architecture](architecture.md) | How stages hand off, why every run is resumable, and the three decisions everything rests on. |

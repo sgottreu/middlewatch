@@ -375,7 +375,7 @@ def arc_view(arc: str, story: str | None = None, stories: Path = Path("stories")
                        name=_pick_name(p), note=p.get("note", "") if isinstance(p, dict) else "")
             e["unavailable"] = next((u["note"] for u in record.get("unavailable", [])
                                      if u["speaker"] == sp and (vid and vid in u["pick"]
-                                     or _pick_name(p).lower() in u["pick"].lower())), None)
+                                     or _pick_name(p).lower() == u["pick"].lower().split(" (")[0])), None)
             entries.append(e)
             if vid:
                 seen.add(vid)

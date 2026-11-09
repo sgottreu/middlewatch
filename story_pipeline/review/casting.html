@@ -79,6 +79,11 @@
   section.sp > .hd { display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px;
                      padding:12px 16px; border-bottom:1px solid var(--line); }
   section.sp > .hd h2 { font-size:17px; }
+  /* A cast character folds to its header; Show opens it to change the verdict. */
+  section.sp.folded > :not(.hd) { display:none; }
+  section.sp.folded > .hd { border-bottom:none; }
+  .chip.taken { border-color:var(--accent); color:var(--accent); }
+  .ent.taken { opacity:.62; }
   .chip { font-family:var(--mono); font-size:11px; border:1px solid var(--line);
           border-radius:20px; padding:1px 8px; color:var(--dim); white-space:nowrap; }
   .chip.cast { border-color:var(--ok); color:var(--ok); }
@@ -247,7 +252,7 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c =>
   ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
 const money = n => "$" + (Number(n) || 0).toFixed(2);
-let S = { arc: null, story: null, view: null, poll: null, logFrom: 0, wasRunning: false,
+let S = { open: new Set(), arc: null, story: null, view: null, poll: null, logFrom: 0, wasRunning: false,
           poolGender: "" };
 
 function toast(msg, bad) {
@@ -328,8 +333,12 @@ function render() {
   const running = v.job && v.job.state === "running";
   const ra = $("runAll");
   ra.disabled = running || !est.takes;
-  ra.textContent = est.takes ? `Run ${est.takes} new audition${est.takes > 1 ? "s" : ""} · ~${money(est.usd)}`
-                             : "Everything here has been auditioned";
+  // Retries are voices that couldn't be found last time — they may be in My
+  // Voices now. Remove one from the list to stop it being offered.
+  const retry = est.retry || 0, fresh = est.takes - retry;
+  ra.textContent = !est.takes ? "Everything here has been auditioned"
+    : (fresh ? `Run ${fresh} new` : "") + (fresh && retry ? " + " : "") +
+      (retry ? `${fresh ? "retry" : "Retry"} ${retry} unavailable` : "") + ` · up to ~${money(est.usd)}`;
   ra._label = ra.textContent;
   $("applyBtn").disabled = !v.speakers.some(sp => sp.cast) || running;
   $("lede").innerHTML =
@@ -338,6 +347,10 @@ function render() {
     `Takes already recorded are reused, so a run only pays for what's new. ` +
     `Verdicts save as you click and land in <code>stories/${esc(v.arc)}/_casting/CASTING.md</code>.`;
 
+  // Who each cast voice belongs to, so the same voice under another character
+  // says it's taken.
+  S.castBy = {};
+  v.speakers.forEach(sp => { if (sp.cast) S.castBy[sp.cast.id] = sp.speaker; });
   $("speakers").innerHTML = v.speakers.map(sp => speakerHtml(sp, est.per_speaker[sp.speaker], running)).join("");
   renderPool();
 }
@@ -366,14 +379,18 @@ function speakerHtml(sp, cost, running) {
   const n = cost ? cost.takes : 0;
   const runBtn = sp.line
     ? `<button type="button" data-run-speaker="${esc(sp.speaker)}" ${running || !n ? "disabled" : ""}>${
-        n ? `Run ${n} · ~${money(cost.usd)}` : "All heard"}</button>`
+        !n ? "All heard" : n === cost.retry ? `Retry ${n} · up to ~${money(cost.usd)}`
+           : `Run ${n} · ~${money(cost.usd)}`}</button>`
     : "";
   const line = sp.line
     ? `<p class="line">“${esc(sp.line)}”</p>`
     : `<p class="line none">No lines in ${esc(S.view.story)}. ${
         sp.in_stories.length ? "Speaks in: " + sp.in_stories.map(esc).join(", ") + " — pick one under “Lines from”." : "Not in any written story yet."}</p>`;
-  return `<section class="sp" id="${id}" data-speaker="${esc(sp.speaker)}">
-    <div class="hd"><h2>${esc(sp.speaker)}</h2>${chips.join("")}<span class="spacer"></span>${runBtn}</div>
+  const folded = sp.cast && !S.open.has(sp.speaker);
+  const fold = sp.cast ? `<button type="button" class="quiet" data-fold="${esc(sp.speaker)}"
+      aria-expanded="${!folded}">${folded ? "Show" : "Hide"}</button>` : "";
+  return `<section class="sp ${folded ? "folded" : ""}" id="${id}" data-speaker="${esc(sp.speaker)}">
+    <div class="hd"><h2>${esc(sp.speaker)}</h2>${chips.join("")}<span class="spacer"></span>${folded ? "" : runBtn}${fold}</div>
     ${bibleHtml(sp.bible)}
     ${line}
     ${sp.entries.map(e => entryHtml(sp, e, running)).join("") ||
@@ -396,6 +413,8 @@ function labelsText(lb) {
 function entryHtml(sp, e, running) {
   const role = e.role === "current" ? `<span class="chip cur">current</span>`
              : e.role === "other" ? `<span class="chip">no longer listed</span>` : "";
+  const takenBy = e.id && S.castBy[e.id] !== sp.speaker ? S.castBy[e.id] : null;
+  const taken = takenBy ? `<span class="chip taken">already cast as ${esc(takenBy)}</span>` : "";
   const here = e.takes.filter(t => t.story === S.view.story);
   const elsewhere = e.takes.filter(t => t.story !== S.view.story);
   const show = here.length ? here : elsewhere;
@@ -423,8 +442,8 @@ function entryHtml(sp, e, running) {
     : `<span class="chip">judge after hearing</span>`;
   const rm = e.role === "candidate" && e.id
     ? `<button type="button" class="quiet rm" data-remove="${esc(e.id)}" data-speaker="${esc(sp.speaker)}">Remove from list</button>` : "";
-  return `<div class="ent ${v ? "v-" + v : ""}">
-    <div class="nm"><b>${esc(e.name)} ${role}</b>
+  return `<div class="ent ${v ? "v-" + v : ""} ${takenBy ? "taken" : ""}">
+    <div class="nm"><b>${esc(e.name)} ${role} ${taken}</b>
       ${labelsText(e.labels) ? `<span class="lb">${esc(labelsText(e.labels))}</span>` : ""}
       ${e.id ? `<span class="lb">${esc(e.id)}</span>` : ""}
       ${e.note ? `<span class="nt">${esc(e.note)}</span>` : ""}</div>
@@ -468,7 +487,10 @@ $("runAll").onclick = e => run({}, e.currentTarget,
 document.addEventListener("click", async ev => {
   const b = ev.target.closest("button");
   if (!b) return;
-  if (b.dataset.runSpeaker) {
+  if (b.dataset.fold) {
+    S.open.has(b.dataset.fold) ? S.open.delete(b.dataset.fold) : S.open.add(b.dataset.fold);
+    render(); placeJob((S.view.job || {}).speaker, false);   // render lifts the job panel out
+  } else if (b.dataset.runSpeaker) {
     const c = S.view.estimate.per_speaker[b.dataset.runSpeaker];
     run({ speakers: [b.dataset.runSpeaker] }, b, `Confirm — spend ~${money(c.usd)}`);
   } else if (b.dataset.runVoice) {
