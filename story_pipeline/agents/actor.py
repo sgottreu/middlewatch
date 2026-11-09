@@ -66,7 +66,7 @@ def cast_voices(cfg: dict, b: Bundle, provider) -> dict[str, str]:
                 raise ValueError(
                     f"{only} ({resolved}) is not in your ElevenLabs account.\n"
                     "Run\n  python3 -m story_pipeline.cli voices\n"
-                    "and put your own ids in elevenlabs.voice_library.\n"
+                    "and put your own ids in voices.yaml.\n"
                     "Nothing has been synthesized, so nothing has been billed."
                 )
         voices = {"narrator": only}
@@ -147,7 +147,7 @@ def cast_voices(cfg: dict, b: Bundle, provider) -> dict[str, str]:
                 + "\n\nThe ids shipped in config are the public library defaults, "
                   "which only work if you have added those voices to your account. "
                   "Run\n  python3 -m story_pipeline.cli voices\n"
-                  "and put your own ids in elevenlabs.voice_library.\n"
+                  "and put your own ids in voices.yaml.\n"
                   "Nothing has been synthesized, so nothing has been billed."
             )
 

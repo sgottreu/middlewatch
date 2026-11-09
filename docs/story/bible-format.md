@@ -164,7 +164,7 @@ outline: a matched character comes back with `"recurring": true` in
 
 ### `voice` must name a voice you have
 
-The value is a name from `elevenlabs.voice_library` in `config.yaml`, not a voice
+The value is a name from `voice_library` in `voices.yaml`, not a voice
 ID. `resolve_voice` raises on an unknown name — at cast time, before any audio is
 paid for, but after the story is written. Run `python3 -m story_pipeline.cli
 voices` and check the name exists before committing it.
@@ -287,7 +287,7 @@ quietly produce a broken series:
 | Names too similar by ear | `_validate_outline` rejects the outline — *after* the ideator has been billed. |
 | `gender` not female/male/neutral | Voice casting looks up the pool by this string. |
 | `age` not a whole number | |
-| `voice` not in `elevenlabs.voice_library` | Raises at cast time, once the story is already written. |
+| `voice` not in `voices.yaml` | Raises at cast time, once the story is already written. |
 | `art_style` present but empty | |
 | `voices` malformed, or an unknown narrator | |
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Put your own ElevenLabs voice ids into config.yaml.
+"""Put your own ElevenLabs voice ids into voices.yaml.
 
-    python3 scripts/sync-voices.py              # update config.yaml, keep a .bak
+    python3 scripts/sync-voices.py              # update voices.yaml (tracked; review with git diff)
     python3 scripts/sync-voices.py --dry-run    # show the diff, write nothing
     python3 scripts/sync-voices.py --all        # also add every other account voice
     python3 scripts/sync-voices.py --from-json voices.json    # no API call
@@ -11,7 +11,7 @@ Run from the repo root, in the venv, like everything else:
     source .venv/bin/activate
     python3 scripts/sync-voices.py
 
-`elevenlabs.voice_library` ships the public library ids, which only work for an
+`voice_library` in voices.yaml ships the public library ids, which only work for an
 account that has added those voices. On any other key the first `record` dies
 with `404 voice_not_found` — and `cli voices` tells you the right ids but leaves
 you to copy seven of them across by hand, which is the kind of transcription
@@ -40,7 +40,7 @@ That points the narrator at Sarah's id and leaves every story's pinned casting
 working. The alternative is adding a voice called Charlotte to your account in
 the dashboard, which is better only if you want the label to stay honest.
 
-The file is edited line by line rather than loaded and dumped: config.yaml is
+The file is edited line by line rather than loaded and dumped: voices.yaml is
 commented throughout, and a round trip through PyYAML would throw every comment
 away to change seven values.
 """
@@ -50,7 +50,6 @@ from __future__ import annotations
 import argparse
 import json
 import re
-import shutil
 import sys
 from pathlib import Path
 
@@ -173,7 +172,7 @@ def patch(text: str, ids: dict[str, str], extra: dict[str, str]) -> tuple[str, l
     lines = text.splitlines(keepends=True)
     start = next((i for i, l in enumerate(lines) if LIB_KEY.match(l)), None)
     if start is None:
-        sys.exit("no voice_library: block in config.yaml — add one and rerun")
+        sys.exit("no voice_library: block in voices.yaml — add one and rerun")
     indent = len(LIB_KEY.match(lines[start]).group(1))
 
     # `last` rather than "the first line that ends the block": a blank line
@@ -279,7 +278,10 @@ def main() -> int:
     extra = {n: v for n, v in have.items() if bare(n) not in {bare(x) for x in ids}} \
         if args.all else {}
 
-    text = args.config.read_text()
+    vpath = cfgmod.voices_path(cfg)
+    if not vpath.exists():
+        sys.exit(f"{vpath} not found — run this from the repo root")
+    text = vpath.read_text()
     new_text, changes = patch(text, ids, extra)
 
     width = max((len(c[0]) for c in changes), default=10)
@@ -307,16 +309,15 @@ def main() -> int:
               f"  python3 scripts/sync-voices.py --map {missing[0]}=<account voice>")
 
     if new_text == text:
-        print("\nconfig.yaml already matches your account — nothing written.")
+        print(f"\n{vpath} already matches your account — nothing written.")
         return 1 if missing else 0
     if args.dry_run:
-        print("\nDry run. config.yaml not written.")
+        print(f"\nDry run. {vpath} not written.")
         return 0
 
-    backup = args.config.with_suffix(args.config.suffix + ".bak")
-    shutil.copy2(args.config, backup)
-    args.config.write_text(new_text)
-    print(f"\nWrote {args.config} (previous version kept as {backup.name})")
+    vpath.write_text(new_text)
+    print(f"\nWrote {vpath}. It is tracked: review with `git diff {vpath}`, then commit")
+    print("so every machine narrates with the same ids.")
     print("Check it with:  python3 -m story_pipeline.cli record <story> --dry-run")
     return 1 if missing else 0
 

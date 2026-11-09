@@ -10,7 +10,7 @@
 | `does not support assistant message prefill` (400) | The 4.6/5 model generations removed prefill. `llm.complete()` drops it automatically; if you see this, the code predates that fix. |
 | `anthropic-workspace-id is required` (400) | Your key is identity-linked and reaches more than one workspace, so it must name one per request. Set `ANTHROPIC_WORKSPACE_ID` in `.env`, or create a key scoped to a single workspace. See below. |
 | Reading a chapter, you cannot tell who is speaking | Fixed in `render_markdown`: a paragraph per speaker and a `**Name**` label on each turn. Chapters written before that render flat — re-render with `cli render <story>`, no API calls and no cost. |
-| `voice X is not in elevenlabs.voice_library` | Run `cli voices` and fix the mapping; caught before any paid call |
+| `voice X is not in voices.yaml` | Run `cli voices` and fix the mapping; caught before any paid call |
 | Female character in a male voice | Outline is missing `gender`; add it, or set `voice` on that cast member |
 | 429s partway through a record | Concurrency cap, not quota; `tts.py` backs off and retries |
 | Wrong accent in narration | Casting comes from the genre file's `voices`, pinned at ideation |

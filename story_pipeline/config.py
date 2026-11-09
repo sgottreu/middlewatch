@@ -98,8 +98,9 @@ DEFAULTS: dict[str, Any] = {
         "seed": None,          # set an int to make re-records deterministic
         "voice_settings": None,
         "usd_per_1k_credits": 0.22,  # Creator tier at time of writing; verify
-        # Names used by genre files and casting, mapped to voice IDs. Run
-        # `cli voices` to list your account's library and correct these.
+        # Names used by genre files and casting, mapped to voice IDs. These are
+        # fallbacks only: the real library is voices.yaml (tracked), merged in
+        # by load(). Run `cli voices` to list your account's library.
         "voice_library": {
             "Charlotte": "XB0fDUnXU5powFXDhCwa",
             "Alice": "Xb7hH8MzeJPuXlfP81I8",
@@ -155,12 +156,48 @@ def _deep_merge(base: dict, over: dict) -> dict:
     return out
 
 
+VOICES_FILE = "voices.yaml"
+
+
+def voices_path(cfg: dict | None = None) -> Path:
+    """Where the voice library lives. Resolves against cwd, like config.yaml."""
+    return Path((cfg or {}).get("voices_file") or VOICES_FILE)
+
+
 def load(path: str | Path | None = None) -> dict[str, Any]:
     cfg = dict(DEFAULTS)
     p = Path(path) if path else Path("config.yaml")
     if p.exists():
         cfg = _deep_merge(cfg, yaml.safe_load(p.read_text()) or {})
-    return cfg
+    return _merge_voices(cfg, p)
+
+
+def _merge_voices(cfg: dict, config_path: Path) -> dict:
+    """Fold voices.yaml into cfg["elevenlabs"]["voice_library"].
+
+    The library lives in its own file because config.yaml is git-ignored and per
+    machine, while voice ids are shared: a cast applied on one machine has to
+    narrate the same on every other. Everything downstream still reads
+    cfg["elevenlabs"]["voice_library"], so nothing else needs to know.
+
+    One source only. A library in both files would leave the question of which
+    one wins to whoever reads this function, so it refuses instead.
+    """
+    vp = voices_path(cfg)
+    if not vp.exists():
+        return cfg
+    data = yaml.safe_load(vp.read_text()) or {}
+    lib = data.get("voice_library")
+    if not isinstance(lib, dict):
+        raise RuntimeError(f"{vp} has no `voice_library:` mapping")
+    if config_path.exists():
+        raw = yaml.safe_load(config_path.read_text()) or {}
+        if "voice_library" in (raw.get("elevenlabs") or {}):
+            raise RuntimeError(
+                f"elevenlabs.voice_library is in both {config_path} and {vp}. "
+                f"Move any entries {vp} lacks into it, then delete the block "
+                f"from {config_path}.")
+    return _deep_merge(cfg, {"elevenlabs": {"voice_library": lib}})
 
 
 def load_env(path: str | Path = ".env") -> list[str]:

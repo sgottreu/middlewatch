@@ -126,7 +126,7 @@ edit to one file, not a code change.
 | I want to… | Edit |
 |---|---|
 | Change which voice narrates a genre | `voices:` in `story_pipeline/prompts/genres/<genre>.md` |
-| Fix a voice ID, or add a voice | `elevenlabs.voice_library` in `config.yaml`. Run `cli voices` first. |
+| Fix a voice ID, or add a voice | `voices.yaml` (tracked). Run `cli voices` first. |
 | Pin one character to one voice forever | `voice:` on that character in the bible, or on a cast member in `outline.json` |
 | Switch back to Polly | `tts_provider: polly` in `config.yaml` |
 | Change the art style for a genre | `art_style:` in the genre frontmatter |

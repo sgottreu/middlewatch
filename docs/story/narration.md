@@ -31,7 +31,8 @@ very common in this genre.
 
 ### Casting
 
-Voice names live in genre files; `elevenlabs.voice_library` maps names to IDs.
+Voice names live in genre files; `voice_library` in `voices.yaml` (tracked, at the
+repo root) maps names to IDs.
 That indirection means a deprecated voice is a one-line config fix rather than an
 edit to every genre file, and genre frontmatter stays readable.
 
@@ -209,7 +210,7 @@ gives the price of redrawing. It does not decide for you.
 
 ## The voice ids are yours, not ours
 
-`elevenlabs.voice_library` ships the public library ids. They only work for an
+`voices.yaml` ships the public library ids. They only work for an
 account that has added those voices, so the first run on a new key fails with
 `404 voice_not_found` — and it fails *after* chapter one's narrator segments
 have been synthesized and billed, because the 404 arrives on whichever voice
@@ -217,13 +218,13 @@ happens to be cast second.
 
 `cast_voices` now asks the account what it actually has (one free `GET /v1/voices`)
 and refuses before anything is synthesized, naming every voice that is missing.
-Fix it once, per machine:
+Fix it once, and commit it — `voices.yaml` is tracked, so every machine gets it:
 
 ```bash
 python3 -m story_pipeline.cli voices     # your real ids, flagged against the library
 ```
 
-and put those ids in `elevenlabs.voice_library`. The manifest pins voice
+and put those ids in `voices.yaml` (`python3 scripts/sync-voices.py` does it for you). The manifest pins voice
 *names*, not ids, so correcting the library is enough — no re-casting needed.
 
 ## Casting never crosses gender

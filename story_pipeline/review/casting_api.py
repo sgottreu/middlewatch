@@ -234,7 +234,7 @@ def apply_plan(cfg: dict, arc: str, use_v4: bool = True, cast_mode: bool = True)
 
 def apply(cfg: dict, arc: str, use_v4: bool = True, cast_mode: bool = True,
           commit: bool = True, push: bool = True) -> dict:
-    """Write the cast into config.yaml, the bible and the arc's stories, then
+    """Write the cast into voices.yaml, config.yaml, the bible and the arc's stories, then
     commit. Free in itself; it is the re-recording it queues up that costs."""
     from .. import casting_apply
     return casting_apply.apply(cfg, _arc(cfg, arc), use_v4=use_v4, cast_mode=cast_mode,

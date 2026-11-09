@@ -42,13 +42,7 @@ elevenlabs:
   audio_tags: auto          # auto = only on models that perform them (v3)
   seed: null                      # set an int for deterministic re-records
   usd_per_1k_credits: 0.22        # verify against your plan
-  voice_library:                  # run `cli voices` to get your real IDs
-    Charlotte: XB0fDUnXU5powFXDhCwa
-    Daniel: onwK4e9ZLuTAKqWW03F9
-    Alice: Xb7hH8MzeJPuXlfP81I8
-    George: JBFqnCBsd6RMkjVDRZzb
-    Lily: pFZP5JQG7iQjIQuC4Bku
-    Brian: nPczCjzI2devNBz1zQrb
+  # voice_library lives in voices.yaml (tracked), not here.
 
 polly:                       # kept working; not the default
   engine: generative

@@ -626,7 +626,7 @@ async function refreshPlan() {
   } catch (e) { $("aplan").innerHTML = `<div class="warn bad">${esc(e.message)}</div>`; return; }
   const c = p.config, arrow = `<span class="arrow">→</span>`;
   const cfgRows = [
-    ...Object.entries(c.library_add).map(([k, v]) => `<tr><td>voice_library</td><td>add <code>${esc(k)}: ${esc(v)}</code></td></tr>`),
+    ...Object.entries(c.library_add).map(([k, v]) => `<tr><td>voices.yaml</td><td>add <code>${esc(k)}: ${esc(v)}</code></td></tr>`),
     c.mode ? `<tr><td>casting.mode</td><td>${esc(c.mode[0])} ${arrow} ${esc(c.mode[1])}</td></tr>` : "",
     c.max_named_voices ? `<tr><td>casting.max_named_voices</td><td>${esc(c.max_named_voices[0])} ${arrow} ${esc(c.max_named_voices[1])}</td></tr>` : "",
     c.model ? `<tr><td>elevenlabs.model</td><td>${esc(c.model[0])} ${arrow} ${esc(c.model[1])}</td></tr>` : "",
@@ -676,7 +676,7 @@ $("ago").onclick = e => armed(e.currentTarget, "Confirm — write the changes", 
       : esc(g.message || "Not committed.");
     $("aresult").innerHTML = `<div class="okbox"><b>Applied.</b> ${gitLine}
       ${r.rerecord.length ? `<br>Next: re-record ${r.rerecord.map(esc).join(", ")} from the <a href="/">review queue</a>.` : ""}
-      <br><small>Restart the review server on any other machine that narrates, and copy the new voice_library lines to its config.yaml.</small></div>`;
+      <br><small>On any other machine that narrates: pull, then restart its review server. New voices are in voices.yaml; mode and model changes to config.yaml are local and need making there by hand.</small></div>`;
     $("ago").hidden = true;
     load(true);
   } catch (err) {

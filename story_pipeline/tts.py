@@ -236,7 +236,7 @@ class ElevenLabs:
         if re.fullmatch(r"[A-Za-z0-9]{20}", name):
             return name  # already an ID
         raise ValueError(
-            f"voice {name!r} is not in elevenlabs.voice_library and is not a "
+            f"voice {name!r} is not in voices.yaml and is not a "
             f"voice ID. Run `cli voices` to list your account's voices."
         )
 

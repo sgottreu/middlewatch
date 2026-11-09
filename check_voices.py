@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compare the repo's elevenlabs.voice_library against the ElevenLabs account,
+"""Compare voices.yaml's voice_library against the ElevenLabs account,
 and optionally render samples to audition voices on Eleven v4.
 
 Stdlib only (PyYAML used if the config is YAML).
@@ -101,8 +101,13 @@ def load_config(path):
 
 def voice_library(cfg):
     lib = (cfg.get("elevenlabs") or {}).get("voice_library")
+    # The library lives in voices.yaml (tracked); config.yaml is per machine.
+    vfile = pathlib.Path(cfg.get("voices_file") or "voices.yaml")
+    if vfile.exists():
+        import yaml
+        lib = {**(lib or {}), **((yaml.safe_load(vfile.read_text()) or {}).get("voice_library") or {})}
     if lib is None:
-        sys.exit("No elevenlabs.voice_library found in that config.")
+        sys.exit("No voice_library found in voices.yaml or that config.")
     items = lib.items() if isinstance(lib, dict) else ((v.get("name"), v) for v in lib)
     out = {}
     for name, v in items:
@@ -277,7 +282,7 @@ def build_auditions(args, cfg, configured, voices, by_id, key, baseline):
                 jobs.append((row, label, cur_id, model, text, f"{base}__now__{model}.mp3",
                              {"speaker": speaker, "source": "current"}))
         elif not cur_id:
-            print(f"  {'':<22} ! {vname} isn't in elevenlabs.voice_library — current takes skipped")
+            print(f"  {'':<22} ! {vname} isn't in voices.yaml — current takes skipped")
 
         seen = {cur_id}
         for pick in picks:

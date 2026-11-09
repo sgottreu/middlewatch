@@ -34,8 +34,8 @@ allowance rather than adding to it.
 Polly still works as an alternative provider; set `tts_provider: polly` and
 supply AWS credentials instead. `boto3` is only needed on that path.
 
-Before the first record, run `cli voices` and correct `elevenlabs.voice_library`
-in `config.yaml` against your account. The shipped IDs are the common public
+Before the first record, run `cli voices` and correct `voices.yaml` against
+your account (or let `scripts/sync-voices.py` do it). The shipped IDs are the common public
 voices and may not match what you have.
 
 Three accounts, three API keys. None of them are the consumer chat subscription —
@@ -136,8 +136,8 @@ straightforward about disclosure (see below).
    this is not optional for a monetized channel.
 3. Profile icon → **API Keys → Create API Key.** Copy it immediately.
 4. Run `python3 -m story_pipeline.cli voices` and correct
-   `elevenlabs.voice_library` in `config.yaml` against what your account
-   actually has. The IDs shipped in the example config are the common public
+   `voices.yaml` against what your account actually has, or run
+   `python3 scripts/sync-voices.py`. The IDs shipped in `voices.yaml` are the common public
    voices and may not match.
 
 ### The licensing trap

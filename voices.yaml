@@ -1,0 +1,26 @@
+# The voice library: names the pipeline uses -> ElevenLabs voice ids.
+#
+# Tracked in git, unlike config.yaml, so a cast applied on one machine narrates
+# the same on every other. Not secret: an id only works with the account's API
+# key, which lives in .env.
+#
+# Names are labels, not claims about the voice — genre files, bibles and story
+# manifests refer to these names. Edit by hand, or let these write it:
+#   python3 -m story_pipeline.cli voices      # your account's ids, flagged against this
+#   python3 scripts/sync-voices.py            # put your account's ids in here
+#   the Casting page's Apply                  # adds the voices you cast
+voice_library:
+  Charlotte: wScwPA1qCkWo5R2dmlS8
+  Daniel: onwK4e9ZLuTAKqWW03F9
+  Alice: Xb7hH8MSUJpSbSDYk0k2
+  George: JBFqnCBsd6RMkjVDRZzb
+  Lily: pFZP5JQG7iQjIQuC4Bku
+  Brian: nPczCjzI2devNBz1zQrb
+  Matilda: XrExE9yKIg1WjnnlVkGX
+  Emilia: E4IXevHtHpKGh0bvrPPr
+  Shelley: 4CrZuIW9am7gYAxgo2Af
+  Archer: Fahco4VZzobUeiPqni1S
+  Sam: G7ILShrCNLfmS0A37SXS
+  Elizabeth: AXdMgz6evoL7OPd7eU12
+  Meera: 9TwzC887zQyDD4yBthzD
+  Samara X: 19STyYD15bswVz51nqLf

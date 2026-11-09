@@ -201,7 +201,7 @@ canon:
 
 # Characters who appear across stories. Name, age, gender and station are fixed
 # once written. `voice` pins their narration voice across the whole series and
-# must name a voice in elevenlabs.voice_library — run `cli voices` to check.
+# must name a voice in voices.yaml — run `cli voices` to check.
 #
 # `name` is matched on the full string, case-insensitively. "Honoria Pike" will
 # not join to "Mrs Honoria Pike", and nothing warns you: the character just
@@ -222,7 +222,7 @@ recurring_cast: []
 #    station: widow of a naval surgeon; three hundred a year
 #    appearance: Short, broad, grey hair pinned severely under a lace cap.
 #    dress: Black bombazine, always, ten years out of fashion.
-#    voice: Matilda                # must be in elevenlabs.voice_library
+#    voice: Matilda                # must be in voices.yaml
 #    note: Knows everything first and is wrong about a third of it.
 #
 # Uncomment the block above and edit it, or run `cli bible new <name> --genre <g>
@@ -383,7 +383,7 @@ def validate(path: Path, cfg: dict | None = None) -> list[Problem]:
         if voice:
             library = cfg.get("elevenlabs", {}).get("voice_library", {})
             if library and voice not in library and not re.fullmatch(r"[A-Za-z0-9]{20}", str(voice)):
-                err(where, f"voice {voice!r} is not in elevenlabs.voice_library",
+                err(where, f"voice {voice!r} is not in voices.yaml",
                     "Run `cli voices` to list your account's voices.")
 
         portrait = member.get("portrait")
@@ -419,7 +419,7 @@ def validate(path: Path, cfg: dict | None = None) -> list[Problem]:
             library = cfg.get("elevenlabs", {}).get("voice_library", {})
             narrator = voices.get("narrator")
             if narrator and library and narrator not in library:
-                err("voices.narrator", f"{narrator!r} is not in elevenlabs.voice_library",
+                err("voices.narrator", f"{narrator!r} is not in voices.yaml",
                     "Run `cli voices`.")
 
     # --- portraits on disk with nobody to own them ------------------------
@@ -484,7 +484,7 @@ recurring_cast:
 
 # Optional. Overrides the genre's art direction and casting for this series.
 # Add `voice: <name>` to a cast member above to pin their narration voice —
-# the name must exist in elevenlabs.voice_library. Run `cli voices` to check.
+# the name must exist in voices.yaml. Run `cli voices` to check.
 # art_style: >
 # voices:
 #   narrator: Charlotte

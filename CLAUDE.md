@@ -44,6 +44,7 @@ A monorepo with two pipelines and the operations shared between them.
 | `ledger/` | Shared spend and revenue, both pipelines. |
 | `docs/story/`, `docs/ambience/` | Documentation. `docs/story/index.md` is the wiki. |
 | `bibles/`, `stories/`, `config.yaml` | Resolve against cwd — see below. |
+| `voices.yaml` | The voice library (name → ElevenLabs id). Tracked; `config.yaml` is not, and must not hold a `voice_library` too — load refuses. |
 
 **Run everything from the repo root.** `LEDGER_DIR`, `stories_dir`, `bibles_dir`
 and `config.yaml` all resolve against the working directory. Running from inside

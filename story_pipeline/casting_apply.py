@@ -1,10 +1,12 @@
 """Apply an arc's casting: write the voices you cast everywhere they're decided.
 
-A character's voice is decided in five places, and a recast has to reach all of
+A character's voice is decided in six places, and a recast has to reach all of
 them or the old voice comes back somewhere:
 
-    config.yaml          elevenlabs.voice_library (name -> id), casting.mode,
-                         elevenlabs.model. Git-ignored: it is per machine.
+    voices.yaml          voice_library (name -> id). Tracked, so every machine
+                         narrates with the same ids.
+    config.yaml          casting.mode, casting.max_named_voices, elevenlabs.model.
+                         Git-ignored: it is per machine.
     bibles/<b>/<b>.md    recurring_cast[].voice, and voices.narrator — what every
                          new story in the series starts from.
     <story>/outline.json cast[].voice — what an unrecorded story will use.
@@ -96,20 +98,17 @@ def set_child(text: str, parent: str, child: str, value: str) -> str:
 
 
 def add_library(text: str, additions: dict) -> str:
-    """Append name: id lines to elevenlabs.voice_library."""
+    """Append name: id lines to voices.yaml's top-level voice_library."""
     if not additions:
         return text
     lines = text.split("\n")
-    el = _find_key(lines, "elevenlabs")
-    if el is None:
-        raise ApplyError("config.yaml has no `elevenlabs:` section")
-    lib = _find_key(lines, "voice_library", el + 1, _block(lines, el), indent=2)
+    lib = _find_key(lines, "voice_library")
     if lib is None:
-        raise ApplyError("config.yaml has no elevenlabs.voice_library")
+        raise ApplyError("voices.yaml has no `voice_library:` section")
     end = _block(lines, lib)
     while end > lib + 1 and not lines[end - 1].strip():
         end -= 1
-    new = [f"    {_q(k)}: {v}" for k, v in additions.items()]
+    new = [f"  {_q(k)}: {v}" for k, v in additions.items()]
     lines[end:end] = new
     return "\n".join(lines)
 
@@ -309,8 +308,10 @@ def plan(cfg: dict, arc: str, *, use_v4: bool = True, cast_mode: bool = True) ->
         warnings.append(f"The genre's pool for unnamed characters still uses Default voices that "
                         f"expire on 2026-12-31: {', '.join(expiring)}. Minor characters in new "
                         f"stories will get them.")
-    warnings.append("config.yaml isn't in git, so its changes apply to this machine only. "
-                    "Copy the new voice_library lines to any other machine that narrates.")
+    if set(config_changes) - {"library_add"}:
+        warnings.append("config.yaml isn't in git, so the casting.mode / model changes apply "
+                        "to this machine only. Make the same edits on any other machine "
+                        "that narrates. New voices go to voices.yaml, which is committed.")
 
     return {
         "arc": arc, "cast": [{"speaker": s, "voice": voice_of[s], "id": cast[s][0],
@@ -338,10 +339,22 @@ def apply(cfg: dict, arc: str, *, use_v4: bool = True, cast_mode: bool = True,
     voice_of = {c["speaker"]: c["voice"] for c in p["cast"]}
     touched: list[Path] = []
 
-    # 1. config.yaml — built and checked in memory first.
+    # 1. voices.yaml and config.yaml — built and checked in memory first.
+    vpath = cfgmod.voices_path(cfg)
+    if p["config"]["library_add"] and not vpath.exists():
+        raise ApplyError(f"{vpath} not found — it holds the voice library. "
+                         "Run from the repo root.")
+    vtext = vpath.read_text() if vpath.exists() else None
+    vnew = add_library(vtext, p["config"]["library_add"]) if vtext is not None else None
+    if p["config"]["library_add"]:
+        lib = (yaml.safe_load(vnew) or {}).get("voice_library") or {}
+        for k, vid in p["config"]["library_add"].items():
+            if lib.get(k) != vid:
+                raise ApplyError(f"voices.yaml edit check failed for voice_library.{k}")
+
     cpath = Path(config_path)
     ctext = cpath.read_text()
-    new = add_library(ctext, p["config"]["library_add"])
+    new = ctext
     if "mode" in p["config"]:
         new = set_child(new, "casting", "mode", "cast")
     if "max_named_voices" in p["config"]:
@@ -349,10 +362,6 @@ def apply(cfg: dict, arc: str, *, use_v4: bool = True, cast_mode: bool = True,
     if "model" in p["config"]:
         new = set_child(new, "elevenlabs", "model", V4)
     parsed = yaml.safe_load(new)
-    lib = parsed["elevenlabs"]["voice_library"]
-    for k, vid in p["config"]["library_add"].items():
-        if lib.get(k) != vid:
-            raise ApplyError(f"config edit check failed for voice_library.{k}")
     if "mode" in p["config"] and parsed["casting"]["mode"] != "cast":
         raise ApplyError("config edit check failed for casting.mode")
     if "model" in p["config"] and parsed["elevenlabs"]["model"] != V4:
@@ -373,11 +382,19 @@ def apply(cfg: dict, arc: str, *, use_v4: bool = True, cast_mode: bool = True,
                 raise ApplyError(f"bible edit check failed for {c['character']}")
 
     # Nothing has been written yet. From here on, write everything.
-    stamp = time.strftime("%Y%m%dT%H%M%S")
-    shutil.copy2(cpath, cpath.with_name(f"{cpath.name}.{stamp}.bak"))
-    cpath.write_text(new)
+    if new != ctext:
+        stamp = time.strftime("%Y%m%dT%H%M%S")
+        shutil.copy2(cpath, cpath.with_name(f"{cpath.name}.{stamp}.bak"))
+        cpath.write_text(new)
+    if vnew is not None and vnew != vtext:
+        vpath.write_text(vnew)
+        touched.append(vpath)
     if bnew is not None:
         merged = {**cfg, **parsed}
+        merged["elevenlabs"] = {
+            **(merged.get("elevenlabs") or {}),
+            "voice_library": {**_library(cfg), **p["config"]["library_add"]},
+        }
         # Only problems this edit introduced: an unrelated, pre-existing error in
         # the bible is not this button's to refuse over.
         before = {str(x) for x in bibles.fatal(bibles.validate(bpath, merged))}
@@ -386,6 +403,8 @@ def apply(cfg: dict, arc: str, *, use_v4: bool = True, cast_mode: bool = True,
         if fatal:
             bpath.write_text(btext)
             cpath.write_text(ctext)
+            if vtext is not None:
+                vpath.write_text(vtext)
             raise ApplyError("The edited bible didn't validate, so nothing was changed:\n"
                              + "\n".join(str(f) for f in fatal))
         touched.append(bpath)

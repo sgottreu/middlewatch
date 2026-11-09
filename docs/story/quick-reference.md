@@ -91,7 +91,8 @@ All prefixed with `python3 -m story_pipeline.cli`.
 
 | Command | Cost |
 |---|---|
-| `voices` | free — list TTS account voices and IDs |
+| `voices` | free — list TTS account voices and IDs, flagged against `voices.yaml` |
+| `python3 scripts/sync-voices.py [--dry-run]` | free — write your account's ids into `voices.yaml` |
 | `tts-check [--text "…"] [--voice NAME]` | a few hundred credits |
 | `python3 check_voices.py --config config.yaml …` | paid — CLI auditions; the Casting page drives this for you |
 

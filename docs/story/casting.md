@@ -52,7 +52,8 @@ written, then writes the cast everywhere a character's voice is decided:
 
 | Where | What changes |
 |---|---|
-| `config.yaml` | New voices added to `elevenlabs.voice_library`; optionally `casting.mode: cast` (one voice per character, with `max_named_voices` raised to fit) and `elevenlabs.model: eleven_v4`. A backup is left as `config.yaml.<time>.bak`. |
+| `voices.yaml` | New voices added to `voice_library`. Tracked, so it is committed with the rest. |
+| `config.yaml` | Optionally `casting.mode: cast` (one voice per character, with `max_named_voices` raised to fit) and `elevenlabs.model: eleven_v4`. A backup is left as `config.yaml.<time>.bak`. |
 | The bible | `recurring_cast[].voice` for every cast character; `voices.narrator` only if the narrator differs from the genre default. |
 | Each story's `outline.json` | `cast[].voice`, which an unrecorded story records with. |
 | Each story's `manifest.json` | `pinned.voices`, which a recorded story re-records with. A changed voice marks that narration out of date, which puts the story in the review queue's **Narration out of date** group. Re-recording from there is the step that costs. |
@@ -70,8 +71,9 @@ says so, the same way `mw-commit-stories` behaves.
 
 Things it deliberately leaves to you, and says so in the preview:
 
-- **`config.yaml` is per machine.** It isn't in git. Copy the new
-  `voice_library` lines to any other machine that narrates.
+- **`config.yaml` is per machine.** It isn't in git. If Apply changed
+  `casting.mode` or the model, make the same edit on any other machine that
+  narrates. Voices themselves are in `voices.yaml`, which travels with a pull.
 - **Bible prose** that names an old voice, such as a voice casting note.
 - **Minor characters who aren't cast.** In cast mode they fall back to the
   narrator's voice.
