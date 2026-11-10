@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Middle Watch — watch</title>
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon-180.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#14140f">
+<style>
+  /* Same palette and button language as app.html and casting.html. */
+  :root {
+    --bg: #14140f; --panel: #1c1c16; --line: #2e2e24; --ink: #e8e4d8;
+    --dim: #97917f; --accent: #c9a227; --danger: #d4674a; --ok: #7ea05a;
+    --btn: #25405f; --btn-hi: #2f5078; --btn-line: #5a8bc4; --btn-ink: #e6eef8;
+    --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+         font: 15px/1.55 Charter, Georgia, serif; }
+  a { color:var(--accent); }
+  h1 { font-weight:600; line-height:1.25; margin:0; font-size:18px; }
+
+  header.top { position:sticky; top:0; z-index:5; background:var(--panel);
+               border-bottom:1px solid var(--line); padding:10px 24px;
+               display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; }
+  header.top .back { font-family:var(--mono); font-size:12px; text-decoration:none; }
+  .spacer { flex:1; }
+  .m { font-family:var(--mono); font-size:12px; color:var(--dim); }
+
+  button { font:inherit; font-size:13px; padding:6px 13px; border-radius:5px; cursor:pointer;
+           background:var(--btn); color:var(--btn-ink); border:1px solid var(--btn-line); }
+  button:hover:not(:disabled) { background:var(--btn-hi); }
+  button:disabled { background:transparent; color:var(--dim); border-style:dashed;
+                    border-color:var(--line); cursor:default; }
+  button.primary { background:var(--accent); color:#0f120b; border-color:var(--accent); }
+  button.done { background:transparent; color:var(--ok); border-color:var(--ok); }
+  kbd { font-family:var(--mono); font-size:10px; border:1px solid currentColor;
+        border-radius:3px; padding:0 4px; margin-left:7px; opacity:.6; }
+
+  main { max-width:1100px; margin:0 auto; padding:20px 24px 40px;
+         display:grid; grid-template-columns:minmax(0,1fr) 240px; gap:20px; }
+  video { width:100%; display:block; background:#000; border-radius:6px;
+          aspect-ratio:16/9; }
+  #state { margin:10px 0 0; }
+  #chapters h2 { font-size:12px; font-family:var(--mono); color:var(--dim);
+                 text-transform:uppercase; letter-spacing:.06em; margin:0 0 8px; font-weight:500; }
+  #chlist { list-style:none; margin:0; padding:0; }
+  #chlist li { padding:7px 10px; border-left:3px solid transparent; cursor:pointer;
+               border-radius:0 4px 4px 0; }
+  #chlist li:hover { background:var(--panel); }
+  #chlist li.on { border-left-color:var(--accent); background:var(--panel); }
+  #chlist .t { display:block; }
+  .empty { color:var(--dim); padding:40px 0; }
+
+  @media (max-width: 760px) {
+    header.top { padding:10px 16px; }
+    main { grid-template-columns:1fr; padding:12px 16px 32px; }
+    kbd { display:none; }
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="back" href="/">&larr; Queue</a>
+  <h1 id="title">…</h1>
+  <span class="m" id="sub"></span>
+  <span class="spacer"></span>
+  <button type="button" id="approve" disabled>Approve video<kbd>a</kbd></button>
+</header>
+<main>
+  <section>
+    <video id="v" controls preload="metadata" playsinline></video>
+    <p class="m" id="state"></p>
+  </section>
+  <aside id="chapters">
+    <h2>Chapters</h2>
+    <ul id="chlist"></ul>
+  </aside>
+</main>
+
+<script>
+const slug = decodeURIComponent(location.pathname.split("/")[2] || "");
+const v = document.getElementById("v");
+const ap = document.getElementById("approve");
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c =>
+  ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+const fmt = t => { t = Math.floor(t); const h = Math.floor(t / 3600),
+  m = Math.floor(t / 60) % 60, s = String(t % 60).padStart(2, "0");
+  return h ? `${h}:${String(m).padStart(2, "0")}:${s}` : `${m}:${s}`; };
+
+let detail = null, marks = [];
+
+// Where you stopped, per story, so a 30-minute cut can be watched in sittings.
+// Browser storage only: losing it costs a scrub, nothing more.
+const POS = "mw-watch-pos:" + slug;
+const savedPos = () => { try { return +localStorage.getItem(POS) || 0; } catch { return 0; } };
+const savePos = t => { try { localStorage.setItem(POS, String(Math.floor(t))); } catch {} };
+
+async function load() {
+  const d = await (await fetch("/api/story/" + encodeURIComponent(slug))).json();
+  if (d.error) { fail(d.error); return; }
+  detail = d;
+  document.title = `${d.title} — watch`;
+  document.getElementById("title").textContent = d.title;
+  document.getElementById("sub").textContent =
+    `${d.length} min · ${d.subgenre || d.genre}`;
+  if (d.stages.direct !== "done") { fail("No rendered video yet — Render it from the queue."); return; }
+  if (!v.src) {
+    v.src = `/video/${encodeURIComponent(slug)}/final.mp4`;
+    const tr = document.createElement("track");
+    Object.assign(tr, { kind: "subtitles", label: "English", srclang: "en",
+                        src: `/video/${encodeURIComponent(slug)}/subtitles.vtt` });
+    tr.addEventListener("load", () => chaptersFrom(tr.track));
+    v.appendChild(tr);
+    // Hidden still loads the cues, which is where the chapter marks come from.
+    tr.track.mode = "hidden";
+  }
+  setState();
+}
+
+function fail(msg) {
+  document.querySelector("main").innerHTML = `<p class="empty">${esc(msg)}</p>`;
+  ap.disabled = true;
+}
+
+// `direct` opens every chapter with a "Chapter N." cue, so the subtitles
+// already say where each one starts — no timing data needs a route of its own.
+function chaptersFrom(track) {
+  const titles = Object.fromEntries((detail.outline.chapters || []).map(c => [c.n, c.title]));
+  marks = [];
+  for (const c of track.cues || []) {
+    const m = /^Chapter (\d+)\.?$/i.exec(c.text.trim());
+    if (m) marks.push({ n: +m[1], t: c.startTime, title: titles[+m[1]] || "" });
+  }
+  const ul = document.getElementById("chlist");
+  ul.innerHTML = marks.length ? "" : `<li class="m">No chapter marks in the subtitles.</li>`;
+  marks.forEach(k => {
+    const li = document.createElement("li");
+    li.innerHTML = `<span class="t">${k.n}. ${esc(k.title)}</span><span class="m">${fmt(k.t)}</span>`;
+    li.onclick = () => { v.currentTime = k.t; v.play(); };
+    ul.appendChild(li);
+  });
+  highlight();
+}
+
+function highlight() {
+  let cur = -1;
+  marks.forEach((k, i) => { if (v.currentTime >= k.t - 0.05) cur = i; });
+  document.querySelectorAll("#chlist li").forEach((li, i) =>
+    li.classList.toggle("on", i === cur));
+}
+
+function setState() {
+  const st = detail.stages, pub = detail.published || {};
+  const line = document.getElementById("state");
+  if (st.publish === "done") {
+    line.innerHTML = `Published ${esc(pub.published || "")} · ` +
+      `<a href="${esc(pub.url)}" target="_blank" rel="noopener">${esc(pub.url)}</a>`;
+  } else if (st.approve === "approved") {
+    line.textContent = "Approved — upload it, then press Publish in the queue.";
+  } else {
+    line.textContent = "Rendered — watch it, then approve it.";
+  }
+  const approved = st.approve === "approved";
+  ap.disabled = st.publish === "done" ||
+                !(st.approve === "awaiting_review" || approved);
+  ap.className = approved ? "done" : "primary";
+  ap.innerHTML = approved ? `✓ Approved — undo<kbd>a</kbd>` : `Approve video<kbd>a</kbd>`;
+  ap.title = st.publish === "done" ? "Already published."
+    : approved ? "Withdraw the approval. Publish locks again."
+    : "Approve the rendered video. Unlocks Publish.";
+}
+
+async function approve() {
+  if (ap.disabled) return;
+  const undo = detail.stages.approve === "approved";
+  ap.disabled = true;
+  const r = await (await fetch("/api/approve", { method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ slug, what: "video", undo }) })).json();
+  if (r.error) { alert(r.error.replace(/^[A-Za-z_][\w.]*(Error|Exception):\s*/, "")); }
+  await load();
+}
+
+v.addEventListener("loadedmetadata", () => {
+  const t = savedPos();
+  // Resuming into the last few seconds would just end it again.
+  if (t > 5 && t < v.duration - 10) v.currentTime = t;
+});
+let lastSave = 0;
+v.addEventListener("timeupdate", () => {
+  highlight();
+  if (Math.abs(v.currentTime - lastSave) > 5) { lastSave = v.currentTime; savePos(v.currentTime); }
+});
+v.addEventListener("seeked", highlight);
+v.addEventListener("ended", () => savePos(0));
+
+ap.onclick = approve;
+
+document.addEventListener("keydown", e => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if (/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) return;
+  const k = e.key;
+  if (k === "a") { e.preventDefault(); approve(); }
+  else if (k === "k" || (k === " " && document.activeElement !== v)) {
+    e.preventDefault(); v.paused ? v.play() : v.pause(); }
+  else if (k === "j") { e.preventDefault(); v.currentTime = Math.max(0, v.currentTime - 10); }
+  else if (k === "l") { e.preventDefault(); v.currentTime += 10; }
+  else if (k === "c") {
+    e.preventDefault();
+    const t = v.textTracks[0]; if (t) t.mode = t.mode === "showing" ? "hidden" : "showing";
+  }
+  else if (k === "f") { e.preventDefault(); v.requestFullscreen?.(); }
+  else if (k === "[" || k === "]") {
+    e.preventDefault();
+    let i = -1; marks.forEach((m, j) => { if (v.currentTime >= m.t - 0.05) i = j; });
+    // "[" goes to the start of this chapter, or the one before if you are
+    // already within two seconds of it.
+    const to = k === "]" ? marks[i + 1]
+      : (i >= 0 && v.currentTime - marks[i].t > 2 ? marks[i] : marks[Math.max(0, i - 1)]);
+    if (to) v.currentTime = to.t;
+  }
+  else if (k === "Escape") { location.href = "/"; }
+  else if (k === "?") {
+    alert("space/k play · j/l ∓10s · [ ] chapter · c captions · f fullscreen · a approve · Esc queue"); }
+});
+
+load();
+</script>
+</body>
+</html>

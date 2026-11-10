@@ -117,6 +117,7 @@
        text-transform:uppercase; letter-spacing:.06em; }
   td.num { font-family:var(--mono); text-align:right; }
   .arrow { color:var(--accent); }
+  a.watch { color:var(--accent); font-family:var(--mono); font-size:13px; text-decoration:none; }
   pre.prose { white-space:pre-wrap; font:inherit; margin:0; }
 
   /* Back to the queue. Phone only: on desktop the queue is never gone. */
@@ -403,6 +404,7 @@
         <button type="button" id="recordBtn" disabled>Record…<kbd>n</kbd></button>
         <button type="button" id="designBtn" disabled>Design…<kbd>g</kbd></button>
         <button type="button" id="renderBtn" disabled>Render…<kbd>v</kbd></button>
+        <button type="button" id="watchBtn" disabled>Watch<kbd>o</kbd></button>
         <button type="button" id="zipBtn" disabled>Assets .zip</button>
         <button type="button" id="publishBtn" disabled>Publish…<kbd>p</kbd></button>
         <button type="button" id="reject" class="danger" disabled>Reject<kbd>r</kbd></button>
@@ -618,6 +620,22 @@ function render(d) {
   let h = `<h1>${esc(d.title)}</h1><div class="sub">${esc(d.genre)} / ${esc(d.subgenre)}` +
     (d.series ? ` · ${esc(d.series)}` : "") + ` · ${d.length} min</div>`;
 
+  // The two steps after the render. Only shown once there is a video, so an
+  // outline under review is not crowded with stages years away. Up here, not
+  // after the cast and tropes: once a cut exists, watching it is the job.
+  if (d.stages.direct === "done") {
+    const pub = d.published || {};
+    const vs = d.stages.publish === "done"
+      ? `Published ${esc(pub.published || "")} · ` +
+        `<a href="${esc(pub.url)}" target="_blank" rel="noopener">${esc(pub.url)}</a>`
+      : d.stages.approve === "approved" ? "Approved — upload it, then press Publish."
+      : "Rendered — watch it, then approve it.";
+    h += `<h2>Video</h2><p>${vs}</p>` +
+         `<p><a class="watch" href="/watch/${encodeURIComponent(d.slug)}">` +
+         `&#9654; Watch the video</a></p>`;
+  }
+
+
   for (const f of d.flags)
     h += `<div class="flag ${f.level}">${esc(f.text)}` +
          (f.note ? `<span class="n">${esc(f.note)}</span>` : "") + `</div>`;
@@ -649,18 +667,6 @@ function render(d) {
     if (d.impact.leader && d.impact.leader[1] > 1)
       h += `<p class="m">${esc(d.impact.leader[0])} has led ${d.impact.leader[1]} ` +
            `of them.</p>`;
-  }
-
-  // The two steps after the render. Only shown once there is a video, so an
-  // outline under review is not crowded with stages years away.
-  if (d.stages.direct === "done") {
-    const pub = d.published || {};
-    const vs = d.stages.publish === "done"
-      ? `Published ${esc(pub.published || "")} · ` +
-        `<a href="${esc(pub.url)}" target="_blank" rel="noopener">${esc(pub.url)}</a>`
-      : d.stages.approve === "approved" ? "Approved — upload it, then press Publish."
-      : "Rendered — watch it, then approve it.";
-    h += `<h2>Video</h2><p>${vs}</p>`;
   }
 
   h += `<h2>Chapters</h2>`;
@@ -913,11 +919,13 @@ function setActions(d) {
   const dsg = document.getElementById("designBtn");
   const ren = document.getElementById("renderBtn");
   const zip = document.getElementById("zipBtn");
+  const wb = document.getElementById("watchBtn");
   const pb = document.getElementById("publishBtn");
   if (!d) {
     ap.disabled = rj.disabled = rv.disabled = wr.disabled =
-      rec.disabled = dsg.disabled = ren.disabled = zip.disabled = pb.disabled = true;
-    for (const b of [ap, rv, wr, rec, dsg, ren, zip, pb, rj])
+      rec.disabled = dsg.disabled = ren.disabled = zip.disabled = pb.disabled =
+      wb.disabled = true;
+    for (const b of [ap, rv, wr, rec, dsg, ren, wb, zip, pb, rj])
       b.title = "Select a story in the queue first.";
     // Always a line here, so the row is visibly the status row even before
     // anything is selected — an empty one looked like it had gone missing.
@@ -990,6 +998,10 @@ function setActions(d) {
   ren.innerHTML = writing && jkind === "direct"
     ? ((d.job || {}).phase === "stitch" ? `Stitching…` : `Rendering ${at()}…`)
     : `${rendered ? "Re-render" : "Render"}…<kbd>v</kbd>`;
+
+  wb.disabled = !rendered;
+  tip(wb, "Watch the rendered video, with chapters and captions. Approve it from there or here.",
+      rendered ? "" : "there is no rendered video yet.");
 
   // The assets are still a deliverable of their own, for rendering elsewhere.
   const have = ((d.assets || {}).audio || 0) + ((d.assets || {}).images || 0);
@@ -1595,6 +1607,11 @@ sscrim.onclick = e => {
 document.getElementById("recordBtn").onclick = () => openStage("record");
 document.getElementById("designBtn").onclick = () => openStage("design");
 document.getElementById("renderBtn").onclick = () => openStage("direct");
+const openWatch = () => {
+  if (state.sel && !document.getElementById("watchBtn").disabled)
+    window.location = "/watch/" + encodeURIComponent(state.sel);
+};
+document.getElementById("watchBtn").onclick = openWatch;
 document.getElementById("zipBtn").onclick = () => {
   if (!state.sel) return;
   // A navigation, not a fetch: 150 MB belongs on disk, not in the tab's memory.
@@ -1794,8 +1811,9 @@ document.addEventListener("keydown", e => {
     e.preventDefault();
     if (!document.getElementById("renderBtn").disabled) openStage("direct");
   }
+  else if (e.key === "o") { e.preventDefault(); openWatch(); }
   else if (e.key === "?") {
-    toast("j/k move · a approve · e revise · w write · n record · g design · v render · p publish · r reject"); }
+    toast("j/k move · a approve · e revise · w write · n record · g design · v render · o watch · p publish · r reject"); }
 });
 
 loadQueue();

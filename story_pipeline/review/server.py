@@ -35,6 +35,9 @@ Routes:
                                sign off the rendered video; unlocks publish
     POST /api/publish          {"slug", "url", "date"?} mark it published on
                                YouTube; {"undo": true} reverses it — free
+    GET  /watch/<slug>         watch the rendered video (watch.html)
+    GET  /video/<slug>/final.mp4       the cut, with Range for seeking
+    GET  /video/<slug>/subtitles.vtt   the .srt, converted for <track>
 
   Casting (casting.html; see casting_api.py and story_pipeline/casting.py):
 
@@ -82,6 +85,7 @@ from ..bundle import Bundle, bundle_roots, find_bundle, real_answer
 
 APP_HTML = Path(__file__).with_name("app.html")
 CASTING_HTML = Path(__file__).with_name("casting.html")
+WATCH_HTML = Path(__file__).with_name("watch.html")
 
 # The only static files this server has. Named explicitly rather than serving the
 # directory: `app.html` sits here too, and so would anything else that ever lands
@@ -910,6 +914,31 @@ def package_files(cfg: dict, slug: str) -> tuple[Path, list[Path]]:
     return root, files
 
 
+def srt_to_vtt(srt: str) -> str:
+    """WebVTT from the .srt `direct` writes. <track> will not take SRT, and the
+    only real differences are the header and a dot for the comma in times."""
+    import re
+    body = re.sub(r"(\d\d:\d\d:\d\d),(\d\d\d)", r"\1.\2",
+                  srt.replace("\r\n", "\n").lstrip("\ufeff"))
+    return "WEBVTT\n\n" + body
+
+
+def video_file(cfg: dict, slug: str) -> Path:
+    """The rendered cut. find_bundle refuses anything but a plain slug, so the
+    URL cannot reach outside stories_dir."""
+    p = Bundle.open(find_bundle(cfg["stories_dir"], slug)).video_path
+    if not p.is_file():
+        raise FileNotFoundError(f"{slug} has no rendered video yet.")
+    return p
+
+
+def subtitles_vtt(cfg: dict, slug: str) -> bytes:
+    p = Bundle.open(find_bundle(cfg["stories_dir"], slug)).srt_path
+    if not p.is_file():
+        raise FileNotFoundError(f"{slug} has no subtitles yet.")
+    return srt_to_vtt(p.read_text(encoding="utf-8")).encode()
+
+
 def publish(cfg: dict, slug: str, url: str, when: str | None = None,
             undo: bool = False) -> dict:
     """Mark the story published. No --force here: the page only offers it
@@ -1065,6 +1094,20 @@ def _handler(cfg: dict):
                         self._file(casting_api.audio_path(cfg, arc, rel), "audio/mpeg")
                     except (FileNotFoundError, ValueError):
                         self._json({"error": "not found"}, 404)
+                elif path.startswith("/watch/"):
+                    self._send(200, WATCH_HTML.read_bytes(), "text/html; charset=utf-8")
+                elif path.startswith("/video/"):
+                    slug, _, name = unquote(path[len("/video/"):]).partition("/")
+                    try:
+                        if name == "final.mp4":
+                            self._file(video_file(cfg, slug), "video/mp4")
+                        elif name == "subtitles.vtt":
+                            self._send(200, subtitles_vtt(cfg, slug),
+                                       "text/vtt; charset=utf-8")
+                        else:
+                            self._json({"error": "not found"}, 404)
+                    except (FileNotFoundError, ValueError) as e:
+                        self._json({"error": str(e)}, 404)
                 elif path == "/api/queue":
                     self._json(queue(cfg))
                 elif path.startswith("/api/story/"):
@@ -1090,6 +1133,8 @@ def _handler(cfg: dict):
                                ICONS[name])
                 else:
                     self._json({"error": "not found"}, 404)
+            except (BrokenPipeError, ConnectionResetError):
+                pass  # a player that seeks drops the old request mid-body
             except Exception as e:  # a UI should show the error, not die
                 self._json({"error": f"{type(e).__name__}: {e}"}, 500)
             finally:

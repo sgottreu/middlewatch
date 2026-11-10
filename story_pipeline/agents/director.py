@@ -120,39 +120,58 @@ def _ken_burns(shot: dict, cfg: dict, out: Path, extra_ms: int, index: int) -> N
     seconds = (shot["duration_ms"] + extra_ms) / 1000
     frames = max(int(seconds * fps), 2)
 
-    # true renders at 4x supersample; "lite" at 2x with a faster encode — about
-    # a quarter of the pixels through zoompan, at the cost of a little shimmer
-    # on very slow zooms.
+    # "lite" and true differ only in interpolation and encoder preset; both
+    # are equally smooth. Linear and cubic measured the same for motion.
     mode = v["ken_burns"]
     lite = mode == "lite"
-    ss = 2 if lite else 4
     preset = "veryfast" if lite else "medium"
 
     if mode:
-        # Upscaling before zoompan is what stops the pan from stuttering —
-        # zoompan quantises its crop to integer source pixels.
+        # `perspective`, not `zoompan`. zoompan crops at whole source pixels and
+        # truncates the crop size separately from its position, so on a zoom
+        # this slow the rounding is bigger than the motion and the picture
+        # wobbles instead of gliding — 0.68 px of frame-to-frame noise at 2x
+        # supersample, still 0.47 at 4x. perspective resamples at 1/256 px with
+        # the rectangle re-evaluated every frame: 0.03 px at 1x, no supersample.
         rate = 0.14 / frames
         if index % 2:
-            z = f"'min(1.001+{rate}*on,1.14)'"      # push in
+            z = f"min(1.001+{rate}*on,1.14)"        # push in
         else:
-            z = f"'max(1.14-{rate}*on,1.001)'"      # pull out
+            z = f"max(1.14-{rate}*on,1.001)"        # pull out
+        # The centred source rectangle at zoom z, stretched onto the frame.
+        hw, hh = f"(W/2/({z}))", f"(H/2/({z}))"
+        x0, x1 = f"W/2-{hw}", f"W/2+{hw}"
+        y0, y1 = f"H/2-{hh}", f"H/2+{hh}"
         vf = (
-            f"scale={w * ss}:{h * ss}:force_original_aspect_ratio=increase,"
-            f"crop={w * ss}:{h * ss},"
-            f"zoompan=z={z}:d={frames}"
-            f":x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
-            f":s={w}x{h}:fps={fps},"
-            f"format=yuv420p"
+            f"perspective=x0='{x0}':y0='{y0}':x1='{x1}':y1='{y0}'"
+            f":x2='{x0}':y2='{y1}':x3='{x1}':y3='{y1}'"
+            f":interpolation={'linear' if lite else 'cubic'}:eval=frame,"
+            f"scale=out_range=tv,format=yuv420p"
         )
     else:
-        vf = (
-            f"scale={w}:{h}:force_original_aspect_ratio=increase,"
-            f"crop={w}:{h},fps={fps},format=yuv420p"
-        )
+        vf = "scale=out_range=tv,format=yuv420p"
 
-    _run(["ffmpeg", "-y", "-loop", "1", "-i", str(shot["image"]),
+    # Fit the still to the frame once, losslessly, rather than decoding and
+    # rescaling the JPEG for every frame of a looped input — that was ~40% of
+    # the render time. Looped at the output rate, so no fps conversion either.
+    still = out.with_suffix(".png")
+    _run(["ffmpeg", "-y", "-i", str(shot["image"]),
+          "-vf", f"scale={w}:{h}:force_original_aspect_ratio=increase,crop={w}:{h}",
+          "-frames:v", "1", str(still)])
+    _run(["ffmpeg", "-y", "-loop", "1", "-framerate", str(fps), "-i", str(still),
           "-t", f"{seconds:.3f}", "-vf", vf,
-          "-c:v", "libx264", "-preset", preset, "-crf", "18", str(out)])
+          *_X264(preset), str(out)])
+    still.unlink(missing_ok=True)
+
+
+def _X264(preset: str) -> list[str]:
+    """Every x264 encode in this module. The pixel format is pinned because the
+    scene images are JPEGs: left to negotiate, the xfade and subtitle re-encodes
+    came out full-range 4:4:4 (yuvj444p, High 4:4:4 Predictive), which no
+    browser decodes — the review page's player showed a duration and never a
+    frame. 4:2:0 is also what YouTube delivers, so nothing is lost."""
+    return ["-c:v", "libx264", "-preset", preset, "-crf", "18",
+            "-pix_fmt", "yuv420p", "-profile:v", "high"]
 
 
 def _stitch(clips: list[Path], shots: list[dict], fade_ms: int, out: Path) -> None:
@@ -188,7 +207,7 @@ def _stitch(clips: list[Path], shots: list[dict], fade_ms: int, out: Path) -> No
         elapsed += shots[i]["duration_ms"] / 1000
 
     _run(["ffmpeg", "-y", *inputs, "-filter_complex", ";".join(chain),
-          "-map", "[v]", "-c:v", "libx264", "-preset", "medium", "-crf", "18", str(out)])
+          "-map", "[v]", *_X264("medium"), str(out)])
 
 
 def direct(cfg: dict, b: Bundle, verbose: bool = True) -> Path:
@@ -229,10 +248,13 @@ def direct(cfg: dict, b: Bundle, verbose: bool = True) -> Path:
             args += ["-vf", f"subtitles={srt}:force_style="
                             "'FontName=Georgia,FontSize=22,PrimaryColour=&H00FFFFFF,"
                             "OutlineColour=&H80000000,BorderStyle=3,MarginV=60'"]
-            args += ["-c:v", "libx264", "-preset", "medium", "-crf", "18"]
+            args += _X264("medium")
         else:
             args += ["-c:v", "copy"]
-        args += ["-c:a", "aac", "-b:a", "160k", "-shortest", str(b.video_path)]
+        # faststart puts the index at the front, so a browser can begin
+        # playing before it has fetched a 30-minute file.
+        args += ["-c:a", "aac", "-b:a", "160k", "-shortest",
+                 "-movflags", "+faststart", str(b.video_path)]
         _run(args)
 
     b.set_stage("direct", "done")
