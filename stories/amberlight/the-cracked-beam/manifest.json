@@ -8,10 +8,11 @@
     "edit": "approved",
     "record": "done",
     "design": "done",
-    "direct": "done"
+    "direct": "done",
+    "approve": "approved"
   },
   "spend": {
-    "elevenlabs_credits": 52162.0,
+    "elevenlabs_credits": 78275.0,
     "gemini_images": 41.0
   },
   "pinned": {
