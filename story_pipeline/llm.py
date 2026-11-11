@@ -103,9 +103,14 @@ def complete(
         messages: list[dict[str, Any]] = [{"role": "user", "content": user}]
         if with_prefill:
             messages.append({"role": "assistant", "content": prefill})
-        return client().messages.create(
+        # Streamed, then collected. The SDK refuses a non-streaming request whose
+        # max_tokens could run past ten minutes (the ideator's 32,000 does), and
+        # get_final_message() returns the same Message `create` would, so nothing
+        # below changes. Errors still raise here, before any text arrives.
+        with client().messages.stream(
             model=model, max_tokens=max_tokens, system=system, messages=messages,
-        )
+        ) as stream:
+            return stream.get_final_message()
 
     try:
         resp = _send(use_prefill)
