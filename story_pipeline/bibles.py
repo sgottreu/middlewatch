@@ -54,13 +54,42 @@ class Bible:
         return self.meta.get("canon", [])
 
     @property
+    def minor_names(self) -> list[str]:
+        """Names a finished story has used for a one-story character. They are
+        not cast — no face, no pinned voice — but they are taken: the ideator is
+        shown them so a new person in the same parish does not get a used name."""
+        return self.meta.get("minor_names", []) or []
+
+    @property
+    def anchor_year(self) -> int | None:
+        """The year `recurring_cast` ages are given as of. A story set in another
+        year shifts every age by the difference (see `aged`)."""
+        y = self.meta.get("anchor_year")
+        return y if isinstance(y, int) else None
+
+    def aged(self, member: dict, year: int | None) -> int | None:
+        """`member`'s age in `year`, from the bible age and the anchor year."""
+        age = member.get("age")
+        if not isinstance(age, int) or year is None or self.anchor_year is None:
+            return age
+        return age + (year - self.anchor_year)
+
+    @property
     def cast_dir(self) -> Path:
         """Where this series' shared character portraits live."""
         return self.path.parent / f"{self.name}.cast"
 
     def member(self, name: str) -> dict | None:
+        """The cast entry for `name`, matched on the full name or any of the
+        entry's `aliases` (a married name, say), case-insensitively. The entry's
+        own `name` stays the key for its portrait and its voice pin, so an alias
+        reuses the same face rather than inventing a second one."""
+        want = name.lower()
         for c in self.recurring_cast:
-            if c["name"].lower() == name.lower():
+            if c["name"].lower() == want:
+                return c
+        for c in self.recurring_cast:
+            if any(str(a).lower() == want for a in c.get("aliases") or []):
                 return c
         return None
 
@@ -73,8 +102,9 @@ class Bible:
             path = self.cast_dir / named
             return path if path.exists() else None
         # No explicit filename: whichever format the portrait was generated in.
+        # Keyed on the entry's own name, so an alias finds the same file.
         for ext in ("jpg", "png"):
-            path = self.cast_dir / f"{_slug(name)}.{ext}"
+            path = self.cast_dir / f"{_slug(member['name'])}.{ext}"
             if path.exists():
                 return path
         return None
@@ -90,8 +120,9 @@ class Bible:
         if not self.member(name):
             return None
         self.cast_dir.mkdir(parents=True, exist_ok=True)
-        target = self.cast_dir / (self.member(name).get("portrait")
-                                  or f"{_slug(name)}{image.suffix or '.jpg'}")
+        member = self.member(name)
+        target = self.cast_dir / (member.get("portrait")
+                                  or f"{_slug(member['name'])}{image.suffix or '.jpg'}")
         if self.portrait(name):
             return None
         shutil.copy(image, target)
@@ -110,11 +141,17 @@ class Bible:
             parts += [f"- {c}" for c in self.canon]
 
         if self.recurring_cast:
-            parts += ["", "## Recurring cast", "",
-                      "These people exist in this series already. Use the ones "
-                      "this story needs and leave the rest out — a story that "
-                      "parades the whole cast has no room for its own. Their "
-                      "names, ages, stations and appearances are fixed.", ""]
+            intro = ("These people exist in this series already. Use the ones "
+                     "this story needs and leave the rest out — a story that "
+                     "parades the whole cast has no room for its own. Their "
+                     "names, ages, stations and appearances are fixed.")
+            if self.anchor_year:
+                intro += (f" Ages are as of {self.anchor_year}; in a story set in "
+                          f"another year, move every age by the difference, and "
+                          f"let stations follow what canon says has happened by then.")
+            intro += (" Where a character has another name, use the one that is "
+                      "true in the story's year, written exactly as given.")
+            parts += ["", "## Recurring cast", "", intro, ""]
             for c in self.recurring_cast:
                 bits = [f"**{c['name']}**"]
                 if c.get("age"):
@@ -122,8 +159,21 @@ class Bible:
                 if c.get("station"):
                     bits.append(c["station"])
                 parts.append("- " + ", ".join(bits))
+                if c.get("aliases"):
+                    parts.append("  - Also appears as: "
+                                 + ", ".join(f"**{a}**" for a in c["aliases"]))
                 if c.get("note"):
                     parts.append(f"  - {c['note']}")
+
+        if self.minor_names:
+            parts += ["", "## Names already used", "",
+                      "Finished stories have already used these people. Any of "
+                      "them may appear again as themselves, consistent with what "
+                      "is said here. Do not give their names — first names or "
+                      "surnames — to anyone new, and do not give a recurring "
+                      "character's surname to an unrelated family: in a parish "
+                      "this small a shared name reads as kinship.", ""]
+            parts += [f"- {n}" for n in self.minor_names]
         return "\n".join(parts)
 
 
@@ -339,6 +389,19 @@ def validate(path: Path, cfg: dict | None = None) -> list[Problem]:
                 warn(f"canon[{i}]", "still the scaffold placeholder",
                      "Replace it or delete the line.")
 
+    anchor = bible.meta.get("anchor_year")
+    if anchor is not None and not isinstance(anchor, int):
+        err("anchor_year", f"{anchor!r} is not a whole year",
+            "Write it as a number, e.g. `anchor_year: 1817`.")
+
+    minor = bible.meta.get("minor_names")
+    if minor is not None and not isinstance(minor, list):
+        err("minor_names", "must be a list of strings")
+    else:
+        for i, line in enumerate(minor or []):
+            if not isinstance(line, str) or not line.strip():
+                err(f"minor_names[{i}]", "not a non-empty string")
+
     # --- recurring cast ---------------------------------------------------
     cast = bible.meta.get("recurring_cast")
     if cast is not None and not isinstance(cast, list):
@@ -347,6 +410,7 @@ def validate(path: Path, cfg: dict | None = None) -> list[Problem]:
     cast = cast or []
 
     names: list[str] = []
+    alias_keys: list[tuple[str, str]] = []   # (alias, owner)
     for i, member in enumerate(cast):
         where = f"recurring_cast[{i}]"
         if not isinstance(member, dict):
@@ -359,6 +423,15 @@ def validate(path: Path, cfg: dict | None = None) -> list[Problem]:
             continue
         where = f"cast {name!r}"
         names.append(str(name))
+
+        aliases = member.get("aliases")
+        if aliases is not None:
+            if not isinstance(aliases, list) or not all(
+                    isinstance(a, str) and a.strip() for a in aliases):
+                err(where, "`aliases` must be a list of names",
+                    "e.g. `aliases: [Mrs Judith Rowe]`")
+            else:
+                alias_keys.extend((str(a), str(name)) for a in aliases)
 
         age = member.get("age")
         if age is not None and not isinstance(age, int):
@@ -397,6 +470,12 @@ def validate(path: Path, cfg: dict | None = None) -> list[Problem]:
     for d in sorted(dupes):
         err("recurring_cast", f"duplicate name {d!r}",
             "Names are the join key and must be unique.")
+    for alias, owner in alias_keys:
+        others = [n for n in names if n.lower() == alias.lower()] + \
+                 [o for a, o in alias_keys if a.lower() == alias.lower() and o != owner]
+        if others:
+            err(f"cast {owner!r}", f"alias {alias!r} is also {', '.join(others)}",
+                "An alias is a join key too; it must point at one character.")
 
     heads = [ear_key(n) for n in names]
     clash = sorted({n for n in names if heads.count(ear_key(n)) > 1})

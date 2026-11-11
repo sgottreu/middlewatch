@@ -409,20 +409,47 @@ def build_outline(
     return outline
 
 
+def story_year(outline: dict) -> int | None:
+    """The year a story is set in, read from its `setting` ("Amberlight parish,
+    Hampshire, late autumn 1816"). None when the setting names no year."""
+    m = re.search(r"\b(1[0-9]{3})\b", str(outline.get("setting") or ""))
+    return int(m.group(1)) if m else None
+
+
 def _apply_bible_casting(outline: dict, bible: bibles.Bible) -> None:
     """Force recurring characters back onto their series-pinned identity.
 
     The ideator is told to copy these fields verbatim and mostly does, but
     "mostly" is not continuity. Anything the bible states wins outright, so a
     paraphrased age or a drifted description can't reach the illustrator.
+
+    Two things the bible states are only true in its anchor year:
+
+    - **age** is moved by the years between the anchor and the story's setting,
+      so 1816 gets everyone a year younger rather than the 1817 figure.
+    - **station** is pinned only for stories set in or before the anchor year.
+      After it, lives move on (a curate marries, a sister stops keeping her
+      brother's house), and the ideator was told to follow canon there, so its
+      station stands. Before the anchor, nothing canon records has happened yet.
+
+    The outline keeps the name the ideator wrote, so an alias (a married name)
+    survives; the bible entry it matched still supplies face and voice.
     """
+    year = story_year(outline)
+    anchor = bible.anchor_year
     for member in outline.get("cast", []):
         canon = bible.member(member["name"])
         if not canon:
             continue
-        for field in ("age", "gender", "station", "appearance", "dress", "voice"):
+        for field in ("gender", "appearance", "dress", "voice"):
             if canon.get(field):
                 member[field] = canon[field]
+        age = bible.aged(canon, year)
+        if age is not None:
+            member["age"] = age
+        later = year is not None and anchor is not None and year > anchor
+        if canon.get("station") and not (later and member.get("station")):
+            member["station"] = canon["station"]
         member["recurring"] = True
 
 

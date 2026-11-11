@@ -1,6 +1,7 @@
 ---
 series: "Middle Watch: Amberlight"
 genre: regency
+anchor_year: 1817
 voices:
   narrator: Samara X
 
@@ -13,6 +14,16 @@ canon:
   - "There is one circulating library, kept above the draper's, and everyone knows who has borrowed what. Its window looks north up the lane and takes in the corner of the green."
   - "Bramdean is six miles off and has the nearest mason, Fenner, who will put no figure on paper for a man who has not stood in his yard."
   - "Mr Silas Rowe and Miss Judith Vane became engaged in June 1817. The banns were first read on the last Sunday of that month."
+  - "Oakmere Farm lies a mile east of the Bell along the Alresford road: red brick going brown, a pear trained flat along the south wall, and land, stock and a hop ground worth three hundred a year. Upper Barton, the Lamb farm, is the next farm to it."
+  - "Old Aldous Fenner of Oakmere died in early October 1816 and was buried at Alresford with his cousin's people. He was second cousin to Fenner, the Bramdean mason, and gave the parish a guinea every Easter for thirty years."
+  - "Captain Nathaniel Farr, Fenner's great-nephew, went for a soldier from Oakmere at nineteen, in 1809. He was reported dead in November 1813, spent thirteen months in a hospital at Lisbon, and came home on the Friday coach in October 1816."
+  - "Fenner's will of 1808 left Oakmere to Farr and was never revoked. A later paper dated 14 September 1816, in favour of Mr Vernon Hartwell, was broken in October 1816 by Owen Vane's dispensing book, Mrs Whitlow's account, and her April letter recovered in Winchester. Hartwell left Oakmere and the parish that month and has not been seen since. Farr holds Oakmere."
+  - "Captain Farr and Miss Hester Lamb of Upper Barton became engaged in October 1816."
+  - "Mr Cobbold, attorney, keeps an office up two steps off the close at Winchester and has held the Oakmere papers for thirty years. Undeliverable letters that carry a Fenner direction come back to his back-room shelf."
+  - "Owen Vane keeps a dispensing book, brown leather and ruled in four columns, with half the parish's physic written in it."
+  - "Judith Vane and Nathaniel Farr have known each other since they sat as children in the back pews of the church."
+  - "The parish alms come to seven pounds a year and a bushel of coal at Christmas. The Bell lets a small room over the arch at two shillings a night, and sixpence more for a fire."
+  - "The circulating library is a single room with a stove that smokes and eleven feet of shelf."
 
 recurring_cast:
   - name: Mrs Honoria Pike
@@ -32,6 +43,7 @@ recurring_cast:
     voice: Sam
     note: Genuinely good at the work and hopeless at everything adjacent to it, particularly money and his own interests. Engaged to Miss Vane from June 1817.
   - name: Miss Judith Vane
+    aliases: [Mrs Judith Rowe]
     age: 27
     gender: female
     station: keeps house for her brother, the apothecary; no fortune of her own
@@ -74,6 +86,12 @@ minor_names:
   - "Nye, a carter, who hauls hurdles on the Bramdean road."
   - "Old Nan Corbin at the mill cottages, laid up with her hip through the spring of 1817."
   - "Fenner, the Bramdean mason."
+  - "Captain Nathaniel Farr of Oakmere, half-pay officer, with a limp and a scar along one hand. Engaged to Miss Lamb from October 1816."
+  - "Miss Hester Lamb of Upper Barton, eight and twenty in 1816, who kept her father's dairy and Farr's third volume of Anson, eleven months under her bed."
+  - "Mrs Dorcas Whitlow, housekeeper at Oakmere these thirty years; fifty-four in 1816."
+  - "Thomas Ames, of the Oakmere dairy, the second witness to the September paper."
+  - "Mr Vernon Hartwell, Fenner's cousin's son, who held Oakmere from February to October 1816 and left for his debts in town."
+  - "Mr Cobbold, the Winchester attorney who held Fenner's papers."
 ---
 
 # Middle Watch: Amberlight

@@ -20,8 +20,8 @@ regency / gothic · Middle Watch: Amberlight
 | # | Title | Beats | Target | Written | Narrated |
 |---|---|---|---|---|---|
 | 1 | Lights at Amberlight | 5 | 560 | — | — |
-| 2 | The Cousin at the Bell | 5 | 560 | — | — |
-| 3 | The Light in the East Wing | 5 | 560 | — | — |
+| 2 | The Stranger at the Bell | 5 | 560 | — | — |
+| 3 | An Errand to the West Wing | 5 | 560 | — | — |
 | 4 | The Missing Lines | 5 | 560 | — | — |
 | 5 | The Sealed Room | 5 | 560 | — | — |
 | 6 | What Mrs Pike Saw | 5 | 560 | — | — |
@@ -33,9 +33,10 @@ regency / gothic · Middle Watch: Amberlight
 - **Miss Judith Vane**, 27 — protagonist *(recurring)*
 - **Mr Silas Rowe**, 34 — love_interest *(recurring)*
 - **Mrs Honoria Pike**, 58 — supporting *(recurring)*
-- **Mrs Averil Thorne**, 45 — supporting
-- **Miss Cassandra Wren**, 19 — supporting
-- **Mr Rafe Hale**, 32 — antagonist
+- **Mr Owen Vane**, 30 — supporting *(recurring)*
+- **Mrs Winifred Cardew**, 44 — supporting
+- **Miss Flora Easton**, 20 — supporting
+- **Mr Aubrey Stanhope**, 33 — antagonist
 
 ## Production
 
@@ -49,12 +50,14 @@ regency / gothic · Middle Watch: Amberlight
 
 | Stage | |
 |---|---|
-| ideate | approved |
+| ideate | awaiting_review |
 | write | pending |
 | edit | pending |
 | record | pending |
 | design | pending |
 | direct | pending |
+| approve | pending |
+| publish | pending |
 
 ---
 

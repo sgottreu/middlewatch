@@ -7,50 +7,49 @@
     "The meddling matchmaker",
     "Enemies of manner"
   ],
-  "logline": "When Amberlight House lights its windows again after ten years empty, the parish decides its new master is hiding a madwoman, when in truth he is hiding his own kindness.",
+  "bible_conflict": null,
+  "logline": "When the shut rooms of Amberlight House light their windows beside the parish schoolroom after six years dark, the parish decides its new master is hiding a madwoman, when in truth he is hiding his own kindness.",
   "promise": "A shuttered house, a family that will not explain itself, and a perfectly ordinary reason for all of it, arrived at only after the whole parish has guessed wrong.",
-  "setting": "Amberlight parish, Hampshire, late autumn 1816",
+  "setting": "Amberlight parish, Hampshire, late autumn 1818",
   "target_words": 2250,
   "cast": [
     {
-      "name": "Miss Judith Vane",
+      "name": "Miss Eliza Combe",
       "role": "protagonist",
-      "age": 27,
+      "age": 26,
       "gender": "female",
-      "station": "keeps house for her brother, the apothecary; no fortune of her own",
-      "want": "to be trusted to judge for herself, rather than carried along by everyone else's certainty",
-      "appearance": "Fair, freckled, of middling height, with reddish hair she cannot keep pinned and a habit of looking directly at whoever is speaking.",
-      "dress": "Sprigged muslin in summer, a grey wool pelisse in winter, both mended with more thrift than skill.",
-      "voice_note": "reads everything, says less than she thinks, dry when pressed",
-      "voice": "Emilia",
-      "recurring": true
+      "station": "keeps her late mother's dressmaking trade, taking work through the draper's counter; no fortune beyond her needle",
+      "want": "to be dealt with as a tradeswoman of skill and honesty, not managed or pitied by her betters",
+      "appearance": "Twenty-six, slight and quick-moving, dark hair pinned under a plain cap, a pincushion always at her wrist.",
+      "dress": "A serviceable brown stuff gown with a clean white apron, sleeves turned back for work.",
+      "voice_note": "brisk and plain-spoken, sharpest when she feels looked down on"
     },
     {
-      "name": "Mr Gideon Ashworth",
+      "name": "Mr Ambrose Calder",
       "role": "love_interest",
-      "age": 33,
+      "age": 35,
       "gender": "male",
-      "station": "trustee and cousin to the Marchmont estate, no title, comfortable independence",
-      "want": "to shield his ward from gossip without having to explain himself to a parish that has already decided",
-      "appearance": "tall, angular, with sharp dark brows and a scar at one temple from a childhood fall",
-      "dress": "a black riding coat, unfashionably plain, boots that have seen a good deal of walking",
-      "voice_note": "clipped and guarded, softens only when speaking of Flora"
+      "station": "trustee for his young cousin's bequest from the late Sir Edward Marchmont's estate; holds the main rooms of Amberlight House by the Marchmont family's leave; a modest independence of his own",
+      "want": "to protect his young cousin from parish gossip about her broken engagement without having to explain the family's grief to anyone",
+      "appearance": "Thirty-five, tall and spare, weathered from outdoor riding, with close-cropped grey-flecked hair and a guarded, unsmiling face.",
+      "dress": "A dark green coat of good cloth but no ornament, mud still on his boots from the road.",
+      "voice_note": "clipped and formal, drops the guard only when his cousin is frightened"
     },
     {
-      "name": "Miss Flora Marchmont",
+      "name": "Miss Cecily Daunt",
       "role": "supporting",
       "age": 19,
       "gender": "female",
-      "station": "orphaned niece of the late Sir Edward Marchmont, heiress to Amberlight House",
-      "want": "to be well again, and to be let alone until she is",
-      "appearance": "fair and very thin, with pale gold hair often loosely pinned, and shadows under her eyes",
-      "dress": "a white muslin morning gown, a shawl kept always close about her shoulders",
-      "voice_note": "quiet, careful, apologises before she speaks"
+      "station": "orphaned ward, heiress to a separate bequest left by the late Sir Edward Marchmont; no Marchmont by name",
+      "want": "to be left to mourn quietly until she can face the parish without shame",
+      "appearance": "Nineteen, slight and fair, with red-rimmed eyes and hands that twist constantly at a black ribbon.",
+      "dress": "Deep mourning black, unrelieved but for a thin strand of jet beads.",
+      "voice_note": "soft and halting, quick to apologise for her own tears"
     },
     {
       "name": "Mrs Honoria Pike",
       "role": "supporting",
-      "age": 58,
+      "age": 59,
       "gender": "female",
       "station": "widow of a naval surgeon; three hundred a year and a house on the green",
       "want": "to be first with the news, and proven right about it",
@@ -61,15 +60,28 @@
       "recurring": true
     },
     {
+      "name": "Mrs Hale",
+      "role": "supporting",
+      "age": 46,
+      "gender": "female",
+      "station": "draper's wife; keeps the counter of the circulating library above the shop",
+      "want": "to pass on exactly what she has heard, to everyone, the moment she has heard it",
+      "appearance": "Round-faced and pink, with spectacles pushed up into hair the colour of weak tea.",
+      "dress": "A striped apron over her gown, never removed even to serve customers upstairs.",
+      "voice_note": "reports gossip as news and news as gossip, precise and without malice",
+      "voice": "Elizabeth",
+      "recurring": true
+    },
+    {
       "name": "Mr Silas Rowe",
       "role": "supporting",
-      "age": 34,
+      "age": 35,
       "gender": "male",
-      "station": "curate of Amberlight; eighty a year and no expectations",
-      "want": "to be paid what he is owed without having to ask anyone for it",
+      "station": "curate of Amberlight; eighty a year and no expectations. Oversees the parish schoolroom in the east wing of Amberlight House.",
+      "want": "to keep his schoolroom warm and his scholars out of the shut rooms next door",
       "appearance": "Tall and thin, dark hair worn slightly too long, with the stoop of a man used to low doorways and a face that gives away more than he intends.",
       "dress": "Worn black coat, carefully brushed, and linen that has been turned at the cuffs.",
-      "voice_note": "earnest, apologises for existing, brightens easily",
+      "voice_note": "earnest, over-explains, brightens easily",
       "voice": "Sam",
       "recurring": true
     }
@@ -77,56 +89,56 @@
   "chapters": [
     {
       "n": 1,
-      "title": "Lights at Amberlight",
+      "title": "Lights Above the Schoolroom",
       "beats": [
-        "Mrs Pike arrives at the circulating library breathless with the news that Amberlight House has lit its windows for the first time in ten years, a Mr Gideon Ashworth having come to take it up as trustee for a niece of the old baronet.",
-        "Judith Vane, fetching a book for her brother, is dragged into the report and learns the tenant has already refused three tradesmen entry past the hall, giving no reason.",
-        "A pale young woman, Flora Marchmont, is glimpsed once at an upstairs window by the sexton's boy, then never again, and the servants will say nothing about her.",
-        "Mrs Pike declares the household is hiding something shameful, and announces that she and Judith shall pay a charitable call to find out what."
+        "Dismissing the children from the east-wing schoolroom at dusk one late October day in 1818, Mr Rowe sees lamps lit in the main rooms of Amberlight House, shut since 1812, and hears a bolt shot somewhere above the long room.",
+        "At the draper's next morning Mrs Hale reports that a Mr Ambrose Calder came by night chaise as trustee for a young cousin, by leave of the Marchmont family, who still have not come into the parish themselves.",
+        "Eliza Combe, who takes her dressmaking through the draper's counter, is handed a note from Calder ordering full mourning for 'Miss Daunt' within the week, without one word of courtesy.",
+        "Mrs Pike declares that a madwoman is being kept under lock, and urges Eliza to look about her when she goes up, since a dressmaker goes where no caller is admitted."
       ],
       "target_words": 450
     },
     {
       "n": 2,
-      "title": "The Charitable Call",
+      "title": "The Measuring",
       "beats": [
-        "Judith and Mrs Pike are received by Mr Ashworth, who is civil but immovable, and refuses to let Miss Marchmont come down, saying only that she is not well enough for company.",
-        "Judith notices, unremarked by Mrs Pike, a nurse's cap on a hook, fresh medicine bottles on a side table, and a chair drawn close to a fire \u2014 the ordinary furniture of a sickroom, not a prison.",
-        "Mrs Pike, undeterred by anything she has actually seen, leaves convinced the niece is kept against her will for her fortune, and repeats the tale at the Bell before nightfall.",
-        "Ashworth, overhearing the gossip in the village the next morning, seeks out Judith directly and accuses her of having spread it, and the two part on sharp words neither is willing to soften."
+        "Calder receives Eliza in the cold front hall, refuses to let her see Miss Daunt, and hands her an old gown to work from instead.",
+        "Eliza tells him a tradeswoman is owed the civility of any customer, and Calder answers that her business is cloth, not his family's affairs.",
+        "Through a part-open door Eliza glimpses Cecily Daunt in black, clutching a packet of letters, plainly grieving and not raving.",
+        "Calder abruptly cancels the order, presses double the fee into her hand and shows her out, and Eliza walks home certain she has been paid for her silence."
       ],
       "target_words": 450
     },
     {
       "n": 3,
-      "title": "A Debt Repaid",
+      "title": "An Account Settled",
       "beats": [
-        "Mr Rowe tells Judith, delighted, that two years of arrears owed him from the Marchmont living have been paid in full, anonymously, and that he has thanked Mrs Pike, assuming her kindness lay behind it.",
-        "Mrs Pike, flattered, does not correct him, and by evening the parish credits her with the whole sum, a story she does nothing to discourage.",
-        "Judith, turning the matter over, recalls a phrase on the note that came with the payment \u2014 'in trust for the living' \u2014 that sounds nothing like Mrs Pike and everything like an estate's own trustee.",
-        "She returns to Amberlight House alone, meaning only to return a forgotten prayer book and settle the question, and finds the front door standing open and a lamp overturned in the hall."
+        "By Saturday the parish has the madwoman whole: Mrs Pike adds a chained door, and Mrs Hale repeats word for word what two scholars say they heard crying through the schoolroom wall.",
+        "Eliza finds the cloth debt her late mother left at the draper's marked paid, and Mrs Hale says a gentleman's man settled it in coin and would give no name.",
+        "Eliza knows the hand on the receipt for the hand of Calder's curt order, and walks up the lane meaning to throw the money back at him.",
+        "She finds the front door standing open, and hears from upstairs a fall and a man's voice calling a name in open fear."
       ],
       "target_words": 450
     },
     {
       "n": 4,
-      "title": "The Fallen Shelf",
+      "title": "What the House Hid",
       "beats": [
-        "Judith finds Flora fainted on the stair beneath a collapsed bookshelf, and Ashworth working urgently and without pretence to revive her, all coldness gone.",
-        "While the two women tend Flora together, Judith learns the truth plainly: a broken engagement the previous year, made worse by a dispute over her inheritance, left Flora too ashamed and unwell to face the parish, and Ashworth has been sheltering her from talk rather than imprisoning her.",
-        "Ashworth admits, without being asked twice, that he paid Mr Rowe's arrears himself, an old obligation of Sir Edward's he found among the estate papers, and let Mrs Pike take the credit because any kindness of his own would only feed the story already told of him.",
-        "Flora, recovering, thanks Judith by name and asks to be allowed downstairs properly at last \u2014 but Mrs Pike, unaware of any of this, is already at the Bell describing the 'prisoner of Amberlight' to a full room."
+        "Eliza runs up and finds Cecily fainted beside a trunk of letters, with Calder kneeling over her and every coldness gone out of him.",
+        "Revived, Cecily tells Eliza that her betrothed was killed in a riding accident in the spring, and that his family now say openly she trapped him, so she came where no one knew her face.",
+        "Calder admits he paid Eliza's debt because cancelling the order had wronged her, and kept his name off it because any open kindness from the house would set the parish asking why the house was lit.",
+        "Cecily asks to be let into the parish properly at last, and below them Mrs Pike's voice is heard at the open door, with Mrs Hale behind her."
       ],
       "target_words": 450
     },
     {
       "n": 5,
-      "title": "The Parish Corrected",
+      "title": "Every Window Lit",
       "beats": [
-        "Judith and Ashworth arrive together at the Bell in time to hear Mrs Pike mid-tale, and between them lay out the truth plainly enough that even she cannot argue with it.",
-        "Mrs Pike, rather than embarrassed, recovers instantly by declaring she always knew Judith and Mr Ashworth were suited, and takes credit for an understanding neither of them has yet spoken aloud.",
-        "Flora is brought properly into the parish for the first time, pale still but steady, and Mr Rowe secures her promise of a subscription toward mending the church roof, arrears now settled.",
-        "Judith and Ashworth, walking home in the last of the daylight, allow between them a quieter and more honest understanding than any Mrs Pike could have arranged, while Amberlight House stands behind them with every window lit."
+        "Eliza and Calder meet Mrs Pike and Mrs Hale in the hall and tell them the plain truth of a death, a mourning and a cruel family, which ends the madwoman story where it stands.",
+        "Mrs Pike declares she always suspected sorrow rather than sin, and at once announces that she foresaw an understanding between Eliza and Calder, which Mrs Hale will repeat exactly.",
+        "On Monday Cecily, in mourning Eliza has now made for her properly, comes through to the schoolroom with Mr Rowe and offers to hear the youngest scholars read.",
+        "At dusk Eliza and Calder walk down the lane and give each other the apology neither offered before, while every window of Amberlight House stands lit behind them, the schoolroom's included."
       ],
       "target_words": 450
     }
@@ -134,5 +146,15 @@
   "length_min": 15,
   "bible": "amberlight",
   "series": "Middle Watch: Amberlight",
-  "slug": "the-lit-windows-of-amberlight"
+  "slug": "the-lit-windows-of-amberlight",
+  "revisions": [
+    {
+      "feedback": "Keep these exactly as they are, word for word where they are text: the logline; the promise; the setting; the tropes, exactly as named; the title.\n\nReplace these wholesale rather than adjusting what is there: the cast, including their names, ages and stations; the chapters and their beats.\n\nThe new chapters must carry 3 to 4 concrete beats each \u2014 things that happen, not moods. That density is what stops the prose stretching to fill the words rather than the story getting bigger.\n\nInvent a genuinely new cast. Recurring characters from the series bible may still appear where the story needs them, copied verbatim as always, but the guest characters should be new people with new names \u2014 not the previous ones renamed.\n\nconfirm there are no conflicts in characters",
+      "previous_title": "The Lit Windows of Amberlight"
+    },
+    {
+      "feedback": "Move the story to late autumn 1818 so it agrees with the series bible: Amberlight House stood empty from spring 1812 until summer 1817, and since summer 1817 its old east wing has been the parish schoolroom, fitted at the estate's charge. The rest of the house stayed shut until now.\n\nKeep these exactly as they are, word for word where they are text: the title; the promise; the tropes, exactly as named.\n\nChange these:\n- Setting: \"Amberlight parish, Hampshire, late autumn 1818\".\n- Logline: keep its shape and its turn, but the house has been shut six years, not ten, and only its main rooms light again \u2014 the east wing has been a schoolroom for a year.\n- Cast: keep Miss Eliza Combe as protagonist, unchanged. Keep the trustee as love interest but give him a new first name (Nathaniel is already used in this parish). Keep the grieving young cousin, but she must not carry the Marchmont surname; give her a new surname, and make her a ward whose bequest came from the late Sir Edward Marchmont's estate. The trustee holds the main block of the house for her by leave of the Marchmont family, who still have not moved in themselves. Ages of recurring characters move forward one year from the bible's 1817 ages.\n- Mr Silas Rowe is married by 1818; his wife is Mrs Rowe (formerly Miss Judith Vane). If she appears, copy her bible entry and call her Mrs Rowe. Do not give Mr Rowe arrears \"from the Marchmont living\" \u2014 a curate is paid by the rector, not the patron. Drop the arrears entirely.\n- Put Mrs Hale, the draper's wife who keeps the library counter, into the cast as the channel the gossip runs through, alongside Mrs Pike. Eliza's dressmaking takes work through the draper's rather than competing with it.\n\nReplace these wholesale: the chapters and their beats. Five chapters, 3 to 4 concrete beats each \u2014 things that happen, not moods.\n\nStory requirements for the new chapters:\n- Use the schoolroom as the gothic contrast: children's voices in the lit east wing by day, the shuttered main rooms by night. Mr Rowe teaches or oversees the school there, which is how the parish first learns the main rooms are occupied.\n- The trustee's secret kindness stays the heart of it, but the parish must NOT credit Mrs Pike with an anonymous payment, and there is no anonymous payment to Mr Rowe. Mrs Pike's wrong guess is the madwoman. Eliza is the one who traces the kindness back to the trustee herself, through her own settled account.\n- No disputed will plot and no apothecary's records as evidence. The cousin's grief and a broken engagement remain the hidden truth.\n- Nothing may depend on having seen another Amberlight story.\n\n(Applied by hand from the Amberlight review, option 1; the revise call could not authenticate from this machine.)",
+      "previous_title": "The Lit Windows of Amberlight"
+    }
+  ]
 }

@@ -90,6 +90,8 @@ the prose body is fine; the split has already happened by then.
 | `series` | no | Display name. Defaults to the filename stem. |
 | `canon` | no | List of strings. Shown to all four agents as *Established facts*; the editor treats a contradiction as a continuity failure. |
 | `recurring_cast` | no | List of characters. `[]` is valid and is what the scaffold ships. |
+| `anchor_year` | no | The year `recurring_cast` ages are given as of. A story whose `setting` names another year gets every age shifted by the difference, and keeps its own stations after the anchor (see *Ages and stations across years*). |
+| `minor_names` | no | List of strings: one-story characters a finished story has used. Shown to the ideator as *Names already used* so a new character does not reuse a name. Not cast — no face, no voice. |
 | `art_style` | no | Overrides the genre's art direction. Pinned per story at creation. |
 | `voices` | no | Overrides the genre's casting, e.g. `narrator:`. Pinned per story at creation. |
 
@@ -124,10 +126,11 @@ same route and two of them never reach the ideator at all.
 | `dress` | no | Same as `appearance`. Appears as `Wearing: <dress>`. |
 | `voice` | no | **Not shown to any agent.** Forced onto the outline, where the actor honours it as an explicit casting override. |
 | `portrait` | no | Filename inside `bibles/<name>/<name>.cast/`. Manual override only — see below. |
+| `aliases` | no | Other full names the character goes by, such as a married name. Shown to the text agents; matched by `member()` exactly like `name`. Face and voice stay keyed on `name`. |
 
-### Only four fields reach the ideator
+### Only five fields reach the ideator
 
-`prompt_block()` emits **name, age, station and note** — nothing else. The
+`prompt_block()` emits **name, age, station, aliases and note** — nothing else. The
 ideator never sees a character's appearance, dress, gender or voice, and cannot
 reason about them.
 
@@ -161,6 +164,20 @@ This is the single most likely way a hand-written bible fails to do anything.
 Write the name in the form you expect to appear in the story, and check the first
 outline: a matched character comes back with `"recurring": true` in
 `outline.json`. If that flag is missing, the join failed.
+
+An alias widens the match without loosening it: `aliases: [Mrs Judith Rowe]`
+lets a story set after the wedding use the married name and still get the
+series face and voice. Each alias is checked like a name — it must point at one
+character only.
+
+### Ages and stations across years
+
+`_apply_bible_casting()` reads the story's year out of the outline's `setting`.
+With `anchor_year` set, **age** becomes the bible age plus the years between, so
+an 1816 story gets everyone a year younger. **Station** is pinned only in or
+before the anchor year; after it, the ideator's station stands, because lives
+move on in ways the bible's anchor-year line cannot say. A setting with no year
+gets the bible values unchanged.
 
 ### `voice` must name a voice you have
 

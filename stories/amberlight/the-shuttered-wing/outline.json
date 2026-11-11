@@ -7,6 +7,7 @@
     "Class across the table",
     "The compromising situation"
   ],
+  "bible_conflict": null,
   "logline": "When a widow and her silent niece finally open the doors of Amberlight House after twelve empty years, the parish decides at once that it must be haunted, and the apothecary's sister is the only person calm enough to ask what is actually being hidden, and from whom.",
   "promise": "A viewer who came for a gothic mystery gets a real inheritance to fight for, an advantageous proposal that must be refused, and a scandal that resolves in a marriage nobody arranged for money.",
   "setting": "Amberlight, Hampshire, autumn 1817",
@@ -30,7 +31,7 @@
       "role": "love_interest",
       "age": 34,
       "gender": "male",
-      "station": "curate of Amberlight; eighty a year and no expectations",
+      "station": "curate of Amberlight; eighty a year and no expectations. Two rooms over Mrs Copp's, looking at the churchyard wall.",
       "want": "To do right by his parishioners and be chosen for himself rather than his prospects",
       "appearance": "Tall and thin, dark hair worn slightly too long, with the stoop of a man used to low doorways and a face that gives away more than he intends.",
       "dress": "Worn black coat, carefully brushed, and linen that has been turned at the cuffs.",
@@ -52,35 +53,48 @@
       "recurring": true
     },
     {
-      "name": "Mrs Averil Thorne",
+      "name": "Mr Owen Vane",
       "role": "supporting",
-      "age": 45,
-      "gender": "female",
-      "station": "widow; guardian to her niece and current tenant of Amberlight House",
-      "want": "To secure her niece's inheritance without the parish's help or its gossip",
-      "appearance": "Tall and austere, hair scraped back under a widow's cap, eyes tired from want of sleep.",
-      "dress": "A plain grey gown with a single black shawl, kept correct rather than fashionable.",
-      "voice_note": "guarded, chooses words as though paying for them"
+      "age": 30,
+      "gender": "male",
+      "station": "apothecary of Amberlight; modest trade income. Judith's brother and only guardian since their father died.",
+      "want": "To keep his shop and his sister's reputation both unremarked upon",
+      "appearance": "Broad-shouldered with his sister's dark colouring, sleeves always rolled to the elbow from the dispensary.",
+      "dress": "A brown workaday coat and an apron dusted with chalk and powders.",
+      "voice_note": "dry, blunt, says the thing his sister only thinks",
+      "voice": "Archer",
+      "recurring": true
     },
     {
-      "name": "Miss Cassandra Wren",
+      "name": "Mrs Winifred Cardew",
       "role": "supporting",
-      "age": 19,
+      "age": 44,
+      "gender": "female",
+      "station": "widow; guardian to her niece and current tenant of the west wing at Amberlight House",
+      "want": "To secure her niece's inheritance without the parish's help or its gossip",
+      "appearance": "Tall and spare, hair scraped under a widow's cap, with dark hollows beneath her eyes from want of sleep.",
+      "dress": "A plain grey gown and a single black shawl, kept correct rather than fashionable.",
+      "voice_note": "guarded, chooses her words as though paying for them"
+    },
+    {
+      "name": "Miss Flora Easton",
+      "role": "supporting",
+      "age": 20,
       "gender": "female",
       "station": "granddaughter of the late Sir Edward Marchmont; heiress presumptive to Amberlight House",
       "want": "To walk her own grounds openly instead of being kept behind shutters",
-      "appearance": "Slight and fair, pale from weeks kept indoors, with restless quick movements.",
+      "appearance": "Slight and fair, pale from weeks kept indoors, with quick restless movements and a habit of glancing at doorways.",
       "dress": "A plain muslin gown, a little outgrown, with no jewellery at all.",
       "voice_note": "hushed and quick, used to being overheard"
     },
     {
-      "name": "Mr Rafe Hale",
+      "name": "Mr Aubrey Stanhope",
       "role": "antagonist",
-      "age": 32,
+      "age": 33,
       "gender": "male",
-      "station": "distant cousin to the late Sir Edward Marchmont; a gentleman of modest independent means, next heir to the house should the marriage in question go unproven",
+      "station": "distant cousin of the late Sir Edward Marchmont; a gentleman of modest independent means, next heir should the marriage in question go unproven",
       "want": "To secure the house and its income by whatever means the law allows",
-      "appearance": "Compact and dark-haired, oiled smooth, dressed a shade finer than his means suggest.",
+      "appearance": "Compact and dark-haired, smoothly groomed, dressed a shade finer than his means suggest.",
       "dress": "A well-cut but slightly dated blue coat and a watch chain he checks too often.",
       "voice_note": "smooth, charming, never quite answers the question asked"
     }
@@ -90,35 +104,35 @@
       "n": 1,
       "title": "Lights at Amberlight",
       "beats": [
-        "Amberlight House, empty since 1812, shows lit windows one autumn evening, and Mrs Pike is the first on the green to see them.",
-        "A closed carriage arrives bringing Mrs Averil Thorne and her niece, Miss Cassandra Wren; the parish learns only that the house has passed to the family at last.",
-        "Mr Silas Rowe calls in his curate's duty to welcome the household and is received briefly and politely by Mrs Thorne, who keeps Cassandra from the room.",
-        "Rowe mentions to Judith Vane, when he stops at the apothecary for a headache powder, that the east wing's shutters stayed closed the whole visit.",
-        "That night, walking home from the shop, Judith sees a light moving behind those same shuttered windows, though Mrs Thorne told Rowe the wing was locked and unused."
+        "Mrs Pike reports lit windows in the long-shut west wing of Amberlight House one October evening, which startles the green since the east wing has held the parish schoolroom all that summer without any trouble at all.",
+        "A closed carriage brings Mrs Winifred Cardew and her niece, Miss Flora Easton, to the house; word spreads that they are kin to the late Sir Edward Marchmont, but no more is said.",
+        "Silas Rowe calls in his curate's duty to welcome the household and is received briefly by Mrs Cardew, who keeps Flora from the room and asks him not to trouble himself again soon.",
+        "Rowe stops at the apothecary shop for a headache powder and tells Judith Vane that Mrs Cardew called the west wing locked and unused, though lamps had burned there the whole time he sat in the hall.",
+        "Walking home that night, Judith herself sees a light cross behind the shuttered west windows, moving the way no empty room's light has any business doing."
       ],
       "target_words": 560
     },
     {
       "n": 2,
-      "title": "The Cousin at the Bell",
+      "title": "The Stranger at the Bell",
       "beats": [
-        "Gossip at the circulating library grows by the day; Mrs Pike proposes a mad relation, a curse, and the ghost of old Sir Edward, in that order.",
-        "Judith checks the parish register herself and finds the house's ownership has stood unsettled since Sir Edward's death, with no clear heir named since.",
-        "A stranger, Mr Rafe Hale, takes rooms at the Bell and asks pointed questions about the new family at Amberlight House.",
-        "Hale introduces himself to Judith as a distant cousin of Sir Edward with his own claim to the house, and asks her, since her brother's trade brings her there, to report what she sees.",
-        "Judith refuses to spy for him, but Hale remarks, almost carelessly, that the house cannot lawfully pass to anyone until a certain marriage is proven or disproven, and that he means to see it settled soon."
+        "Gossip at the circulating library multiplies by the day; Mrs Pike offers a mad relation, a curse, and Sir Edward's own ghost, in that order, to anyone who will listen.",
+        "Judith, curious rather than credulous, asks to see the old parish register and finds that Amberlight House's ownership was never settled in the five years since Sir Edward died.",
+        "A Mr Aubrey Stanhope takes a room at the Bell and begins asking the ostler and the coachman pointed questions about the new family up at the house.",
+        "Stanhope calls at the apothecary shop on some trifling excuse, introduces himself to Judith as a distant cousin of Sir Edward, and asks her to tell him anything she notices on her errands there.",
+        "Judith declines plainly, but Stanhope remarks, almost idly, that the house cannot lawfully pass to anyone until a certain marriage is proved or disproved, and that he means it settled before the year is out."
       ],
       "target_words": 560
     },
     {
       "n": 3,
-      "title": "The Light in the East Wing",
+      "title": "An Errand to the West Wing",
       "beats": [
-        "Judith's brother sends her to deliver a remedy to Amberlight House, Cassandra being reported unwell.",
-        "Mrs Thorne, anxious and evasive, admits only to 'a legal matter pending' that keeps her wakeful at night.",
-        "Judith glimpses Cassandra on the stair, pale but not sickly, who whispers urgently, 'Have you found the paper,' before Mrs Thorne calls her back.",
-        "Leaving in broad afternoon, Judith looks up and sees the same moving light behind the shuttered wing, though no one should be there.",
-        "That evening Judith tells Silas Rowe everything, and the two agree the house is hiding something managed out of fear rather than malice, and that someone ought to help rather than merely watch."
+        "Owen Vane, busy with a cough going round the cottages, sends Judith in his place to carry a remedy to Amberlight House, Flora being reported unwell.",
+        "Mrs Cardew receives her at the door, anxious and short, and admits only to 'a legal matter pending' that keeps the household wakeful at night.",
+        "On the stair Judith glimpses Flora, pale but plainly not sickly, who catches her sleeve and whispers urgently, 'Have you found the prayer,' before Mrs Cardew calls her back.",
+        "Leaving in full daylight, Judith looks up at the house and sees the same moving light behind the shuttered west windows, though by every account no one goes there.",
+        "That evening Judith tells Rowe everything she has seen and heard, and the two agree that someone in that house is hiding something out of fear rather than wrongdoing, and ought to be helped rather than merely watched."
       ],
       "target_words": 560
     },
@@ -126,11 +140,11 @@
       "n": 4,
       "title": "The Missing Lines",
       "beats": [
-        "Rowe, searching old parish papers, learns Sir Edward's will left the house to his granddaughter only if her parents' hasty marriage abroad could be proven, otherwise to the next male heir.",
-        "Judith realises Cassandra must be that granddaughter, and that Mrs Thorne has been searching the house at night for the marriage lines, said to have been hidden rather than destroyed.",
-        "Mrs Pike, delighted with new material, tells Judith that Mr Hale has been asking after her and declares him, unprompted, a very suitable match.",
-        "Hale calls at the apothecary shop and hints that if Judith would help him find 'certain papers' first, he would see her very comfortably placed.",
-        "Judith refuses him plainly, offended, and resolves to help Mrs Thorne find the document before Hale can arrange for it never to be found at all."
+        "Rowe, turning up old parish papers for his own interest, learns that Sir Edward's will left the house to his granddaughter only if her parents' hurried marriage abroad could be proved, and otherwise to the next male heir.",
+        "Judith works out that Flora must be that granddaughter, and that Mrs Cardew has been searching the house by night for marriage lines said to be hidden rather than destroyed.",
+        "Mrs Pike, delighted with fresh material, tells Judith that Mr Stanhope has been asking after her particularly and declares him, quite unasked, a very suitable match for a girl with no fortune of her own.",
+        "Stanhope calls again and hints that if Judith would help him find 'certain papers' before Mrs Cardew does, he would see her very comfortably placed indeed.",
+        "Judith refuses him outright, offended at the offer, and resolves instead to help Mrs Cardew find the document before Stanhope can arrange for it never to be found at all."
       ],
       "target_words": 560
     },
@@ -138,11 +152,11 @@
       "n": 5,
       "title": "The Sealed Room",
       "beats": [
-        "Judith calls on Mrs Thorne, admits what she has seen and guessed, and offers help; Mrs Thorne, relieved, confesses the truth and her nightly, fruitless searches.",
-        "Rowe joins them that evening with Mrs Thorne's permission, and Cassandra is allowed, for the first time in weeks, to help search her own house.",
-        "In the shuttered library they find a false-backed cabinet built by Sir Edward himself; a portrait crashes down as Cassandra reaches behind it, revealing a locked strongbox.",
-        "The strongbox holds only old letters, and a note in Sir Edward's own hand suggesting he moved the real proof somewhere 'safer than any lock.'",
-        "It is very late when Judith and Rowe step out of the dark house together to fetch a smith, and Mrs Pike, out checking on a feverish neighbour, sees them leave alone with no chaperone in sight."
+        "Judith calls on Mrs Cardew, admits what she has guessed, and offers her help; Mrs Cardew, worn past pretending otherwise, confesses the truth and her fruitless nightly searches of the west wing.",
+        "Rowe joins them that evening with Mrs Cardew's leave, and Flora is allowed, for the first time in weeks, to help search the rooms that are rightfully to be hers.",
+        "In the shuttered west library they find a false-backed cabinet built by Sir Edward's own hand; a portrait comes down as Flora reaches behind it, uncovering a locked strongbox.",
+        "The strongbox holds only old letters and a note in Sir Edward's writing, saying he had moved the real proof somewhere 'safer than any lock of mine.'",
+        "It is very late when Judith and Rowe step out together to fetch the Bramdean smith to force a second lock, and Mrs Pike, out walking a sick neighbour's dog, sees the pair leave the dark house quite alone."
       ],
       "target_words": 560
     },
@@ -150,11 +164,11 @@
       "n": 6,
       "title": "What Mrs Pike Saw",
       "beats": [
-        "By morning the story has travelled the parish whole: the curate and the apothecary's sister, alone in the empty house past midnight.",
-        "Judith's brother is embarrassed before his customers, and a parish elder speaks to Rowe, gently but firmly, about appearances befitting his position.",
-        "Hale, hearing the gossip, calls on Judith and offers marriage, correct and generous, framing it as rescue from scandal and his fortune as the answer to every difficulty.",
-        "Judith asks for a day to answer, aware that refusal looks like folly and acceptance would abandon Cassandra's cause, since Hale's whole interest depends on the marriage lines never being found.",
-        "Unable to sleep that night, Judith recalls Cassandra's whisper on the stair was not 'the paper' but 'the prayer,' and realises where a man who never missed a Sunday would have hidden something he wanted kept safe."
+        "By morning the story has gone round the parish whole: the curate and the apothecary's sister, alone in the shut-up house past midnight.",
+        "Owen Vane is made uncomfortable before his own customers, and a parish elder speaks to Rowe, gently but plainly, about conduct fitting his position.",
+        "Stanhope, hearing the talk, calls on Judith and offers marriage, correct and generous in its terms, framing it as rescue from scandal and his income as the answer to every difficulty she has.",
+        "Judith asks a day to answer, knowing refusal will look like folly and acceptance would hand Stanhope exactly what he needs, since his whole claim depends on the marriage lines never turning up.",
+        "Lying awake, Judith goes back over Flora's whisper on the stair and understands at last that the girl had said not 'the paper' but 'the prayer' \u2014 and sees where a man who never missed a Sunday service would hide what he most wanted kept."
       ],
       "target_words": 560
     },
@@ -162,11 +176,11 @@
       "n": 7,
       "title": "Between Two Boards",
       "beats": [
-        "At first light Judith brings her guess to Rowe: the church itself, where Sir Edward held a private pew with a locked kneeling-desk no one had thought to open.",
-        "Rowe, Judith, Mrs Thorne and Cassandra meet at the church and find, folded flat between the boards of a small prayer book, the marriage lines from a chapel abroad, signed and witnessed.",
-        "Hale arrives, having heard where they went, to argue the papers false or forged, but Mrs Thorne calmly produces a witness's letter, kept separately for years, confirming the same marriage.",
-        "Faced with two proofs he cannot discredit, Hale's claim collapses in front of the very people he had hoped to use.",
-        "Cold but not ungracious in defeat, Hale withdraws both his claim to the house and his offer of marriage to Judith, and leaves to arrange his departure on the next coach."
+        "At first light Judith brings her idea to Rowe: Sir Edward's own pew in the church, with its locked kneeling-desk that no one had ever thought worth opening.",
+        "Rowe, Judith, Mrs Cardew and Flora meet at the church and find, folded flat inside the boards of a small prayer book, the marriage lines from a chapel abroad, signed and witnessed.",
+        "Stanhope arrives, having heard where the party went, and argues the paper forged, or at least too late produced to count for anything.",
+        "Mrs Cardew answers him by producing a second proof, a witness's letter kept separately for years, naming the same marriage and the same date.",
+        "Faced with two proofs he cannot discredit between them, Stanhope's claim collapses in front of the very people he had hoped to use against each other."
       ],
       "target_words": 560
     },
@@ -174,11 +188,11 @@
       "n": 8,
       "title": "The House Unshuttered",
       "beats": [
-        "Within days the east wing's shutters are opened for the first time in years, and Cassandra, secure now as her grandfather's heir, walks the grounds openly.",
-        "Mrs Thorne, grateful, tells Judith and Rowe the house will not stand empty again, and offers the parish the use of its long-closed chapel for services.",
-        "Mrs Pike, still faintly guilty over the gossip she spread, insists she always knew the two of them were suited and begins planning a wedding breakfast unasked.",
-        "With nothing left standing between them but his own uncertain income, Rowe asks Judith plainly whether eighty pounds a year and a curate's cottage might do for a life, and she says they might do very well.",
-        "The parish settles the whole matter over its own teacups within the week, deciding, correctly for once, that Amberlight House had never been haunted by anything worse than an old man's caution and a young woman's patience."
+        "Within days the west wing's shutters are opened for the first time in five years, and Flora, secure now as her grandfather's heir, walks her own grounds openly for the first time since arriving.",
+        "Stanhope withdraws both his claim and his offer to Judith with cold grace, and arranges to take the Tuesday coach out of the parish for good.",
+        "Mrs Cardew, easier now, tells Judith and Rowe the house will stand open from now on, and offers the old west library's shelves to the parish schoolroom to use alongside the east wing.",
+        "Mrs Pike, faintly guilty over the tale she spread, insists she always knew the two of them were suited and begins planning a wedding breakfast nobody has asked her to arrange.",
+        "With nothing left standing between them but his own uncertain income, Rowe asks Judith plainly whether eighty pounds a year and a curate's cottage might do for a life, and she tells him they would do very well indeed."
       ],
       "target_words": 580
     }
@@ -186,5 +200,11 @@
   "length_min": 30,
   "bible": "amberlight",
   "series": "Middle Watch: Amberlight",
-  "slug": "the-shuttered-wing"
+  "slug": "the-shuttered-wing",
+  "revisions": [
+    {
+      "feedback": "Keep these exactly as they are, word for word where they are text: the logline; the promise; the setting; the tropes, exactly as named; the title.\n\nReplace these wholesale rather than adjusting what is there: the cast, including their names, ages and stations; the chapters and their beats.\n\nThe new chapters must carry 4 to 5 concrete beats each \u2014 things that happen, not moods. That density is what stops the prose stretching to fill the words rather than the story getting bigger.\n\nInvent a genuinely new cast. Recurring characters from the series bible may still appear where the story needs them, copied verbatim as always, but the guest characters should be new people with new names \u2014 not the previous ones renamed.\n\nthe east wing is given over to a school room for the church so what about the west wing being used by the characters",
+      "previous_title": "The Shuttered Wing"
+    }
+  ]
 }

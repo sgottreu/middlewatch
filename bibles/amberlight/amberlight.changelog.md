@@ -12,6 +12,14 @@ story that caused them.
 
 ---
 
+## 2026-11-11 17:33 · Scott Gottreu · edit · sha=dab39361
+
+anchor_year: 1817 made explicit; Miss Judith Vane gains alias Mrs Judith Rowe
+
+## 2026-11-11 03:51 · Scott Gottreu · edit · sha=13f6fec4
+
+Canon from The Oakmere Will: Oakmere Farm and Upper Barton, Fenner's death, Farr's return and the broken will, Farr–Lamb engagement, Cobbold, Owen's dispensing book; six minor names
+
 ## 2026-11-02 20:09 · Scott Gottreu · voices · sha=4b5a81b0
 
 Voices recast from the casting page (amberlight).
