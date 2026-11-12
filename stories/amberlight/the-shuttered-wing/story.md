@@ -2,7 +2,7 @@
 
 regency / gothic · Middle Watch: Amberlight
 
-> When a widow and her silent niece finally open the doors of Amberlight House after twelve empty years, the parish decides at once that it must be haunted, and the apothecary's sister is the only person calm enough to ask what is actually being hidden, and from whom.
+> When Judith Vane, already promised to Amberlight's curate, is drawn into the mystery of a shuttered wing and a hidden heiress, the very evidence that saves a stranger's inheritance is the thing that very nearly costs Judith her own wedding.
 
 ## Length
 
@@ -20,11 +20,11 @@ regency / gothic · Middle Watch: Amberlight
 | # | Title | Beats | Target | Written | Narrated |
 |---|---|---|---|---|---|
 | 1 | Lights at Amberlight | 5 | 560 | — | — |
-| 2 | The Stranger at the Bell | 5 | 560 | — | — |
+| 2 | A Letter and a Cousin | 5 | 560 | — | — |
 | 3 | An Errand to the West Wing | 5 | 560 | — | — |
-| 4 | The Missing Lines | 5 | 560 | — | — |
+| 4 | An Offer Refused | 5 | 560 | — | — |
 | 5 | The Sealed Room | 5 | 560 | — | — |
-| 6 | What Mrs Pike Saw | 5 | 560 | — | — |
+| 6 | What Sarah Copp Saw | 5 | 560 | — | — |
 | 7 | Between Two Boards | 5 | 560 | — | — |
 | 8 | The House Unshuttered | 5 | 580 | — | — |
 
@@ -32,8 +32,8 @@ regency / gothic · Middle Watch: Amberlight
 
 - **Miss Judith Vane**, 27 — protagonist *(recurring)*
 - **Mr Silas Rowe**, 34 — love_interest *(recurring)*
-- **Mrs Honoria Pike**, 58 — supporting *(recurring)*
 - **Mr Owen Vane**, 30 — supporting *(recurring)*
+- **Mrs Hale**, 45 — supporting *(recurring)*
 - **Mrs Winifred Cardew**, 44 — supporting
 - **Miss Flora Easton**, 20 — supporting
 - **Mr Aubrey Stanhope**, 33 — antagonist

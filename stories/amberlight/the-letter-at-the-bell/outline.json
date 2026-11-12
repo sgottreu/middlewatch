@@ -3,23 +3,23 @@
   "genre": "regency",
   "subgenre": "mystery",
   "tropes": [
-    "The disputed inheritance",
-    "The secret benefactor",
-    "The fortune hunter"
+    "The misdirected letter",
+    "The fortune hunter",
+    "The disputed inheritance"
   ],
-  "bible_conflict": "omit",
-  "logline": "When old Mr Hale dies without a will that anyone can find, the quiet woman who reads everyone else's letters before they do discovers his was never lost at all, only never opened.",
-  "promise": "A missing will is found honestly, a fortune hunter is exposed by his own haste, and the person quietly thanked for a kindness turns out not to be the one who did it.",
-  "setting": "Amberlight and the neighbouring farm at Hale's Bottom, autumn 1816",
+  "bible_conflict": null,
+  "logline": "When a Winchester solicitor's letter names her cousin heir to a widow's cottage, Eleanor Fenwick must wait on the one man in the parish too honest to tell her he already knows she is right.",
+  "promise": "A codicil built on a borrowed name is unpicked fact by fact, a fortune hunter's debts catch up with him before the wedding he is counting on, and a husband's silence turns out to be loyalty, not deceit.",
+  "setting": "Amberlight parish, Hampshire, spring 1818. Fenwick Cottage stands on the Bramdean road, half a mile past the mill cottages.",
   "target_words": 4500,
   "cast": [
     {
-      "name": "Miss Judith Vane",
+      "name": "Mrs Judith Rowe",
       "role": "protagonist",
-      "age": 27,
+      "age": 28,
       "gender": "female",
-      "station": "keeps house for her brother, the apothecary; no fortune of her own",
-      "want": "to see the true will found before Constance Wray is married out of her own inheritance",
+      "station": "wife of the curate of Amberlight; no fortune of her own",
+      "want": "to find the truth of Mrs Fenwick's wishes without ever asking Silas to break his word",
       "appearance": "Fair, freckled, of middling height, with reddish hair she cannot keep pinned and a habit of looking directly at whoever is speaking.",
       "dress": "Sprigged muslin in summer, a grey wool pelisse in winter, both mended with more thrift than skill.",
       "voice_note": "quiet, precise, waits a beat before answering",
@@ -27,42 +27,22 @@
       "recurring": true
     },
     {
-      "name": "Mr Edward Sorrel",
-      "role": "love_interest",
-      "age": 30,
-      "gender": "male",
-      "station": "clerk to a Winchester firm of solicitors, sent to settle the Hale estate; salary modest but a partnership expected",
-      "want": "to close the estate correctly, whatever it costs him with the family that pays his firm",
-      "appearance": "tall, sandy-haired, ink permanently at the side of one finger, spectacles he forgets he is wearing",
-      "dress": "a serviceable brown coat, always slightly travel-creased",
-      "voice_note": "formal at first meeting, dryly funny once he trusts you"
-    },
-    {
-      "name": "Mr Peter Hale",
-      "role": "antagonist",
-      "age": 29,
-      "gender": "male",
-      "station": "nephew of the late Josiah Hale; gentleman of no settled income and considerable debt",
-      "want": "to secure Hale's Bottom farm by marriage or by default before any will can surface",
-      "appearance": "handsome in an obvious way, well-fed, fair curls kept a little too fashionably long",
-      "dress": "a blue coat cut better than his circumstances warrant",
-      "voice_note": "charming, quick to laugh, quicker to change the subject"
-    },
-    {
-      "name": "Miss Constance Wray",
+      "name": "Mr Silas Rowe",
       "role": "supporting",
-      "age": 24,
-      "gender": "female",
-      "station": "ward and niece by marriage to the late Josiah Hale; raised in his house, no independent fortune",
-      "want": "to keep the farm and the life she has always known without being married for it",
-      "appearance": "small and fair, with a stillness that some mistake for meekness",
-      "dress": "unrelieved mourning black, plainly made",
-      "voice_note": "soft-spoken, says exactly what she means and no more"
+      "age": 35,
+      "gender": "male",
+      "station": "curate of Amberlight; eighty a year and no expectations",
+      "want": "to keep a dying woman's confidence exactly as she asked, whatever it costs him at home",
+      "appearance": "Tall and thin, dark hair worn slightly too long, with the stoop of a man used to low doorways and a face that gives away more than he intends.",
+      "dress": "Worn black coat, carefully brushed, and linen that has been turned at the cuffs.",
+      "voice_note": "earnest, apologetic, loses the thread mid-sentence",
+      "voice": "Sam",
+      "recurring": true
     },
     {
       "name": "Mrs Honoria Pike",
       "role": "supporting",
-      "age": 58,
+      "age": 59,
       "gender": "female",
       "station": "widow of a naval surgeon; three hundred a year and a house on the green",
       "want": "to know everything before anyone else does",
@@ -73,112 +53,132 @@
       "recurring": true
     },
     {
-      "name": "Mr Silas Rowe",
-      "role": "supporting",
-      "age": 34,
-      "gender": "male",
-      "station": "curate of Amberlight; eighty a year and no expectations",
-      "want": "to have done his duty by a dying parishioner, once he can remember exactly what that duty was",
-      "appearance": "Tall and thin, dark hair worn slightly too long, with the stoop of a man used to low doorways and a face that gives away more than he intends.",
-      "dress": "Worn black coat, carefully brushed, and linen that has been turned at the cuffs.",
-      "voice_note": "earnest, apologetic, loses the thread mid-sentence",
-      "voice": "Sam",
-      "recurring": true
+      "name": "Miss Eleanor Fenwick",
+      "role": "love_interest",
+      "age": 22,
+      "gender": "female",
+      "station": "niece and household companion to the late Mrs Martha Fenwick; expected heir to the cottage and three hundred pounds",
+      "want": "to keep her aunt's cottage without owing it to anyone's pity or anyone's proposal",
+      "appearance": "Slight and fair-haired, with a composed oval face and grey eyes that rarely leave whoever has just spoken.",
+      "dress": "Deep mourning black, plainly made, a single mourning ring her aunt left her.",
+      "voice_note": "soft-spoken, says exactly what she means and no more"
     },
     {
-      "name": "Mrs Eliza Thorne",
+      "name": "Mr Laurence Sorrel",
+      "role": "love_interest",
+      "age": 30,
+      "gender": "male",
+      "station": "clerk to a Winchester firm of solicitors, sent to settle the Fenwick estate within a fortnight; a partnership awaits him if he manages it well",
+      "want": "to settle the estate correctly, even if it costs him the goodwill of the man his firm must rule against",
+      "appearance": "Tall, sandy-haired, spectacles he is forever pushing up, ink permanently at the side of one finger.",
+      "dress": "A serviceable brown travelling coat, creased from the coach, a leather satchel of papers always at hand.",
+      "voice_note": "formal at first meeting, dryly funny once he trusts you"
+    },
+    {
+      "name": "Mr Gerald Ashby",
+      "role": "antagonist",
+      "age": 32,
+      "gender": "male",
+      "station": "cousin to the late Mrs Fenwick; a gentleman of no settled income, in debt at cards",
+      "want": "to secure the cottage before his card debts come due, by the codicil if it holds or by Eleanor's hand if it does not",
+      "appearance": "Well-built and fair, curls worn a little too fashionably long for a man of his years, a ready smile that reaches his eyes less often than it should.",
+      "dress": "A blue coat cut better than his purse can easily answer for.",
+      "voice_note": "charming, quick to laugh, quicker to change the subject"
+    },
+    {
+      "name": "Sally Prewitt",
       "role": "supporting",
-      "age": 52,
+      "age": 24,
       "gender": "female",
-      "station": "former housekeeper to Josiah Hale, now living alone on a small annuity",
-      "want": "to be believed, since no one has troubled to ask her anything until now",
-      "appearance": "broad, red-knuckled hands, grey hair scraped back, a face used to being overlooked",
-      "dress": "a faded print gown and a housekeeper's apron kept from long habit",
+      "station": "maid at Fenwick Cottage these three years, in want of a character for her next place",
+      "want": "to tell what she saw honestly without losing the character she needs for her next place",
+      "appearance": "Small and quick-moving, dark hair escaping a plain cap, hands reddened from work.",
+      "dress": "A grey stuff gown and a clean apron, kept neat despite long hours.",
       "voice_note": "flat, guarded, warms slowly once taken seriously"
     }
   ],
   "chapters": [
     {
       "n": 1,
-      "title": "The Farm Without a Will",
+      "title": "The Letter at the Bell",
       "beats": [
-        "Old Mr Josiah Hale of Hale's Bottom farm dies after a short illness, attended in his last days by Judith Vane's brother the apothecary.",
-        "Mrs Pike declares over tea that no will has been found, and that the farm, worth some hundred and fifty a year, must therefore pass to the nephew, Mr Peter Hale.",
-        "Constance Wray, Hale's grieving ward of four-and-twenty, is seen at church in mourning black, uncertain whether she will keep her home past Michaelmas.",
-        "Peter Hale is already telling neighbours he means to 'keep the farm in the family,' with a warm look toward Constance that Judith finds too quick for grief.",
-        "A clerk from the Winchester solicitors, Mr Edward Sorrel, arrives at the Bell to settle the estate and admits, pressed by Mrs Pike, that Hale told his lawyers years ago he had left everything in order \u2014 and that no such document can be found."
+        "After Mrs Martha Fenwick's burial, the Tuesday carrier leaves a Winchester solicitor's letter at the Bell, addressed to the cottage.",
+        "The landlord, busy with the coach, hands it to Mrs Pike to carry up the lane, since she is going that way already.",
+        "Mrs Pike breaks the seal 'to see it reaches the right hands' and reads it aloud to half the green: a codicil leaves the cottage to Mr Gerald Ashby, witnessed by two names nobody in the parish knows.",
+        "Miss Eleanor Fenwick, the expected heir, hears the news standing among the mourners rather than told privately.",
+        "Ashby, present at the churchyard gate, receives the news with studied modesty and is already thanking neighbours for their condolences on his loss, and his good fortune, both."
       ],
       "target_words": 560
     },
     {
       "n": 2,
-      "title": "A Man in a Hurry",
+      "title": "The Clerk on the Tuesday Coach",
       "beats": [
-        "Judith meets Sorrel at the circulating library, both there ostensibly for other business, and compares what each has heard.",
-        "Sorrel confirms that under the law, if no will is found, the farm goes to Peter as next of kin, and that he has one fortnight before he must report the estate settled.",
-        "Judith recalls her brother mentioning that old Hale, in his last week, spoke of a letter he meant to send to his solicitor and asked after the coach days.",
-        "Peter Hale, overhearing part of this in the shop, laughs it off as an old man's confusion and steers the conversation to his own plans for the farm.",
-        "Judith decides to ask her brother exactly what Hale said, and finds, when she does, that Hale named no solicitor at all but only said the letter was 'given already.'"
+        "Mr Laurence Sorrel arrives on the next Tuesday coach, sent by the Winchester firm to settle the estate within a fortnight.",
+        "He calls at the library above the draper's and meets Mrs Judith Rowe, who quietly corrects two details Mrs Pike's retelling had already gotten wrong.",
+        "Sorrel confirms the codicil, if genuine, stands: the cottage and three hundred pounds pass to Ashby, and Eleanor is left with nothing.",
+        "Ashby, met on the green, is already behaving as owner, giving instructions to the gardener and speaking warmly of Eleanor's situation.",
+        "Judith notices his warmth toward Eleanor looks less like a cousin's concern than courtship, and wonders at how quickly it has arrived."
       ],
       "target_words": 560
     },
     {
       "n": 3,
-      "title": "The Housekeeper's Drawer",
+      "title": "What Sally Saw",
       "beats": [
-        "Judith and Sorrel call on Mrs Thorne, Hale's former housekeeper, now living alone at the edge of the parish.",
-        "Mrs Thorne recalls a letter arriving for her, oddly, in the week before Hale's death, sealed and heavy, which she set aside unread, thinking it none of her business.",
-        "She goes to the kitchen drawer to produce it and finds the drawer disturbed, the letter gone.",
-        "She admits Peter Hale called on her only three days past, alone, on some pretext of settling her annuity, and was left waiting in that very kitchen.",
-        "Sorrel points out that a stolen letter proves nothing was destroyed that mattered, only that someone believed it did \u2014 which means the true document may exist elsewhere still."
+        "Judith and Silas call at the house of mourning to arrange the funeral accounts.",
+        "Sally Prewitt, the cottage maid, lets slip to Judith that Ashby left the house before nine the night the codicil is dated and did not return until after midnight.",
+        "Judith checks the solicitor's letter again: the codicil is dated ten o'clock that same evening, witnessed at the cottage itself.",
+        "Sally, afraid of losing her character if she is seen accusing a gentleman, begs Judith to keep what she has said to herself for now.",
+        "Walking home, Judith mentions the timing to Silas, who falls silent and changes the subject the moment the widow's last week is raised."
       ],
       "target_words": 560
     },
     {
       "n": 4,
-      "title": "A Proposal in Church",
+      "title": "A Confidence Kept",
       "beats": [
-        "Peter Hale, before the fortnight is out, proposes to Constance publicly after Sunday service, framing it as securing her future and the farm together.",
-        "Constance, cornered by the audience of the whole parish, asks only for time to consider, which Peter grants with visible impatience.",
-        "Mrs Pike is seen delivering a basket to Constance's door and is thanked warmly for her continued kindness, which she accepts without correcting anyone.",
-        "Judith notices the basket contains more than charity usually allows \u2014 good linen, coin wrapped in paper \u2014 and wonders where a widow of three hundred a year finds such generosity twice a month.",
-        "Mr Rowe, asked in passing whether Hale left anything with him before he died, goes pale and says he believes there may have been 'something in the vestry papers' he never got round to sorting."
+        "At home, Judith asks Silas plainly what he knows of Mrs Fenwick's last week.",
+        "He admits he holds something given him in confidence, but says he gave his word and may not speak of it unless the thing is claimed of him.",
+        "Judith does not press him further, though it plainly costs her not to.",
+        "Mrs Pike calls with news of her own: one of the codicil's two witnesses, a man named Jacob Yarrow, is known in Winchester as someone Ashby owes money to at cards.",
+        "Judith realizes the second witness's name is also one nobody local recognizes, and resolves to have Sorrel write to both."
       ],
       "target_words": 560
     },
     {
       "n": 5,
-      "title": "What the Curate Forgot",
+      "title": "The Friday Coach",
       "beats": [
-        "Judith and Sorrel search the vestry with Rowe, who apologises repeatedly for the state of his correspondence.",
-        "Among unanswered parish letters they find a sealed envelope addressed not to any solicitor but to Mrs Thorne, in Hale's own hand.",
-        "Rowe remembers now: Hale came to him privately, distrusting the post after a parcel once went astray, and asked him to hold the letter until Mrs Thorne could be sent for it \u2014 then Rowe forgot entirely.",
-        "With Mrs Thorne and Constance both fetched as witnesses, Sorrel opens the seal.",
-        "The letter is Hale's true will, naming Constance sole heir of Hale's Bottom, and stating plainly that Peter's portion was already given him years before, in full, as settlement of his gambling debts."
+        "Sorrel writes to Jacob Yarrow asking him to confirm his signature on the codicil.",
+        "The Friday coach brings Yarrow's reply: he denies ever witnessing any such paper and demands to know why his name was used.",
+        "News of the denial reaches the library before Sorrel has finished reading it, carried accurately for once.",
+        "Ashby, undeterred, proposes to Eleanor publicly after Sunday service, calling it the surest way to settle any doubt about the cottage.",
+        "Eleanor, cornered before the whole congregation, asks only for a fortnight to consider, which Ashby grants with visible impatience."
       ],
       "target_words": 560
     },
     {
       "n": 6,
-      "title": "The Nephew's Portion",
+      "title": "The Condition",
       "beats": [
-        "Word of the will spreads within the hour, and Peter Hale arrives at the Bell demanding to see it himself.",
-        "Sorrel reads aloud the passage naming the sum Hale paid to clear Peter's debts, which matches almost exactly the sum Peter has always claimed he raised 'on his own credit.'",
-        "Peter, cornered, insists the letter is a forgery, got up by Judith and the clerk to rob him of what is his.",
-        "It emerges that the basket money Mrs Pike has been delivering to Constance these past weeks was in fact never hers to give \u2014 she was only asked, by Rowe, to pass along sums Hale had left for that purpose before his death, and never thought to say so.",
-        "Mrs Pike, mortified at being thanked for someone else's kindness these many weeks, declares she will get to the bottom of this before nightfall \u2014 and marches straight for Mr Rowe."
+        "Judith turns over Silas's own words, unless the thing is claimed of me, and realizes the promise carries a condition that can still be met.",
+        "She asks Sorrel to put Ashby's claim to the cottage to her husband formally, in writing, on the firm's paper, as the law allows in any dispute.",
+        "Sorrel does so, and Silas, satisfied the condition is now plainly met, produces a sealed letter Mrs Fenwick gave him weeks before her death.",
+        "With Eleanor, Sally and Sorrel gathered in the vestry, Silas breaks the seal.",
+        "The letter is Mrs Fenwick's own account: she paid Ashby's card debts in full years before, to the exact sum now claimed in the codicil, and meant the cottage for Eleanor alone."
       ],
       "target_words": 560
     },
     {
       "n": 7,
-      "title": "The Handwriting",
+      "title": "The Cousin's Portion",
       "beats": [
-        "Peter demands proof the will is genuinely Hale's hand and not some clerk's imitation.",
-        "Judith's brother produces old prescription notes in his shop bearing Hale's signature from years back, matched letter for letter against the will by Sorrel.",
-        "Mrs Thorne confirms the seal as Hale's own, the one he always used, kept in a particular drawer she alone dusted.",
-        "Rowe, gaining courage, states plainly before the assembled parish that Hale gave him the letter with his own hands and his own instructions, which Rowe is ashamed only to have forgotten so long.",
-        "Peter, seeing the room turn against him, tells Constance sharply that she was always meant to marry him regardless, and Constance answers, quietly and for everyone to hear, that she is not."
+        "Word reaches Ashby within the hour, and he comes to the Bell demanding to see the letter for himself.",
+        "Sorrel reads aloud the sum Mrs Fenwick names, matching almost exactly what Ashby has always claimed he raised on his own credit.",
+        "Cornered, Ashby calls the letter a forgery got up against him.",
+        "Sally's account of his hours away that night, Yarrow's denial, and the widow's own seal, known to Sorrel's firm from her other papers, together break the claim.",
+        "Ashby withdraws the codicil and, quietly, asks Eleanor's forgiveness rather than her hand."
       ],
       "target_words": 560
     },
@@ -186,17 +186,23 @@
       "n": 8,
       "title": "What Was Settled",
       "beats": [
-        "Peter Hale leaves Amberlight within the week, his debts and his disappointment both now common knowledge.",
-        "Constance takes possession of Hale's Bottom and keeps Mrs Thorne on as housekeeper, this time properly paid.",
-        "Constance tries to thank Mrs Pike once more for her kindness, and Mrs Pike, laughing at herself now, insists the thanks belong to a dead man and a forgetful curate, not to her \u2014 though she allows she delivered the baskets very well.",
-        "Sorrel, his business concluded, calls on Judith to say his firm will want a resident agent to oversee such small estates hereabouts, and asks, with more hesitation than his profession usually allows, whether Amberlight might suit him permanently.",
-        "Judith says it might suit them both, and the parish settles back into its usual business of watching the coach come in on Tuesdays and Fridays, with one fewer thing left unresolved."
+        "Eleanor Fenwick takes possession of the cottage and the three hundred pounds, and keeps Sally on with a proper character and better wages.",
+        "Ashby leaves Amberlight within the week; Sorrel's firm finds him honest clerking work in Winchester and nothing more.",
+        "Mrs Pike, chastened at having been wrong about so much, carries the true account of events this time without a single embellishment.",
+        "Sorrel asks Eleanor whether his firm's new agency at Amberlight might keep him settled nearby, and she allows that it might suit her too.",
+        "Walking home, Judith thanks Silas for not telling her what he knew, and he admits it was the hardest promise he has ever kept."
       ],
-      "target_words": 560
+      "target_words": 580
     }
   ],
   "length_min": 30,
   "bible": "amberlight",
   "series": "Middle Watch: Amberlight",
-  "slug": "the-letter-at-the-bell"
+  "slug": "the-letter-at-the-bell",
+  "revisions": [
+    {
+      "feedback": "Keep these exactly as they are, word for word where they are text: the title.\n\nReplace these wholesale rather than adjusting what is there: the logline; the promise; the setting; the tropes, exactly as named; the cast, including their names, ages and stations; the chapters and their beats.\n\nThe new chapters must carry 4 to 5 concrete beats each \u2014 things that happen, not moods. That density is what stops the prose stretching to fill the words rather than the story getting bigger.\n\nInvent a genuinely new cast. Recurring characters from the series bible may still appear where the story needs them, copied verbatim as always, but the guest characters should be new people with new names \u2014 not the previous ones renamed.\n\nMerge this story with The Letter at Fenwick Cottage, and set it in spring 1818 (around Lady Day).\n\nKeep: the title, exactly. The story's length and chapter count.\nReplace wholesale: the logline, the promise, the setting, the tropes, the cast and the chapters. Eight chapters, 4 to 5 concrete beats each \u2014 things that happen, not moods.\n\nSetting: \"Amberlight parish, Hampshire, spring 1818\". Fenwick Cottage stands on the Bramdean road, half a mile past the mill cottages.\n\nTropes: The misdirected letter; The fortune hunter; The disputed inheritance.\n\nCast:\n- Mrs Judith Rowe (the bible's Miss Judith Vane, married to Mr Rowe by 1818): protagonist. Introduce her fresh as the curate's wife. She is the one person in Amberlight who checks a story before repeating it.\n- Mr Silas Rowe: supporting. He holds a sealed letter the late Mrs Fenwick gave him under a promise.\n- Mrs Honoria Pike: supporting. Mrs Hale: supporting, at the library counter.\n- Miss Eleanor Fenwick, 22: the late widow's niece and expected heir (the cottage and three hundred pounds). Love interest.\n- Mr Laurence Sorrel, 30: clerk to the Winchester solicitors, sent to settle the estate within a fortnight. Love interest. Falling for the heir his firm must rule on is his conflict.\n- Mr Gerald Ashby, 32: the widow's cousin, in debt at cards. Antagonist. His debts are real and so is a little of his regard for Eleanor.\n- Sally Prewitt, 24: maid at the cottage, needing a character for her next place. The key witness.\n- Offstage only: the late Mrs Martha Fenwick; Jacob Yarrow, a man Ashby owes at cards.\nDecide on a mnior character to remove\n\nThe central device: the late Mrs Fenwick gave Mr Rowe a sealed letter, on his promise to open it only if someone claimed the cottage against her niece in writing, to him. He is good at his work and keeps the promise even from his wife. Mrs Rowe sees that he knows something, does not ask him to break his word, works out the condition, and arranges for it to be met. Their disagreement is small and domestic, never an estrangement.\n\nChapter plan:\n1. The Letter at the Bell \u2014 after the burial, the carrier leaves a Winchester solicitor's letter at the Bell; the landlord gives it to Mrs Pike to deliver and she reads it to half the green: a codicil leaves the cottage to Ashby, witnessed by two names nobody knows. Eleanor hears it with everyone else.\n2. The Clerk on the Tuesday Coach \u2014 Sorrel arrives with a fortnight to settle; meets Mrs Rowe at the library counter over Mrs Hale; the codicil stands unless disproved; Ashby already behaves as owner and is warm toward Eleanor.\n3. What Sally Saw \u2014 the Rowes call at the house of mourning; Sally says Ashby left before nine and returned after midnight, though the codicil is dated ten o'clock; Mr Rowe goes quiet on the walk home when the widow's last week comes up.\n4. A Confidence Kept \u2014 at home Mrs Rowe asks him plainly; he says he gave his word and may not speak \"unless the thing is claimed of me\"; Mrs Pike places Yarrow as a man Ashby owes at cards.\n5. The Friday Coach \u2014 Yarrow writes to Sorrel denying he witnessed anything, and Mrs Hale repeats it exactly; Ashby proposes to Eleanor publicly after Sunday service and she asks for time.\n6. The Condition \u2014 Mrs Rowe works out the condition and has Sorrel put the claim to the curate in writing on the firm's paper; Mr Rowe opens the letter before Eleanor, Sally and Sorrel: the widow's own account that Ashby's portion was paid years ago, to the shilling, against his debts.\n7. The Cousin's Portion \u2014 confrontation at the Bell; the sum matches what Ashby claims he raised on his own credit; he cries forgery; Sally's timing, Yarrow's letter and the widow's seal break it; he withdraws and asks Eleanor's forgiveness.\n8. What Was Settled \u2014 Eleanor keeps the cottage and gives Ashby an introduction to honest work in Winchester; Mrs Pike carries the true news with unusual accuracy; Sorrel asks whether his firm's agency at Amberlight might suit Eleanor too; walking home, Mrs Rowe thanks her husband for not telling her.\n\nDo not use: the apothecary's records or handwriting as evidence; a secret benefactor or Mrs Pike delivering money; the Hale family or any farm called Hale's Bottom; a housekeeper witness; any romance or proposal involving Mrs Rowe. Nothing may depend on having seen another Amberlight story. Set bible_conflict to null unless these notes truly contradict the bible.",
+      "previous_title": "The Letter at the Bell"
+    }
+  ]
 }

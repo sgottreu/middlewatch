@@ -2,7 +2,7 @@
 
 regency / gothic · Middle Watch: Amberlight
 
-> When the shut rooms of Amberlight House light their windows beside the parish schoolroom after six years dark, the parish decides its new master is hiding a madwoman, when in truth he is hiding his own kindness.
+> When Amberlight House lights its windows after six years dark, the parish decides its new master is hiding a madwoman, when he is only hiding his own kindness.
 
 ## Length
 
@@ -27,9 +27,9 @@ regency / gothic · Middle Watch: Amberlight
 
 ## Cast
 
-- **Miss Eliza Combe**, 26 — protagonist
-- **Mr Ambrose Calder**, 35 — love_interest
-- **Miss Cecily Daunt**, 19 — supporting
+- **Miss Phoebe Langton**, 25 — protagonist
+- **Mr Edward Harker**, 36 — love_interest
+- **Miss Augusta Fairfax**, 19 — supporting
 - **Mrs Honoria Pike**, 59 — supporting *(recurring)*
 - **Mrs Hale**, 46 — supporting *(recurring)*
 - **Mr Silas Rowe**, 35 — supporting *(recurring)*
@@ -46,7 +46,7 @@ regency / gothic · Middle Watch: Amberlight
 
 | Stage | |
 |---|---|
-| ideate | awaiting_review |
+| ideate | approved |
 | write | pending |
 | edit | pending |
 | record | pending |

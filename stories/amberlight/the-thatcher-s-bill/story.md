@@ -2,7 +2,7 @@
 
 regency / comedy_of_manners · Middle Watch: Amberlight
 
-> When a curate's debt is quietly paid off, the parish thanks the wrong man for it, and the woman who truly gave the money must decide whether her good name is worth more than the truth.
+> When Mr Rowe runs up a debt to save the parish school's roof, the woman who secretly pays it goes unthanked, and a stranger who lets the credit fall to him by accident very nearly wins her hand for a kindness he never did.
 
 ## Length
 
@@ -19,38 +19,40 @@ regency / comedy_of_manners · Middle Watch: Amberlight
 
 | # | Title | Beats | Target | Written | Narrated |
 |---|---|---|---|---|---|
-| 1 | The Parsonage Roof | 4 | 450 | — | — |
-| 2 | The Wrong Gratitude | 4 | 450 | — | — |
-| 3 | A Letter Meant for Vane | 4 | 450 | — | — |
-| 4 | The Assembly at the Bell | 4 | 450 | — | — |
-| 5 | What the Parish Never Knew | 4 | 450 | — | — |
+| 1 | The Lane | 4 | 450 | — | — |
+| 2 | A Friend to the Parish | 4 | 450 | — | — |
+| 3 | The Gentleman from Winchester | 4 | 450 | — | — |
+| 4 | Refused and Found Out | 4 | 450 | — | — |
+| 5 | What Neither Learned | 4 | 450 | — | — |
 
 ## Cast
 
-- **Silas Rowe**, 34 — protagonist
-- **Miss Judith Vane**, 27 — love_interest *(recurring)*
-- **Mrs Honoria Pike**, 58 — supporting *(recurring)*
-- **Mr Aldous Finch**, 33 — antagonist
-- **Mr Edmund Vane**, 30 — supporting
+- **Mr Silas Rowe**, 32 — protagonist *(recurring)*
+- **Miss Judith Vane**, 25 — love_interest *(recurring)*
+- **Mr Owen Vane**, 28 — supporting *(recurring)*
+- **Mrs Honoria Pike**, 56 — supporting *(recurring)*
+- **Mr Lionel Pryce**, 32 — antagonist
 
 ## Production
 
 - Slug: `the-thatcher-s-bill`
 - Created: 2026-08-29T15:55:27
-- Tropes: The secret benefactor, Enemies of manner, The misdirected letter
-- Setting: Amberlight, Hampshire, an autumn some three years after old Sir Edward Marchmont's death
+- Tropes: The secret benefactor, Enemies of manner, The unwelcome proposal
+- Setting: Amberlight, Hampshire, autumn 1815
 - Bible: `amberlight`
 - Length: 15 min (pinned)
 - Images: 3/chapter, 15 total
 
 | Stage | |
 |---|---|
-| ideate | approved |
+| ideate | awaiting_review |
 | write | pending |
 | edit | pending |
 | record | pending |
 | design | pending |
 | direct | pending |
+| approve | pending |
+| publish | pending |
 
 ---
 

@@ -2,7 +2,7 @@
 
 regency / romance · Middle Watch: Amberlight
 
-> When Mrs Pike announces an engagement that does not exist to stop a wealthy aunt from carrying off the apothecary's sister, the curate and the sister must decide whether a lie told to save her is worth becoming true.
+> When Mrs Pike announces an engagement that does not exist to stop a wealthy aunt from carrying off a penniless music teacher, the teacher and the schoolmaster she is falsely tied to must decide whether a lie told to save her is worth becoming true.
 
 ## Length
 
@@ -27,11 +27,12 @@ regency / romance · Middle Watch: Amberlight
 
 ## Cast
 
-- **Mr Silas Rowe**, 34 — protagonist *(recurring)*
-- **Miss Judith Vane**, 27 — love_interest *(recurring)*
-- **Mrs Honoria Pike**, 58 — supporting *(recurring)*
-- **Mrs Charlotte Ferris**, 52 — antagonist
-- **Mr Edmund Vane**, 30 — supporting
+- **Miss Margaret Selby**, 25 — protagonist
+- **Mr Robert Dene**, 30 — love_interest
+- **Mrs Augusta Ferris**, 54 — antagonist
+- **Mrs Honoria Pike**, 56 — supporting *(recurring)*
+- **Miss Judith Vane**, 25 — supporting *(recurring)*
+- **Mr Silas Rowe**, 32 — supporting *(recurring)*
 
 ## Production
 
@@ -45,12 +46,14 @@ regency / romance · Middle Watch: Amberlight
 
 | Stage | |
 |---|---|
-| ideate | approved |
+| ideate | awaiting_review |
 | write | pending |
 | edit | pending |
 | record | pending |
 | design | pending |
 | direct | pending |
+| approve | pending |
+| publish | pending |
 
 ---
 

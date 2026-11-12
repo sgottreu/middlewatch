@@ -7,41 +7,49 @@
     "The meddling matchmaker",
     "The compromising situation"
   ],
-  "logline": "When Mrs Pike announces an engagement that does not exist to stop a wealthy aunt from carrying off the apothecary's sister, the curate and the sister must decide whether a lie told to save her is worth becoming true.",
-  "promise": "A false engagement, forced by a well-meaning meddler, becomes a real proposal that costs the man his pride and the woman her only certain future.",
+  "bible_conflict": null,
+  "logline": "When Mrs Pike announces an engagement that does not exist to stop a wealthy aunt from carrying off a penniless music teacher, the teacher and the schoolmaster she is falsely tied to must decide whether a lie told to save her is worth becoming true.",
+  "promise": "A false engagement, forced by a well-meaning meddler, becomes a real proposal that costs a proud schoolmaster his pretensions and a music teacher her one certain refuge.",
   "setting": "Amberlight parish, Hampshire, in the autumn of 1815",
   "target_words": 2250,
   "cast": [
     {
-      "name": "Mr Silas Rowe",
+      "name": "Miss Margaret Selby",
       "role": "protagonist",
-      "age": 34,
-      "gender": "male",
-      "station": "curate of Amberlight; eighty a year and no expectations",
-      "want": "to marry where he loves without letting anyone believe he married for money",
-      "appearance": "Tall and thin, dark hair worn slightly too long, with the stoop of a man used to low doorways and a face that gives away more than he intends.",
-      "dress": "Worn black coat, carefully brushed, and linen that has been turned at the cuffs.",
-      "voice_note": "earnest, over-explains, goes quiet when embarrassed",
-      "voice": "Sam",
-      "recurring": true
+      "age": 25,
+      "gender": "female",
+      "station": "a clergyman's orphaned daughter, lodging at Mrs Copp's and teaching music to farmers' daughters; no fortune of her own",
+      "want": "to be loved for herself rather than disposed of, by her aunt's money, into a companion's chair",
+      "appearance": "Slight and dark-haired, with a composed oval face and a habit of folding her hands when she is holding her tongue.",
+      "dress": "A grey stuff gown turned at the hem and a plain straw bonnet, both kept scrupulously neat.",
+      "voice_note": "quiet, precise, says almost nothing until she has thought it through"
     },
     {
-      "name": "Miss Judith Vane",
+      "name": "Mr Robert Dene",
       "role": "love_interest",
-      "age": 27,
+      "age": 30,
+      "gender": "male",
+      "station": "master of the old parish schoolroom; forty pounds a year",
+      "want": "to earn enough respectability to ask for a wife honestly, without owing the asking to anyone's charity",
+      "appearance": "Broad-shouldered and sandy-haired, with ink-stained fingers and a direct, unhurried way of looking at a person.",
+      "dress": "A brown coat gone thin at the elbows, and a neckcloth tied with more care than fashion.",
+      "voice_note": "earnest, proud of his scholars, blunt whenever money is mentioned"
+    },
+    {
+      "name": "Mrs Augusta Ferris",
+      "role": "antagonist",
+      "age": 54,
       "gender": "female",
-      "station": "keeps house for her brother, the apothecary; no fortune of her own",
-      "want": "to be chosen for herself rather than sorted, by other people's money, into either a poor marriage or a paid companion's chair",
-      "appearance": "Fair, freckled, of middling height, with reddish hair she cannot keep pinned and a habit of looking directly at whoever is speaking.",
-      "dress": "Sprigged muslin in summer, a grey wool pelisse in winter, both mended with more thrift than skill.",
-      "voice_note": "reads everything, says less than she thinks, dry when pressed",
-      "voice": "Emilia",
-      "recurring": true
+      "station": "wealthy widow of a Bath wine merchant; two thousand a year; Margaret's aunt by marriage",
+      "want": "to secure her niece's future, and to be certain any match made is love and not merely relief",
+      "appearance": "A small, upright woman with iron-grey hair dressed high and a habit of examining people over the top of her spectacles.",
+      "dress": "Fine dove-grey silk, plainly cut but visibly costly, with a single good ring.",
+      "voice_note": "clipped and dry, asks the question nobody else will"
     },
     {
       "name": "Mrs Honoria Pike",
       "role": "supporting",
-      "age": 58,
+      "age": 56,
       "gender": "female",
       "station": "widow of a naval surgeon; three hundred a year and a house on the green",
       "want": "to be credited with arranging a good match, and to be right about it publicly",
@@ -52,26 +60,30 @@
       "recurring": true
     },
     {
-      "name": "Mrs Charlotte Ferris",
-      "role": "antagonist",
-      "age": 52,
+      "name": "Miss Judith Vane",
+      "role": "supporting",
+      "age": 25,
       "gender": "female",
-      "station": "wealthy widow of a Bath wine merchant; Judith's aunt by marriage, with two thousand a year and no children",
-      "want": "to secure her niece's future, and to be certain any match is love and not merely relief",
-      "appearance": "A small, sharp-eyed woman with silver hair dressed high and a habit of examining people over the top of her spectacles.",
-      "dress": "Fine dove-grey silk, plainly cut but visibly costly, with a single good ring.",
-      "voice_note": "clipped and dry, asks the question nobody else will"
+      "station": "keeps house for her brother, the apothecary; no fortune of her own",
+      "want": "to see a plain misunderstanding set right before it does anyone real harm",
+      "appearance": "Fair, freckled, of middling height, with reddish hair she cannot keep pinned and a habit of looking directly at whoever is speaking.",
+      "dress": "Sprigged muslin in summer, a grey wool pelisse in winter, both mended with more thrift than skill.",
+      "voice_note": "reads everything, says less than she thinks, dry when pressed",
+      "voice": "Emilia",
+      "recurring": true
     },
     {
-      "name": "Mr Edmund Vane",
+      "name": "Mr Silas Rowe",
       "role": "supporting",
-      "age": 30,
+      "age": 32,
       "gender": "male",
-      "station": "apothecary of Amberlight; a struggling shop and a sister he depends on more than he admits",
-      "want": "to see his sister settled so his conscience and his ledgers can both rest",
-      "appearance": "Fair and round-faced, with a permanent stain of green dye on one cuff from mixing tinctures.",
-      "dress": "A brown coat and an apron he forgets to remove before greeting callers.",
-      "voice_note": "quick, practical, blurts things out"
+      "station": "curate of Amberlight; eighty a year and no expectations. Two rooms over Mrs Copp's, looking at the churchyard wall.",
+      "want": "to do the office properly and be asked for it honestly, not talked into it",
+      "appearance": "Tall and thin, dark hair worn slightly too long, with the stoop of a man used to low doorways and a face that gives away more than he intends.",
+      "dress": "Worn black coat, carefully brushed, and linen that has been turned at the cuffs.",
+      "voice_note": "earnest, over-explains, correct to the point of coldness with anyone he thinks proud",
+      "voice": "Sam",
+      "recurring": true
     }
   ],
   "chapters": [
@@ -79,10 +91,10 @@
       "n": 1,
       "title": "A Visitor from Bath",
       "beats": [
-        "Mrs Charlotte Ferris arrives at the apothecary's house and announces she means to take Judith Vane back to Bath as her companion, since the girl has no prospects at Amberlight worth staying for.",
-        "Mrs Pike, calling at once to inspect the visitor, mistakes overheard talk of Judith's 'understanding' at the shop counter for a private engagement and repeats it as settled fact.",
-        "At the Bell that evening, before half the parish, Mrs Pike congratulates Mrs Ferris on the news that Judith is engaged to Mr Silas Rowe.",
-        "Mrs Ferris, delighted rather than embarrassed, declares she must meet the intended properly before she decides anything about Bath, and Silas realises he has just been engaged in front of witnesses."
+        "Mrs Augusta Ferris arrives in Amberlight to call on her niece Margaret Selby and declares she means to take her back to Bath as an unpaid companion, since teaching music to farmers' daughters is no future at all.",
+        "After Sunday service, on the church porch, Mrs Pike overhears Margaret and Mr Robert Dene discussing an 'understanding' over the schoolroom accounts and mistakes it entirely for a private attachment.",
+        "Before the whole departing congregation, with Mrs Ferris standing by, Mrs Pike congratulates Margaret aloud on her engagement to Mr Dene.",
+        "Mrs Ferris, delighted rather than deterred, announces she will stay a fortnight to see her niece properly courted before deciding anything about Bath, and Dene realises he has just been engaged in front of the parish."
       ],
       "target_words": 450
     },
@@ -90,10 +102,10 @@
       "n": 2,
       "title": "The Convenient Fiction",
       "beats": [
-        "Silas calls on Judith to disentangle the misunderstanding and finds Edmund already delighted, since a settled sister solves half his worries about the shop.",
-        "Judith points out that denying it now, in front of her aunt, would only confirm to Mrs Ferris that she has nothing and must be taken to Bath at once.",
-        "The three agree to let the engagement stand until Mrs Ferris departs, after which it can be quietly forgotten.",
-        "Mrs Ferris announces she will extend her stay a fortnight to see the young people properly courted, which neither Silas nor Judith expected or wanted."
+        "Dene calls at Mrs Copp's to put the mistake right, but Margaret points out that denying it now would only prove to her aunt that she has nothing and must be carried off at once.",
+        "They agree between them to let the engagement stand until Mrs Ferris departs, meaning to let it lapse quietly afterward.",
+        "Miss Judith Vane, delivering a message for her brother's shop, meets Mr Rowe on the same errand at Mrs Copp's door and exchanges nothing warmer with him than correct civility, each still privately certain the other is proud; she overhears enough of Margaret and Dene's planning to suspect the engagement does not add up, and says nothing yet.",
+        "Mrs Ferris announces she wishes to see the schoolroom and meet Dene's scholars before she is satisfied, forcing more public performance on the couple than either wanted."
       ],
       "target_words": 450
     },
@@ -101,10 +113,10 @@
       "n": 3,
       "title": "Playing the Part",
       "beats": [
-        "Mrs Pike, thrilled with her success, begins arranging wedding details neither party has agreed to, forcing Silas and Judith into daily walks and dinners to keep the story alive.",
-        "In the course of the charade the two talk more honestly than they ever have, and Silas finds himself saying things he had not planned to say.",
-        "Judith overhears Silas telling Edmund he means to 'put an end to it' the moment Mrs Ferris leaves, and takes it to mean he intends to end things between them, not merely the pretence.",
-        "She grows cold to him without explanation, and Silas, baffled, cannot ask why in front of the very people who are watching them for signs of trouble."
+        "Mrs Pike asks Mr Rowe to read the banns for Margaret and Dene directly, and he declines, saying he will read banns only when the couple comes and asks him for themselves.",
+        "Forced to keep up appearances, Margaret and Dene are walked and dined together daily by Mrs Pike's arranging, and real feeling begins to grow between them under the pretence.",
+        "Margaret overhears Dene telling a fellow schoolmaster that he means to 'put an end to it' the moment Mrs Ferris leaves, and takes it to mean an end to his regard for her rather than the sham itself.",
+        "She turns cold to him without explanation, and Dene, baffled, cannot ask why with Mrs Pike and Mrs Ferris both watching the pair for any sign of trouble."
       ],
       "target_words": 450
     },
@@ -112,10 +124,10 @@
       "n": 4,
       "title": "Found Out",
       "beats": [
-        "Silas goes to the Vane house alone to press Judith for the reason of her coldness, and the misunderstanding finally comes out between them.",
-        "In the relief of it being cleared away, he takes her hand and they are found, unmistakably close, by Mrs Ferris and Mrs Pike arriving together at the door.",
-        "Mrs Ferris, rather than scandalised, is satisfied she has seen something real, and asks Silas plainly whether he would marry Judith without a shilling of her aunt's money attached.",
-        "Silas hesitates only a moment before saying he would rather she kept every shilling than have anyone say he married Judith for it, which is not the answer Mrs Ferris expected from a poor man."
+        "Judith Vane, having pieced the misunderstanding together from what she overheard, calls on Margaret and quietly explains that Dene's words meant ending the pretence, not his feeling for her.",
+        "Margaret goes at once to find Dene, and the two are discovered unmistakably close and sincere by Mrs Ferris and Mrs Pike arriving together at the schoolroom door.",
+        "Mrs Ferris asks Dene plainly whether he would marry Margaret with not a shilling of her aunt's money attached to her.",
+        "Dene says he would rather have Margaret penniless and honestly his than owe the marriage to anyone's fortune, an answer Mrs Ferris had not expected from a poor man, and she is satisfied something real has happened."
       ],
       "target_words": 450
     },
@@ -123,10 +135,10 @@
       "n": 5,
       "title": "What It Cost",
       "beats": [
-        "Judith, hearing what he said, tells him she would rather have his eighty pounds a year and his honesty than her aunt's certainty in Bath, and gives up the settled future for the uncertain one.",
-        "Mrs Ferris, satisfied at last, settles money on Judith anyway, as a wedding gift rather than a condition, and Silas can accept it now that it buys nothing.",
-        "Mrs Pike takes full credit for the match at every house on the green, entirely untroubled by how near she came to ruining it.",
-        "The banns are read at Amberlight church on an ordinary Sunday, and Judith and Silas walk out afterward exactly as they had all fortnight, except that now it is true."
+        "Mrs Ferris settles money on Margaret as a wedding gift rather than a condition, so Dene can accept it now that it buys nothing from him.",
+        "Margaret and Dene go together to Mr Rowe to ask for their banns properly, as he had required, and he reads them on an ordinary Sunday.",
+        "Judith Vane and Mr Rowe exchange no more than correct courtesy throughout the service, neither yet easy with the other.",
+        "Mrs Pike takes full credit for the match at every house on the green, entirely untroubled by how near her mistake had come to ruining it, while Judith's brother's shop, and the apothecary within it, goes on precisely as before."
       ],
       "target_words": 450
     }
@@ -134,5 +146,11 @@
   "length_min": 15,
   "bible": "amberlight",
   "series": "Middle Watch: Amberlight",
-  "slug": "an-understanding-at-amberlight"
+  "slug": "an-understanding-at-amberlight",
+  "revisions": [
+    {
+      "feedback": "Keep these exactly as they are, word for word where they are text: the title.\n\nReplace these wholesale rather than adjusting what is there: the logline; the promise; the setting; the tropes, exactly as named; the cast, including their names, ages and stations; the chapters and their beats.\n\nThe new chapters must carry 3 to 4 concrete beats each \u2014 things that happen, not moods. That density is what stops the prose stretching to fill the words rather than the story getting bigger.\n\nInvent a genuinely new cast. Recurring characters from the series bible may still appear where the story needs them, copied verbatim as always, but the guest characters should be new people with new names \u2014 not the previous ones renamed.\n\nThis story is set in the autumn of 1815, two years before Mr Silas Rowe and Miss Judith Vane become engaged. Before that summer they are stiff with each other \u2014 each thinks the other proud \u2014 and nothing between them may warm, resolve or turn romantic in this story. So the false engagement and the romance move to two new people.\n\nKeep exactly: the title; the setting (\"Amberlight parish, Hampshire, in the autumn of 1815\"); the tropes, exactly as named; the shape of the plot \u2014 a meddler's mistake becomes a public engagement, a wealthy aunt threatens to carry the heroine off to Bath, a misheard \"put an end to it\", and a false engagement that becomes a real one.\n\nReplace: the logline, the promise, the cast and the chapters. Five chapters, 3 to 4 concrete beats each \u2014 things that happen, not moods.\n\nCast:\n- Miss Margaret Selby, about 25: protagonist. A clergyman's orphaned daughter lodging at Mrs Copp's and teaching music to farmers' daughters; no fortune.\n- Mr Robert Dene, about 30: love interest. Master of the old parish schoolroom on forty pounds a year; earnest, proud of his scholars, poor.\n- Mrs Augusta Ferris: Margaret's wealthy widowed aunt from Bath, two thousand a year, come to take her niece home as an unpaid companion. Clipped and dry; asks the question nobody else will. (Not \"Charlotte\", which is a voice name.)\n- Mrs Honoria Pike: the meddler who announces the engagement.\n- Miss Judith Vane: supporting. The one person in Amberlight who checks a story before repeating it; she sees the engagement does not add up and quietly sets the misunderstanding straight. She says less than she thinks.\n- Mr Silas Rowe: supporting. Asked by Mrs Pike to read banns for the couple, he declines until both parties come and ask him themselves \u2014 good at the work.\n- The apothecary, if he appears, is Mr Owen Vane (not Edmund). He does not marry in this story.\n\nRules:\n- Mrs Pike's announcement happens on the church porch after Sunday service, not at the Bell in the evening.\n- Judith and Rowe may share a scene, but keep them correct and cool with each other; no warmth, no understanding, no hint of a match.\n- Mrs Ferris's money goes to Margaret as a wedding gift, never to Judith. Judith ends the story exactly as she began it: keeping house for her brother, with no fortune of her own.\n- End with Margaret and Dene going to Mr Rowe together to ask for their banns, which he reads on an ordinary Sunday; Mrs Pike takes credit at every house on the green.\n\nNothing may depend on having seen another Amberlight story. Set bible_conflict to null unless these notes truly contradict the bible.",
+      "previous_title": "An Understanding at Amberlight"
+    }
+  ]
 }

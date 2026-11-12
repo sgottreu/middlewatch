@@ -2,14 +2,14 @@
 
 regency / mystery · Middle Watch: Amberlight
 
-> When old Mr Hale dies without a will that anyone can find, the quiet woman who reads everyone else's letters before they do discovers his was never lost at all, only never opened.
+> When a Winchester solicitor's letter names her cousin heir to a widow's cottage, Eleanor Fenwick must wait on the one man in the parish too honest to tell her he already knows she is right.
 
 ## Length
 
 | | Words | Runtime |
 |---|---|---|
 | Target (30 min) | 4,500 | 30:00 |
-| Planned | 4,480 | 29:52 |
+| Planned | 4,500 | 30:00 |
 | Written | *not yet written* | |
 | **Narrated** | | *not yet recorded* |
 
@@ -19,31 +19,31 @@ regency / mystery · Middle Watch: Amberlight
 
 | # | Title | Beats | Target | Written | Narrated |
 |---|---|---|---|---|---|
-| 1 | The Farm Without a Will | 5 | 560 | — | — |
-| 2 | A Man in a Hurry | 5 | 560 | — | — |
-| 3 | The Housekeeper's Drawer | 5 | 560 | — | — |
-| 4 | A Proposal in Church | 5 | 560 | — | — |
-| 5 | What the Curate Forgot | 5 | 560 | — | — |
-| 6 | The Nephew's Portion | 5 | 560 | — | — |
-| 7 | The Handwriting | 5 | 560 | — | — |
-| 8 | What Was Settled | 5 | 560 | — | — |
+| 1 | The Letter at the Bell | 5 | 560 | — | — |
+| 2 | The Clerk on the Tuesday Coach | 5 | 560 | — | — |
+| 3 | What Sally Saw | 5 | 560 | — | — |
+| 4 | A Confidence Kept | 5 | 560 | — | — |
+| 5 | The Friday Coach | 5 | 560 | — | — |
+| 6 | The Condition | 5 | 560 | — | — |
+| 7 | The Cousin's Portion | 5 | 560 | — | — |
+| 8 | What Was Settled | 5 | 580 | — | — |
 
 ## Cast
 
-- **Miss Judith Vane**, 27 — protagonist *(recurring)*
-- **Mr Edward Sorrel**, 30 — love_interest
-- **Mr Peter Hale**, 29 — antagonist
-- **Miss Constance Wray**, 24 — supporting
-- **Mrs Honoria Pike**, 58 — supporting *(recurring)*
-- **Mr Silas Rowe**, 34 — supporting *(recurring)*
-- **Mrs Eliza Thorne**, 52 — supporting
+- **Mrs Judith Rowe**, 28 — protagonist *(recurring)*
+- **Mr Silas Rowe**, 35 — supporting *(recurring)*
+- **Mrs Honoria Pike**, 59 — supporting *(recurring)*
+- **Miss Eleanor Fenwick**, 22 — love_interest
+- **Mr Laurence Sorrel**, 30 — love_interest
+- **Mr Gerald Ashby**, 32 — antagonist
+- **Sally Prewitt**, 24 — supporting
 
 ## Production
 
 - Slug: `the-letter-at-the-bell`
 - Created: 2026-08-29T15:59:03
-- Tropes: The disputed inheritance, The secret benefactor, The fortune hunter
-- Setting: Amberlight and the neighbouring farm at Hale's Bottom, autumn 1816
+- Tropes: The misdirected letter, The fortune hunter, The disputed inheritance
+- Setting: Amberlight parish, Hampshire, spring 1818. Fenwick Cottage stands on the Bramdean road, half a mile past the mill cottages.
 - Bible: `amberlight`
 - Length: 30 min (pinned)
 - Images: 4/chapter, 32 total
@@ -56,6 +56,8 @@ regency / mystery · Middle Watch: Amberlight
 | record | pending |
 | design | pending |
 | direct | pending |
+| approve | pending |
+| publish | pending |
 
 ---
 
