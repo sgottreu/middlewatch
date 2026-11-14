@@ -419,3 +419,89 @@ the repo and is superseded.
 - **`commit-audit.sh` is untracked in the root.** Its own header says delete
   it once it has run; the tree is otherwise clean, so check its commits landed
   and remove it.
+
+---
+
+# Clean-up — Amberlight story review session audit (2026-11-10/11, checked 2026-11-14)
+
+*The session that reviewed the six unwritten Amberlight outlines against the
+bible, added Oakmere canon, fixed how the ideator reads the bible, and planned
+every revision. Same rule: things needing your judgement.*
+
+## O. Merge state
+
+| Work | Where |
+|---|---|
+| Oakmere Will canon (10 lines) and six minor names in `bibles/amberlight/amberlight.md`, changelog `sha=13f6fec4` | `333227a` |
+| `anchor_year: 1817`, `aliases: [Mrs Judith Rowe]`, changelog `sha=dab39361` | `333227a` |
+| `story_pipeline/bibles.py` (minor names shown to the ideator, aliases, `anchor_year`, portrait keyed on the canonical name, validation) and `agents/text.py` (`story_year()`, ages shifted by year, station pinned only up to the anchor) | `333227a` |
+| `docs/story/bible-format.md` (`anchor_year`, `minor_names`, `aliases`, *Ages and stations across years*) | `333227a` |
+| Hand-written *Lit Windows* 1818 outline, then the pipeline revisions of all five stories | `333227a`, `6399654` |
+| Deletion of `stories/amberlight/the-letter-at-fenwick-cottage/` (merged into the Bell) | `360e45c` |
+| Revise failing at 16,000 tokens: ideator ceiling raised to 32,000 in the Mac's `config.yaml`, and streaming so the SDK accepts it | `config.yaml` (untracked), `360e45c` |
+
+No other session duplicated any of it.
+
+**Added today, with a date suffix because they were never tracked:**
+
+- `docs/story/amberlight-review-2026-11-10.md`: a markdown export of the
+  review doc (https://claude.ai/artifact/A7EaAW9kDhYjkDftKidfz7), with the
+  later decisions noted inline. The doc itself only lived in claude.ai.
+- `stories/amberlight/<slug>/drafts/revision-notes-2026-11-11.md` × 5: copies
+  of `working/revision-notes/<slug>.md`, the notes each `revise` was run with.
+  Beside the `outline.N.json` snapshots they produced.
+
+## P. To do
+
+- **Three outlines still awaiting review:** *The Shuttered Wing*, *An
+  Understanding at Amberlight*, *The Thatcher's Bill*. Spot-checked: all
+  three followed their notes (the wedding ends *The Shuttered Wing*; Margaret
+  Selby and Robert Dene carry *An Understanding*; Rowe never learns who paid
+  in *The Thatcher's Bill*), ages shifted correctly, `bible_conflict` null.
+  *The Shuttered Wing* dropped Mrs Pike from the cast, though the notes gave
+  her the wedding breakfast. Keep or ask for her back.
+- **Guest names now collide across the unwritten slate.** "Augusta" twice:
+  Mrs Augusta Ferris (*An Understanding*) and Miss Augusta Fairfax (*The Lit
+  Windows*). Mr Edward Harker (*Lit Windows*) sits beside Sir Edward
+  Marchmont. The ideator cannot see this: `minor_names` holds only finished
+  stories, and unwritten outlines are not in it. Rename one Augusta before
+  writing; consider having `history.avoid_block` list guest names from
+  approved-but-unwritten outlines too.
+- **`config.py` `DEFAULTS["max_tokens"]["ideator"]` is still 16000**, and
+  `config.example.yaml` has no `max_tokens` block. Only the Mac's untracked
+  `config.yaml` says 32000. Any other machine, the server included, will hit
+  the same `TruncatedReply` on a 30-minute revise. Raise the default to 32000.
+- **Server:** check the review site has `333227a` and `360e45c` (`mw-ship`), and
+  that `/srv/middlewatch/config.yaml` has `ideator: 32000`, before revising
+  from review.middlewatch.co.
+- **Open bible questions,** listed at the end of the review export: the rector
+  and whether the living is vacant; where the Rowes live after the wedding;
+  whether Farr and Hester become recurring (and Farr's age: the outline says
+  32, the chapters make him about 26 in 1816); the stale voice casting note
+  that still names Charlotte and Lily.
+- **Canon to add once stories are finished:** the wedding date (*The Shuttered
+  Wing*); Fenwick Cottage, Eleanor and Sorrel (*The Letter at the Bell*); the
+  1818 trustee in the main rooms (*The Lit Windows*).
+- **Small code fixes noted in the review, not done:** reject non-null strings
+  like `"omit"` in `bible_conflict`; refresh `genre_voices` in the unwritten
+  manifests (still the retired Alice/Lily/Matilda/Daniel/George/Brian).
+
+## Q. Merge candidates / delete
+
+- **`working/revision-notes/*.md`** are now duplicated by the
+  `drafts/revision-notes-2026-11-11.md` copies. Delete the `working/` copies
+  (and section D's row for them).
+- **The review export is stale in places** by design: its *Lit Windows*
+  section names Eliza Combe and Calder, but the outline has since been
+  revised twice more (now Phoebe Langton, Edward Harker, Augusta Fairfax).
+  Treat it as the record of decisions, not of current outlines. It is not
+  linked from `docs/story/index.md`; link it from `bibles.md` or leave it as an
+  archive.
+- **The claude.ai review doc** and the repo export will drift. The repo copy is
+  the record; delete or ignore the doc.
+- **Two commits carry this session's work under other labels.** `333227a`
+  ("Add map for new fantasy book & new amberlight drafts") holds the bible and
+  pipeline code changes; `360e45c` ("llm: stream every call…") holds the
+  Fenwick deletion. Nothing is lost; the history just won't find them by name.
+  Same lesson as section J.
+- **`commit-audit.sh`** is still untracked in the root (section N).
