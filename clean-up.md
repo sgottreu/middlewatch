@@ -729,3 +729,82 @@ segment form also correctly covers `stories/amberlight/_casting/audio`.
 | `deploy.md` §0 "What the tool is" | **Trim to a pointer.** Its route list and the three no-auth/spends-money/deletes facts are a subset of `review-ui.md`. Keep the *why it needs a gate* framing, which `review-ui.md` does not make, and link out for the routes. |
 | `docs/story/review-ui-handoff-2026-09-13.md` | **Now committed** (was untracked at the time of this session). `runner.py` implemented its §1 job-runner contract, so the handoff is partly history. Decide: fold the implemented sections into `review-ui.md` and delete, or keep as the design note behind the thread→process move. |
 | The published artifact runbook | **Superseded.** Its content is `deploy.md` now. It is a hosted page outside the repo, so it cannot be kept in sync — treat `deploy.md` as the only source and let the artifact rot, or delete it. |
+
+---
+
+# Clean-up — Broken Edges worldbuilding session audit (2026-11-09/12, checked 2026-11-14)
+
+*The chat (text and voice) that built the Mapping the Broken Edges bible, map
+and layout sketch, and planned the bible-template expansion. Same rule: things
+needing your judgement.*
+
+## X. Merge state
+
+Verified by hash against the claude.ai doc and the files in the repo:
+
+| Work | Where |
+|---|---|
+| `bibles/broken-edges/broken-edges.draft.md`: byte-identical to the bible doc (https://claude.ai/artifact/WmSd2rhuX4gC7EwGATeLRy, rev 170; no edits since) | `96969e3` (earlier versions in `6399654`) |
+| `bibles/broken-edges/broken-edges.map.jpg`: the second Gemini map (Hollowmere between Glasswood and Ashfall, Southern Teeth) | `333227a` |
+| `bibles/broken-edges/broken-edges.layout.png`: layout sketch v3, the one fed to Gemini | `333227a` |
+| `bibles/north-star/north-star.draft.md`: **not this session's work** (the sci-fi chat), committed in the same `96969e3` | `96969e3` |
+
+`96969e3` ("Add new bibles") was made outside this session, minutes after it
+synced the draft. No other session duplicated or overwrote anything here.
+
+**Added today, with a date suffix because they were never in the repo:**
+
+- `docs/story/bible-template-plan-2026-11-14.md`: export of the plan doc
+  (https://claude.ai/artifact/GxVuPzHyCnCDAd6ncMvCGJ), byte-identical. It was
+  written for another agent to implement; nothing in it is built yet.
+- `bibles/broken-edges/broken-edges.notes-2026-11-14.md`: the one-paragraph
+  series summary and the exact Gemini prompt that produced the map. Both lived
+  only in the chat.
+
+**Deliberately not added:** the first Gemini map (wrong layout; replaced in the
+working tree before it was ever committed) and layout sketches v1/v2
+(superseded by v3).
+
+## Y. To do
+
+- **Nothing in the template plan is built.** `bibles.py` still has only
+  `scaffold`; there is no `bible promote`, no draft parsing, no continuity log.
+  Three decisions block it, listed at the end of the plan: the genre value for
+  Broken Edges (probably a new fantasy genre file), whether Story Ideas feed the
+  ideator, and a genre-neutral name for the factions section.
+- **The pipeline cannot see Broken Edges yet.** `available()` only counts
+  `<name>/<name>.md`, so the `.draft.md` is ignored by design. Until the
+  promote step exists, the series cannot be ideated, and `bible check` does not
+  cover it.
+- **The bible's changelog stops at 2026-11-11.** The 2026-11-12 work is in the
+  body but not logged: hazards (chasm fog to the Sunken Reach border, bad water
+  and magic sediment, Ashfall bad air, wildlife, Southern Teeth rockfalls),
+  the Sunken Reach hooks (drowned capital vault, Jory's fissure), the Pells as
+  ranchers, traders as the independent chroniclers, and the sediment story
+  seed. Add a line in the doc, then re-export.
+- **Names to confirm, all heard over voice:** *Wren* Calloway (the transcript
+  said "Rand"), *Bram* Tolliver (the transcript said "Graham"), and *Garret*
+  Marsh with one T (Scott said "Garrett"). Each was recorded as the option
+  offered, with a note to correct it; none was confirmed.
+- **Minor Names Register is empty.** Hartsford, Shoreside, Pell's Rest,
+  Floatsome and the four group names are settled and belong there before any
+  story is ideated.
+- **Map labels carry quotation marks.** Gemini printed them literally. The fix
+  is in the notes file. Low priority; the map is a reference, not a published
+  asset yet.
+- **Small wording fix in the bible:** the Tollgate entry runs "only the name
+  remains; the centre of clockwork craft…" — a missing "It is" after the
+  semicolon. Fix in the doc, not the export.
+- **No `broken-edges.changelog.md`** exists. The draft keeps its changelog as a
+  section; the pipeline expects a sibling file. Reconcile when promote is built
+  (plan step 4.6).
+
+## Z. Merge candidates / delete
+
+| Candidate | Verdict |
+|---|---|
+| `docs/story/continuity.md` ("Consequences across a series", not built) vs plan step 6b (per-series continuity log) | **Merge before building either.** Both answer "how does a later story know what an earlier one established". `continuity.md` enforces through canon; 6b logs story-established facts for review. One design, one doc. |
+| The bible doc on claude.ai vs `broken-edges.draft.md` | **Keep the doc as the source while worldbuilding continues**, unlike the Amberlight review doc (§Q): edits happen there, the repo copy is an export. Re-export after each session. Once promote exists, the repo becomes the source and the doc can go. |
+| The plan doc on claude.ai vs `bible-template-plan-2026-11-14.md` | **Repo copy is the record.** Delete or ignore the doc. Drop the date suffix if it stays. |
+| `north-star.draft.md` | Says its structure "mirrors the Amberlight and Broken Edges bibles". When the template lands, migrate it in the same pass so both drafts share one section layout. |
+| `broken-edges.notes-2026-11-14.md` | **Fold and delete.** The summary paragraph belongs in the bible's Premise (or a logline field once the template has one); the map prompt can stay as a short appendix or go once the map is final. |
