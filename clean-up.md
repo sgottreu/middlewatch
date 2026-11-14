@@ -808,3 +808,113 @@ working tree before it was ever committed) and layout sketches v1/v2
 | The plan doc on claude.ai vs `bible-template-plan-2026-11-14.md` | **Repo copy is the record.** Delete or ignore the doc. Drop the date suffix if it stays. |
 | `north-star.draft.md` | Says its structure "mirrors the Amberlight and Broken Edges bibles". When the template lands, migrate it in the same pass so both drafts share one section layout. |
 | `broken-edges.notes-2026-11-14.md` | **Fold and delete.** The summary paragraph belongs in the bible's Premise (or a logline field once the template has one); the map prompt can stay as a short appendix or go once the map is final. |
+
+---
+
+# Clean-up — ambience pipeline voice session audit (2026-11-13/14, checked 2026-11-14)
+
+A voice session drafted an ambience pipeline doc on claude.ai without reading
+`docs/ambience/pipeline-design.md` first. Most of it re-derives that design more
+thinly; a few decisions in it are genuinely new. Nothing from it existed in the
+repo before this audit, and no other session had added it.
+
+## AA. Merge state — written, not committed
+
+| File | State |
+|---|---|
+| `docs/ambience/pipeline-session-2026-11-14.md` | **New, uncommitted.** Export of the claude.ai doc "Middle Watch — Ambience Pipeline" (https://claude.ai/artifact/3R64x7TMNHet2N3Ys663E2). Date-suffixed because it conflicts with `pipeline-design.md`. |
+| `ledger/check_rates-2026-11-14.py` | **New, uncommitted.** Rate-check scraper. Compiles; never run. Date-suffixed because its key paths don't match `ledger/rates.json`. |
+
+Commit both (or run `commit-audit.sh`) before acting on anything below.
+
+## AB. New decisions from this session — carry into pipeline-design.md
+
+These were stated by Scott and are not in the August design:
+
+- **ffmpeg runs locally on the Mac for now**, not on Lightsail. Keep the ffmpeg path in config so it can move later.
+- **Higgsfield as a second visual provider** alongside Gemini, for stills and possibly motion clips. Needs a provider in `rates.json`, a `record_higgsfield()`, and a `HIGGSFIELD_API_KEY` in `.env.example`.
+- **A/B test Higgsfield vs Gemini** on the same prompts: tag ledger rows with provider and a `test_id`, record the pick in the review UI, have `report.py` compare cost per asset and win rate.
+- **Overlays are generated** (see conflict 2 below — "generated" by AI vs procedurally needs settling).
+- **Ambience gets its own review UI**, separate from stories (already in overview memory; confirm the design doc says so).
+
+## AC. Conflicts — decide, then drop the losing version
+
+1. **Design file name and shape.** Session uses `ambience/<slug>/design.json` with `stems`/`role: bed|event`/`min_gap`/`max_gap`. The design uses `concept.json` with procedural + generated layers and Poisson `density_per_min`. **Recommend keeping `concept.json`**; fold in the session's per-stem `variants` count and the fixed render seed if the design lacks them.
+2. **Overlays.** Design: a numpy/PIL compositor drawing periodic effects (rain, snow, embers, flicker) so frame N equals frame 0. Session: AI-generated overlay clips blended over the still. These are different things. AI clips are not periodic and would break the `-c:v copy` stream-loop. **Decide:** procedural overlays (design) vs generated (session), or generated only for motion mode.
+3. **Bed looping.** Session: `acrossfade` loops with offset lengths. Design: granular resynthesis + variant stacking, and calls verbatim looping "the characteristic failure of this niche". **Recommend the design's approach**; drop the session's.
+4. **Ken Burns / push-in.** Session suggests a subtle `zoompan` push-in. Design says Ken Burns is wrong here and should not be inherited. **Recommend dropping it** from the session doc.
+5. **Motion mode (Higgsfield video).** Session loops a short clip forwards-then-backwards (ping-pong). Not in the design. Ping-pong is visibly wrong for anything with direction (smoke, rain, people). Needs a by-eye check before adopting.
+6. **Audio is all-generated in the session doc.** The design is hybrid: procedural synth for beds (built, in `ambience_pipeline/synth/`), ElevenLabs only for accents. The session doc ignores the synth entirely. **Keep the hybrid.**
+7. **Output paths.** Session: `renders/<slug>/audio.m4a`, `final.mp4`. Design: `ambience/<slug>/audio/mix.flac`, `render/final.mp4`. Use the design's.
+8. **Target lengths.** Session lists "standard target lengths" as an open question; the design already pins `--hours {1,3,8}`. Close the question.
+9. **Loudness.** Session leaves the target open; design sets −20 to −23 LUFS, −3 dBTP, 10s/20s fades. Use the design's.
+
+## AD. To do
+
+- **ElevenLabs SFX pricing disagrees with `rates.json`.** The `_comment` there says ~200 credits flat per generation regardless of length. Current ElevenLabs docs (checked 2026-11-14) price fixed-duration SFX at 40 credits per second (a 30s clip is 1,200 credits) and list API SFX at $0.12/minute. Re-check and fix the rate and the comment before any SFX is billed.
+- **Commercial rights still block the generated half** (design's existing blocker). Confirm the ElevenLabs plan tier — and now Higgsfield's licence terms too — before filling `assets/sfx_cache/`.
+- **Rewrite `check_rates-2026-11-14.py` against the real `rates.json` layout:** `providers.<p>.models.<model>.<unit>`, `sources.<p>` already holds the URLs (read them from there instead of hard-coding), and update the top-level `rates_verified` rather than a per-provider `_checked`. ElevenLabs is recorded in credits, so the scraper should compare credits, not dollars. Then drop the date suffix.
+- **Higgsfield's pricing page is likely JS-rendered**; the scraper will report "not found". Either use a browser fetch or record Higgsfield rates by hand.
+
+## AE. Merge candidates / delete
+
+| Candidate | Verdict |
+|---|---|
+| `docs/ambience/pipeline-session-2026-11-14.md` vs `pipeline-design.md` | **Fold the AB items into `pipeline-design.md`, resolve AC, then delete the session file.** Add Higgsfield and the A/B test to `index.md` when they're in. |
+| The claude.ai doc "Middle Watch — Ambience Pipeline" | **Repo is the record.** Stop editing the claude.ai doc; delete it after the fold. |
+| `ledger/check_rates-2026-11-14.py` | **Keep, rewrite per AD, rename to `ledger/check_rates.py`.** Mention it in the `index.md` Spend table next to "Add a rate for a model". |
+
+---
+
+# Clean-up — devlog ideas session audit (2026-11-13/14, checked 2026-11-14)
+
+*Voice session brainstorming YouTube devlogs for the Middle Watch channel. The
+output was a claude.ai doc; the ideator facts in it were checked against this
+repo on 2026-11-14.*
+
+## AA. Merge state — NOT committed
+
+| File | State |
+|---|---|
+| `docs/devlog/devlog-ideas-2026-11-14.md` | **New, untracked.** Markdown export of the claude.ai doc "Middle Watch Devlog Ideas" (https://claude.ai/artifact/2ppZJPL9hF5YCDqDfNDvYi). New `docs/devlog/` folder. No earlier devlog material existed anywhere in the repo, so nothing conflicts; the date suffix follows the convention for files added by a session. |
+| `clean-up.md` | This section appended. |
+
+Commit from the Mac, not the sandbox (same unlink problem as `commit-audit.sh`):
+
+```bash
+git add docs/devlog/devlog-ideas-2026-11-14.md clean-up.md
+git commit -m "Devlog ideas export; clean-up section AA"
+```
+
+## AB. To do
+
+- **The doc's "Story to Screen" outline uses invented stage names** (script,
+  narration, visuals, audio mix, render). The real stages are `ideate, write,
+  edit, record, design, direct, approve, publish` (`STAGES` in `bundle.py`).
+  The "Agent Team" section below it is correct; align the outline bullets to it.
+- **"Approval gates on outlines, chapters and the rendered video" is not
+  verified.** It came from chat history. The ideate gate and the video
+  approve/publish gates are confirmed in code; a chapter-level gate was not
+  checked. Confirm before it goes in a script.
+- **RPG to-do app and Hedgerow Farm notes come from past chats only.** Neither
+  lives in this repo, so nothing here verifies them (rpg.middlewatch.co stack,
+  PM agent merging to main, sub-agents on branches, the 6-months-in-the-red
+  loan rule). Check against their own repos before scripting.
+- **Ambience notes are also from chat history** (ffmpeg local on the Mac,
+  Gemini/Higgsfield visuals). Cross-check against `docs/ambience/` and
+  `ambience_pipeline/`.
+- **The "AI runs the channel for a week" idea has an open decision:** how much
+  control it gets (videos only, or titles, thumbnails and comment replies too).
+  Note: `cli all` already skips every review gate, so the episode could be built
+  on that, but `approve` → `publish` exists so "nothing goes up that nobody
+  watched". Running it unattended contradicts that rule on purpose; decide
+  whether the experiment keeps the publish gate.
+
+## AC. Merge candidates / delete
+
+| Candidate | Verdict |
+|---|---|
+| claude.ai doc vs `devlog-ideas-2026-11-14.md` | **Doc is the source while brainstorming continues** (same pattern as the Broken Edges bible, §Z). Re-export after edits; once scripts start, make the repo copy the record and drop the date suffix. |
+| "Agent Team Behind the Stories" in the devlog doc vs `docs/story/ideation.md` + `docs/story/architecture.md` | **Overlap, not conflict.** The devlog copy is a talking-points summary. Link to the real docs from it rather than letting it grow into a second description of the pipeline. |
+| `docs/devlog/` as its own folder vs `docs/story/` | **Keep separate.** Devlogs cover the story pipeline, the ambience pipeline and two apps outside this repo, so they don't belong under either channel's docs. Add a line to `README.md` or a docs index if one is wanted. |
+| `docs/story/review-ui-roadmap.md` / `review-ui-handoff-2026-09-13.md` | The September design listed ideate and edit as missing; both now exist. Already covered by §T/§W-era notes; mentioned here only because this session hit the stale version first. |
