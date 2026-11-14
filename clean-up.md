@@ -645,3 +645,87 @@ CLI commands. Nothing new was written: the content already exists in the repo.*
   duplicates `quick-reference.md`; U's fix covers it.
 - **Still untracked:** `commit-audit.sh`. N and S both say delete it rather than
   re-run.
+
+---
+
+# Clean-up — Lightsail deploy session audit (2026-09-08/11, checked 2026-11-14)
+
+## W. Merge state — all committed, nothing outstanding
+
+*From the session that stood up `review.middlewatch.co`: Lightsail instance,
+Hover DNS, SSH bootstrap, certbot, Google OAuth, oauth2-proxy, nginx, and the
+`mw-*` scripts. Re-checked 2026-11-14 — every artifact of that session is in the
+repo, so **no timestamp-suffixed file was needed this round.***
+
+- `docs/story/deploy.md` — committed in `e6305cf`, 490 lines, intact. Linked
+  from `index.md` (table + footer nav) and from `aws.md` §9.
+- `scripts/deploy/` — the original six (`mw-deploy`, `mw-commit-stories`,
+  `mw-write-running`, `mw-review.service`, `mw-stories.service`,
+  `mw-stories.timer`) committed in `bf69f8d` / `2cb25ba`, and extended since by
+  other sessions with `mw-restart`, `mw-ship`, `mw-s3-archive` and its service
+  and timer.
+- `mw-review.service` — `ExecStart` corrected from bare `.venv/bin/python` to
+  `python3`, per the standing rule in `CLAUDE.md`. Committed.
+- `.gitignore` — the `stories/` binary exclusions landed, **and were corrected
+  by another session.** See "Wrong, and already fixed" below.
+
+## Decision you may disagree with
+
+**`deploy.md` has a bare name, not a `-2026-11-14` suffix.** Unlike
+`elevenlabs-api-key-permissions-2026-11-14.md` (§V) it was committed as a
+permanent page. The reason: `aws.md` §9 points at it as the web-tier half of
+restoring onto a fresh box, and `index.md` lists it in the main table — a dated
+filename reads as provisional for the one document you would open at the worst
+possible moment. If you would rather it follow the suffix convention until the
+`aws.md` overlap below is settled, the rename touches three links: `index.md`
+twice, `aws.md` once.
+
+## Wrong, and already fixed — worth knowing why
+
+**The `.gitignore` patterns were one level too shallow.** That session wrote
+`stories/*/audio/`, assuming bundles sat at `stories/<slug>/`. They sit at
+`stories/<arc>/<slug>/` — `stories/amberlight/the-cracked-beam/audio/` — so the
+pattern matched nothing and another session corrected it to `stories/*/*/audio/`.
+
+Checked: **no `.mp3`, `.png`, `.mp4` or `.srt` was ever committed under
+`stories/`** across all refs, and `.git` is 19 MB. The window between the wrong
+pattern and the fix was clean, so there is no history to rewrite. The three-
+segment form also correctly covers `stories/amberlight/_casting/audio`.
+
+## To do
+
+- **`deploy.md` §Known stale lists five drifted items; none are re-verified.**
+  That was deliberate — the session ported the runbook as-written rather than
+  re-checking it — but the staleness is now two months deep. The two that will
+  actively mislead:
+  - **§4's four-package list** (`anthropic`, `google-genai`, `requests`,
+    `PyYAML`) and **§7's "only `ANTHROPIC_API_KEY` is needed here"** both
+    predate `record` and `design` running on the box. ffmpeg and the ElevenLabs
+    and Gemini keys are required now. Rebuilding a box from §4 alone produces a
+    server that cannot narrate.
+  - **§6's reasoning about in-memory job state** describes the pre-`runner.py`
+    design. The conclusion still holds — do not deploy through a running job —
+    but for a different reason, and `mw-write-running` now also reports
+    `redraft`, `record` and `design`.
+- **§5's install line names 6 of the 11 files in `scripts/deploy/`.** Add
+  `mw-restart`, `mw-ship`, `mw-s3-archive` and its two units, or the install
+  step silently leaves half the tooling off a fresh box.
+- **§11's 900s nginx timeout may now protect nothing.** It existed because
+  `revise` and `critique` held a model call open inside one request;
+  `runner.py` moved those to child processes. Harmless either way — but confirm
+  before anyone "tidies" it away, in case a synchronous path remains.
+- **Confirm the installed unit on the box.** `/etc/systemd/system/mw-review.service`
+  may still carry the old bare-`python` `ExecStart`; the repo copy is fixed but
+  an installed copy does not update itself. `sudo install -m 644` it again and
+  `daemon-reload`.
+- **Same item as §U:** `quick-reference.md` has no server/ops block. The
+  `deploy.md` link U asks for covers this session's commands too.
+
+## Merge candidates / keep separate
+
+| Candidate | Verdict |
+|---|---|
+| `deploy.md` vs `aws.md` | **Keep both.** Genuinely different subjects: `aws.md` is storage and compute (volume, bucket, IAM role, ffmpeg, archive sweep), `deploy.md` is the web tier (DNS, TLS, OAuth, nginx, SSH). `aws.md` §9 now cross-links as the only seam. Recorded here so §7's overlap table does not re-litigate it. |
+| `deploy.md` §0 "What the tool is" | **Trim to a pointer.** Its route list and the three no-auth/spends-money/deletes facts are a subset of `review-ui.md`. Keep the *why it needs a gate* framing, which `review-ui.md` does not make, and link out for the routes. |
+| `docs/story/review-ui-handoff-2026-09-13.md` | **Now committed** (was untracked at the time of this session). `runner.py` implemented its §1 job-runner contract, so the handoff is partly history. Decide: fold the implemented sections into `review-ui.md` and delete, or keep as the design note behind the thread→process move. |
+| The published artifact runbook | **Superseded.** Its content is `deploy.md` now. It is a hosted page outside the repo, so it cannot be kept in sync — treat `deploy.md` as the only source and let the artifact rot, or delete it. |
