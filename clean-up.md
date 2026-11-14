@@ -505,3 +505,95 @@ No other session duplicated any of it.
   Fenwick deletion. Nothing is lost; the history just won't find them by name.
   Same lesson as section J.
 - **`commit-audit.sh`** is still untracked in the root (section N).
+
+---
+
+# Clean-up — voice casting session audit (2026-10-20, checked 2026-11-14)
+
+The session that compared voices for Eleven v4 and built per-character
+auditions: `check_voices.py --sample --story`, `scripts/audition-cast.sh`, the
+per-arc record in `stories/<arc>/_casting/`, the Casting page in the review UI,
+and its Apply button.
+
+## R. Merge state — all committed
+
+| Work | Where |
+|---|---|
+| `check_voices.py` story auditions, `--candidates`, `--speaker` / `--voice`, progress markers, per-take record writes | `e57c908`; reworked for `voices.yaml` in `75eaa47` |
+| `scripts/audition-cast.sh` | `e57c908` |
+| `story_pipeline/casting.py` (record, verdicts, pool, `CASTING.md`) | `e57c908`, extended in `58f2d48` |
+| `story_pipeline/casting_apply.py` (Apply: plan, line-by-line YAML edits, commit and push) | `e57c908`; moved to `voices.yaml` in `75eaa47` |
+| Casting page: `review/casting.html`, `review/casting_api.py`, routes and Range-aware audio in `server.py`, `runner.start_command`, link in `app.html` | `e57c908`; UI refined by later sessions in `5c13e2a`, `1fc5166`, `32957f5` |
+| `tts.py`: v4 in `TAG_MODELS` and `CREDIT_RATE` | `e57c908` |
+| `mw-s3-archive push-casting` / `pull-casting` | `e57c908` (see L) |
+| `docs/story/casting.md`, linked from `docs/story/index.md` | `e57c908`; updated for `voices.yaml` in `75eaa47` |
+| Amberlight cast applied: `_casting/` record, bible, every outline and manifest | `236a5d6`, then recast and re-recorded in `af36a2c` |
+
+Nothing from this session is uncommitted and no other session made a competing
+version, so no timestamp-suffixed copies were needed. Later sessions built on
+these files rather than beside them.
+
+Resolved since: v4 narration with `previous_text` / `next_text` was untested
+when the session ended. The Cracked Beam was re-recorded on 2026-11-09 under
+`eleven_v4` with the full cast, so it works; leaving v4 out of
+`NO_CONTEXT_MODELS` was right.
+
+## S. To do
+
+- **Default voices expire 2026-12-31 and every genre's pool still uses them.**
+  `story_pipeline/prompts/genres/*.md` `voices:` blocks:
+  regency `female: [Alice, Lily, Matilda]`, `male: [Daniel, George, Brian]`;
+  fantasy narrator **Daniel** and pool `[Charlotte, Lily, Alice]`; sci-fi
+  narrator **Rachel** and `[Rachel, Alice, Charlotte]` (Rachel is not in
+  `voices.yaml` at all, so a sci-fi record would fail today). Any character not
+  in a bible gets a voice from these pools. Re-point them at voices already
+  auditioned (`python3 -m story_pipeline.casting pool amberlight`) before the
+  next new story. Amberlight itself is clear: every outline and manifest uses
+  the new cast.
+- **Then prune `voices.yaml`.** It still maps Daniel, Alice, George, Lily, Brian
+  and Matilda. Keep them until the genre pools above move, then remove them so
+  nothing can reach for them after Dec 31.
+- **Amberlight bible prose is stale** (lines ~155–158, "Mrs Hale is cast on
+  Charlotte… Lily is free"). Same item as P; listed here only because Apply
+  flags it and can't fix prose.
+- **`ledger/rates.json` has no `eleven_v3` or `eleven_v4`,** and
+  `rates_verified` is 2026-08-29, past the ledger's own 90-day window. Nothing
+  fails today only because the pipeline doesn't write `costs.csv` yet; it will
+  raise on the first v4 cost event once it does. Add both models (v4 full rate,
+  v4 Turbo half) and re-verify against the plan.
+- **Three candidates could not be auditioned** (IDs came from third-party
+  listings): Alicia `DNYvvkdiu5NYK2rSLwDL` (Judith Vane), Jeanette
+  `RILOU7YmBhvwJGDGjNmP` (Mrs Pike), Finley `uxut3IsZzAX3ycGl84pJ` (Silas
+  Rowe — ElevenLabs' own named replacement for Daniel). Find the real IDs in
+  the Voice Library or remove them from `_casting/candidates.json`; Jeanette is
+  still listed there.
+- **`docs/story/narration.md` predates v4.** The model table (~line 159) has
+  only `eleven_multilingual_v2` and `eleven_v3`; the Casting section says solo
+  is the default, which is true of the code but not of this repo's config
+  (`mode: cast`). Add a v4 column and a pointer to `casting.md`.
+- **`review-ui.md` and `review-ui-roadmap.md` don't mention the Casting page.**
+  One line and a link each.
+- **Do not re-run `commit-audit.sh`.** Its commit 4 stages `clean-up.md`, so a
+  re-run would sweep this section into a commit titled for the branding/ledger
+  audit. N already says to delete it.
+
+## T. Merge candidates / delete
+
+- **One list of Default voices, not two.** `check_voices.py` has `REPLACEMENTS`
+  (Default → suggested replacement) and `casting_apply.py` has its own set of
+  Default names for the expiry warning. Move one constant into
+  `story_pipeline/casting.py` and import it in both. After Dec 31 the
+  replacement map is history; the warning can stay.
+- **`check_voices.py` lives in the repo root** but is now a pipeline component
+  the review server shells out to (`casting_api.run`). Consider
+  `story_pipeline/auditions.py` run as `python3 -m`, with a thin root wrapper or
+  none. `casting_api.py` hard-codes `Path("check_voices.py")` and would need the
+  same change.
+- **`scripts/audition-cast.sh` is mostly superseded by the Casting page.** Keep
+  it only if you audition from a terminal; otherwise delete it and the
+  "From a terminal" lines in `casting.md` that use it.
+- **Empty `casting/` directory in the root.** Left when the candidate list moved
+  into `stories/amberlight/_casting/`; git doesn't track it. `rmdir casting`.
+- **`config.yaml.20261102T200921.bak` and `config.yaml.20261109T143013.bak`**
+  are Apply's backups (ignored by `config.yaml.*.bak`). Delete once the current
+  `config.yaml` is known good; same pass as section 9's root clean-out.
