@@ -4,9 +4,14 @@ Two production pipelines and the operations shared between them.
 
 - **Stories** — original short fiction, narrated and illustrated, assembled into
   a YouTube video. See [docs/story/index.md](docs/story/index.md).
-- **Ambience** — long-form soundscapes with looping visuals. Design doc at
-  [docs/ambience/pipeline-design.md](docs/ambience/pipeline-design.md);
-  implementation not started.
+- **Ambience** — long-form soundscapes with looping visuals. Only the procedural
+  synth is built: five recipes and an audition CLI, free and offline. See
+  [docs/ambience/index.md](docs/ambience/index.md).
+
+  ```bash
+  python3 -m ambience_pipeline.synth list
+  python3 -m ambience_pipeline.synth rain --seconds 120
+  ```
 
 Both pipelines record spend to one `ledger/`, and both draw on `assets/`.
 
