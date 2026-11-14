@@ -15,7 +15,7 @@ User=ubuntu
 # line wires up the credentials, the config and stories/ at once. That is also
 # why there is no EnvironmentFile here: the app reads its own .env.
 WorkingDirectory=/srv/middlewatch
-ExecStart=/srv/middlewatch/.venv/bin/python -m story_pipeline.cli review --port 8765 --no-open
+ExecStart=/srv/middlewatch/.venv/bin/python3 -m story_pipeline.cli review --port 8765 --no-open
 Restart=on-failure
 RestartSec=5
 
