@@ -270,8 +270,13 @@ cp .env.example .env                  # then paste the three keys
 mw-s3-archive --kinds audio,images pull-all
 ```
 
-If something is missing after that, it was stored somewhere this document does
-not describe. Fix where it is written, not the restore.
+That restores storage and compute. It does **not** restore the web tier — DNS,
+the certificate, the Google OAuth client, oauth2-proxy, the nginx front — which
+is [`deploy.md`](deploy.md). A box rebuilt from this section alone answers on
+`127.0.0.1:8765` and on nothing else.
+
+If something is missing after both, it was stored somewhere neither document
+describes. Fix where it is written, not the restore.
 
 ## Gotchas
 

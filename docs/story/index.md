@@ -51,6 +51,7 @@ from inside `story_pipeline/` puts your output somewhere you didn't mean. The
 | [Review UI roadmap](review-ui-roadmap.md) | What the dashboard does now, and what is next. |
 | [Casting](casting.md) | Voice auditions per arc: the Casting page, the record in `_casting/`, verdicts and the voice pool. |
 | [Running on AWS](aws.md) | The server, the stories volume, S3 backups, and which stages run where. |
+| [Deploying the review server](deploy.md) | How `review.middlewatch.co` exists: DNS, TLS, Google sign-in, nginx, SSH. Dated per section — check before trusting. |
 | [Troubleshooting](troubleshooting.md) | Symptom → cause. |
 
 ---
@@ -171,7 +172,7 @@ Describes the system. Safe to edit freely.
 
 `index.md` (this file) · `setup.md` · `running.md` · `ideation.md` ·
 `bibles.md` · `style.md` · `boundaries.md` · `narration.md` ·
-`architecture.md` · `aws.md` · `cost.md` · `calibration.md` ·
+`architecture.md` · `aws.md` · `deploy.md` · `cost.md` · `calibration.md` ·
 `bible-format.md` · `continuity.md` · `review-ui.md` ·
 `review-ui-roadmap.md` · `solo-narration-runbook.md` · `troubleshooting.md`
 
