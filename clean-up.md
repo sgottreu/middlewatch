@@ -597,3 +597,29 @@ when the session ended. The Cracked Beam was re-recorded on 2026-11-09 under
 - **`config.yaml.20261102T200921.bak` and `config.yaml.20261109T143013.bak`**
   are Apply's backups (ignored by `config.yaml.*.bak`). Delete once the current
   `config.yaml` is known good; same pass as section 9's root clean-out.
+
+## U. Review UI / CLI help-guide check — 2026-11-14
+
+*From a session that asked for a quick guide to starting the review UI and the
+CLI commands. Nothing new was written: the content already exists in the repo.*
+
+- **Already in the repo, nothing to add.** `docs/story/quick-reference.md`
+  covers starting the review UI (`scripts/review-app.sh`, `cli review
+  [--port] [--no-open] [--reload]`) and every subcommand in `cli.py`. Checked
+  against `cli.py` and all subcommands match. The README section "Running the
+  review interface locally" came from the 2026-11-02 casting session's draft.
+- **Merge: README duplicates quick-reference.** README's review section is a
+  thinner copy (no `--port`/`--no-open`/`--reload`, no Casting page). Cut it to
+  two lines plus a link to `docs/story/quick-reference.md` so there is one
+  source.
+- **To do: quick-reference has no server/ops section.** Add a short block or
+  a link to `deploy.md` for `ssh middlewatch mw-deploy` (server-side only),
+  `scripts/deploy/mw-ship`, `mw-restart`, `sudo systemctl restart mw-review`,
+  and `scripts/mw-asset-sync <slug> --go`. Today these are only in `deploy.md`
+  and `aws.md`.
+- **To do: README's `mw-asset-sync` line omits the arguments.** It says "pull
+  it down with `scripts/mw-asset-sync`", but `aws.md` documents
+  `scripts/mw-asset-sync <slug> --go`. Match the README to that, or link to it.
+- **Optional: keyboard shortcuts.** `review-ui.md` documents them (`j`/`k`,
+  `a`, `r`, `g`, `v`, `p`), but they're spread out. A single line in
+  quick-reference's Review UI section would make it a true one-pager.
