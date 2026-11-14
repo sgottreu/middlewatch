@@ -368,3 +368,54 @@ a timestamp suffix.**
   leaves the previous approval in place. That is the correct behavior, but the
   same `try/finally` should keep it that way.
 
+---
+
+# Clean-up — asset sync / script rename session audit (checked 2026-11-14)
+
+## L. Merge state — all committed
+
+| Work | Where |
+|---|---|
+| `scripts/mw-asset-sync` (rsync over ssh, laptop pulls `audio/`, `images/`, `video/` straight off the server) | `dc51893` "Rename sync scripts", 2026-10-20 |
+| `mw-sync` → `scripts/deploy/mw-s3-archive`, with `.service` / `.timer` renamed to match | `dc51893` |
+| `mw-ship` install lines, `README.md`, `docs/story/aws.md` §5 + §7, `review-ui-roadmap.md` | `dc51893` |
+| `push-casting` / `pull-casting` added to `mw-s3-archive` by the casting session | `e57c908` — builds on the rename, no conflict |
+
+Nothing from this session is uncommitted, and no other session duplicated it,
+so no timestamp-suffixed copies were needed. The first draft, `mw-pull.sh`
+(wrong server path `/home/ubuntu/middlewatch`, its own env vars), was never in
+the repo and is superseded.
+
+## M. To do
+
+- **Server: swap the systemd units if not done yet.** `mw-ship` installs the
+  new script but not the units, so the old `mw-sync.timer` keeps running
+  `/usr/local/bin/mw-sync` (pre-casting, so it does not back up auditions).
+  Check with `systemctl list-timers | grep mw-`; the swap is in `aws.md` §5
+  "Renamed from mw-sync". Delete that subsection once done.
+- **`mw-asset-sync` has never run against the real server.** Syntax-checked
+  only. First use: dry run, confirm `images/scenes.json` and the mp3s list.
+- **`aws.md` §7 step 3 is stale.** Still says render on the laptop and
+  `unzip` the zip; rendering now happens on the server via the Render button
+  (oakmere-will rendered fine locally too). Same pass as section 9's
+  server-size fix.
+- **`deploy.md` §5 install list** names the original six scripts only; also
+  `mw-deploy` prints `install scripts/deploy/*`, which would put the `.service`
+  and `.timer` files into `/usr/local/bin`. Use one explicit list (the one in
+  `mw-ship`) everywhere.
+
+## N. Merge candidates / delete
+
+- **Three ways to get a story's media onto the laptop:** Assets .zip,
+  `mw-asset-sync` (live, from the server) and `mw-s3-archive pull` (S3, up to
+  an hour old). Consider an `--from s3` flag on `mw-asset-sync` and retiring
+  the zip, so there is one command.
+- **Section D row `working/files1/mw-sync.sh`: do not move it into `scripts/`.**
+  It is the older per-arc/episode design, superseded by
+  `scripts/deploy/mw-s3-archive`. Delete it with the rest of `working/files1/`.
+- **Stale `mw-sync` mentions:** `docs/story/review-ui-handoff-2026-09-13.md`
+  (lines ~193, 237 — historical, fine to leave or annotate) and
+  `WHERE-THINGS-GO-files1-2026-08-27.md` (already marked delete in B).
+- **`commit-audit.sh` is untracked in the root.** Its own header says delete
+  it once it has run; the tree is otherwise clean, so check its commits landed
+  and remove it.
