@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Middle Watch — Launch Checklist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Caslon+Text&family=Archivo:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#131E2B; --night-deep:#0C141D;
+  --candle:#E8A44C; --candle-dim:#8A6534;
+  --paper:#EFE6D4; --paper-soft:#C9BEA8; --cold:#7E8FA3;
+  --rule:rgba(201,190,168,.16);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--night); color:var(--paper);
+  font-family:"Libre Caslon Text",Georgia,serif; font-size:1.05rem; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:52rem;margin:0 auto;padding:clamp(1.5rem,4vw,3rem)}
+
+h1{font-family:"Libre Caslon Display",Georgia,serif;font-weight:400;
+   font-size:clamp(2rem,1.4rem+2.4vw,3rem);margin:0 0 .3rem;line-height:1.05}
+.sub{color:var(--cold);margin:0 0 2rem;font-family:"Archivo",system-ui,sans-serif;font-size:.85rem}
+
+h2{font-family:"Libre Caslon Display",Georgia,serif;font-weight:400;
+   font-size:1.5rem;margin:2.5rem 0 .9rem;padding-top:1.4rem;border-top:1px solid var(--rule)}
+h2:first-of-type{border-top:0;padding-top:0}
+
+/* ------------------------------------------------ progress */
+.bar{
+  position:sticky;top:0;z-index:5;
+  background:var(--night-deep);border:1px solid var(--rule);
+  padding:.75rem 1rem;margin-bottom:2rem;
+  display:flex;gap:1rem;align-items:center;flex-wrap:wrap;
+  font-family:"Archivo",system-ui,sans-serif;font-size:.85rem;
+}
+.count{color:var(--candle);white-space:nowrap}
+.track{flex:1 1 8rem;height:4px;background:rgba(201,190,168,.15);min-width:6rem}
+.fill{height:100%;width:0;background:var(--candle);transition:width .25s ease}
+.bar button{
+  font-family:inherit;font-size:.8rem;padding:.35rem .8rem;cursor:pointer;
+  background:transparent;border:1px solid var(--candle-dim);color:var(--paper-soft);
+}
+.bar button:hover{border-color:var(--candle);color:var(--candle)}
+
+/* ------------------------------------------------ items */
+ul{list-style:none;margin:0;padding:0}
+li{margin:0 0 .1rem}
+label{
+  display:flex;gap:.75rem;align-items:flex-start;
+  padding:.4rem .5rem .4rem 0;cursor:pointer;
+}
+label:hover{background:rgba(232,164,76,.05)}
+input[type=checkbox]{
+  appearance:none;-webkit-appearance:none;
+  flex:0 0 auto;width:1.05rem;height:1.05rem;margin:.32rem 0 0;
+  border:1px solid var(--cold);background:transparent;cursor:pointer;
+  display:grid;place-content:center;
+}
+input[type=checkbox]:checked{border-color:var(--candle)}
+input[type=checkbox]:checked::after{
+  content:"";width:.55rem;height:.3rem;
+  border-left:2px solid var(--candle);border-bottom:2px solid var(--candle);
+  transform:rotate(-45deg) translate(1px,-2px);
+}
+input[type=checkbox]:focus-visible{outline:2px solid var(--candle);outline-offset:2px}
+input:checked + span{color:var(--cold);text-decoration:line-through;text-decoration-color:var(--candle-dim)}
+
+/* ------------------------------------------------ bios */
+.bio{border:1px solid var(--rule);padding:1rem 1.1rem;margin:0 0 1rem;background:var(--night-deep)}
+.bio-label{font-family:"Archivo",system-ui,sans-serif;font-size:.78rem;color:var(--cold);
+           margin:0 0 .5rem;display:flex;justify-content:space-between;gap:1rem;align-items:center}
+.bio-text{margin:0;color:var(--paper)}
+.copy{font-family:"Archivo",system-ui,sans-serif;font-size:.75rem;padding:.25rem .6rem;
+      background:transparent;border:1px solid var(--candle-dim);color:var(--paper-soft);cursor:pointer;white-space:nowrap}
+.copy:hover{border-color:var(--candle);color:var(--candle)}
+.copy.done{border-color:var(--candle);color:var(--candle)}
+
+.note{color:var(--cold);font-size:.92rem;max-width:38rem}
+.note code{font-family:"Archivo",monospace;color:var(--paper-soft)}
+
+/* ------------------------------------------------ print */
+@media print{
+  :root{--paper:#000;--paper-soft:#000;--cold:#444;--rule:#bbb;--candle:#000;--candle-dim:#666}
+  body{background:#fff;color:#000;font-size:10.5pt;line-height:1.45}
+  .wrap{max-width:none;padding:0}
+  .bar,.copy{display:none}
+  h2{page-break-after:avoid;break-after:avoid;font-size:13pt;margin:1.1rem 0 .4rem;padding-top:.6rem}
+  ul,li,.bio{page-break-inside:avoid;break-inside:avoid}
+  label{padding:.12rem 0}
+  label:hover{background:none}
+  input[type=checkbox]{
+    -webkit-appearance:none;appearance:none;
+    width:11pt;height:11pt;border:1pt solid #000;margin-top:2pt;
+    print-color-adjust:exact;-webkit-print-color-adjust:exact;
+  }
+  /* On paper every box prints empty, to be ticked by hand. */
+  input[type=checkbox]:checked::after{display:none}
+  input:checked + span{color:#000;text-decoration:none}
+  .bio{background:none;border:1pt solid #bbb;padding:.4rem .5rem;margin-bottom:.4rem}
+  a{color:#000;text-decoration:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Middle Watch</h1>
+<p class="sub">Launch checklist &middot; date ________________</p>
+
+<div class="bar">
+  <span class="count" id="count">0 of 0</span>
+  <span class="track"><span class="fill" id="fill"></span></span>
+  <button id="reset" type="button">Clear all</button>
+  <button id="print" type="button">Print</button>
+</div>
+
+<h2>Bio lines</h2>
+
+<div class="bio">
+  <p class="bio-label"><span>Tagline</span><button class="copy" type="button">Copy</button></p>
+  <p class="bio-text">Somewhere else, for a while.</p>
+</div>
+<div class="bio">
+  <p class="bio-label"><span>Unified social bio &mdash; 110 characters, fits every platform</span><button class="copy" type="button">Copy</button></p>
+  <p class="bio-text">Original narrated short fiction and long-form ambience. Regency, fantasy, sci-fi. Somewhere else, for a while.</p>
+</div>
+<div class="bio">
+  <p class="bio-label"><span>Short variant, for tight fields</span><button class="copy" type="button">Copy</button></p>
+  <p class="bio-text">Narrated short fiction and long-form ambience. Somewhere else, for a while.</p>
+</div>
+<div class="bio">
+  <p class="bio-label"><span>YouTube &mdash; Middle Watch Stories</span><button class="copy" type="button">Copy</button></p>
+  <p class="bio-text">Original short fiction, narrated and illustrated. Regency, fantasy, and science fiction. Somewhere else, for a while.</p>
+</div>
+<div class="bio">
+  <p class="bio-label"><span>YouTube &mdash; Middle Watch Ambience</span><button class="copy" type="button">Copy</button></p>
+  <p class="bio-text">Long-form ambient soundscapes for sleep, study, and focus. Regency drawing rooms, fantasy taverns, deep-space corridors. Somewhere else, for a while.</p>
+</div>
+<div class="bio">
+  <p class="bio-label"><span>Pinterest &mdash; longer field, discovery terms</span><button class="copy" type="button">Copy</button></p>
+  <p class="bio-text">Original narrated short fiction and long-form ambience. Regency, fantasy, sci-fi. Candlelit interiors, rain on glass, firelight, and quiet rooms. Somewhere else, for a while.</p>
+</div>
+
+<h2>1 &middot; Hover, buy first</h2>
+<ul>
+  <li><label><input type="checkbox"><span>Check middlewatch.com price</span></label></li>
+  <li><label><input type="checkbox"><span>Register middlewatch.co</span></label></li>
+  <li><label><input type="checkbox"><span>Register middlewatch.media, optional, redirect to .co</span></label></li>
+  <li><label><input type="checkbox"><span>Turn on auto-renew</span></label></li>
+  <li><label><input type="checkbox"><span>Turn on WHOIS privacy</span></label></li>
+  <li><label><input type="checkbox"><span>Buy one Hover mailbox for hello@middlewatch.co</span></label></li>
+  <li><label><input type="checkbox"><span>Create forward: admin@middlewatch.co to personal inbox</span></label></li>
+  <li><label><input type="checkbox"><span>Note Hover SMTP settings for later</span></label></li>
+</ul>
+
+<h2>2 &middot; Email, before any signups</h2>
+<ul>
+  <li><label><input type="checkbox"><span>Send test to admin@, confirm the forward arrives</span></label></li>
+  <li><label><input type="checkbox"><span>Set up Gmail &ldquo;Send mail as&rdquo; for hello@ via Hover SMTP</span></label></li>
+  <li><label><input type="checkbox"><span>Send test reply from hello@, confirm the From address is correct</span></label></li>
+  <li><label><input type="checkbox"><span>Set Gmail default sender to personal, not hello@</span></label></li>
+  <li><label><input type="checkbox"><span>Add a calendar reminder for domain renewal, independent of Hover</span></label></li>
+</ul>
+
+<h2>3 &middot; Google account</h2>
+<ul>
+  <li><label><input type="checkbox"><span>Create a new Google account for the brand under admin@</span></label></li>
+  <li><label><input type="checkbox"><span>Turn on 2FA</span></label></li>
+  <li><label><input type="checkbox"><span>Download backup codes, store off-account</span></label></li>
+</ul>
+
+<h2>4 &middot; YouTube</h2>
+<ul>
+  <li><label><input type="checkbox"><span>Create channel: Middle Watch Stories</span></label></li>
+  <li><label><input type="checkbox"><span>Claim handle @middlewatchstories</span></label></li>
+  <li><label><input type="checkbox"><span>Add the Stories bio to the About page</span></label></li>
+  <li><label><input type="checkbox"><span>Create channel: Middle Watch Ambience</span></label></li>
+  <li><label><input type="checkbox"><span>Claim handle @middlewatchambience</span></label></li>
+  <li><label><input type="checkbox"><span>Add the Ambience bio to the About page</span></label></li>
+  <li><label><input type="checkbox"><span>Screenshot the existing 7-subscriber @middlewatch channel, dated</span></label></li>
+</ul>
+
+<h2>5 &middot; Bluesky</h2>
+<ul>
+  <li><label><input type="checkbox"><span>Sign up with admin+bsky@middlewatch.co</span></label></li>
+  <li><label><input type="checkbox"><span>Claim @middlewatch or @middlewatchco</span></label></li>
+  <li><label><input type="checkbox"><span>Add the unified bio</span></label></li>
+</ul>
+
+<h2>6 &middot; X</h2>
+<ul>
+  <li><label><input type="checkbox"><span>Sign up with admin+x@middlewatch.co</span></label></li>
+  <li><label><input type="checkbox"><span>Claim @middlewatch or @middlewatchco</span></label></li>
+  <li><label><input type="checkbox"><span>Add the unified bio</span></label></li>
+</ul>
+
+<h2>7 &middot; Pinterest</h2>
+<ul>
+  <li><label><input type="checkbox"><span>Sign up with admin+pin@middlewatch.co</span></label></li>
+  <li><label><input type="checkbox"><span>Claim middlewatch</span></label></li>
+  <li><label><input type="checkbox"><span>Add the Pinterest bio</span></label></li>
+</ul>
+
+<h2>8 &middot; Instagram</h2>
+<ul>
+  <li><label><input type="checkbox"><span>Sign up with admin+ig@middlewatch.co</span></label></li>
+  <li><label><input type="checkbox"><span>Claim middlewatch</span></label></li>
+  <li><label><input type="checkbox"><span>Add the unified bio</span></label></li>
+</ul>
+
+<h2>9 &middot; Free, closes doors</h2>
+<ul>
+  <li><label><input type="checkbox"><span>Reserve middlewatch on Tumblr</span></label></li>
+  <li><label><input type="checkbox"><span>Reserve middlewatch on Threads</span></label></li>
+  <li><label><input type="checkbox"><span>Reserve middlewatch on Reddit</span></label></li>
+</ul>
+
+<h2>10 &middot; On every account</h2>
+<ul>
+  <li><label><input type="checkbox"><span>Bio line pasted from above</span></label></li>
+  <li><label><input type="checkbox"><span>Public contact: hello@middlewatch.co</span></label></li>
+  <li><label><input type="checkbox"><span>Website: middlewatch.co</span></label></li>
+  <li><label><input type="checkbox"><span>2FA on</span></label></li>
+  <li><label><input type="checkbox"><span>Recovery codes saved</span></label></li>
+</ul>
+
+<h2>11 &middot; Record it</h2>
+<ul>
+  <li><label><input type="checkbox"><span>One note listing every platform, handle, and signup email used</span></label></li>
+</ul>
+
+<h2>Notes</h2>
+<p class="note">Never publish admin@ anywhere. It exists only for signups and account recovery. hello@ is the only address that goes in a bio, an About page, or a video description.</p>
+<p class="note">If a signup form rejects the <code>+</code> character, use a plain forward such as <code>x@middlewatch.co</code>. Hover allows up to ten.</p>
+<p class="note">Trademark check is done. THE MIDDLE WATCH, registration 6834278, is live in class 41 but covers veterans&rsquo; outdoor expeditions and military training, not media. No conflict.</p>
+<p class="note">Not today: website build, logo, banner art, podcast feed. None of it blocks the handles.</p>
+
+</div>
+
+<script>
+(function () {
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[type=checkbox]'));
+  var count = document.getElementById('count');
+  var fill = document.getElementById('fill');
+  var KEY = 'mw-checklist-v1';
+
+  // Index-based keys, so the saved state survives a reload but is deliberately
+  // not portable across edits to this file. Changing the list clears progress.
+  var store = {
+    read: function () {
+      try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+    },
+    write: function (v) {
+      try { localStorage.setItem(KEY, JSON.stringify(v)); } catch (e) { /* private mode, ignore */ }
+    },
+    clear: function () {
+      try { localStorage.removeItem(KEY); } catch (e) {}
+    }
+  };
+
+  function paint() {
+    var done = boxes.filter(function (b) { return b.checked; }).length;
+    count.textContent = done + ' of ' + boxes.length;
+    fill.style.width = boxes.length ? (done / boxes.length * 100) + '%' : '0';
+  }
+
+  var saved = store.read();
+  boxes.forEach(function (b, i) {
+    if (saved[i]) b.checked = true;
+    b.addEventListener('change', function () {
+      var s = store.read();
+      if (b.checked) { s[i] = 1; } else { delete s[i]; }
+      store.write(s);
+      paint();
+    });
+  });
+  paint();
+
+  document.getElementById('reset').addEventListener('click', function () {
+    boxes.forEach(function (b) { b.checked = false; });
+    store.clear();
+    paint();
+  });
+
+  document.getElementById('print').addEventListener('click', function () { window.print(); });
+
+  document.querySelectorAll('.copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.closest('.bio').querySelector('.bio-text').textContent.trim();
+      var done = function () {
+        btn.textContent = 'Copied';
+        btn.classList.add('done');
+        setTimeout(function () { btn.textContent = 'Copy'; btn.classList.remove('done'); }, 1400);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () { fallback(text, done); });
+      } else {
+        fallback(text, done);
+      }
+    });
+  });
+
+  function fallback(text, cb) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); cb(); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+})();
+</script>
+</body>
+</html>
