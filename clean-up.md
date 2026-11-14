@@ -623,3 +623,25 @@ CLI commands. Nothing new was written: the content already exists in the repo.*
 - **Optional: keyboard shortcuts.** `review-ui.md` documents them (`j`/`k`,
   `a`, `r`, `g`, `v`, `p`), but they're spread out. A single line in
   quick-reference's Review UI section would make it a true one-pager.
+
+## V. README review command, Casting button label, ElevenLabs API keys — 2026-11-14
+
+*From a 2026-11-02 session that couldn't open the repo, checked 2026-11-14.*
+
+- **Already committed by another session, nothing to add.** The README section
+  "Running the review interface locally" and the Casting page's armed label
+  ("Confirm — spend $X", disarms after 5 s, on click-away or Escape) are both in
+  `5c13e2a`, pushed. The label replaced "Run again", which read as "you already
+  ran this".
+- **New, timestamp-suffixed:** `docs/story/elevenlabs-api-key-permissions-2026-11-14.md`
+  — where to edit a key's permissions and what the pipeline needs (Text to
+  Speech; Voices **Write** for adding library voices; IP allowlist / quota
+  pitfalls). Nothing in the repo covered it.
+- **Merge:** fold that file into `docs/story/setup.md` §3 (ElevenLabs), after
+  step 3 "Create API Key" — a short "Permissions" sub-step plus the Voices-Write
+  note — then delete the suffixed file. Add one line to `casting.md`'s
+  "Add candidate" bullet: adding a library voice needs Voices Write on the key.
+- **Merge (same as U):** README's review section is the 2026-11-02 draft and
+  duplicates `quick-reference.md`; U's fix covers it.
+- **Still untracked:** `commit-audit.sh`. N and S both say delete it rather than
+  re-run.
