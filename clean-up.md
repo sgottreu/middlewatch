@@ -176,3 +176,195 @@ each mistake is available again the next time a parameter is added. A percentile
 threshold cannot measure density; a spectral centroid cannot see a change in
 rate; a window shorter than the modulation period measures nothing; a measurement
 over the wrong span answers the wrong question.
+
+---
+
+## 9. Render button session (2026-10-07) — checked 2026-11-14
+
+All of it is committed, in `f20c68d` ("Add in new status for produced video and
+button to produce video"): `server.py`, `runner.py`, `app.html`, `director.py`,
+`review-ui.md`, `aws.md`. No later session duplicated it and nothing from it is
+left uncommitted, so no files needed a timestamp suffix.
+
+**To do**
+
+- **Push.** `main` is 6 commits ahead of `origin/main`. The server deploys from
+  GitHub, so the Render button does not exist on review.middlewatch.co until
+  this is pushed.
+- **Never run end to end.** The gate, `--force`, the progress markers and the
+  job view were tested with a fake process. A real render through the button has
+  not run yet. Do one on a short story and watch memory while it runs.
+- **Server size: the docs disagree with each other.** The `direct` row in
+  `docs/story/aws.md` now says the server renders. The same file still
+  says t3.nano / 412 MiB at line 17 and the cost table, has "Do not run `direct`
+  on the nano" near the end, and §8 (spot instance for rendering) and the
+  laptop steps in §7. Project notes elsewhere call the box Lightsail. Pick the
+  real instance, then fix all of it in one pass.
+- **A crashed render leaves `direct: running`.** It is only reset on Stop or a
+  server restart, which is the same as record and design today. If ffmpeg fails
+  on its own, the button stays enabled but the manifest says running. A
+  `try/finally` in `director.direct()` that resets the stage to pending on an
+  exception would fix it, and the same fix applies to `actor` and `designer`.
+
+**Leftovers from other sessions, seen while checking**
+
+- Deleted but not committed: `ambience_pipeline/ambience-pipeline-design.md`
+  (a 16-line "Moved" stub) and `commit-session.sh`. `cleanup.sh` lists both
+  for deletion, so commit the deletions.
+- Untracked, already timestamp-suffixed: `WHERE-THINGS-GO-bundle-2026-08-27.md`,
+  `WHERE-THINGS-GO-files1-2026-08-27.md`, `brand/launch-checklist-2026-08-27.html`,
+  `brand/icon/*-2026-08-27.*`. The bundle file is dated 28 August and says
+  "nothing here has been merged". Most of it (ledger, arc.md, genre/flavor)
+  has since landed, so check what is still open, then archive it or drop it.
+- `brand/launch-checklist-2026-08-27.html` vs tracked `brand/launch-checklist.md`
+  overlap. Keep one.
+- Ignored but sitting in the root: `config.yaml.bak`, two dated
+  `config.yaml.*.bak`, `calibration-sweep.sh`, `cleanup.sh`, `oauth.txt`.
+  `oauth.txt` holds credentials, so rotate them if that has not been done and
+  delete the file.
+
+
+---
+
+# Clean-up — branding/ledger session audit
+
+*2026-11-14. Added after auditing the chat that produced the ledger, `arc.md`,
+the landing page and the brand files against what is actually in the repo.
+Same rule as above: this is a list of things needing your judgement.*
+
+## A. What was already merged, and by whom
+
+Earlier sessions had already landed most of this work. Verified by hash, not by
+memory:
+
+| File | State |
+|---|---|
+| `ledger/*` (6 files) | merged in `f239a33`, then **extended** — see C |
+| `story_pipeline/prompts/arc.md` | merged in `f239a33`, byte-identical |
+| `site/index.html` | tracked, byte-identical (last touched `ed0eedf`) |
+| `brand/launch-checklist.md` | merged in `f239a33`, byte-identical |
+| `brand/merch-reference.md` | merged in `f239a33`, byte-identical |
+
+Ten of the seventeen session files were already in place. Nothing needed
+re-adding.
+
+## B. Added with a 2026-08-27 suffix — your call whether to keep
+
+Never tracked anywhere. Suffixed rather than dropped in place, so nothing was
+overwritten. None of it is referenced by code.
+
+| File | Recommendation |
+|---|---|
+| `brand/launch-checklist-2026-08-27.html` | **Keep.** The clickable/printable checklist with copy buttons for the bio lines. Only `launch-checklist.md` was tracked. Rename to drop the suffix once you have looked at it. |
+| `brand/icon/middlewatch-icon-{256,512,800,1024}-2026-08-27.jpg` and `brand/icon/middlewatch-icon-1024-2026-08-27.png` | **Probably delete.** Derived from `brand/icon.svg`, which is tracked, and regenerate in seconds. Five binaries git cannot forget, for no gain. |
+| `WHERE-THINGS-GO-bundle-2026-08-27.md` | **Delete after reading.** A placement guide for a move that has since happened. Obsolete. |
+| `WHERE-THINGS-GO-files1-2026-08-27.md` | **Delete after reading.** Different content from the one above — came from a different session's bundle. Preserved only because the two disagree. |
+
+## C. Five ledger conflicts — checked, no action needed
+
+`ledger/ledger.py`, `report.py`, `import_youtube.py`, `rates.json` and
+`README.md` all differ from the chat's copies. **The repo versions are newer and
+strictly better.** They add the `pipeline` cost column, `record_elevenlabs()`,
+`migrate.py`, ElevenLabs and current Gemini/Anthropic model rates.
+
+Diffed line by line to confirm nothing was lost: the only lines unique to the old
+copies are docstrings and usage examples that were reworded. `flavor` survives in
+both files at the same occurrence count; `COST_FIELDS` gained `pipeline` and lost
+nothing. `rates.json` dropped only the stale `gemini/nano-banana-2` key.
+
+**No timestamped duplicates were created for these** — a second importable copy of
+working ledger code is a hazard, and nothing would have been preserved by it.
+Flagging it because it is the one place the instruction was not followed
+literally.
+
+## D. Unmerged work in `working/`, from other sessions
+
+`working/` is gitignored (`.gitignore:49`). These have **no counterpart anywhere
+in the repo** and will go with the working copy if the disk goes:
+
+| File | What it is |
+|---|---|
+| `working/files1/mw-sync.sh` | S3 asset sync — pull/push audio, graphics, video per arc and episode. Real tooling. Belongs in `scripts/`. |
+| `working/files1/storage-and-backup.md` | 319-line Lightsail block-storage and S3 runbook. Belongs in `docs/story/`. |
+| `working/revision-notes/*.md` (5 files) | Revision notes for `an-understanding-at-amberlight`, `the-letter-at-the-bell`, `the-lit-windows-of-amberlight`, `the-shuttered-wing`, `the-thatcher-s-bill`. Every one of those stories exists under `stories/amberlight/`. |
+
+Left in place rather than moved, because where they belong is a judgement call —
+particularly the revision notes, which could sit beside each story bundle or in
+one notes directory.
+
+## E. One duplicate to resolve
+
+`working/review-ui-handoff.md` and `docs/story/review-ui-handoff-2026-09-13.md`
+have **different content**. One is stale. The second is untracked. Decide which
+is current before committing either.
+
+## F. Uncommitted right now
+
+You committed the earlier backlog at 10:23 (`21d2603` through `162814e`) and ran
+`cleanup.sh` while this audit was in progress, so most of what was dirty is now
+in. What remains:
+
+- **Two staged deletions, not yet committed.** `cleanup.sh` removed
+  `ambience_pipeline/ambience-pipeline-design.md` (the pointer stub section 5
+  above called for) and `commit-session.sh`. Both are still tracked, so git shows
+  them as `D` until you commit.
+- **Everything in B**, untracked.
+- `clean-up.md` itself, modified by this section.
+
+## G. Brand inconsistency, unresolved since August
+
+`brand/icon.svg` is `#14140f` near-black with `#c9a227` gold. `site/index.html`
+is `#131E2B` prussian with `#E8A44C` amber. Side by side they read as a mistake
+rather than a deliberate contrast. Pick one and change the other. The icon is the
+older and more settled artifact, which argues for moving the site.
+
+## H. A wrong path worth knowing about
+
+The chat's manifest listed `arc.md` under `pipeline/prompts/`. The real location
+is `story_pipeline/prompts/`, as section 7 above says it must stay. The file is
+correct and in the right place; only the manifest was wrong.
+
+
+---
+
+# Clean-up — video approve/publish session audit
+
+*2026-11-14. Checked the 2026-10-07 session that added the `approve` and
+`publish` stages after `direct` against the repo. Same rule: things needing your
+judgement.*
+
+## I. Merge state — all committed
+
+| Piece | Where |
+|---|---|
+| `bundle.py` (`STAGES`, `stages()`, `publish_info()`), `cli.py` (`approve --video`, `publish`), `server.py` (`/api/publish`, queue groups), `app.html` (Approve video, Publish…), `director.py`, `summary.py`, `running.md`, `index.md`, `CLAUDE.md` | `f20c68d`, 2026-10-07 |
+| `story_pipeline/release.py` | `b67cf2d`, 2026-10-08 — byte-identical to the working copy |
+
+No later session duplicated it. Nothing was left untracked, so **no files needed
+a timestamp suffix.**
+
+## J. Things to know
+
+- **Section 9 above calls `f20c68d` the "Render button session".** That commit
+  holds two sessions' work: the Render button *and* approve/publish. Both
+  sessions were editing the same files uncommitted and one commit took both.
+  Nothing is lost; the label is just incomplete.
+- **`f20c68d` was broken on its own for ~22 hours.** It imports `release`, but
+  `release.py` was untracked until `b67cf2d`. Any checkout or deploy of
+  `f20c68d` alone fails at import for both the CLI and the review server. Fixed
+  now. The habit worth taking from it: `git status` for `??` files before
+  committing a session's work.
+- **Doc gap, filled today, uncommitted:** `docs/story/review-ui.md` never got
+  the three new queue groups or the Approve video / Publish buttons. Rows added
+  to *The queue* and *Actions* tables. Commit with the rest.
+
+## K. Merge candidates
+
+- `docs/story/quick-reference.md`, `running.md` and `index.md` all list the
+  publish command with slightly different flag sets (`quick-reference` omits
+  `--force`). Fold into one during the doc consolidation and link to it.
+- Section 9's crash-leaves-`running` fix applies here too: `director.direct()`
+  now also sets `approve: awaiting_review` on success only, so a failed render
+  leaves the previous approval in place. That is the correct behavior, but the
+  same `try/finally` should keep it that way.
+

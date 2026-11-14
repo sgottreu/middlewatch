@@ -134,6 +134,9 @@ already does.
 | **Chapters** | `edit: awaiting_review`. |
 | **Failed review** | Chapters where `reviews/NN.json` has `pass: false` or `exhausted: true`. These need you most and were invisible before. |
 | **Narration out of date** | Chapters edited since they were recorded. |
+| **Videos awaiting approval** | `direct: done` and `approve: awaiting_review`. Stories rendered before the stage existed land here too — `Bundle.stages()` derives it. |
+| **Video approved — waiting to be published** | `approve: approved`, `publish` not done. |
+| **Published** | `publish: done`. Not counted as waiting. |
 
 Each row shows the title, length, and a badge for anything wrong — a failed
 review, a thin beat density, an under-18 in the cast.
@@ -664,6 +667,8 @@ and disabled once they have, because the chapters would no longer match.
 | Button | What it does | Cost |
 |---|---|---|
 | Approve | `text.approve(b)`, or sets `edit: approved` | free |
+| Approve video | Same button, once the video is rendered: `release.approve_video()`. Unlocks Publish. CLI: `approve <story> --video [--undo]` | free |
+| Publish… (`p`) | Asks for the YouTube URL, records it with the video id and date: `release.publish()`. Uploads nothing. CLI: `publish <story> <url> [--date] [--force] [--undo]` | free |
 | Reject | Deletes the bundle, with a confirm | free |
 | Save edits | Writes back, re-validates, re-renders `story.md` | free |
 | Revise… | A form: checkboxes for what to keep, plus a free note. Composes the feedback and calls `revise_outline()`. | **~$0.07** |
