@@ -128,9 +128,19 @@ class Bible:
         shutil.copy(image, target)
         return target
 
-    def prompt_block(self) -> str:
-        """The bible as the agents see it."""
-        parts = [f"# Series bible: {self.series}", "", self.guide.strip()]
+    @property
+    def story_ideas(self) -> str:
+        """The Story Ideas section, for the ideator. Empty if there is none."""
+        return (section_body(self.guide, "story ideas") or "").strip()
+
+    def prompt_block(self, ideator: bool = False) -> str:
+        """The bible as the agents see it.
+
+        Working-only sections (`WORKING_ONLY`) never reach an agent. Story Ideas
+        reach the ideator only — pass `ideator=True` from there and nowhere else.
+        """
+        guide = strip_sections(self.guide, WORKING_ONLY + IDEATOR_ONLY)
+        parts = [f"# Series bible: {self.series}", "", guide]
 
         if self.canon:
             parts += ["", "## Established facts", "",
@@ -158,6 +168,10 @@ class Bible:
                     bits.append(f"age {c['age']}")
                 if c.get("station"):
                     bits.append(c["station"])
+                if c.get("role"):
+                    bits.append(str(c["role"]))
+                if c.get("region"):
+                    bits.append(f"usually found in {c['region']}")
                 parts.append("- " + ", ".join(bits))
                 if c.get("aliases"):
                     parts.append("  - Also appears as: "
@@ -174,11 +188,72 @@ class Bible:
                       "character's surname to an unrelated family: in a parish "
                       "this small a shared name reads as kinship.", ""]
             parts += [f"- {n}" for n in self.minor_names]
+
+        if ideator and self.story_ideas:
+            parts += ["", "## Story ideas", "",
+                      "Seeds noted for this series. Use one only if it suits the "
+                      "notes and this story; you are not obliged to use any, and "
+                      "a story built on one must still stand entirely on its own.",
+                      "", self.story_ideas]
         return "\n".join(parts)
 
 
 def _slug(text: str) -> str:
     return "".join(ch if ch.isalnum() else "-" for ch in text.lower()).strip("-")
+
+
+# --------------------------------------------------------------------------- #
+# Sections
+# --------------------------------------------------------------------------- #
+
+# `##` sections that are for you, not the agents. They live in the working draft
+# (`<name>.draft.md`) and `bible promote` drops them; if one is hand-added to a
+# bible anyway, `prompt_block` still keeps it away from every agent.
+WORKING_ONLY = ("open questions", "minor names register", "changelog")
+
+# Sent to the ideator and nobody else: seeds for what a story could be about are
+# useful when choosing one and noise when writing or judging one.
+IDEATOR_ONLY = ("story ideas",)
+
+
+def heading_key(title: str) -> str:
+    """A `##` heading reduced to what it means: "Regions (draft, to refine)"
+    and "The Regions" both become "regions"."""
+    t = re.sub(r"\([^)]*\)", "", title).strip().lower()
+    t = re.sub(r"^the\s+", "", t)
+    return re.sub(r"[^a-z0-9]+", " ", t).strip()
+
+
+def split_sections(text: str) -> list[tuple[str | None, str]]:
+    """`text` cut at each `## ` heading: (title, chunk including its heading).
+    Whatever comes before the first one is returned with title None. `###` and
+    deeper stay inside their parent, and nothing inside a code fence counts."""
+    out: list[tuple[str | None, list[str]]] = [(None, [])]
+    fence = False
+    for line in text.split("\n"):
+        if line.lstrip().startswith("```"):
+            fence = not fence
+        m = None if fence else re.match(r"^##\s+(.+?)\s*#*\s*$", line)
+        if m and not line.startswith("###"):
+            out.append((m.group(1), [line]))
+        else:
+            out[-1][1].append(line)
+    return [(t, "\n".join(ls)) for t, ls in out]
+
+
+def strip_sections(text: str, keys) -> str:
+    """`text` without the `##` sections whose `heading_key` is in `keys`."""
+    keep = [chunk for title, chunk in split_sections(text)
+            if title is None or heading_key(title) not in keys]
+    return re.sub(r"\n{3,}", "\n\n", "\n".join(keep)).strip()
+
+
+def section_body(text: str, key: str) -> str | None:
+    """The body (heading removed) of the first `##` section matching `key`."""
+    for title, chunk in split_sections(text):
+        if title is not None and heading_key(title) == key:
+            return chunk.split("\n", 1)[1].strip() if "\n" in chunk else ""
+    return None
 
 
 def _parse(path: Path) -> Bible:
@@ -235,7 +310,8 @@ def available(bibles_dir: str | Path = "bibles") -> list[str]:
               if p.is_dir() and (p / f"{p.name}.md").exists()}
     # The changelog is markdown too and would otherwise list as a bible of its
     # own in the flat layout.
-    flat = {p.stem for p in d.glob("*.md") if not p.name.endswith(".changelog.md")}
+    flat = {p.stem for p in d.glob("*.md")
+            if not p.name.endswith((".changelog.md", ".draft.md"))}
     return sorted(nested | flat)
 
 
@@ -265,11 +341,16 @@ canon:
 # written back here automatically; the generated image is saved under the
 # slugified name (Mrs Honoria Pike -> mrs-honoria-pike.png) whether or not this
 # key is set. See docs/story/bible-format.md.
+#
+# `role` and `region` are optional: what the character does in the series, and
+# where they are usually found. Both are shown to the text agents.
 recurring_cast: []
 #  - name: Mrs Honoria Pike        # full name, exactly as it will appear
 #    age: 58
 #    gender: female                # female | male | neutral
 #    station: widow of a naval surgeon; three hundred a year
+#    role: the parish's unofficial news service   # optional
+#    region: Amberlight            # optional
 #    appearance: Short, broad, grey hair pinned severely under a lace cap.
 #    dress: Black bombazine, always, ten years out of fashion.
 #    voice: Matilda                # must be in voices.yaml
@@ -280,17 +361,79 @@ recurring_cast: []
 #
 #     python3 -m story_pipeline.cli bible check <name>
 
+# Optional structure, for tooling that wants names without parsing prose. The
+# agents read the prose sections below; these lists do not replace them.
+# regions:
+#   - name: The Glasswood
+#     summary: A lumber forest whose leaves now chime in the wind.
+# factions:
+#   - name: The Glasswood Society
+#     region: The Glasswood
+#     focus: naturalists studying the changed forest
+# assets:                         # images in this bible's folder
+#   map: <name>.map.jpg
+#   layout: <name>.layout.png
+
 # Optional. Overrides the genre's art direction and casting for this series.
 # art_style: >
 # voices:
 #   narrator: Charlotte
+#
+# Working notes — Open Questions, the Minor Names Register — belong in
+# <name>.draft.md, not here. Everything below this block is given to the agents
+# verbatim, except Story Ideas, which only the ideator sees.
 ---
 
 # {series}
 
+## Premise
+
 Two or three paragraphs on what this series is. What ties the stories together —
 a place, an institution, a family, a season. What a viewer who has seen three of
 them would recognize on the fourth.
+
+## Setting
+
+The world the stories share, in enough detail that two stories written months
+apart agree about it. Delete any subsection this series does not need.
+
+### Technology
+
+What exists and what does not. Name the ceiling, so nobody reaches past it.
+
+### Magic
+
+Whether there is any, how it works, and who can use it. "None" is an answer.
+
+### Flora and Fauna
+
+What lives here that a reader would not expect, and what is merely ordinary.
+
+### Travel and Trade
+
+How people and goods move between places, how long it takes, and what stops
+them — barriers, hazards, tolls, seasons.
+
+## Regions
+
+One entry per region, place or stop. A bullet each: **Name:** what it is, and
+what draws a story there.
+
+## Map layout
+
+Where the regions sit relative to each other: what is north of what, what lies
+between, how far apart.
+
+## Institutions
+
+*Factions, guilds, households, companies — any group that shapes the world.*
+
+Who they are, what they want, and how they get along.
+
+## Recurring Cast
+
+How the cast works as a whole: who links the stories, who rotates by region or
+season. The characters themselves are in `recurring_cast` above.
 
 ## What recurs
 
@@ -308,6 +451,10 @@ related to whom, what season it is relative to the others.
 Every story stands alone. A viewer arrives at any one of them first, so nothing
 here may require having seen another. No recaps, no cliffhangers, no arcs that
 only pay off elsewhere. The series is a shared world, not a serial.
+
+## Story Ideas
+
+Seeds for future stories, one bullet each. Only the ideator sees this section.
 '''
 
 
@@ -459,6 +606,11 @@ def validate(path: Path, cfg: dict | None = None) -> list[Problem]:
                 err(where, f"voice {voice!r} is not in voices.yaml",
                     "Run `cli voices` to list your account's voices.")
 
+        for field in ("role", "region", "station"):
+            value = member.get(field)
+            if value is not None and not isinstance(value, str):
+                err(where, f"`{field}` must be text")
+
         portrait = member.get("portrait")
         if portrait and not (bible.cast_dir / portrait).exists():
             warn(where, f"portrait {portrait!r} not found in {bible.cast_dir.name}/",
@@ -484,6 +636,30 @@ def validate(path: Path, cfg: dict | None = None) -> list[Problem]:
             f"names too similar to tell apart by ear: {', '.join(clash)}",
             "The outline validator rejects this, so every story using both would "
             "fail after the ideator had been paid for. Rename one.")
+
+    # --- optional structure: regions, factions, assets ----------------------
+    for key, needs in (("regions", ("name",)), ("factions", ("name",))):
+        items = bible.meta.get(key)
+        if items is None:
+            continue
+        if not isinstance(items, list):
+            err(key, "must be a list of mappings, each with a `name`")
+            continue
+        for i, item in enumerate(items):
+            if not isinstance(item, dict) or not all(
+                    str(item.get(n) or "").strip() for n in needs):
+                err(f"{key}[{i}]", "needs a `name`")
+
+    assets = bible.meta.get("assets")
+    if assets is not None:
+        if not isinstance(assets, dict):
+            err("assets", "must be a mapping, e.g. `map: <name>.map.jpg`")
+        else:
+            for key, fname in assets.items():
+                if not isinstance(fname, str) or not fname.strip():
+                    err(f"assets.{key}", "must be a file name")
+                elif not (bible.path.parent / fname).exists():
+                    warn(f"assets.{key}", f"{fname!r} not found beside the bible")
 
     # --- overrides --------------------------------------------------------
     if "art_style" in bible.meta and not str(bible.meta["art_style"] or "").strip():

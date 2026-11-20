@@ -255,7 +255,8 @@ def _render(
         "genre_guide": genre.guide,
         "genre_label": genre.meta.get("label", genre.name),
         "genre": genre.name,
-        "bible_block": bible.prompt_block() if bible else "",
+        # Story Ideas go to the ideator and to no other agent.
+        "bible_block": bible.prompt_block(ideator=(name == "ideator")) if bible else "",
         **extra,
     }
     out = prompt_text(name)

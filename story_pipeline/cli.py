@@ -217,6 +217,58 @@ def cmd_bible_log(args, cfg):
     print(f"Logged to {log} as {author}.")
 
 
+def cmd_bible_promote(args, cfg):
+    """Promote `<name>.draft.md` into `<name>.md`. Free; no model calls."""
+    from . import bible_promote as bp
+
+    root = args.bibles_dir or cfg["bibles_dir"]
+    try:
+        pv = bp.preview(args.name, cfg, root)
+    except bp.PromoteError as e:
+        sys.exit(str(e))
+    data = pv.to_dict()
+
+    if args.json:
+        if os.environ.get("MW_PROGRESS"):
+            # One marker the review server reads back through runner.markers.
+            print("::progress " + json.dumps({"event": "preview", "preview": data}),
+                  flush=True)
+        else:
+            print(json.dumps(data, indent=2))
+    else:
+        print(f"{args.name}: {data['series']}  [{data['genre'] or 'no genre'}]")
+        print(f"  canon facts:    {len(data['canon'])}")
+        print(f"  recurring cast: {len(data['cast'])}")
+        for c in data["cast"]:
+            bits = [c.get("role") or "", c.get("gender") or "gender?"]
+            guess = " (inferred)" if "gender" in c["inferred"] else ""
+            print(f"    - {c['name']}: {', '.join(b for b in bits if b)}{guess}"
+                  + (f" [voice {c['voice']}]" if c.get("voice") else ""))
+        print("  kept:    " + ", ".join(f"{k['title']} -> {k['as']}" for k in data["kept"]))
+        print("  dropped: " + ", ".join(f"{d['title']} ({d['reason']})"
+                                         for d in data["dropped"]))
+        for p in data["problems"]:
+            tag = "ERROR" if p["fatal"] else "warn "
+            print(f"  {tag}  {p['where']}: {p['message']}")
+        if data["changed"]:
+            print("\n" + data["diff"])
+        else:
+            print("\nNo change: the bible already matches the draft.")
+
+    if args.dry_run:
+        sys.exit(1 if data["blocked"] else 0)
+    if data["blocked"]:
+        sys.exit("Refusing to write: bible check found errors. Fix them in the "
+                 "draft, then promote again.")
+    if not data["changed"]:
+        return
+    if not args.yes:
+        if not sys.stdin.isatty() or input(f"Write {pv.bible}? [y/N] ").strip().lower() != "y":
+            sys.exit("Not written.")
+    out = bp.promote(args.name, cfg, author=args.author, bibles_dir=root)
+    print(f"Wrote {out['bible']}" + (f"\n      {out['changelog']}" if out.get("changelog") else ""))
+
+
 def cmd_history(args, cfg):
     """What the channel has repeated, and how the next outline is weighted.
 
@@ -886,6 +938,20 @@ def main(argv=None):
     bl.add_argument("--limit", type=int, default=20,
                     help="how many entries to show (default: 20)")
     bl.set_defaults(fn=cmd_bible_log)
+
+    bp_ = bnew_sub.add_parser(
+        "promote", help="turn <name>.draft.md into the pipeline bible; free")
+    bp_.add_argument("name")
+    bp_.add_argument("--dry-run", action="store_true",
+                     help="show what would be written and what bible check says; "
+                          "write nothing")
+    bp_.add_argument("--json", action="store_true",
+                     help="the preview as JSON (extracted canon and cast, kept and "
+                          "dropped sections, diff, problems)")
+    bp_.add_argument("--yes", action="store_true", help="write without asking")
+    bp_.add_argument("--author", help="who to credit in the changelog")
+    bp_.add_argument("--bibles-dir", help="default: bibles_dir from config")
+    bp_.set_defaults(fn=cmd_bible_promote)
 
     gen = sub.add_parser("genres", help="list genres, subgenres and tropes")
     gen.add_argument("--tropes", action="store_true", help="include the full trope menu")
