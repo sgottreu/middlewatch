@@ -109,6 +109,10 @@ A young woman, born just after the Cataclysm, who keeps the Shelf's archive. She
 
 An older woman in her forties from Floatsome, practical rather than sentimental. She grew up in one of the drowned towns and knows its old streets, which makes her the best at charting debris and flooded homes near the surface. A snagged hull can sink a family's living, so Floatsome pays her in fish and favours to keep the channels safe. She started out fishing, then began helping keep the hazard records. Later her son, Jory Brennick, caught the salvaging bug and drew her into it, so she now salvages too. Jory, young and eager to go deeper than Maud would like, is the one whose salvage first turns up magic-touched objects, leading to the fissure beneath the water.
 
+### Jory Brennick (Sunken Reach salvager)
+
+Maud Brennick's son, young and eager to go deeper than Maud would like. He caught the salvaging bug and drew his mother into it. His salvage is the first to turn up magic-touched objects, leading to the fissure beneath the water. He leads the younger generation now taking up salvage in the Sunken Reach, where the generation that lived through the Cataclysm never bothered.
+
 ### Bram Tolliver (Ashfall miner-surveyor)
 
 A younger man in his late twenties, a miner with a gift for reading rock. He began noting which seams held the strange minerals, and the Ashfall Mineral Survey grew out of his notebooks. Following the seams, he also noticed oddities in the neighbouring Hollowmere. Rough around the edges, he is more at home underground than at a meeting in Tollgate.
