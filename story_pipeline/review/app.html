@@ -47,6 +47,11 @@
                 color:var(--dim); text-decoration:none; }
   #queue .tab.on { color:var(--accent); border-color:var(--accent); }
   #queue a.tab:hover { color:var(--accent); }
+  #queue #newBtn { display:block; width:100%; margin-top:10px; padding:7px 0;
+                   font-family:var(--mono); font-size:12px; cursor:pointer;
+                   background:transparent; color:var(--accent);
+                   border:1px dashed var(--accent); border-radius:6px; }
+  #queue #newBtn:hover { background:rgba(201,162,39,.09); }
   .group > h3 { margin:0; padding:10px 16px 6px; font-size:11px; letter-spacing:.09em;
                 text-transform:uppercase; color:var(--dim); font-family:var(--mono); }
   .row { padding:9px 16px; border-left:3px solid transparent; cursor:pointer; }
@@ -186,6 +191,39 @@
   #bar button.primary kbd { color:#0f120b; border-color:rgba(15,18,11,.35); }
   .empty { color:var(--dim); padding:40px 34px; }
   /* revise dialog ------------------------------------------------------ */
+  #xscrim { position:fixed; inset:0; background:rgba(0,0,0,.55);
+             display:none; align-items:center; justify-content:center; z-index:10; }
+  #xscrim.show { display:flex; }
+  #newf { background:var(--panel); border:1px solid var(--line); border-radius:8px;
+          width:min(520px, 92vw); max-height:88vh; overflow-y:auto; padding:22px 24px; }
+  #newf h2 { margin:0 0 4px; font-size:19px; }
+  #newf .lede { color:var(--dim); font-size:13px; margin:0 0 16px; }
+  #newf fieldset { border:1px solid var(--line); border-radius:6px; margin:0 0 14px;
+                   padding:12px 14px; }
+  #newf legend { font-family:var(--mono); font-size:11px; text-transform:uppercase;
+                 letter-spacing:.08em; color:var(--dim); padding:0 6px; }
+  #newf label { display:flex; gap:9px; align-items:flex-start; padding:4px 0;
+                cursor:pointer; font-size:14px; }
+  #newf label input { margin-top:4px; flex:none; }
+  #newf label .m2 { display:block; font-family:var(--mono); font-size:11px; color:var(--dim); }
+  #newf label.off { color:var(--dim); cursor:default; }
+  #newf .lens { display:flex; gap:18px; }
+  #newf textarea { width:100%; min-height:70px; font:inherit; font-size:14px;
+                   background:transparent; color:var(--ink); border:1px solid var(--line);
+                   border-radius:6px; padding:9px 11px; resize:vertical; }
+  #newf .cost { border:1px solid var(--accent); background:rgba(201,162,39,.09);
+                border-radius:6px; padding:9px 12px; font-size:13px; margin:14px 0; }
+  #newf .row2 { display:flex; gap:9px; justify-content:flex-end; margin-top:16px; }
+  #nstatus { display:none; border-radius:6px; padding:10px 13px; margin:14px 0 0;
+             font-size:14px; border:1px solid var(--line); }
+  #nstatus.working { display:block; border-color:var(--accent);
+                     animation: pulse 1.4s ease-in-out infinite; }
+  #nstatus.ok { display:block; border-color:var(--ok); background:rgba(126,160,90,.12); }
+  #nstatus.bad { display:block; border-color:var(--danger);
+                 background:rgba(212,103,74,.12); white-space:pre-wrap; }
+  #nstatus.bad b { display:block; margin-bottom:4px; }
+  #nstatus .m2 { display:block; font-family:var(--mono); font-size:12px;
+                 color:var(--dim); margin-top:3px; }
   #scrim, #wscrim, #sscrim { position:fixed; inset:0; background:rgba(0,0,0,.55);
                     display:none; align-items:center; justify-content:center;
                     z-index:10; }
@@ -368,14 +406,14 @@
 
     /* Dialogs become sheets: full width, off the bottom edge, thumb-reachable
        buttons, and never taller than the visible viewport. */
-    #scrim, #wscrim, #nscrim, #sscrim { align-items:flex-end; }
-    #revise, #write, #notef, #stage { width:100%; max-width:none; max-height:88dvh;
+    #scrim, #wscrim, #nscrim, #sscrim, #xscrim { align-items:flex-end; }
+    #revise, #write, #notef, #stage, #newf { width:100%; max-width:none; max-height:88dvh;
                               border-radius:14px 14px 0 0;
                               padding:18px 16px calc(18px + env(safe-area-inset-bottom)); }
-    #revise .row2, #write .row2, #notef .row2, #stage .row2 { flex-wrap:wrap; }
+    #revise .row2, #write .row2, #notef .row2, #stage .row2, #newf .row2 { flex-wrap:wrap; }
     #revise .row2 button, #write .row2 button, #notef .row2 button,
-    #stage .row2 button { flex:1 1 auto; }
-    #notef textarea, #revise textarea { font-size:16px; }
+    #stage .row2 button, #newf .row2 button { flex:1 1 auto; }
+    #notef textarea, #revise textarea, #newf textarea { font-size:16px; }
     #notef select { min-height:40px; font-size:16px; }
 
     #toast { left:16px; right:16px; bottom:calc(84px + env(safe-area-inset-bottom));
@@ -393,7 +431,8 @@
   <nav id="queue"><header><b>Review</b>
     <div class="tabs"><span class="tab on" aria-current="page">Stories</span>
       <a class="tab" href="/casting">Casting ›</a></div>
-    <span id="count">loading…</span></header>
+    <span id="count">loading…</span>
+    <button type="button" id="newBtn">+ New outline</button></header>
     <div id="groups"></div></nav>
   <main id="doc">
     <div id="dochead">
@@ -417,6 +456,23 @@
       <span class="facts" id="facts"></span>
     </div>
   </main>
+  <div id="xscrim"><form id="newf">
+    <h2>New outline</h2>
+    <p class="lede">The ideator drafts an outline in the series you pick, using
+      its bible. It lands under Outlines awaiting review.</p>
+    <fieldset><legend>Series</legend><div id="nbibles">loading…</div></fieldset>
+    <fieldset><legend>Length</legend><div class="lens" id="nlens"></div></fieldset>
+    <fieldset><legend>Notes for the ideator</legend>
+      <textarea id="nnotes" placeholder="Optional. e.g. a winter story centred on the bell-ringer."></textarea>
+    </fieldset>
+    <div id="nstatus"></div>
+    <div class="cost"><b>This spends money:</b> one ideator call, about the same
+      as a revise. Length is pinned at creation.</div>
+    <div class="row2">
+      <button type="button" id="ncancel">Cancel</button>
+      <button type="submit" id="ngo" class="primary" disabled>Create outline</button>
+    </div>
+  </form></div>
   <div id="scrim"><form id="revise">
     <h2>Revise this outline</h2>
     <p class="lede">The ideator rewrites it. Anything you keep is held word for
@@ -1211,6 +1267,91 @@ document.getElementById("revise").onsubmit = async e => {
   status.className = "";
   toast(`Revised: ${res.title}`);
   await loadQueue(state.sel);
+};
+
+// --- new outline dialog --------------------------------------------------
+const xscrim = document.getElementById("xscrim");
+
+function syncNew() {
+  document.getElementById("ngo").disabled =
+    !document.querySelector('#nbibles input:checked');
+}
+
+async function openNew() {
+  const st = document.getElementById("nstatus");
+  st.className = ""; st.innerHTML = "";
+  document.getElementById("nnotes").value = "";
+  document.getElementById("ngo").textContent = "Create outline";
+  document.getElementById("ncancel").disabled = false;
+  xscrim.classList.add("show");
+
+  const box = document.getElementById("nbibles");
+  box.textContent = "loading…";
+  const m = await (await fetch("/api/bibles")).json();
+  const ok = m.bibles.filter(b => !b.problems.length);
+  box.innerHTML =
+    m.bibles.map(b => b.problems.length
+      ? `<label class="off"><input type="radio" disabled>` +
+        `<span>${esc(b.series)}<span class="m2">not usable: ` +
+        `${esc(b.problems[0].trim())}</span></span></label>`
+      : `<label><input type="radio" name="nbible" value="${esc(b.name)}"` +
+        `${ok.length === 1 ? " checked" : ""}>` +
+        `<span>${esc(b.series)}<span class="m2">${esc(b.name)} · ` +
+        `${esc(b.genre)}</span></span></label>`).join("") +
+    m.drafts.map(n =>
+      `<label class="off"><input type="radio" disabled>` +
+      `<span>${esc(n)}<span class="m2">draft — promote ${esc(n)}.draft.md to ` +
+      `${esc(n)}.md to use it</span></span></label>`).join("") ||
+    `<p class="empty">No bibles yet.</p>`;
+
+  const def = m.default_length ?? m.lengths[0];
+  document.getElementById("nlens").innerHTML = m.lengths.map(n =>
+    `<label><input type="radio" name="nlen" value="${n}"` +
+    `${n === def ? " checked" : ""}><span>${n} min</span></label>`).join("");
+  syncNew();
+}
+
+document.getElementById("newBtn").onclick = openNew;
+document.getElementById("nbibles").addEventListener("change", syncNew);
+document.getElementById("ncancel").onclick = () => xscrim.classList.remove("show");
+xscrim.onclick = e => { if (e.target === xscrim) xscrim.classList.remove("show"); };
+
+document.getElementById("newf").onsubmit = async e => {
+  e.preventDefault();
+  const go = document.getElementById("ngo"), cancel = document.getElementById("ncancel");
+  const st = document.getElementById("nstatus");
+  const bible = document.querySelector('#nbibles input:checked')?.value;
+  const len = document.querySelector('#nlens input:checked')?.value;
+  if (!bible) return;
+
+  go.disabled = cancel.disabled = true;
+  go.textContent = "Creating…";
+  st.className = "working";
+  st.innerHTML = `Asking the ideator for an outline…` +
+    `<span class="m2">ten to thirty seconds</span>`;
+
+  let res;
+  try {
+    res = await (await fetch("/api/new", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ bible, length: len ? Number(len) : null,
+                             notes: document.getElementById("nnotes").value }) })).json();
+  } catch (err) { res = { error: String(err) }; }
+
+  if (res.error) {
+    st.className = "bad";
+    st.innerHTML = `<b>That didn't run.</b>${esc(explain(res.error))}`;
+    go.textContent = "Try again";
+    go.disabled = cancel.disabled = false;
+    return;
+  }
+  st.className = "ok";
+  st.innerHTML = `Created <b>${esc(res.title)}</b>`;
+  await new Promise(r => setTimeout(r, 900));
+  xscrim.classList.remove("show");
+  go.disabled = cancel.disabled = false;
+  toast(`New outline: ${res.title}`);
+  await loadQueue(res.slug);
 };
 
 // --- write dialog --------------------------------------------------------

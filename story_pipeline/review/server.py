@@ -9,6 +9,10 @@ Routes:
 
     GET  /                     the page
     GET  /api/queue            everything waiting, grouped
+    GET  /api/bibles           series that can take a new outline, and drafts
+                               that cannot yet; free
+    POST /api/new              {"bible", "length"?, "notes"?} ideate a new
+                               outline in that series — a paid call
     GET  /api/story/<slug>     one story: outline, chapters, reviews, spend
     POST /api/approve          outline, all chapters, or {"chapters": [3]} for
                                one at a time; {"undo": true} withdraws it
@@ -79,7 +83,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
 
 from . import casting_api, runner
-from .. import genres, history, release, summary
+from .. import bibles, genres, history, release, summary
 from ..agents import text as textagent
 from ..bundle import Bundle, bundle_roots, find_bundle, real_answer
 
@@ -216,6 +220,55 @@ def _story_row(root: Path) -> dict | None:
         "flags": _outline_flags(outline, spec),
         "published": b.publish_info(),
     }
+
+
+def bible_menu(cfg: dict) -> dict:
+    """Every series the New outline dialog can offer, and the drafts it cannot.
+
+    A series is offered only if `bibles.available` finds it, which is the same
+    test `cli new --bible` uses, and only if `validate` finds nothing fatal —
+    otherwise the dialog would offer a paid call that the ideator refuses.
+    Drafts (`<name>.draft.md` with no `<name>.md`) are listed so a series you
+    are still building does not silently vanish from the menu.
+    """
+    root = Path(cfg["bibles_dir"])
+    ready = []
+    for name in bibles.available(root):
+        try:
+            b = bibles.load(name, root)
+            problems = [str(pr) for pr in bibles.validate(b.path, cfg) if pr.fatal]
+            ready.append({"name": name, "series": b.series,
+                          "genre": b.meta.get("genre", ""), "problems": problems})
+        except Exception as e:  # a bible that will not even parse
+            ready.append({"name": name, "series": name, "genre": "",
+                          "problems": [str(e)]})
+    names = {r["name"] for r in ready}
+    drafts = sorted(p.name for p in root.iterdir()
+                    if p.is_dir() and p.name not in names
+                    and (p / f"{p.name}.draft.md").exists()) if root.exists() else []
+    return {"bibles": ready, "drafts": drafts,
+            "lengths": sorted(textagent.LENGTHS),
+            "default_length": cfg.get("length_min")}
+
+
+def new_story(cfg: dict, bible: str, length: int | None, notes: str) -> dict:
+    """Ideate a new outline in a series. **This spends money** — one ideator call.
+
+    Synchronous, like `revise`: it is one model call, and the dialog waits on it.
+    """
+    menu = {b["name"]: b for b in bible_menu(cfg)["bibles"]}
+    if bible not in menu:
+        raise ValueError(f"no usable bible {bible!r}")
+    if menu[bible]["problems"]:
+        raise ValueError(f"bible {bible!r} has errors: "
+                         + "; ".join(menu[bible]["problems"]))
+    if length is not None and int(length) not in textagent.LENGTHS:
+        raise ValueError(f"length must be one of {sorted(textagent.LENGTHS)}")
+    b = textagent.ideate(cfg, cfg["stories_dir"], None, None,
+                         (notes or "").strip() or None, bible,
+                         length_min=int(length) if length is not None else None)
+    summary.write(b)
+    return {"slug": b.root.name, "title": b.outline().get("title", b.root.name)}
 
 
 def queue(cfg: dict) -> dict:
@@ -1110,6 +1163,8 @@ def _handler(cfg: dict):
                         self._json({"error": str(e)}, 404)
                 elif path == "/api/queue":
                     self._json(queue(cfg))
+                elif path == "/api/bibles":
+                    self._json(bible_menu(cfg))
                 elif path.startswith("/api/story/"):
                     self._json(story_detail(cfg, path.rsplit("/", 1)[-1]))
                 elif path.startswith("/api/job/"):
@@ -1150,6 +1205,9 @@ def _handler(cfg: dict):
                     self._json(approve(cfg, body["slug"], body.get("what", "outline"),
                                        chapters=body.get("chapters"),
                                        undo=bool(body.get("undo"))))
+                elif path == "/api/new":
+                    self._json(new_story(cfg, body.get("bible", ""),
+                                         body.get("length"), body.get("notes", "")))
                 elif path == "/api/revise":
                     self._json(revise(cfg, body["slug"], body.get("keep", []),
                                       body.get("note", "")))
