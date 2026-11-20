@@ -426,6 +426,29 @@ def test_push_waiting_refused():
         os.chdir(here)
 
 
+def test_queue_rows_carry_series():
+    """The series switcher filters on `bible` and `arc`; both must be there."""
+    import json
+    from ..bundle import Bundle
+    from ..review import server
+    stories = Path(tempfile.mkdtemp(prefix="mw-queue-")) / "stories"
+    for arc, slug, bible in (("salt", "the-flood-road", "salt"),
+                             ("standalone", "a-one-off", None)):
+        b = Bundle.create(stories, slug, arc=arc if bible else None)
+        outline = {"title": slug.replace("-", " ").title(), "genre": "fantasy",
+                   "chapters": []}
+        if bible:
+            outline |= {"bible": bible, "series": "Salt Roads"}
+        (b.root / "outline.json").write_text(json.dumps(outline))
+    q = server.queue({"stories_dir": str(stories), "bibles_dir": "bibles"})
+    rows = {r["slug"]: r for g in q["groups"].values() for r in g}
+    assert q["total"] == 2 and set(rows) == {"the-flood-road", "a-one-off"}, rows.keys()
+    salt = rows["the-flood-road"]
+    assert (salt["arc"], salt["bible"], salt["series"]) == ("salt", "salt", "Salt Roads")
+    one = rows["a-one-off"]
+    assert one["bible"] is None and one["arc"] != "salt"
+
+
 def test_server_endpoints():
     """preview (a runner job) -> fill -> apply, over HTTP, against a temp dir."""
     import json

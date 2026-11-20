@@ -218,6 +218,10 @@ def _story_row(root: Path) -> dict | None:
         "genre": outline.get("genre", ""),
         "subgenre": outline.get("subgenre", ""),
         "bible": outline.get("bible"),
+        # The folder the bundle lives in: stories/<arc>/<slug>. A series story's
+        # arc is its bible's name, so the page can filter by series even for a
+        # bundle whose outline predates the `bible` key.
+        "arc": root.parent.name,
         "length": spec["minutes"],
         "stages": stages,
         "chapters": len(outline.get("chapters", [])),

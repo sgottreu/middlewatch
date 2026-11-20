@@ -52,6 +52,40 @@
                    background:transparent; color:var(--accent);
                    border:1px dashed var(--accent); border-radius:6px; }
   #queue #newBtn:hover { background:rgba(201,162,39,.09); }
+  /* series switcher: which series the queue shows, beside New outline ---- */
+  #queue .ctx { display:flex; gap:6px; margin-top:10px; position:relative; }
+  #queue .ctx #newBtn { width:auto; flex:none; margin-top:0; padding:7px 10px; }
+  #queue #seriesBtn { flex:1; min-width:0; display:flex; gap:6px; align-items:center;
+                      justify-content:space-between; padding:7px 10px; cursor:pointer;
+                      background:transparent; color:var(--ink); text-align:left;
+                      font-family:var(--mono); font-size:12px;
+                      border:1px solid var(--line); border-radius:6px; }
+  #queue #seriesBtn:hover, #queue #seriesBtn[aria-expanded="true"] { border-color:var(--accent); }
+  #queue #seriesBtn span { color:inherit; font-size:inherit; }
+  #queue #seriesBtn #seriesLabel { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  #queue #seriesBtn .car { flex:none; color:var(--dim); }
+  #seriesMenu { display:none; position:absolute; top:calc(100% + 4px); left:0; right:0;
+                z-index:15; background:var(--panel); border:1px solid var(--line);
+                border-radius:6px; padding:4px 0; max-height:60vh; overflow-y:auto;
+                box-shadow:0 8px 24px rgba(0,0,0,.45); }
+  #seriesMenu.show { display:block; }
+  #seriesMenu .sep { padding:8px 12px 3px; font-family:var(--mono); font-size:10px;
+                     letter-spacing:.08em; text-transform:uppercase; color:var(--dim); }
+  #seriesMenu .opt { display:flex; width:100%; gap:8px; align-items:baseline;
+                     padding:8px 12px; border:0; border-radius:0; background:transparent;
+                     color:var(--ink); text-align:left; font-size:14px; cursor:pointer; }
+  #seriesMenu .opt:hover, #seriesMenu .opt:focus { background:rgba(201,162,39,.09);
+                                                   outline:none; }
+  #seriesMenu .opt .tick { width:12px; flex:none; color:var(--accent); }
+  #seriesMenu .opt[aria-selected="true"] { color:var(--accent); }
+  #queue header #seriesMenu .opt span.m2 { margin-left:auto; font-family:var(--mono);
+                                           font-size:11px; color:var(--dim); }
+  #seriesMenu .opt.draft { color:var(--dim); }
+  .draftpanel { margin:14px 16px; border:1px dashed var(--line); border-radius:8px;
+                padding:14px 16px; font-size:14px; }
+  .draftpanel b { display:block; font-size:15px; margin-bottom:4px; }
+  .draftpanel p { margin:0 0 12px; color:var(--dim); font-size:13px; }
+  .draftpanel code { font-family:var(--mono); font-size:12px; }
   .group > h3 { margin:0; padding:10px 16px 6px; font-size:11px; letter-spacing:.09em;
                 text-transform:uppercase; color:var(--dim); font-family:var(--mono); }
   .row { padding:9px 16px; border-left:3px solid transparent; cursor:pointer; }
@@ -525,7 +559,13 @@
     <div class="tabs"><span class="tab on" aria-current="page">Stories</span>
       <a class="tab" href="/casting">Casting ›</a></div>
     <span id="count">loading…</span>
-    <button type="button" id="newBtn">+ New outline</button></header>
+    <div class="ctx">
+      <button type="button" id="seriesBtn" aria-haspopup="listbox" aria-expanded="false"
+        aria-controls="seriesMenu" title="Show one series in the queue, or all of them"><span
+        id="seriesLabel">All series</span><span class="car" aria-hidden="true">▾</span></button>
+      <button type="button" id="newBtn">+ New outline</button>
+      <div id="seriesMenu" role="listbox" aria-label="Series"></div>
+    </div></header>
     <div id="groups"></div></nav>
   <main id="doc">
     <div id="dochead">
@@ -693,9 +733,15 @@ async function loadQueue(keep) {
   const q = await (await fetch("/api/queue")).json();
   const box = document.getElementById("groups");
   box.innerHTML = ""; state.rows = [];
+  const info = seriesInfo(ctx.series) || { kind: "all" };
+  if (info.kind === "draft") return showDraft(info.name);
+  // A series story lives under stories/<bible>/, and its outline names the
+  // bible too; either is enough to place it.
+  const inSeries = r => info.kind !== "bible" || r.bible === info.name || r.arc === info.name;
+  const total = Object.values(q.groups).reduce((n, g) => n + g.filter(inSeries).length, 0);
   let waiting = 0;
   for (const [key, label] of GROUPS) {
-    const rows = q.groups[key] || [];
+    const rows = (q.groups[key] || []).filter(inSeries);
     if (!rows.length) continue;
     if (!SETTLED.has(key)) waiting += rows.length;
     const el = document.createElement("div");
@@ -718,8 +764,9 @@ async function loadQueue(keep) {
     }
     box.appendChild(el);
   }
-  document.getElementById("count").textContent =
-    `${waiting} ${waiting === 1 ? "story" : "stories"} waiting on you · ${q.total} total`;
+  document.getElementById("count").textContent = info.kind === "bible"
+    ? `${waiting} ${info.label} ${waiting === 1 ? "story" : "stories"} waiting on you · ${total} total`
+    : `${waiting} ${waiting === 1 ? "story" : "stories"} waiting on you · ${q.total} total`;
   if (keep && state.rows.includes(keep)) await select(keep);
   else if (!state.rows.includes(state.sel)) {
     state.sel = null; state.detail = null;
@@ -1375,6 +1422,119 @@ document.getElementById("revise").onsubmit = async e => {
   await loadQueue(state.sel);
 };
 
+// --- series switcher -----------------------------------------------------
+// Which series the queue shows. Remembered per browser and carried in the URL
+// (?series=<name>), so a link opens in the same context. A draft has no
+// stories yet, so choosing one shows its Promote panel instead of a queue.
+const SERIES_KEY = "mw.review.series";
+const ctx = { menu: null, series: "" };
+
+function seriesInfo(name) {
+  if (!name) return { kind: "all", label: "All series" };
+  const b = (ctx.menu?.bibles || []).find(x => x.name === name);
+  if (b) return { kind: "bible", name, label: b.series };
+  if ((ctx.menu?.drafts || []).includes(name)) return { kind: "draft", name, label: name };
+  return null;
+}
+
+async function loadSeriesMenu() {
+  try { ctx.menu = await (await fetch("/api/bibles")).json(); }
+  catch (err) { ctx.menu = ctx.menu || { bibles: [], drafts: [] }; }
+  renderSeriesMenu();
+}
+
+function renderSeriesMenu() {
+  const m = ctx.menu || { bibles: [], drafts: [] };
+  const opt = (name, label, extra, cls) =>
+    `<button type="button" class="opt${cls ? " " + cls : ""}" role="option" ` +
+    `data-series="${esc(name)}" aria-selected="${ctx.series === name}">` +
+    `<span class="tick">${ctx.series === name ? "✓" : ""}</span><span>${esc(label)}</span>` +
+    (extra ? `<span class="m2">${esc(extra)}</span>` : "") + `</button>`;
+  document.getElementById("seriesMenu").innerHTML =
+    opt("", "All series") +
+    (m.bibles.length ? `<div class="sep">Series</div>` +
+      m.bibles.map(b => opt(b.name, b.series, b.genre)).join("") : "") +
+    (m.drafts.length ? `<div class="sep">Drafts</div>` +
+      m.drafts.map(n => opt(n, n, "draft", "draft")).join("") : "");
+  const info = seriesInfo(ctx.series) || seriesInfo("");
+  document.getElementById("seriesLabel").textContent =
+    info.kind === "draft" ? `${info.label} (draft)` : info.label;
+}
+
+function setSeries(name) {
+  if (!seriesInfo(name)) name = "";
+  ctx.series = name;
+  try { name ? localStorage.setItem(SERIES_KEY, name) : localStorage.removeItem(SERIES_KEY); }
+  catch (err) { /* private mode or storage off: the URL still carries it */ }
+  const u = new URL(location.href);
+  if (name) u.searchParams.set("series", name); else u.searchParams.delete("series");
+  history.replaceState(null, "", u);
+  renderSeriesMenu();
+}
+
+async function initSeries() {
+  await loadSeriesMenu();
+  let want = new URL(location.href).searchParams.get("series");
+  if (want === null) {
+    try { want = localStorage.getItem(SERIES_KEY) || ""; } catch (err) { want = ""; }
+  }
+  setSeries(want || "");
+}
+
+function showDraft(name) {
+  document.getElementById("groups").innerHTML =
+    `<div class="draftpanel"><b>${esc(name)}</b><p>A draft, so no stories yet. Promote ` +
+    `<code>${esc(name)}.draft.md</code> into a bible to start writing in this series.</p>` +
+    `<button type="button" class="primary promote" data-draft="${esc(name)}" ` +
+    `title="Preview what promoting this draft would write. Free.">Promote…</button></div>`;
+  document.getElementById("count").textContent = `${name} · draft · no stories yet`;
+  state.sel = null; state.detail = null;
+  showStory(false);
+  document.getElementById("docwhat").textContent = "";
+  document.getElementById("docbody").innerHTML =
+    `<p class="empty">Nothing to review in ${esc(name)} yet.</p>`;
+  setActions(null);
+}
+
+function closeSeriesMenu() {
+  document.getElementById("seriesMenu").classList.remove("show");
+  document.getElementById("seriesBtn").setAttribute("aria-expanded", "false");
+}
+
+document.getElementById("seriesBtn").onclick = () => {
+  const menu = document.getElementById("seriesMenu");
+  const open = !menu.classList.contains("show");
+  menu.classList.toggle("show", open);
+  document.getElementById("seriesBtn").setAttribute("aria-expanded", String(open));
+  if (open) menu.querySelector('[aria-selected="true"]')?.focus();
+};
+document.getElementById("seriesMenu").addEventListener("click", e => {
+  const o = e.target.closest(".opt");
+  if (!o) return;
+  closeSeriesMenu();
+  if (o.dataset.series === ctx.series) return;
+  setSeries(o.dataset.series);
+  state.sel = null;
+  loadQueue();
+});
+document.getElementById("seriesMenu").addEventListener("keydown", e => {
+  const opts = [...document.querySelectorAll("#seriesMenu .opt")];
+  const i = opts.indexOf(document.activeElement);
+  if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+    e.preventDefault(); e.stopPropagation();
+    opts[(i + (e.key === "ArrowDown" ? 1 : opts.length - 1)) % opts.length]?.focus();
+  } else if (e.key === "Escape") {
+    e.stopPropagation(); closeSeriesMenu(); document.getElementById("seriesBtn").focus();
+  }
+});
+document.addEventListener("click", e => {
+  if (!e.target.closest("#seriesMenu, #seriesBtn")) closeSeriesMenu();
+});
+document.getElementById("groups").addEventListener("click", e => {
+  const b = e.target.closest("button.promote");
+  if (b) { pfrom = "panel"; openPromote(b.dataset.draft); }
+});
+
 // --- new outline dialog --------------------------------------------------
 const xscrim = document.getElementById("xscrim");
 
@@ -1394,14 +1554,17 @@ async function openNew() {
   const box = document.getElementById("nbibles");
   box.textContent = "loading…";
   const m = await (await fetch("/api/bibles")).json();
+  ctx.menu = m; renderSeriesMenu();
   const ok = m.bibles.filter(b => !b.problems.length);
+  // The series the queue is showing, if it can take an outline; still changeable.
+  const cur = ok.some(b => b.name === ctx.series) ? ctx.series : "";
   box.innerHTML =
     m.bibles.map(b => b.problems.length
       ? `<label class="off"><input type="radio" disabled>` +
         `<span>${esc(b.series)}<span class="m2">not usable: ` +
         `${esc(b.problems[0].trim())}</span></span></label>`
       : `<label><input type="radio" name="nbible" value="${esc(b.name)}"` +
-        `${ok.length === 1 ? " checked" : ""}>` +
+        `${(cur ? b.name === cur : ok.length === 1) ? " checked" : ""}>` +
         `<span>${esc(b.series)}<span class="m2">${esc(b.name)} · ` +
         `${esc(b.genre)}</span></span></label>`).join("") +
     m.drafts.map(n =>
@@ -1460,6 +1623,8 @@ document.getElementById("newf").onsubmit = async e => {
   xscrim.classList.remove("show");
   go.disabled = cancel.disabled = false;
   toast(`New outline: ${res.title}`);
+  // Created in another series than the one showing: follow it there.
+  if (ctx.series && ctx.series !== bible) setSeries(bible);
   await loadQueue(res.slug);
 };
 
@@ -1468,10 +1633,11 @@ document.getElementById("newf").onsubmit = async e => {
 // server and shows what it found. Nothing here writes; Back returns to New outline.
 const pscrim = document.getElementById("pscrim");
 let ppoll = null, pname = null, pmode = "preview", plast = null, ppushed = null;
+let pfrom = "new";   // "new": opened from New outline · "panel": a draft's panel
 
 document.getElementById("nbibles").addEventListener("click", e => {
   const b = e.target.closest("button.promote");
-  if (b) openPromote(b.dataset.draft);
+  if (b) { pfrom = "new"; openPromote(b.dataset.draft); }
 });
 
 function closePromote(back) {
@@ -1485,10 +1651,14 @@ function closePromote(back) {
 document.getElementById("pback").onclick = () => {
   if (pmode === "confirm" && plast) { pmode = "preview"; renderPromote(plast); return; }
   const reopen = pmode === "done";
-  closePromote(!reopen);
-  if (reopen) openNew();
+  closePromote(!reopen && pfrom === "new");
+  if (reopen && pfrom === "panel") {
+    // Promoted from the draft's own panel: it is a series now, so show it as one.
+    const name = pname;
+    loadSeriesMenu().then(() => { setSeries(name); loadQueue(); });
+  } else if (reopen) openNew();
 };
-pscrim.onclick = e => { if (e.target === pscrim) closePromote(true); };
+pscrim.onclick = e => { if (e.target === pscrim) closePromote(pfrom === "new"); };
 
 async function openPromote(name) {
   xscrim.classList.remove("show");
@@ -2449,7 +2619,7 @@ document.addEventListener("keydown", e => {
     toast("j/k move · a approve · e revise · w write · n record · g design · v render · o watch · p publish · r reject"); }
 });
 
-loadQueue();
+initSeries().then(() => loadQueue());
 </script>
 </body>
 </html>
