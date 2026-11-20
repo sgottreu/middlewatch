@@ -41,9 +41,12 @@
   #queue header { padding:14px 16px; border-bottom:1px solid var(--line); }
   #queue header b { display:block; font-size:15px; }
   #queue header span { color:var(--dim); font-size:12px; font-family:var(--mono); }
-  #queue header .navlink { display:block; margin-top:6px; font-family:var(--mono);
-                           font-size:12px; color:var(--accent); text-decoration:none; }
-  #queue header .navlink:hover { text-decoration:underline; }
+  #queue .tabs { display:flex; gap:4px; margin:10px 0 8px; }
+  #queue .tab { flex:1; text-align:center; padding:6px 0; border:1px solid var(--line);
+                border-radius:6px; font-family:var(--mono); font-size:12px;
+                color:var(--dim); text-decoration:none; }
+  #queue .tab.on { color:var(--accent); border-color:var(--accent); }
+  #queue a.tab:hover { color:var(--accent); }
   .group > h3 { margin:0; padding:10px 16px 6px; font-size:11px; letter-spacing:.09em;
                 text-transform:uppercase; color:var(--dim); font-family:var(--mono); }
   .row { padding:9px 16px; border-left:3px solid transparent; cursor:pointer; }
@@ -387,8 +390,10 @@
 </style>
 </head>
 <body>
-  <nav id="queue"><header><b>Review</b><span id="count">loading…</span>
-    <a class="navlink" href="/casting">Casting — voice auditions ›</a></header>
+  <nav id="queue"><header><b>Review</b>
+    <div class="tabs"><span class="tab on" aria-current="page">Stories</span>
+      <a class="tab" href="/casting">Casting ›</a></div>
+    <span id="count">loading…</span></header>
     <div id="groups"></div></nav>
   <main id="doc">
     <div id="dochead">
@@ -552,7 +557,7 @@ async function loadQueue(keep) {
     box.appendChild(el);
   }
   document.getElementById("count").textContent =
-    `${waiting} waiting · ${q.total} total`;
+    `${waiting} ${waiting === 1 ? "story" : "stories"} waiting on you · ${q.total} total`;
   if (keep && state.rows.includes(keep)) await select(keep);
   else if (!state.rows.includes(state.sel)) {
     state.sel = null; state.detail = null;
