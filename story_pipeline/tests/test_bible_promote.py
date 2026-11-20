@@ -299,6 +299,81 @@ def test_fields_clear_real_draft_errors_on_a_copy():
     assert "- **Abe Ward**:" in text and "  - Gender: male" in text
 
 
+def _git_sandbox(text: str) -> tuple[Path, Path]:
+    """A throwaway repo holding one draft, cloned from a throwaway bare remote."""
+    import subprocess
+    base = Path(tempfile.mkdtemp(prefix="mw-apply-"))
+    remote, work = base / "remote.git", base / "work"
+    run = lambda *a, cwd=base: subprocess.run(a, cwd=cwd, check=True,
+                                              capture_output=True, text=True)
+    run("git", "init", "-q", "--bare", str(remote))
+    run("git", "clone", "-q", str(remote), str(work))
+    for k, v in (("user.name", "Test"), ("user.email", "t@example.invalid")):
+        run("git", "config", k, v, cwd=work)
+    (work / "bibles" / "salt").mkdir(parents=True)
+    (work / "bibles" / "salt" / "salt.draft.md").write_text(text)
+    (work / "other.txt").write_text("untouched\n")
+    run("git", "add", "-A", cwd=work)
+    run("git", "commit", "-q", "-m", "init", cwd=work)
+    run("git", "push", "-q", "-u", "origin", "HEAD", cwd=work)
+    return work, remote
+
+
+def test_apply_commits_and_pushes_only_touched_files():
+    import os
+    import subprocess
+    work, remote = _git_sandbox(DRAFT)
+    here = os.getcwd()
+    os.chdir(work)
+    try:
+        bp.fill("salt", "genre", "fantasy", "bibles")
+        Path("other.txt").write_text("edited, must not be committed\n")
+        plan = bp.apply_plan("salt", {}, "bibles")
+        assert not plan["blocked"] and plan["changed"]
+        assert [f["action"] for f in plan["files"]] == ["create", "create", "commit"]
+        assert plan["git"]["upstream"] and plan["git"]["ahead"] == 0
+        out = bp.apply("salt", {}, author="t", bibles_dir="bibles")
+        g = out["git"]
+        assert out["written"] and g["committed"] and g["pushed"], out
+        assert sorted(g["files"]) == ["bibles/salt/salt.changelog.md",
+                                      "bibles/salt/salt.draft.md", "bibles/salt/salt.md"]
+        shown = subprocess.run(["git", "--git-dir", str(remote), "show", "--stat",
+                                "--format=%s", "HEAD"], capture_output=True, text=True).stdout
+        assert "bible: promote salt" in shown and "other.txt" not in shown, shown
+        assert "other.txt" in subprocess.run(["git", "status", "--porcelain"],
+                                             capture_output=True, text=True).stdout
+        # Applying again: nothing to write, nothing to commit.
+        again = bp.apply("salt", {}, author="t", bibles_dir="bibles")
+        assert not again["written"] and not again["git"]["committed"]
+    finally:
+        os.chdir(here)
+
+
+def test_apply_push_refused_keeps_commit():
+    import os
+    import subprocess
+    work, remote = _git_sandbox(DRAFT.replace("Working title: Salt Roads",
+                                              "Genre: fantasy\nWorking title: Salt Roads"))
+    # Someone else pushes first, so ours is not a fast-forward.
+    other = work.parent / "other"
+    subprocess.run(["git", "clone", "-q", str(remote), str(other)], check=True)
+    (other / "x.txt").write_text("x")
+    for a in (["add", "x.txt"], ["-c", "user.name=O", "-c", "user.email=o@x.invalid",
+                                 "commit", "-q", "-m", "theirs"], ["push", "-q"]):
+        subprocess.run(["git", *a], cwd=other, check=True, capture_output=True)
+    here = os.getcwd()
+    os.chdir(work)
+    try:
+        out = bp.apply("salt", {}, author="t", bibles_dir="bibles")
+        g = out["git"]
+        assert g["committed"] and not g["pushed"] and g.get("push_error"), g
+        local = subprocess.run(["git", "log", "-1", "--format=%s"],
+                               capture_output=True, text=True).stdout
+        assert local.startswith("bible: promote salt")
+    finally:
+        os.chdir(here)
+
+
 def test_server_endpoints():
     """preview (a runner job) -> fill -> apply, over HTTP, against a temp dir."""
     import json

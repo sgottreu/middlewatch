@@ -77,6 +77,12 @@ def fill(cfg: dict, name: str, field: str, value) -> dict:
     return preview_start(cfg, name)
 
 
+def apply_plan(cfg: dict, name: str) -> dict:
+    """What Apply would write and commit, for the confirm step. Free."""
+    _draft(cfg, name)
+    return bp.apply_plan(name, cfg, _root(cfg))
+
+
 def apply(cfg: dict, name: str, commit: bool = True, push: bool = True,
           author: str | None = None) -> dict:
     """Write `<name>.md`, log it, and commit the draft, bible and changelog —

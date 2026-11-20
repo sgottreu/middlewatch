@@ -15,6 +15,8 @@ Routes:
                                outline in that series — a paid call
     GET  /api/bibles/<name>/job        the promote preview's state and result
     GET  /api/bibles/<name>/log        its output; ?from=<byte offset>
+    GET  /api/bibles/<name>/apply      what Apply would write and commit, and
+                               where a push would go — free
     POST /api/bibles/<name>/preview    dry-run `bible promote` as a job — free
     POST /api/bibles/<name>/fill       {"field", "value"} write one missing
                                detail into <name>.draft.md, then preview again
@@ -1177,6 +1179,8 @@ def _handler(cfg: dict):
                     name, _, what = unquote(path[len("/api/bibles/"):]).partition("/")
                     if what == "job":
                         self._json(bible_api.job(cfg, name))
+                    elif what == "apply":
+                        self._json(bible_api.apply_plan(cfg, name))
                     elif what == "log":
                         q = parse_qs(urlparse(self.path).query)
                         self._json(bible_api.log(cfg, name,

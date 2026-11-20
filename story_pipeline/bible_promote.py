@@ -804,6 +804,54 @@ def commit(files: list[Path], name: str, message: str, push: bool) -> dict:
     return out
 
 
+def git_state(paths: list[Path]) -> dict:
+    """Where a commit and push from here would go, and what else would ride
+    along. `ahead` counts commits already waiting to be pushed: a push sends
+    them too, so the confirm step says so rather than surprising anyone."""
+    out = {"repo": False, "branch": None, "upstream": None, "ahead": None,
+           "dirty": []}
+    try:
+        if _git("rev-parse", "--is-inside-work-tree", check=False).returncode != 0:
+            return out
+    except Exception:
+        return out
+    out["repo"] = True
+    out["branch"] = _git("rev-parse", "--abbrev-ref", "HEAD", check=False).stdout.strip() or None
+    up = _git("rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}", check=False)
+    if up.returncode == 0 and up.stdout.strip():
+        out["upstream"] = up.stdout.strip()
+        n = _git("rev-list", "--count", "@{u}..HEAD", check=False).stdout.strip()
+        out["ahead"] = int(n) if n.isdigit() else None
+    st = _git("status", "--porcelain", "--", *[str(x) for x in paths], check=False)
+    out["dirty"] = [ln[3:] for ln in st.stdout.splitlines() if ln.strip()]
+    return out
+
+
+def apply_plan(name: str, cfg: dict | None = None,
+               bibles_dir: str | Path | None = None) -> dict:
+    """What Apply would write and commit. Free; writes nothing."""
+    cfg = cfg or {}
+    root = bibles_dir or cfg.get("bibles_dir", "bibles")
+    pv = preview(name, cfg, root)
+    log = changelog.path_for(pv.bible)
+    diff = pv.diff().splitlines()
+    files = [
+        {"path": str(pv.bible),
+         "action": ("unchanged" if not pv.changed
+                    else "update" if pv.current else "create"),
+         "added": sum(1 for l in diff if l.startswith("+") and not l.startswith("+++")),
+         "removed": sum(1 for l in diff if l.startswith("-") and not l.startswith("---"))},
+        {"path": str(log),
+         "action": ("unchanged" if not pv.changed
+                    else "append" if log.exists() else "create")},
+        {"path": str(pv.draft), "action": "commit"},
+    ]
+    return {"name": name, "blocked": pv.blocked, "changed": pv.changed,
+            "errors": [p for p in pv.problems if p["fatal"]],
+            "summary": summary(pv), "files": files,
+            "git": git_state([pv.draft, pv.bible, log])}
+
+
 def apply(name: str, cfg: dict | None = None, author: str | None = None,
           do_commit: bool = True, push: bool = True,
           bibles_dir: str | Path | None = None) -> dict:

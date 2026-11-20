@@ -276,6 +276,22 @@
             background:rgba(126,160,90,.12); padding:8px 12px; margin:0 0 10px;
             font-size:13px; }
   #psaved.show { display:block; }
+  /* apply: the confirm step and its result ------------------------------ */
+  #promote table { width:100%; border-collapse:collapse; font-size:13px; }
+  #promote td { padding:4px 6px 4px 0; vertical-align:top; border-top:1px solid var(--line); }
+  #promote tr:first-child td { border-top:0; }
+  #promote td code { font-family:var(--mono); font-size:12px; overflow-wrap:anywhere; }
+  #promote td.act { font-family:var(--mono); font-size:11px; color:var(--dim);
+                    white-space:nowrap; width:1%; }
+  #promote .opts label { display:flex; gap:9px; align-items:flex-start; font-size:14px;
+                         padding:4px 0; cursor:pointer; }
+  #promote .opts label input { margin-top:4px; flex:none; }
+  #promote .opts small { display:block; color:var(--dim); font-size:12px; }
+  #promote .note { border:1px solid var(--accent); background:rgba(201,162,39,.09);
+                   border-radius:6px; padding:8px 12px; font-size:13px; margin:0 0 12px; }
+  #promote .pushbad { border:1px solid var(--danger); background:rgba(212,103,74,.12);
+                      border-radius:6px; padding:8px 12px; font-size:13px; margin:8px 0 0;
+                      white-space:pre-wrap; }
   @media (max-width: 760px) {
     #promote .frow label { flex-basis:100%; }
   }
@@ -1445,7 +1461,7 @@ document.getElementById("newf").onsubmit = async e => {
 // The draft row's Promote button. Runs `bible promote --dry-run` as a job on the
 // server and shows what it found. Nothing here writes; Back returns to New outline.
 const pscrim = document.getElementById("pscrim");
-let ppoll = null, pname = null;
+let ppoll = null, pname = null, pmode = "preview", plast = null;
 
 document.getElementById("nbibles").addEventListener("click", e => {
   const b = e.target.closest("button.promote");
@@ -1457,7 +1473,15 @@ function closePromote(back) {
   pscrim.classList.remove("show");
   if (back) xscrim.classList.add("show");
 }
-document.getElementById("pback").onclick = () => closePromote(true);
+// Back means "one step back": from the confirm step to the preview, and from
+// the preview to New outline — reloaded after an apply, so a promoted series
+// shows up there at once.
+document.getElementById("pback").onclick = () => {
+  if (pmode === "confirm" && plast) { pmode = "preview"; renderPromote(plast); return; }
+  const reopen = pmode === "done";
+  closePromote(!reopen);
+  if (reopen) openNew();
+};
 pscrim.onclick = e => { if (e.target === pscrim) closePromote(true); };
 
 async function openPromote(name) {
@@ -1466,6 +1490,8 @@ async function openPromote(name) {
   document.getElementById("ptitle").textContent = `Promote ${name}`;
   const st = document.getElementById("pstatus"), body = document.getElementById("pbody");
   pname = name;
+  pmode = "preview";
+  setFoot();
   body.innerHTML = "";
   document.getElementById("psaved").className = "";
   document.getElementById("papply").disabled = true;
@@ -1574,12 +1600,129 @@ document.getElementById("pbody").addEventListener("keydown", e => {
     saveField(e.target.closest(".frow"));
   }
 });
-// Apply's own flow is the next step; until then the button only reflects
-// whether the preview is clean.
+function setFoot() {
+  const back = document.getElementById("pback"), go = document.getElementById("papply");
+  back.textContent = pmode === "confirm" ? "Back to preview" : pmode === "done" ? "Done" : "Back";
+  go.hidden = pmode === "done";
+  if (pmode === "preview") go.textContent = "Apply…";
+}
+
+const popts = () => {
+  const c = document.getElementById("pcommit"), q = document.getElementById("ppush");
+  const commit = !c || c.checked;
+  return { commit, push: commit && (!q || q.checked) };
+};
+
+function confirmLabel() {
+  const o = popts();
+  return o.commit ? (o.push ? "Confirm — write, commit and push" : "Confirm — write and commit")
+                  : "Confirm — write";
+}
+
+// Apply, step one: what will be written and committed, and where a push goes.
+// Nothing is written until the confirm button is pressed.
+async function openConfirm() {
+  const st = document.getElementById("pstatus"), body = document.getElementById("pbody");
+  const go = document.getElementById("papply");
+  go.disabled = true;
+  st.className = "working";
+  st.innerHTML = "Working out what Apply will write…";
+  let plan;
+  try {
+    plan = await (await fetch(`/api/bibles/${encodeURIComponent(pname)}/apply`)).json();
+  } catch (err) { plan = { error: String(err) }; }
+  if (plan.error || plan.blocked) {
+    st.className = "bad";
+    st.innerHTML = `<b>Apply can't run.</b>` + esc(plan.error ? explain(plan.error)
+      : plan.errors.map(x => `${x.where}: ${x.message}`).join("\n"));
+    return;
+  }
+  pmode = "confirm";
+  setFoot();
+  const g = plan.git || {};
+  const rows = plan.files.map(f => `<tr><td><code>${esc(f.path)}</code></td>` +
+    `<td class="act">${esc(f.action)}${f.added != null && f.action !== "unchanged"
+      ? ` +${f.added} −${f.removed}` : ""}</td></tr>`).join("");
+  st.className = "";
+  st.innerHTML = `<b>Confirm before anything is written.</b>${esc(plan.summary)}`;
+  body.innerHTML =
+    `<section><h3>Files</h3><table><tbody>${rows}</tbody></table>` +
+    `<p class="m2" style="margin:8px 0 0">Only these three are committed. ` +
+    `Anything else you have changed stays as it is.</p></section>` +
+    (g.repo ? `<section class="opts"><h3>Git</h3>` +
+      `<label><input type="checkbox" id="pcommit" checked><span>Commit these files` +
+      `<small>On ${esc(g.branch || "the current branch")}.</small></span></label>` +
+      `<label><input type="checkbox" id="ppush"${g.upstream ? " checked" : " disabled"}>` +
+      `<span>…and push${g.upstream ? ` to ${esc(g.upstream)}` : ""}` +
+      `<small>${g.upstream ? "Never forced. If it's refused, the commit stays here and this says so."
+        : "This branch has no upstream, so there is nowhere to push."}</small></span></label>` +
+      `</section>` : `<div class="note">Not a git checkout: the files are written, nothing is committed.</div>`) +
+    (g.ahead ? `<div class="note"><b>${g.ahead} other local commit${g.ahead > 1 ? "s" : ""}</b> ` +
+      `not yet on ${esc(g.upstream)} will be pushed with this one.</div>` : "");
+  body.querySelectorAll(".opts input").forEach(el => el.onchange = () => {
+    const c = document.getElementById("pcommit"), q = document.getElementById("ppush");
+    if (q && c) q.disabled = !c.checked || !g.upstream;
+    go.textContent = confirmLabel();
+  });
+  go.textContent = confirmLabel();
+  go.disabled = false;
+}
+
+// Apply, step two: write, log, commit, push. Shows exactly what happened.
+async function runApply() {
+  const st = document.getElementById("pstatus"), body = document.getElementById("pbody");
+  const go = document.getElementById("papply"), back = document.getElementById("pback");
+  const o = popts();
+  go.disabled = back.disabled = true;
+  go.textContent = "Applying…";
+  st.className = "working";
+  st.innerHTML = o.push ? "Writing, committing and pushing…" : "Writing…";
+  let r;
+  try {
+    r = await (await fetch(`/api/bibles/${encodeURIComponent(pname)}/apply`, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(o) })).json();
+  } catch (err) { r = { error: String(err) }; }
+  back.disabled = false;
+  if (r.error) {
+    st.className = "bad";
+    st.innerHTML = `<b>Apply failed. Nothing was written.</b>${esc(explain(r.error))}`;
+    go.textContent = confirmLabel();
+    go.disabled = false;
+    return;
+  }
+  pmode = "done";
+  setFoot();
+  const g = r.git || {};
+  const pushed = g.pushed, refused = o.push && g.committed && !g.pushed;
+  st.className = refused ? "bad" : "ok";
+  st.innerHTML = refused
+    ? `<b>Written and committed — the push was refused.</b>The commit is safe here. ` +
+      `Pull, then push it yourself.`
+    : `<b>${r.written ? "Promoted." : "Already up to date."}</b>` +
+      (r.written ? `${esc(pname)}.md is written; the series can be picked in New outline.`
+                 : "The bible already matched the draft.");
+  const files = g.files || (r.written ? [r.bible, r.changelog] : []);
+  body.innerHTML =
+    (files.length ? `<section><h3>${g.committed ? "Committed" : "Written"}</h3><table><tbody>` +
+      files.map(f => `<tr><td><code>${esc(f)}</code></td></tr>`).join("") +
+      `</tbody></table></section>` : "") +
+    `<section><h3>Git</h3><ul>` +
+      (g.committed ? `<li>Commit <code>${esc(g.sha)}</code></li>`
+        : `<li>${esc(g.message || "Not committed.")}</li>`) +
+      (g.committed ? (pushed ? `<li>Pushed.</li>` : o.push ? `<li>Not pushed.</li>`
+        : `<li>Not pushed — you left push off.</li>`) : "") +
+    `</ul>` + (refused && g.push_error ? `<div class="pushbad">${esc(g.push_error)}</div>` : "") +
+    `</section>`;
+}
+
 document.getElementById("papply").onclick = () =>
-  toast("Apply isn't wired up yet — that's the next step.");
+  pmode === "confirm" ? runApply() : openConfirm();
 
 function renderPromote(p) {
+  plast = p;
+  pmode = "preview";
+  setFoot();
   const st = document.getElementById("pstatus"), body = document.getElementById("pbody");
   const errs = p.problems.filter(x => x.fatal), warns = p.problems.filter(x => !x.fatal);
   const asks = warns.filter(x => x.fields.some(f => PROMPT_ATTRS.has(f.id.split(":").pop())));
