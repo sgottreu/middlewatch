@@ -54,7 +54,6 @@
   #queue #newBtn:hover { background:rgba(201,162,39,.09); }
   /* series switcher: which series the queue shows, beside New outline ---- */
   #queue .ctx { display:flex; gap:6px; margin-top:10px; position:relative; }
-  #queue .ctx #newBtn { width:auto; flex:none; margin-top:0; padding:7px 10px; }
   #queue #seriesBtn { flex:1; min-width:0; display:flex; gap:6px; align-items:center;
                       justify-content:space-between; padding:7px 10px; cursor:pointer;
                       background:transparent; color:var(--ink); text-align:left;
@@ -556,16 +555,17 @@
 </head>
 <body>
   <nav id="queue"><header><b>Review</b>
-    <div class="tabs"><span class="tab on" aria-current="page">Stories</span>
-      <a class="tab" href="/casting">Casting ›</a></div>
-    <span id="count">loading…</span>
+    <!-- The series comes first: it is the context everything below it is in. -->
     <div class="ctx">
       <button type="button" id="seriesBtn" aria-haspopup="listbox" aria-expanded="false"
         aria-controls="seriesMenu" title="Show one series in the queue, or all of them"><span
         id="seriesLabel">All series</span><span class="car" aria-hidden="true">▾</span></button>
-      <button type="button" id="newBtn">+ New outline</button>
       <div id="seriesMenu" role="listbox" aria-label="Series"></div>
-    </div></header>
+    </div>
+    <div class="tabs"><span class="tab on" aria-current="page">Stories</span>
+      <a class="tab" id="castingTab" href="/casting">Casting ›</a></div>
+    <span id="count">loading…</span>
+    <button type="button" id="newBtn">+ New outline</button></header>
     <div id="groups"></div></nav>
   <main id="doc">
     <div id="dochead">
@@ -1469,6 +1469,11 @@ function setSeries(name) {
   const u = new URL(location.href);
   if (name) u.searchParams.set("series", name); else u.searchParams.delete("series");
   history.replaceState(null, "", u);
+  // Casting opens on the same series: its arcs are the stories/<arc>/ folders,
+  // named after the bible.
+  document.getElementById("castingTab").href =
+    name ? `/casting?series=${encodeURIComponent(name)}` : "/casting";
+  document.getElementById("seriesBtn").title = (seriesInfo(name) || {}).label || "";
   renderSeriesMenu();
 }
 

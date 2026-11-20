@@ -45,6 +45,9 @@
                     color:#cdc9bc; cursor:not-allowed; }
   button.primary { background:var(--ok); border-color:var(--ok); color:#0f120b; }
   button.primary:hover:not(:disabled) { background:#8db466; border-color:#8db466; }
+  /* button.primary came after button:disabled and won, so a disabled primary
+     looked live. Same muted green as the review page's disabled primaries. */
+  button.primary:disabled { background:#4d5b40; border:1px dashed #8a9c74; color:#dbe4cc; }
   /* Armed = one more click spends money. Warning gold, bold, and a ring so it
      can't be mistaken for the idle blue button or a hover. */
   button.armed, button.armed:hover:not(:disabled) { background:var(--accent); border-color:var(--accent);
@@ -204,7 +207,7 @@
 </head>
 <body>
 <header class="top">
-  <a class="back" href="/">‹ Review</a>
+  <a class="back" id="back" href="/">‹ Review</a>
   <h1>Casting</h1>
   <label>Arc <select id="arc"></select></label>
   <label title="Each character is auditioned on one of their own lines from this story">Lines from <select id="story"></select></label>
@@ -297,16 +300,44 @@ document.addEventListener("keydown", ev => {
 function syncUrl() {
   const u = new URL(location.href);
   u.searchParams.set("arc", S.arc || ""); u.searchParams.set("story", S.story || "");
+  // An arc is a series (stories/<bible>/), so the series follows the arc.
+  if (S.arc) u.searchParams.set("series", S.arc);
   history.replaceState(null, "", u);
+  syncBack();
+}
+
+// ‹ Review goes back to the same series the page was opened in.
+function syncBack() {
+  const series = new URLSearchParams(location.search).get("series");
+  $("back").href = series ? `/?series=${encodeURIComponent(series)}` : "/";
 }
 
 async function boot() {
   const q = new URLSearchParams(location.search);
+  syncBack();
+  const series = q.get("series");
   const { arcs } = await api("/api/casting");
   if (!arcs.length) { $("lede").textContent = "No arcs with stories yet."; return; }
   $("arc").innerHTML = arcs.map(a =>
     `<option value="${esc(a.arc)}">${esc(a.arc)} — ${a.auditioned} heard, ${a.cast} cast</option>`).join("");
-  S.arc = arcs.some(a => a.arc === q.get("arc")) ? q.get("arc") : arcs[0].arc;
+  const has = name => name && arcs.some(a => a.arc === name);
+  // Opened from Review with a series that has no stories yet (a draft, or a
+  // bible nothing has been written in): there is no arc to cast. Say so, and
+  // let the arc picker choose another rather than quietly showing one.
+  if (series && !has(q.get("arc")) && !has(series)) {
+    $("arc").insertAdjacentHTML("afterbegin",
+      `<option value="" disabled>${esc(series)} — no stories yet</option>`);
+    $("arc").value = "";
+    $("lede").innerHTML = `<b>${esc(series)}</b> has no stories yet, so there is no arc ` +
+      `to cast. Casting starts once a story in the series is written. ` +
+      `Pick another arc above to cast that series instead.`;
+    // Nothing to audition or apply until an arc is picked.
+    $("runAll").disabled = $("applyBtn").disabled = true;
+    $("story").closest("label").style.display = "none";
+    document.querySelectorAll("h2.sec, h2.sec + .lede").forEach(e => e.style.display = "none");
+    return;
+  }
+  S.arc = has(q.get("arc")) ? q.get("arc") : has(series) ? series : arcs[0].arc;
   $("arc").value = S.arc;
   S.story = q.get("story") || null;
   await load();
@@ -543,7 +574,12 @@ document.addEventListener("submit", async ev => {
   } catch (e) { toast(e.message, true); }
 });
 
-$("arc").onchange = () => { S.arc = $("arc").value; S.story = null; load(); };
+$("arc").onchange = () => {
+  // Leaving the "no stories yet" state: put back what it hid.
+  $("story").closest("label").style.display = "";
+  document.querySelectorAll("h2.sec, h2.sec + .lede").forEach(e => e.style.display = "");
+  S.arc = $("arc").value; S.story = null; load();
+};
 $("story").onchange = () => { S.story = $("story").value; load(true); };
 $("logBtn").onclick = () => { $("log").hidden = !$("log").hidden; if (!$("log").hidden) tailLog(); };
 $("stopBtn").onclick = async () => {
