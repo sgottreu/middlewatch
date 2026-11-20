@@ -142,7 +142,7 @@ def test_preview_extracts():
     assert "SECRET-OPEN-QUESTION" not in pv.text
     assert "SECRET-MINOR-NAME" not in pv.text
     assert "SEED-IDEA" in pv.text
-    assert d["series"] == "Middle Watch: Salt Roads"
+    assert d["series"] == "Salt Roads"
     # No genre anywhere: one fatal problem, and it maps to a genre dropdown.
     fatal = [p for p in d["problems"] if p["fatal"]]
     assert [p["where"] for p in fatal] == ["genre"], fatal
@@ -267,8 +267,36 @@ def test_real_drafts_preview():
                 assert p["fields"], f"{name}: {p['where']} has no field to fix it"
         assert _sha(draft) == sha
         assert not (REPO_BIBLES / name / f"{name}.md").exists()
+        assert d["series"] == {"broken-edges": "Mapping the Broken Edges",
+                               "north-star": "North Star"}[name], d["series"]
+        if name == "broken-edges":
+            assert len(d["cast"]) == 8, [c["name"] for c in d["cast"]]
         print(f"  {name}: {len(d['canon'])} canon, {len(d['cast'])} cast, "
               f"{sum(p['fatal'] for p in d['problems'])} error(s)")
+
+
+def test_fields_clear_real_draft_errors_on_a_copy():
+    """North Star's errors, fixed only through the fields the preview offers —
+    on a temp copy, never the real draft."""
+    src = bp.draft_path("north-star", REPO_BIBLES)
+    if not src.exists():
+        print("  (skipped: no north-star draft)")
+        return
+    root = _tmp_bibles(src.read_text(), "north-star")
+    d = bp.preview("north-star", {}, root).to_dict()
+    ids = [f["id"] for p in d["problems"] if p["fatal"] for f in p["fields"]]
+    assert "genre" in ids and "cast:Juniper's father:name" in ids, ids
+    bp.fill("north-star", "genre", "scifi", root)
+    bp.fill("north-star", "cast:Juniper's father:name", "Abe Ward", root)
+    bp.fill("north-star", "cast:Juniper's mother:name", "Rosa Ward", root)
+    bp.fill("north-star", "cast:Captain:gender", "male", root)
+    d = bp.preview("north-star", {}, root).to_dict()
+    assert not d["blocked"], [p for p in d["problems"] if p["fatal"]]
+    assert d["series"] == "North Star" and d["genre"] == "scifi"
+    cap = next(c for c in d["cast"] if c["name"] == "Captain")
+    assert cap["gender"] == "male" and not cap["inferred"]
+    text = (root / "north-star" / "north-star.draft.md").read_text()
+    assert "- **Abe Ward**:" in text and "  - Gender: male" in text
 
 
 def test_server_endpoints():

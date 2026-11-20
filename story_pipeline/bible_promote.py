@@ -439,10 +439,11 @@ def build(name: str, bibles_dir: str | Path = "bibles") -> Preview:
 
     # --- series-level --------------------------------------------------------
     meta: dict = {}
+    # The working title alone: "Working title: Mapping the Broken Edges
+    # (alternative: ...) Status: ..." gives "Mapping the Broken Edges".
     series = (draft.top.get("series") or draft.front.get("series")
-              or old_meta.get("series")
-              or (f"Middle Watch: {draft.working_title}" if draft.working_title
-                  else name.replace("-", " ").title()))
+              or draft.working_title or old_meta.get("series")
+              or name.replace("-", " ").title())
     meta["series"] = series
     genre = draft.top.get("genre") or draft.front.get("genre") or old_meta.get("genre")
     if genre:
