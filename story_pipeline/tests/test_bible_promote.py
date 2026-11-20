@@ -271,6 +271,73 @@ def test_real_drafts_preview():
               f"{sum(p['fatal'] for p in d['problems'])} error(s)")
 
 
+def test_server_endpoints():
+    """preview (a runner job) -> fill -> apply, over HTTP, against a temp dir."""
+    import json
+    import os
+    import threading
+    import time
+    import urllib.request
+    from http.server import ThreadingHTTPServer
+
+    from ..review import server
+
+    root = _tmp_bibles()
+    old_runs = os.environ.get("MW_RUNS_DIR")
+    os.environ["MW_RUNS_DIR"] = str(root.parent / "runs")
+    cfg = {"bibles_dir": str(root), "stories_dir": str(root.parent / "stories"),
+           "_config_path": "config.yaml"}
+    httpd = ThreadingHTTPServer(("127.0.0.1", 0), server._handler(cfg))
+    threading.Thread(target=httpd.serve_forever, daemon=True).start()
+    base = f"http://127.0.0.1:{httpd.server_address[1]}"
+
+    def call(path, body=None):
+        req = urllib.request.Request(
+            base + path, data=None if body is None else json.dumps(body).encode(),
+            headers={"Content-Type": "application/json"})
+        try:
+            with urllib.request.urlopen(req, timeout=30) as r:
+                return json.loads(r.read())
+        except urllib.error.HTTPError as e:
+            return json.loads(e.read())
+
+    def wait():
+        for _ in range(120):
+            j = call("/api/bibles/salt/job")
+            if j["state"] not in ("running", "none"):
+                return j
+            time.sleep(0.5)
+        raise AssertionError("preview job never finished")
+
+    try:
+        menu = call("/api/bibles")
+        assert menu["drafts"] == ["salt"], menu
+        started = call("/api/bibles/salt/preview", {})
+        assert started.get("ok"), started
+        j = wait()
+        pv = j.get("preview")
+        assert pv, j
+        assert pv["blocked"] and pv["problems"][0]["fields"][0]["id"] == "genre"
+        assert "error" in call("/api/bibles/salt/apply", {"commit": False})
+
+        assert call("/api/bibles/salt/fill", {"field": "genre", "value": "fantasy"})["ok"]
+        j = wait()
+        assert j["preview"]["blocked"] is False, j["preview"]["problems"]
+        assert "Genre: fantasy" in (root / "salt" / "salt.draft.md").read_text()
+
+        out = call("/api/bibles/salt/apply", {"commit": False})
+        assert out.get("written"), out
+        assert call("/api/bibles/salt/apply", {"commit": False})["written"] is False
+        assert "salt" in [b["name"] for b in call("/api/bibles")["bibles"]]
+        assert "error" in call("/api/bibles/..%2Fetc/preview", {})
+    finally:
+        httpd.shutdown()
+        if old_runs is None:
+            os.environ.pop("MW_RUNS_DIR", None)
+        else:
+            os.environ["MW_RUNS_DIR"] = old_runs
+
+
 def main() -> int:
     failed = 0
     tests = [(n, f) for n, f in globals().items() if n.startswith("test_")]

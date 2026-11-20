@@ -13,6 +13,14 @@ Routes:
                                that cannot yet; free
     POST /api/new              {"bible", "length"?, "notes"?} ideate a new
                                outline in that series — a paid call
+    GET  /api/bibles/<name>/job        the promote preview's state and result
+    GET  /api/bibles/<name>/log        its output; ?from=<byte offset>
+    POST /api/bibles/<name>/preview    dry-run `bible promote` as a job — free
+    POST /api/bibles/<name>/fill       {"field", "value"} write one missing
+                               detail into <name>.draft.md, then preview again
+    POST /api/bibles/<name>/apply      {"commit"?, "push"?} write <name>.md and
+                               its changelog entry, commit the draft, bible and
+                               changelog, push (never forced) — refused on errors
     GET  /api/story/<slug>     one story: outline, chapters, reviews, spend
     POST /api/approve          outline, all chapters, or {"chapters": [3]} for
                                one at a time; {"undo": true} withdraws it
@@ -82,7 +90,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
 
-from . import casting_api, runner
+from . import bible_api, casting_api, runner
 from .. import bibles, genres, history, release, summary
 from ..agents import text as textagent
 from ..bundle import Bundle, bundle_roots, find_bundle, real_answer
@@ -1165,6 +1173,16 @@ def _handler(cfg: dict):
                     self._json(queue(cfg))
                 elif path == "/api/bibles":
                     self._json(bible_menu(cfg))
+                elif path.startswith("/api/bibles/"):
+                    name, _, what = unquote(path[len("/api/bibles/"):]).partition("/")
+                    if what == "job":
+                        self._json(bible_api.job(cfg, name))
+                    elif what == "log":
+                        q = parse_qs(urlparse(self.path).query)
+                        self._json(bible_api.log(cfg, name,
+                                                 int((q.get("from") or ["0"])[0])))
+                    else:
+                        self._json({"error": "not found"}, 404)
                 elif path.startswith("/api/story/"):
                     self._json(story_detail(cfg, path.rsplit("/", 1)[-1]))
                 elif path.startswith("/api/job/"):
@@ -1208,6 +1226,21 @@ def _handler(cfg: dict):
                 elif path == "/api/new":
                     self._json(new_story(cfg, body.get("bible", ""),
                                          body.get("length"), body.get("notes", "")))
+                elif path.startswith("/api/bibles/"):
+                    name, _, what = unquote(path[len("/api/bibles/"):]).partition("/")
+                    if what == "preview":
+                        self._json(bible_api.preview_start(cfg, name))
+                    elif what == "fill":
+                        self._json(bible_api.fill(cfg, name, body.get("field", ""),
+                                                  body.get("value", "")))
+                    elif what == "apply":
+                        self._json(bible_api.apply(
+                            cfg, name,
+                            commit=body.get("commit", True) is not False,
+                            push=body.get("push", True) is not False,
+                            author=body.get("author")))
+                    else:
+                        self._json({"error": "not found"}, 404)
                 elif path == "/api/revise":
                     self._json(revise(cfg, body["slug"], body.get("keep", []),
                                       body.get("note", "")))
