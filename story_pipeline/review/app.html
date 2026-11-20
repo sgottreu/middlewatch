@@ -289,6 +289,12 @@
   #promote .opts small { display:block; color:var(--dim); font-size:12px; }
   #promote .note { border:1px solid var(--accent); background:rgba(201,162,39,.09);
                    border-radius:6px; padding:8px 12px; font-size:13px; margin:0 0 12px; }
+  #promote .note ul { margin:6px 0 8px; padding-left:18px; }
+  #promote .note li { margin:2px 0; }
+  #promote .note li code { font-family:var(--mono); font-size:12px; color:var(--dim); }
+  #promote .note button { font-size:13px; padding:6px 14px; margin-top:4px; }
+  #promote .pushok { border:1px solid var(--ok); background:rgba(126,160,90,.12);
+                     border-radius:6px; padding:8px 12px; font-size:13px; margin:0 0 12px; }
   #promote .pushbad { border:1px solid var(--danger); background:rgba(212,103,74,.12);
                       border-radius:6px; padding:8px 12px; font-size:13px; margin:8px 0 0;
                       white-space:pre-wrap; }
@@ -1461,7 +1467,7 @@ document.getElementById("newf").onsubmit = async e => {
 // The draft row's Promote button. Runs `bible promote --dry-run` as a job on the
 // server and shows what it found. Nothing here writes; Back returns to New outline.
 const pscrim = document.getElementById("pscrim");
-let ppoll = null, pname = null, pmode = "preview", plast = null;
+let ppoll = null, pname = null, pmode = "preview", plast = null, ppushed = null;
 
 document.getElementById("nbibles").addEventListener("click", e => {
   const b = e.target.closest("button.promote");
@@ -1657,8 +1663,13 @@ async function openConfirm() {
       `<small>${g.upstream ? "Never forced. If it's refused, the commit stays here and this says so."
         : "This branch has no upstream, so there is nowhere to push."}</small></span></label>` +
       `</section>` : `<div class="note">Not a git checkout: the files are written, nothing is committed.</div>`) +
-    (g.ahead ? `<div class="note"><b>${g.ahead} other local commit${g.ahead > 1 ? "s" : ""}</b> ` +
-      `not yet on ${esc(g.upstream)} will be pushed with this one.</div>` : "");
+    waitingNote(g);
+  if (ppushed) {
+    body.insertAdjacentHTML("afterbegin", `<div class="pushok">${ppushed}</div>`);
+    ppushed = null;
+  }
+  const pw = document.getElementById("ppushw");
+  if (pw) pw.onclick = () => pushWaiting(pw);
   body.querySelectorAll(".opts input").forEach(el => el.onchange = () => {
     const c = document.getElementById("pcommit"), q = document.getElementById("ppush");
     if (q && c) q.disabled = !c.checked || !g.upstream;
@@ -1666,6 +1677,50 @@ async function openConfirm() {
   });
   go.textContent = confirmLabel();
   go.disabled = false;
+}
+
+// Commits already on the branch and not yet pushed ride along with Apply's
+// push. Say which, and offer to push them on their own first. Uncommitted
+// edits to tracked files are mentioned, never committed from here.
+function waitingNote(g) {
+  const w = g.waiting || [], dirty = g.uncommitted || [];
+  if (!w.length && !dirty.length) return "";
+  const n = w.length;
+  return `<div class="note" id="pwaiting">` +
+    (n ? `<b>${n} other local commit${n > 1 ? "s" : ""}</b> not yet on ` +
+      `${esc(g.upstream)} will be pushed with this one:` +
+      `<ul>${w.map(c => `<li><code>${esc(c.sha)}</code> ${esc(c.subject)}</li>`).join("")}</ul>` : "") +
+    (dirty.length ? `<div${n ? ' style="margin-bottom:6px"' : ""}><b>Uncommitted changes</b> to ` +
+      `${dirty.length} tracked file${dirty.length > 1 ? "s" : ""} ` +
+      `(${dirty.slice(0, 4).map(f => `<code>${esc(f)}</code>`).join(", ")}` +
+      `${dirty.length > 4 ? ", …" : ""}) stay as they are — Apply won't commit them.</div>` : "") +
+    (n ? `<button type="button" id="ppushw" title="Push only the commits listed above. ` +
+      `No new commit; never forced.">Push ${n} waiting commit${n > 1 ? "s" : ""} first</button>` +
+      `<div id="ppushres"></div>` : "") +
+    `</div>`;
+}
+
+async function pushWaiting(btn) {
+  const res = document.getElementById("ppushres");
+  const go = document.getElementById("papply");
+  btn.disabled = go.disabled = true;
+  btn.textContent = "Pushing…";
+  res.innerHTML = "";
+  let r;
+  try {
+    r = await (await fetch(`/api/bibles/${encodeURIComponent(pname)}/push-waiting`, {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" })).json();
+  } catch (err) { r = { error: String(err) }; }
+  if (r.error || !r.pushed) {
+    btn.disabled = go.disabled = false;
+    btn.textContent = "Try the push again";
+    res.innerHTML = `<div class="pushbad"><b>Push refused.</b> Nothing was changed here.\n` +
+      `${esc(r.error ? explain(r.error) : (r.push_error || r.message || ""))}</div>`;
+    return;
+  }
+  ppushed = `Pushed ${r.count} waiting commit${r.count > 1 ? "s" : ""} to ` +
+    `<code>${esc(r.upstream)}</code>.`;
+  openConfirm();
 }
 
 // Apply, step two: write, log, commit, push. Shows exactly what happened.

@@ -809,7 +809,7 @@ def git_state(paths: list[Path]) -> dict:
     along. `ahead` counts commits already waiting to be pushed: a push sends
     them too, so the confirm step says so rather than surprising anyone."""
     out = {"repo": False, "branch": None, "upstream": None, "ahead": None,
-           "dirty": []}
+           "dirty": [], "waiting": [], "uncommitted": []}
     try:
         if _git("rev-parse", "--is-inside-work-tree", check=False).returncode != 0:
             return out
@@ -822,8 +822,37 @@ def git_state(paths: list[Path]) -> dict:
         out["upstream"] = up.stdout.strip()
         n = _git("rev-list", "--count", "@{u}..HEAD", check=False).stdout.strip()
         out["ahead"] = int(n) if n.isdigit() else None
+        log = _git("log", "--format=%h%x09%s", "@{u}..HEAD", check=False).stdout
+        out["waiting"] = [dict(zip(("sha", "subject"), ln.split("\t", 1)))
+                          for ln in log.splitlines() if "\t" in ln]
     st = _git("status", "--porcelain", "--", *[str(x) for x in paths], check=False)
     out["dirty"] = [ln[3:] for ln in st.stdout.splitlines() if ln.strip()]
+    # Tracked files changed but not committed, other than the ones Apply
+    # commits. Reported, never committed from here.
+    mine = {str(x) for x in paths}
+    st = _git("status", "--porcelain", "--untracked-files=no", check=False)
+    out["uncommitted"] = [ln[3:] for ln in st.stdout.splitlines()
+                          if ln.strip() and ln[3:] not in mine]
+    return out
+
+
+def push_waiting(paths: list[Path] | None = None) -> dict:
+    """Push the commits already on this branch and nothing else: no new commit,
+    never forced. A refusal comes back with git's own message."""
+    before = git_state(paths or [])
+    if not before["repo"]:
+        raise PromoteError("not a git checkout")
+    if not before["upstream"]:
+        raise PromoteError(f"{before['branch']} has no upstream to push to")
+    if not before["ahead"]:
+        return {"pushed": False, "count": 0, "message": "nothing waiting to push",
+                "git": before}
+    r = _git("push", "-q", check=False)
+    after = git_state(paths or [])
+    out = {"pushed": r.returncode == 0, "count": before["ahead"],
+           "upstream": before["upstream"], "git": after}
+    if r.returncode != 0:
+        out["push_error"] = (r.stderr or r.stdout).strip()
     return out
 
 

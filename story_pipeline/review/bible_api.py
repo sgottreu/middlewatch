@@ -83,6 +83,21 @@ def apply_plan(cfg: dict, name: str) -> dict:
     return bp.apply_plan(name, cfg, _root(cfg))
 
 
+def push_waiting(cfg: dict, name: str) -> dict:
+    """Push the commits already waiting on this branch — no new commit, never
+    forced — then return the refreshed Apply plan."""
+    _draft(cfg, name)
+    root = _root(cfg)
+    bible = bp.bible_path(name, root)
+    try:
+        out = bp.push_waiting([bp.draft_path(name, root), bible,
+                               bp.changelog.path_for(bible)])
+    except bp.PromoteError as e:
+        raise ValueError(str(e))
+    out["plan"] = bp.apply_plan(name, cfg, root)
+    return out
+
+
 def apply(cfg: dict, name: str, commit: bool = True, push: bool = True,
           author: str | None = None) -> dict:
     """Write `<name>.md`, log it, and commit the draft, bible and changelog —

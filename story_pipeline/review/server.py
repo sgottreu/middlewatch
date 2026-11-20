@@ -20,6 +20,8 @@ Routes:
     POST /api/bibles/<name>/preview    dry-run `bible promote` as a job — free
     POST /api/bibles/<name>/fill       {"field", "value"} write one missing
                                detail into <name>.draft.md, then preview again
+    POST /api/bibles/<name>/push-waiting  push the commits already waiting on
+                               the branch — no new commit, never forced
     POST /api/bibles/<name>/apply      {"commit"?, "push"?} write <name>.md and
                                its changelog entry, commit the draft, bible and
                                changelog, push (never forced) — refused on errors
@@ -1234,6 +1236,8 @@ def _handler(cfg: dict):
                     name, _, what = unquote(path[len("/api/bibles/"):]).partition("/")
                     if what == "preview":
                         self._json(bible_api.preview_start(cfg, name))
+                    elif what == "push-waiting":
+                        self._json(bible_api.push_waiting(cfg, name))
                     elif what == "fill":
                         self._json(bible_api.fill(cfg, name, body.get("field", ""),
                                                   body.get("value", "")))

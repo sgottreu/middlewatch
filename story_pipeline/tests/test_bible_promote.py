@@ -374,6 +374,58 @@ def test_apply_push_refused_keeps_commit():
         os.chdir(here)
 
 
+def test_push_waiting_pushes_only_existing_commits():
+    import os
+    import subprocess
+    work, remote = _git_sandbox(DRAFT)
+    run = lambda *a: subprocess.run(["git", *a], check=True, capture_output=True, text=True)
+    here = os.getcwd()
+    os.chdir(work)
+    try:
+        for n in (1, 2):
+            Path(f"note{n}.txt").write_text(str(n))
+            run("add", f"note{n}.txt")
+            run("commit", "-q", "-m", f"waiting {n}")
+        Path("other.txt").write_text("tracked, changed, never committed here\n")
+        head = run("rev-parse", "HEAD").stdout.strip()
+        plan = bp.apply_plan("salt", {}, "bibles")
+        g = plan["git"]
+        assert g["ahead"] == 2 and [w["subject"] for w in g["waiting"]] == ["waiting 2", "waiting 1"]
+        assert g["uncommitted"] == ["other.txt"], g["uncommitted"]
+        out = bp.push_waiting()
+        assert out["pushed"] and out["count"] == 2 and out["git"]["ahead"] == 0, out
+        assert run("rev-parse", "HEAD").stdout.strip() == head, "push made a commit"
+        on_remote = subprocess.run(["git", "--git-dir", str(remote), "rev-parse", "HEAD"],
+                                   capture_output=True, text=True).stdout.strip()
+        assert on_remote == head
+        assert "other.txt" in run("status", "--porcelain").stdout
+        assert bp.push_waiting()["count"] == 0
+    finally:
+        os.chdir(here)
+
+
+def test_push_waiting_refused():
+    import os
+    import subprocess
+    work, remote = _git_sandbox(DRAFT)
+    other = work.parent / "other"
+    subprocess.run(["git", "clone", "-q", str(remote), str(other)], check=True)
+    (other / "x.txt").write_text("x")
+    for a in (["add", "x.txt"], ["-c", "user.name=O", "-c", "user.email=o@x.invalid",
+                                 "commit", "-q", "-m", "theirs"], ["push", "-q"]):
+        subprocess.run(["git", *a], cwd=other, check=True, capture_output=True)
+    here = os.getcwd()
+    os.chdir(work)
+    try:
+        Path("mine.txt").write_text("m")
+        subprocess.run(["git", "add", "mine.txt"], check=True)
+        subprocess.run(["git", "commit", "-q", "-m", "mine"], check=True)
+        out = bp.push_waiting()
+        assert not out["pushed"] and out.get("push_error") and out["git"]["ahead"] == 1, out
+    finally:
+        os.chdir(here)
+
+
 def test_server_endpoints():
     """preview (a runner job) -> fill -> apply, over HTTP, against a temp dir."""
     import json
