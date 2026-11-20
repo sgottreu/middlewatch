@@ -248,7 +248,37 @@
   #pstatus.bad { border-color:var(--danger); background:rgba(212,103,74,.12);
                  white-space:pre-wrap; }
   #pstatus b { display:block; margin-bottom:3px; }
-  #promote .row2 { display:flex; gap:9px; justify-content:flex-end; margin-top:14px; }
+  /* Pinned to the bottom of the dialog, so Apply's state is always in view
+     however long the preview runs. */
+  #promote .row2 { display:flex; gap:9px; justify-content:flex-end; margin-top:14px;
+                   position:sticky; bottom:-22px; background:var(--panel);
+                   padding:10px 0 12px; border-top:1px solid var(--line); }
+  /* inline fields: each problem the draft can fix, with its own Save ----- */
+  #promote .fix { border-color:var(--danger); }
+  #promote .fix.soft { border-color:var(--line); }
+  #promote .prob { margin:0 0 10px; }
+  #promote .prob:last-child { margin-bottom:0; }
+  #promote .prob .msg { font-size:13px; margin-bottom:5px; }
+  #promote .prob .msg .m2 { display:block; }
+  #promote .frow { display:flex; gap:8px; align-items:center; flex-wrap:wrap;
+                   margin:4px 0; }
+  #promote .frow label { font-family:var(--mono); font-size:12px; color:var(--dim);
+                         flex:0 0 190px; min-width:0; overflow-wrap:anywhere; }
+  #promote .frow input, #promote .frow select {
+    flex:1 1 160px; min-width:0; font:inherit; font-size:14px; color:var(--ink);
+    background:var(--bg); border:1px solid var(--line); border-radius:5px;
+    padding:6px 9px; }
+  #promote .frow input:focus, #promote .frow select:focus {
+    outline:none; border-color:var(--btn-line); }
+  #promote .frow button { flex:none; font-size:13px; padding:6px 14px; }
+  #promote .frow .ferr { flex-basis:100%; color:var(--danger); font-size:12px; }
+  #psaved { display:none; border:1px solid var(--ok); border-radius:6px;
+            background:rgba(126,160,90,.12); padding:8px 12px; margin:0 0 10px;
+            font-size:13px; }
+  #psaved.show { display:block; }
+  @media (max-width: 760px) {
+    #promote .frow label { flex-basis:100%; }
+  }
   #newf textarea { width:100%; min-height:70px; font:inherit; font-size:14px;
                    background:transparent; color:var(--ink); border:1px solid var(--line);
                    border-radius:6px; padding:9px 11px; resize:vertical; }
@@ -518,10 +548,13 @@
     <h2 id="ptitle">Promote draft</h2>
     <p class="lede">What <code>bible promote</code> would write from the draft.
       Free: no model is called, and nothing is written yet.</p>
+    <div id="psaved"></div>
     <div id="pstatus"></div>
     <div id="pbody"></div>
     <div class="row2">
       <button type="button" id="pback">Back</button>
+      <button type="button" id="papply" class="primary" disabled
+        title="Write the bible. Disabled while bible check finds errors.">Apply</button>
     </div>
   </div></div>
   <div id="scrim"><form id="revise">
@@ -1412,7 +1445,7 @@ document.getElementById("newf").onsubmit = async e => {
 // The draft row's Promote button. Runs `bible promote --dry-run` as a job on the
 // server and shows what it found. Nothing here writes; Back returns to New outline.
 const pscrim = document.getElementById("pscrim");
-let ppoll = null;
+let ppoll = null, pname = null;
 
 document.getElementById("nbibles").addEventListener("click", e => {
   const b = e.target.closest("button.promote");
@@ -1432,7 +1465,10 @@ async function openPromote(name) {
   pscrim.classList.add("show");
   document.getElementById("ptitle").textContent = `Promote ${name}`;
   const st = document.getElementById("pstatus"), body = document.getElementById("pbody");
+  pname = name;
   body.innerHTML = "";
+  document.getElementById("psaved").className = "";
+  document.getElementById("papply").disabled = true;
   st.className = "working";
   st.innerHTML = `Reading <code>${esc(name)}.draft.md</code>…`;
   let res;
@@ -1468,14 +1504,94 @@ async function pollPromote(name) {
   renderPromote(j.preview);
 }
 
+// Which warning fields are worth asking for inline. Appearance and dress are
+// warnings on every new character; asking for all of them here would bury the
+// errors, so they stay in the warnings list.
+const PROMPT_ATTRS = new Set(["gender", "age", "station"]);
+
+function fieldInput(f) {
+  const id = "pf-" + f.id.replace(/[^\w-]/g, "_");
+  const val = f.value ?? "";
+  const input = f.type === "select"
+    ? `<select id="${id}"><option value="">choose…</option>` +
+      f.options.map(o => `<option value="${esc(o)}"${o === val ? " selected" : ""}>` +
+                         `${esc(o)}</option>`).join("") + `</select>`
+    : `<input id="${id}" type="${f.type === "number" ? "number" : "text"}"` +
+      `${f.type === "number" ? ' min="0" max="120" inputmode="numeric"' : ""}` +
+      ` value="${esc(val)}" autocomplete="off">`;
+  return `<div class="frow" data-field="${esc(f.id)}"><label for="${id}">${esc(f.label)}</label>` +
+    input + `<button type="button" class="fsave" ` +
+    `title="Write this into the draft, then preview again.">Save</button></div>`;
+}
+
+function probBlock(x) {
+  return `<div class="prob"><div class="msg">${esc(x.where)}: ${esc(x.message)}` +
+    (x.fix ? `<span class="m2">${esc(x.fix)}</span>` : "") + `</div>` +
+    x.fields.map(fieldInput).join("") + `</div>`;
+}
+
+async function saveField(row) {
+  const field = row.dataset.field;
+  const input = row.querySelector("input, select"), btn = row.querySelector("button");
+  row.querySelector(".ferr")?.remove();
+  const value = input.value.trim();
+  if (!value) {
+    row.insertAdjacentHTML("beforeend", `<span class="ferr">Enter a value first.</span>`);
+    return;
+  }
+  input.disabled = btn.disabled = true;
+  btn.textContent = "Saving…";
+  let res;
+  try {
+    res = await (await fetch(`/api/bibles/${encodeURIComponent(pname)}/fill`, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ field, value }) })).json();
+  } catch (err) { res = { error: String(err) }; }
+  if (res.error) {
+    input.disabled = btn.disabled = false;
+    btn.textContent = "Save";
+    row.insertAdjacentHTML("beforeend", `<span class="ferr">${esc(explain(res.error))}</span>`);
+    return;
+  }
+  const label = row.querySelector("label").textContent;
+  const saved = document.getElementById("psaved");
+  saved.className = "show";
+  saved.innerHTML = `Saved <b>${esc(label)}: ${esc(value)}</b> to ` +
+    `<code>${esc(pname)}.draft.md</code>.`;
+  const st = document.getElementById("pstatus");
+  st.className = "working";
+  st.innerHTML = `Checking the draft again…`;
+  pollPromote(pname);
+}
+
+document.getElementById("pbody").addEventListener("click", e => {
+  const b = e.target.closest("button.fsave");
+  if (b) saveField(b.closest(".frow"));
+});
+document.getElementById("pbody").addEventListener("keydown", e => {
+  if (e.key === "Enter" && e.target.closest(".frow input")) {
+    e.preventDefault();
+    saveField(e.target.closest(".frow"));
+  }
+});
+// Apply's own flow is the next step; until then the button only reflects
+// whether the preview is clean.
+document.getElementById("papply").onclick = () =>
+  toast("Apply isn't wired up yet — that's the next step.");
+
 function renderPromote(p) {
   const st = document.getElementById("pstatus"), body = document.getElementById("pbody");
   const errs = p.problems.filter(x => x.fatal), warns = p.problems.filter(x => !x.fatal);
+  const asks = warns.filter(x => x.fields.some(f => PROMPT_ATTRS.has(f.id.split(":").pop())));
+  const apply = document.getElementById("papply");
+  apply.disabled = !!errs.length || !p.changed;
+  apply.title = errs.length ? "Fix the errors above first."
+    : p.changed ? "Write the bible from the draft." : "Nothing to write: already up to date.";
   if (errs.length) {
     st.className = "bad";
     st.innerHTML = `<b>${errs.length} error${errs.length > 1 ? "s" : ""} — ` +
-      `this can't be promoted yet.</b>` +
-      errs.map(x => `${esc(x.where)}: ${esc(x.message)}`).join("\n");
+      `this can't be promoted yet.</b>Fill ${errs.length > 1 ? "them" : "it"} in ` +
+      `below. Each save writes to the draft and checks again.`;
   } else {
     st.className = "ok";
     st.innerHTML = p.changed
@@ -1495,6 +1611,11 @@ function renderPromote(p) {
     l.startsWith("+") && !l.startsWith("+++") ? `<span class="add">${l}</span>`
     : l.startsWith("-") && !l.startsWith("---") ? `<span class="del">${l}</span>` : l).join("\n");
   body.innerHTML =
+    (errs.length ? `<section class="fix"><h3>Fix before promoting</h3>` +
+      errs.map(probBlock).join("") + `</section>` : "") +
+    (asks.length ? `<section class="fix soft"><h3>Worth setting · optional</h3>` +
+      asks.map(x => probBlock({ ...x, fields: x.fields.filter(f =>
+        PROMPT_ATTRS.has(f.id.split(":").pop())) })).join("") + `</section>` : "") +
     `<section><h3>Series</h3><ul><li>${esc(p.series)} ` +
       `<span class="m2">${p.genre ? esc(p.genre) : "no genre"}</span></li></ul></section>` +
     `<section><h3>Canon facts · ${p.canon.length}</h3>` +

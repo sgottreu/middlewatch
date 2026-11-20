@@ -591,9 +591,20 @@ def check(pv: Preview, cfg: dict | None = None) -> list[dict]:
         found = bibles.validate(path, cfg or {})
     out = []
     for p in found:
+        fields = _fields_for(p, pv.meta)
+        # validate's advice is written for a bible's YAML; a draft has none, and
+        # the field saves the value as a labelled line instead.
+        fix = DRAFT_FIX.get(p.where, p.fix) if fields else p.fix
         out.append({"fatal": p.fatal, "where": p.where, "message": p.message,
-                    "fix": p.fix, "fields": _fields_for(p, pv.meta)})
+                    "fix": fix, "fields": fields})
     return out
+
+
+DRAFT_FIX = {
+    "genre": "Pick one; it is saved to the draft as a `Genre:` line under the title.",
+    "series": "Saved to the draft as a `Series:` line under the title.",
+    "anchor_year": "Saved to the draft as an `Anchor year:` line under the title.",
+}
 
 
 def preview(name: str, cfg: dict | None = None,
