@@ -208,6 +208,47 @@
   #newf label .m2 { display:block; font-family:var(--mono); font-size:11px; color:var(--dim); }
   #newf label.off { color:var(--dim); cursor:default; }
   #newf .lens { display:flex; gap:18px; }
+  /* A draft is not selectable, but it can be promoted: the button sits beside
+     the greyed-out row, outside the label so it never toggles the radio. */
+  #newf .draftrow { display:flex; gap:10px; align-items:center;
+                    justify-content:space-between; }
+  #newf .draftrow label { flex:1; min-width:0; }
+  #newf .draftrow button { flex:none; font-size:12px; padding:4px 12px; }
+
+  /* promote preview ---------------------------------------------------- */
+  #pscrim { position:fixed; inset:0; background:rgba(0,0,0,.55);
+            display:none; align-items:center; justify-content:center; z-index:11; }
+  #pscrim.show { display:flex; }
+  #promote { background:var(--panel); border:1px solid var(--line); border-radius:8px;
+             width:min(640px, 94vw); max-height:88vh; overflow-y:auto; padding:22px 24px; }
+  #promote h2 { margin:0 0 4px; font-size:19px; }
+  #promote .lede { color:var(--dim); font-size:13px; margin:0 0 14px; }
+  #promote section { border:1px solid var(--line); border-radius:6px;
+                     margin:0 0 12px; padding:10px 14px; }
+  #promote h3 { margin:0 0 6px; font-family:var(--mono); font-size:11px;
+                text-transform:uppercase; letter-spacing:.08em; color:var(--dim);
+                font-weight:normal; }
+  #promote ul { margin:0; padding-left:18px; font-size:14px; }
+  #promote li { margin:3px 0; }
+  #promote .m2 { font-family:var(--mono); font-size:11px; color:var(--dim); }
+  #promote .tag { font-family:var(--mono); font-size:10px; border:1px solid var(--line);
+                  border-radius:3px; padding:0 4px; color:var(--dim); margin-left:4px; }
+  #promote .problems li.err { color:var(--danger); }
+  #promote details { font-size:13px; }
+  #promote summary { cursor:pointer; color:var(--dim); }
+  #promote pre { font-family:var(--mono); font-size:11px; white-space:pre-wrap;
+                 word-break:break-word; max-height:320px; overflow:auto;
+                 background:var(--bg); border-radius:4px; padding:8px; margin:6px 0 0; }
+  #promote pre .add { color:var(--ok); }
+  #promote pre .del { color:var(--danger); }
+  #pstatus { border-radius:6px; padding:10px 13px; margin:0 0 12px;
+             font-size:14px; border:1px solid var(--line); }
+  #pstatus.working { border-color:var(--accent); animation: pulse 1.4s ease-in-out infinite; }
+  #pstatus.ok { border-color:var(--ok); background:rgba(126,160,90,.12); }
+  #pstatus.bad { border-color:var(--danger); background:rgba(212,103,74,.12);
+                 white-space:pre-wrap; }
+  #pstatus b { display:block; margin-bottom:3px; }
+  #promote .row2 { display:flex; gap:9px; justify-content:flex-end; margin-top:14px; }
   #newf textarea { width:100%; min-height:70px; font:inherit; font-size:14px;
                    background:transparent; color:var(--ink); border:1px solid var(--line);
                    border-radius:6px; padding:9px 11px; resize:vertical; }
@@ -473,6 +514,16 @@
       <button type="submit" id="ngo" class="primary" disabled>Create outline</button>
     </div>
   </form></div>
+  <div id="pscrim"><div id="promote" role="dialog" aria-labelledby="ptitle">
+    <h2 id="ptitle">Promote draft</h2>
+    <p class="lede">What <code>bible promote</code> would write from the draft.
+      Free: no model is called, and nothing is written yet.</p>
+    <div id="pstatus"></div>
+    <div id="pbody"></div>
+    <div class="row2">
+      <button type="button" id="pback">Back</button>
+    </div>
+  </div></div>
   <div id="scrim"><form id="revise">
     <h2>Revise this outline</h2>
     <p class="lede">The ideator rewrites it. Anything you keep is held word for
@@ -1299,9 +1350,12 @@ async function openNew() {
         `<span>${esc(b.series)}<span class="m2">${esc(b.name)} · ` +
         `${esc(b.genre)}</span></span></label>`).join("") +
     m.drafts.map(n =>
-      `<label class="off"><input type="radio" disabled>` +
+      `<div class="draftrow"><label class="off"><input type="radio" disabled>` +
       `<span>${esc(n)}<span class="m2">draft — promote ${esc(n)}.draft.md to ` +
-      `${esc(n)}.md to use it</span></span></label>`).join("") ||
+      `${esc(n)}.md to use it</span></span></label>` +
+      `<button type="button" class="promote" data-draft="${esc(n)}" ` +
+      `title="Preview what promoting this draft would write. Free.">Promote</button>` +
+      `</div>`).join("") ||
     `<p class="empty">No bibles yet.</p>`;
 
   const def = m.default_length ?? m.lengths[0];
@@ -1353,6 +1407,120 @@ document.getElementById("newf").onsubmit = async e => {
   toast(`New outline: ${res.title}`);
   await loadQueue(res.slug);
 };
+
+// --- promote preview -----------------------------------------------------
+// The draft row's Promote button. Runs `bible promote --dry-run` as a job on the
+// server and shows what it found. Nothing here writes; Back returns to New outline.
+const pscrim = document.getElementById("pscrim");
+let ppoll = null;
+
+document.getElementById("nbibles").addEventListener("click", e => {
+  const b = e.target.closest("button.promote");
+  if (b) openPromote(b.dataset.draft);
+});
+
+function closePromote(back) {
+  clearTimeout(ppoll); ppoll = null;
+  pscrim.classList.remove("show");
+  if (back) xscrim.classList.add("show");
+}
+document.getElementById("pback").onclick = () => closePromote(true);
+pscrim.onclick = e => { if (e.target === pscrim) closePromote(true); };
+
+async function openPromote(name) {
+  xscrim.classList.remove("show");
+  pscrim.classList.add("show");
+  document.getElementById("ptitle").textContent = `Promote ${name}`;
+  const st = document.getElementById("pstatus"), body = document.getElementById("pbody");
+  body.innerHTML = "";
+  st.className = "working";
+  st.innerHTML = `Reading <code>${esc(name)}.draft.md</code>…`;
+  let res;
+  try {
+    res = await (await fetch(`/api/bibles/${encodeURIComponent(name)}/preview`,
+                             { method: "POST", headers: { "Content-Type": "application/json" },
+                               body: "{}" })).json();
+  } catch (err) { res = { error: String(err) }; }
+  if (res.error) {
+    st.className = "bad";
+    st.innerHTML = `<b>The preview didn't run.</b>${esc(explain(res.error))}`;
+    return;
+  }
+  pollPromote(name);
+}
+
+async function pollPromote(name) {
+  let j;
+  try {
+    j = await (await fetch(`/api/bibles/${encodeURIComponent(name)}/job`)).json();
+  } catch (err) { j = { state: "failed", error: String(err) }; }
+  if (!pscrim.classList.contains("show")) return;
+  if (j.state === "running") {
+    ppoll = setTimeout(() => pollPromote(name), 600);
+    return;
+  }
+  const st = document.getElementById("pstatus");
+  if (!j.preview) {
+    st.className = "bad";
+    st.innerHTML = `<b>The preview failed.</b>${esc(explain(j.error || "no result"))}`;
+    return;
+  }
+  renderPromote(j.preview);
+}
+
+function renderPromote(p) {
+  const st = document.getElementById("pstatus"), body = document.getElementById("pbody");
+  const errs = p.problems.filter(x => x.fatal), warns = p.problems.filter(x => !x.fatal);
+  if (errs.length) {
+    st.className = "bad";
+    st.innerHTML = `<b>${errs.length} error${errs.length > 1 ? "s" : ""} — ` +
+      `this can't be promoted yet.</b>` +
+      errs.map(x => `${esc(x.where)}: ${esc(x.message)}`).join("\n");
+  } else {
+    st.className = "ok";
+    st.innerHTML = p.changed
+      ? `<b>Ready to promote.</b>bible check found no errors.`
+      : `<b>Already up to date.</b>${esc(p.name)}.md matches the draft.`;
+  }
+  const list = (items, empty) => items.length
+    ? `<ul>${items.join("")}</ul>` : `<p class="m2">${empty}</p>`;
+  const cast = p.cast.map(c => {
+    const bits = [c.role, c.gender].filter(Boolean).map(esc).join(", ");
+    const guess = (c.inferred || []).length
+      ? `<span class="tag" title="Read from the prose; add a - Gender: line to the draft to set it.">inferred</span>` : "";
+    const voice = c.voice ? `<span class="tag">voice ${esc(c.voice)}</span>` : "";
+    return `<li>${esc(c.name)}${bits ? ` <span class="m2">${bits}</span>` : ""}${guess}${voice}</li>`;
+  });
+  const diff = esc(p.diff || "").split("\n").map(l =>
+    l.startsWith("+") && !l.startsWith("+++") ? `<span class="add">${l}</span>`
+    : l.startsWith("-") && !l.startsWith("---") ? `<span class="del">${l}</span>` : l).join("\n");
+  body.innerHTML =
+    `<section><h3>Series</h3><ul><li>${esc(p.series)} ` +
+      `<span class="m2">${p.genre ? esc(p.genre) : "no genre"}</span></li></ul></section>` +
+    `<section><h3>Canon facts · ${p.canon.length}</h3>` +
+      list(p.canon.map(c => `<li>${esc(c)}</li>`), "None found under a Canon heading.") +
+    `</section>` +
+    `<section><h3>Recurring cast · ${p.cast.length}</h3>` +
+      list(cast, "None found under Recurring Cast.") + `</section>` +
+    `<section><h3>Sections</h3>` +
+      list(p.kept.map(k => `<li>${esc(k.title)} <span class="m2">→ ${esc(k.as)}` +
+                           `${k.count != null ? ` (${k.count})` : ""}</span></li>`), "") +
+      (p.dropped.length ? `<p class="m2" style="margin:8px 0 2px">Left in the draft:</p>` +
+        list(p.dropped.map(d => `<li>${esc(d.title)} <span class="m2">${esc(d.reason)}` +
+                                `</span></li>`), "") : "") +
+    `</section>` +
+    (p.problems.length ? `<section class="problems"><h3>bible check · ` +
+      `${errs.length} error${errs.length === 1 ? "" : "s"}, ${warns.length} warning` +
+      `${warns.length === 1 ? "" : "s"}</h3>` +
+      list(errs.map(x => `<li class="err">${esc(x.where)}: ${esc(x.message)}</li>`), "") +
+      (warns.length ? `<details><summary>${warns.length} warning${warns.length === 1 ? "" : "s"}` +
+        `</summary>` + list(warns.map(x => `<li>${esc(x.where)}: ${esc(x.message)}</li>`), "") +
+        `</details>` : "") + `</section>` : "") +
+    `<section><h3>Diff · ${p.exists ? esc(p.name) + ".md" : "new file"}</h3>` +
+      (p.changed ? `<details><summary>Show the ${p.exists ? "changes" : "file it would write"}` +
+        `</summary><pre>${diff}</pre></details>` : `<p class="m2">No change.</p>`) +
+    `</section>`;
+}
 
 // --- write dialog --------------------------------------------------------
 const wscrim = document.getElementById("wscrim");

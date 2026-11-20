@@ -42,6 +42,11 @@ def job(cfg: dict, name: str) -> dict:
     st["name"] = name
     if found:
         st["preview"] = found[-1]["preview"]
+        # A dry run exits 1 when bible check finds errors, which the runner
+        # records as a failure. The preview itself worked; the errors are in it.
+        if st.get("state") == "failed" and st.get("exit_code") == 1:
+            st["state"] = "done"
+            st.pop("error", None)
     return st
 
 
