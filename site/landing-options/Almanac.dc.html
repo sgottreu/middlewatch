@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Middle Watch: The Almanac</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&amp;family=IM+Fell+English:ital@0;1&amp;family=IM+Fell+English+SC&amp;display=swap">
+<style>
+body{margin:0;background:#efe5cf;color:#1d1a16;-webkit-font-smoothing:antialiased}
+a{color:#1d1a16;text-underline-offset:3px;text-decoration-thickness:1px}
+a:hover{color:#5a1a17;text-decoration-thickness:2px}
+a:focus-visible{outline:2px solid #1d1a16;outline-offset:3px}
+.mw-nav a{text-decoration:none}
+.mw-nav a:hover{text-decoration:underline}
+.mw-hrule-m{display:none}
+@media (max-width:820px){
+  .mw-cols{grid-template-columns:minmax(0,1fr) !important}
+  .mw-vrule{display:none !important}
+  .mw-hrule-m{display:block !important}
+  .mw-notice{grid-template-columns:minmax(0,1fr) !important;text-align:center}
+  .mw-notice-dial{justify-self:center}
+  .mw-topstrip{justify-content:center !important;text-align:center}
+  .mw-frame{padding:20px 18px 32px !important}
+}
+@media (max-width:520px){
+  .mw-nav{flex-direction:column !important;gap:0 !important}
+  .mw-nav-sep{display:none !important}
+}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background-color:#efe5cf;background-image:radial-gradient(rgba(70,45,20,0.06) 0.8px, transparent 0.9px),repeating-linear-gradient(0deg, rgba(90,65,30,0.035) 0 1px, transparent 1px 4px),repeating-linear-gradient(90deg, rgba(90,65,30,0.045) 0 1px, transparent 1px 34px);background-size:7px 7px,auto,auto;font-family:'EB Garamond', Georgia, serif;color:#1d1a16;padding:clamp(12px,3vw,40px) clamp(10px,3vw,40px);box-sizing:border-box">
+
+  <div class="mw-frame" style="max-width:1120px;margin:0 auto;border:4px double #1d1a16;padding:28px clamp(18px,4vw,56px) 44px;box-sizing:border-box;position:relative">
+
+    <!-- Top strip -->
+    <div class="mw-topstrip" style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:6px 24px;font-family:'IM Fell English SC', Georgia, serif;font-size:15px;letter-spacing:0.08em;color:#3f382f;padding-bottom:10px;border-bottom:1px solid #1d1a16">
+      <span>Vol. I &#183; Est. [YEAR]</span>
+      <span>Printed at the Sign of the Lamp</span>
+      <span>middlewatch.co</span>
+    </div>
+
+    <!-- Masthead -->
+    <header style="text-align:center;padding:26px 0 10px">
+      <div style="font-family:'IM Fell English SC', Georgia, serif;font-size:clamp(14px,1.6vw,18px);letter-spacing:0.42em;color:#3f382f;margin-bottom:6px">The</div>
+      <h1 style="margin:0;font-family:'IM Fell English', Georgia, serif;font-weight:400;font-size:clamp(56px,11vw,148px);line-height:0.92;letter-spacing:-0.01em;color:#1d1a16">Middle Watch</h1>
+      <div style="display:flex;align-items:center;justify-content:center;gap:clamp(10px,2vw,22px);margin:18px auto 10px;max-width:760px">
+        <div style="flex:1 1 0;height:0;border-top:1px solid #1d1a16"></div>
+        <svg aria-hidden="true" width="34" height="50" viewBox="0 0 40 60" fill="none" style="flex:0 0 auto">
+          <circle cx="20" cy="5" r="3.5" stroke="#1d1a16" stroke-width="1.4"></circle>
+          <path d="M9 18 L20 9 L31 18 Z" stroke="#1d1a16" stroke-width="1.4" stroke-linejoin="round"></path>
+          <rect x="10" y="18" width="20" height="30" stroke="#1d1a16" stroke-width="1.4"></rect>
+          <path d="M20 18 V48 M10 33 H13 M27 33 H30" stroke="#1d1a16" stroke-width="1"></path>
+          <path d="M20 26 C24 31 23.5 37 20 40 C16.5 37 16 31 20 26 Z" fill="{{accent}}"></path>
+          <path d="M7 48 H33 L30 54 H10 Z" stroke="#1d1a16" stroke-width="1.4" stroke-linejoin="round"></path>
+        </svg>
+        <div style="flex:1 1 0;height:0;border-top:1px solid #1d1a16"></div>
+      </div>
+      <p style="margin:0 auto;max-width:720px;font-family:'IM Fell English', Georgia, serif;font-style:italic;font-size:clamp(18px,2.1vw,24px);line-height:1.35;color:#2b2620">An Almanack of Stories &amp; Ambience, for those who keep the Small Hours</p>
+    </header>
+
+    <!-- Departments nav -->
+    <nav aria-label="Departments" style="border-top:3px solid #1d1a16;border-bottom:1px solid #1d1a16;margin-top:22px;padding:2px 0 0;box-shadow:inset 0 2px 0 #efe5cf, inset 0 3px 0 #1d1a16">
+      <ul class="mw-nav" style="list-style:none;margin:0;padding:4px 0;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:0 6px;font-family:'IM Fell English SC', Georgia, serif;font-size:17px;letter-spacing:0.06em;text-align:center">
+        <li><a href="#no-i" style="display:inline-flex;align-items:center;min-height:44px;padding:0 12px"><span style="color:{{accent}};margin-right:6px">No. I</span> Stories</a></li>
+        <li class="mw-nav-sep" aria-hidden="true" style="color:#6a5f50">&#10086;</li>
+        <li><a href="#no-ii" style="display:inline-flex;align-items:center;min-height:44px;padding:0 12px"><span style="color:{{accent}};margin-right:6px">No. II</span> Ambience</a></li>
+        <li class="mw-nav-sep" aria-hidden="true" style="color:#6a5f50">&#10086;</li>
+        <li><a href="#notice" style="display:inline-flex;align-items:center;min-height:44px;padding:0 12px">Notice to the Reader</a></li>
+        <li class="mw-nav-sep" aria-hidden="true" style="color:#6a5f50">&#10086;</li>
+        <li><a href="#correspondence" style="display:inline-flex;align-items:center;min-height:44px;padding:0 12px">Correspondence</a></li>
+      </ul>
+    </nav>
+
+    <!-- Dateline -->
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 24px;padding:12px 2px;border-bottom:1px solid #1d1a16;font-size:17px;color:#2b2620">
+      <span style="font-style:italic">{{dateline}}</span>
+      <span style="font-family:'IM Fell English SC', Georgia, serif;letter-spacing:0.05em;color:{{accent}}">{{watchStatus}}</span>
+    </div>
+
+    <!-- Proem -->
+    <section aria-label="Introduction" style="max-width:760px;margin:44px auto 10px;text-align:left">
+      <p style="margin:0;font-size:clamp(19px,1.9vw,22px);line-height:1.6;color:#1d1a16;hyphens:auto"><span aria-hidden="true" style="float:left;font-family:'IM Fell English', Georgia, serif;font-size:86px;line-height:0.78;padding:8px 10px 0 0;color:{{accent}}">W</span><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">W</span>hen the house is abed and the candle burns low, there is yet a little company to be kept. Herein the Proprietor offers two kinds of it: tales told aloud in a plain and steady voice, and long sounds of weather and water to sit beside you until the morning bell. Nothing is asked of the Reader but to listen, or to sleep, as the hour requires.</p>
+    </section>
+
+    <!-- Fleuron -->
+    <div style="display:flex;justify-content:center;margin:36px 0 8px">
+      <svg aria-hidden="true" width="160" height="28" viewBox="0 0 120 24" fill="none">
+        <path d="M4 12 H28 M92 12 H116" stroke="#1d1a16" stroke-width="0.8"></path>
+        <path d="M50 12 C44 3 34 3 32 9.5 C30.5 15 36.5 17 39.5 13 M70 12 C76 3 86 3 88 9.5 C89.5 15 83.5 17 80.5 13" stroke="#1d1a16" stroke-width="1.1" stroke-linecap="round"></path>
+        <path d="M50 12 C44 21 38 20 36 18 M70 12 C76 21 82 20 84 18" stroke="#1d1a16" stroke-width="0.9" stroke-linecap="round"></path>
+        <path d="M60 3 L66.5 12 L60 21 L53.5 12 Z" fill="{{accent}}"></path>
+        <circle cx="49" cy="12" r="1.6" fill="#1d1a16"></circle>
+        <circle cx="71" cy="12" r="1.6" fill="#1d1a16"></circle>
+      </svg>
+    </div>
+
+    <!-- Contents -->
+    <section aria-labelledby="contents-h" style="margin-top:6px">
+      <h2 id="contents-h" style="margin:0 0 4px;text-align:center;font-family:'IM Fell English SC', Georgia, serif;font-weight:400;font-size:clamp(26px,3vw,36px);letter-spacing:0.12em">Contents</h2>
+      <p style="margin:0 0 26px;text-align:center;font-style:italic;font-size:18px;color:#3f382f">or, Particulars of the Present Number</p>
+
+      <div style="border-top:3px double #1d1a16"></div>
+
+      <div class="mw-cols" style="display:grid;grid-template-columns:minmax(0,1fr) 1px minmax(0,1fr);gap:0 clamp(24px,3.5vw,48px);padding-top:30px">
+
+        <!-- No. I Stories -->
+        <article id="no-i" style="display:flex;flex-direction:column;gap:18px;scroll-margin-top:24px">
+          <header style="text-align:center">
+            <div style="font-family:'IM Fell English SC', Georgia, serif;font-size:20px;letter-spacing:0.14em;color:{{accent}}">No. I.</div>
+            <h3 style="margin:2px 0 0;font-family:'IM Fell English', Georgia, serif;font-weight:400;font-size:clamp(40px,4.6vw,58px);line-height:1">Stories</h3>
+            <div style="margin-top:6px;font-style:italic;font-size:19px;color:#3f382f">being Narrated Fiction, read aloud</div>
+          </header>
+          <div style="height:0;border-top:1px solid #1d1a16;width:60%;margin:0 auto"></div>
+          <p style="margin:0;font-size:19px;line-height:1.6;text-align:justify;hyphens:auto">Original short tales, set down with a care for history and spoken by lamplight. Many wear the manners of the Regency: letters sealed with wax, roads bad in winter, secrets kept below stairs. Each may be heard entire in a single sitting.</p>
+          <div>
+            <div style="font-family:'IM Fell English SC', Georgia, serif;font-size:16px;letter-spacing:0.1em;color:#3f382f;margin-bottom:8px">Wherein will be found</div>
+            <ul style="list-style:none;margin:0;padding:0;font-size:18px;line-height:1.5;display:flex;flex-direction:column;gap:6px">
+              <li style="display:grid;grid-template-columns:22px minmax(0,1fr)"><span aria-hidden="true" style="color:{{accent}}">&#8227;</span><span>Tales that stand wholly alone, wanting no prior acquaintance.</span></li>
+              <li style="display:grid;grid-template-columns:22px minmax(0,1fr)"><span aria-hidden="true" style="color:{{accent}}">&#8227;</span><span>Others that join hands across arcs of four episodes.</span></li>
+              <li style="display:grid;grid-template-columns:22px minmax(0,1fr)"><span aria-hidden="true" style="color:{{accent}}">&#8227;</span><span>In preparation: cozy tales of the stars, and fantasy from after the cataclysm.</span></li>
+            </ul>
+          </div>
+          <div style="margin-top:auto;border:1px solid #1d1a16;padding:14px 16px;text-align:center;box-shadow:inset 0 0 0 3px #efe5cf, inset 0 0 0 4px #1d1a16">
+            <div style="font-family:'IM Fell English SC', Georgia, serif;font-size:15px;letter-spacing:0.12em;color:#3f382f">To be had upon YouTube at</div>
+            <div style="font-family:'IM Fell English', Georgia, serif;font-size:24px;margin:4px 0 2px">[@STORIES_HANDLE]</div>
+            <div style="font-style:italic;font-size:16px;color:{{accent}}">The channel is to be announced shortly.</div>
+          </div>
+        </article>
+
+        <div class="mw-vrule" aria-hidden="true" style="width:1px;background:#1d1a16;align-self:stretch"></div>
+        <div class="mw-hrule-m" aria-hidden="true" style="margin:34px 0;border-top:3px double #1d1a16"></div>
+
+        <!-- No. II Ambience -->
+        <article id="no-ii" style="display:flex;flex-direction:column;gap:18px;scroll-margin-top:24px">
+          <header style="text-align:center">
+            <div style="font-family:'IM Fell English SC', Georgia, serif;font-size:20px;letter-spacing:0.14em;color:{{accent}}">No. II.</div>
+            <h3 style="margin:2px 0 0;font-family:'IM Fell English', Georgia, serif;font-weight:400;font-size:clamp(40px,4.6vw,58px);line-height:1">Ambience</h3>
+            <div style="margin-top:6px;font-style:italic;font-size:19px;color:#3f382f">being Soundscapes for the Small Hours</div>
+          </header>
+          <div style="height:0;border-top:1px solid #1d1a16;width:60%;margin:0 auto"></div>
+          <p style="margin:0;font-size:19px;line-height:1.6;text-align:justify;hyphens:auto">Long, unhurried airs of weather and hearth, made to be left playing while one reads, works, or drifts off. No tune to follow and no voice to attend; only the room, the window, and whatever is falling past it.</p>
+          <div>
+            <div style="font-family:'IM Fell English SC', Georgia, serif;font-size:16px;letter-spacing:0.1em;color:#3f382f;margin-bottom:8px">Wherein will be found</div>
+            <ul style="list-style:none;margin:0;padding:0;font-size:18px;line-height:1.5;display:flex;flex-direction:column;gap:6px">
+              <li style="display:grid;grid-template-columns:22px minmax(0,1fr)"><span aria-hidden="true" style="color:{{accent}}">&#8227;</span><span>Candlelight, snow, rain upon the glass, and the sea at night.</span></li>
+              <li style="display:grid;grid-template-columns:22px minmax(0,1fr)"><span aria-hidden="true" style="color:{{accent}}">&#8227;</span><span>Some drawn from the very places where the Stories are set.</span></li>
+              <li style="display:grid;grid-template-columns:22px minmax(0,1fr)"><span aria-hidden="true" style="color:{{accent}}">&#8227;</span><span>Others that keep no company but their own.</span></li>
+            </ul>
+          </div>
+          <div style="margin-top:auto;border:1px solid #1d1a16;padding:14px 16px;text-align:center;box-shadow:inset 0 0 0 3px #efe5cf, inset 0 0 0 4px #1d1a16">
+            <div style="font-family:'IM Fell English SC', Georgia, serif;font-size:15px;letter-spacing:0.12em;color:#3f382f">To be had upon YouTube at</div>
+            <div style="font-family:'IM Fell English', Georgia, serif;font-size:24px;margin:4px 0 2px">[@AMBIENCE_HANDLE]</div>
+            <div style="font-style:italic;font-size:16px;color:{{accent}}">The channel is to be announced shortly.</div>
+          </div>
+        </article>
+
+      </div>
+      <div style="margin-top:36px;border-top:3px double #1d1a16"></div>
+    </section>
+
+    <!-- Notice to the Reader -->
+    <section id="notice" aria-labelledby="notice-h" style="margin:52px auto 0;max-width:880px;border:1px solid #1d1a16;padding:6px;scroll-margin-top:24px">
+      <div class="mw-notice" style="border:1px solid #1d1a16;padding:clamp(22px,3vw,36px);display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:28px;align-items:center">
+        <div>
+          <h2 id="notice-h" style="margin:0 0 4px;font-family:'IM Fell English SC', Georgia, serif;font-weight:400;font-size:clamp(24px,2.6vw,30px);letter-spacing:0.1em">Notice to the Reader</h2>
+          <div style="font-style:italic;font-size:17px;color:{{accent}};margin-bottom:14px">touching the Name of this Publication</div>
+          <p style="margin:0 0 12px;font-size:19px;line-height:1.6">Aboard ship the night is divided into watches, and the <em>middle watch</em> is that kept from midnight until four in the morning. It is the quietest of them: the hands below are asleep, the deck is dark, and one person stands awake to keep the lamp lit and the course true.</p>
+          <p style="margin:0;font-size:19px;line-height:1.6">These Stories and Soundscapes are made for that hour, and for anyone who finds themselves keeping it, by choice or otherwise.</p>
+        </div>
+        <figure class="mw-notice-dial" style="margin:0;text-align:center">
+          <svg role="img" aria-label="A twenty-four hour dial with the middle watch, midnight to four, marked in colour, and a hand showing the present hour" width="180" height="180" viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="88" stroke="#1d1a16" stroke-width="1"></circle>
+            <circle cx="100" cy="100" r="80" stroke="#1d1a16" stroke-width="1.4"></circle>
+            <path d="M100 100 L100 20 A80 80 0 0 1 169.28 60 Z" fill="{{accent}}" fill-opacity="0.85"></path>
+            <path d="M100 20 V32 M169.28 60 L158.9 66 M169.28 140 L158.9 134 M100 180 V168 M30.72 140 L41.1 134 M30.72 60 L41.1 66" stroke="#1d1a16" stroke-width="1.4"></path>
+            <text x="100" y="13" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="11" fill="#1d1a16">XII</text>
+            <text x="178" y="56" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="11" fill="#1d1a16">IV</text>
+            <text x="178" y="152" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="11" fill="#1d1a16">VIII</text>
+            <text x="100" y="197" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="11" fill="#1d1a16">XII</text>
+            <text x="22" y="152" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="11" fill="#1d1a16">IV</text>
+            <text x="22" y="56" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="11" fill="#1d1a16">VIII</text>
+            <g transform="rotate({{handDeg}} 100 100)">
+              <path d="M100 104 V34" stroke="#1d1a16" stroke-width="1.6" stroke-linecap="round"></path>
+              <path d="M100 30 L104 40 L100 37 L96 40 Z" fill="#1d1a16"></path>
+            </g>
+            <circle cx="100" cy="100" r="4" fill="#efe5cf" stroke="#1d1a16" stroke-width="1.4"></circle>
+          </svg>
+          <figcaption style="font-family:'IM Fell English SC', Georgia, serif;font-size:14px;letter-spacing:0.08em;color:#3f382f;margin-top:6px">The Watches of the Night</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Footer / Correspondence -->
+    <footer id="correspondence" style="margin-top:56px;text-align:center;scroll-margin-top:24px">
+      <div style="border-top:1px solid #1d1a16;border-bottom:3px solid #1d1a16;height:3px"></div>
+      <p style="margin:28px 0 6px;font-family:'IM Fell English', Georgia, serif;font-style:italic;font-size:clamp(20px,2.2vw,26px);line-height:1.4">Correspondence may be directed to <a href="mailto:hello@middlewatch.co" style="color:{{accent}};font-style:normal;font-family:'IM Fell English', Georgia, serif;display:inline-block;padding:8px 2px;min-height:44px;box-sizing:border-box">hello@middlewatch.co</a></p>
+      <p style="margin:0 auto;max-width:560px;font-size:17px;line-height:1.5;color:#3f382f">Letters are read by the Proprietor himself, generally in the small hours, and answered as the watch allows.</p>
+      <div style="display:flex;justify-content:center;margin:26px 0 18px">
+        <svg aria-hidden="true" width="90" height="18" viewBox="0 0 120 24" fill="none">
+          <path d="M20 12 H48 M72 12 H100" stroke="#1d1a16" stroke-width="1"></path>
+          <path d="M60 4 L66 12 L60 20 L54 12 Z" fill="{{accent}}"></path>
+        </svg>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:4px 22px;font-family:'IM Fell English SC', Georgia, serif;font-size:14px;letter-spacing:0.08em;color:#3f382f">
+        <span>Printed for the Proprietor</span>
+        <span>&#169; {{year}} Middle Watch</span>
+        <span>Set in the Fell Types &amp; Garamond</span>
+      </div>
+    </footer>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"enum","options":["oxblood","inkgreen"],"default":"oxblood"},"$preview":{"width":1440,"height":2950}}'>
+class Component extends DCLogic {
+  componentDidMount() {
+    this._t = setInterval(() => this.setState({ now: Date.now() }), 60000);
+  }
+  componentWillUnmount() {
+    if (this._t) clearInterval(this._t);
+  }
+  renderVals() {
+    const props = this.props || {};
+    const accents = { oxblood: '#7a2420', inkgreen: '#1f4a3a' };
+    const accent = accents[props.accent] || (typeof props.accent === 'string' && props.accent.charAt(0) === '#' ? props.accent : accents.oxblood);
+
+    const d = new Date((this.state && this.state.now) || Date.now());
+    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const n = d.getDate();
+    const s = (n % 100 >= 11 && n % 100 <= 13) ? 'th' : ({1:'st',2:'nd',3:'rd'}[n % 10] || 'th');
+    const dateline = days[d.getDay()] + ' the ' + n + s + ' of ' + months[d.getMonth()] + ', in the Year ' + d.getFullYear();
+
+    const h = d.getHours();
+    const m = d.getMinutes();
+    const words = ['no','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
+    let watchStatus;
+    if (h < 4) {
+      watchStatus = 'The Middle Watch is now being kept';
+    } else {
+      const hrs = Math.round(((24 - h) * 60 - m) / 60);
+      if (hrs <= 1) watchStatus = 'The Middle Watch is set within the hour';
+      else watchStatus = 'The Middle Watch is set at midnight, ' + (words[hrs] || hrs) + ' hours hence';
+    }
+    const handDeg = ((h + m / 60) * 15).toFixed(1);
+
+    return { accent, dateline, watchStatus, handDeg, year: d.getFullYear() };
+  }
+}
+</script>
+</body>
+</html>

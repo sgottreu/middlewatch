@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Middle Watch: Small Studio, Many Things</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&amp;family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&amp;display=swap">
+<style>
+body{margin:0;background:#FBF5EC;color:#2A2238;font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#2A2238}a:hover{color:#B23A27}
+*{box-sizing:border-box}
+.mw-navlink{text-decoration:none;font-weight:600;padding:0.65rem 1rem;border-radius:999px;min-height:44px;display:inline-flex;align-items:center;transition:background .2s}
+.mw-navlink:hover{background:#F1E4CF;color:#2A2238}
+.mw-btn{transition:transform .18s ease, box-shadow .18s ease;cursor:pointer}
+.mw-btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #2A2238 !important}
+.mw-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #2A2238 !important}
+.mw-btn:focus-visible,.mw-navlink:focus-visible{outline:3px solid #6D5BC9;outline-offset:3px}
+.mw-card{transition:transform .25s ease}
+.mw-card:hover{transform:translateY(-4px) rotate(-0.4deg)}
+.mw-footlink:hover{color:#F2B441 !important}
+@keyframes mw-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.mw-bob{animation:mw-bob 5s ease-in-out infinite}
+@media (max-width:720px){
+  .mw-art{height:360px !important}
+  .mw-nav{justify-content:center !important}
+}
+@media (prefers-reduced-motion:reduce){
+  .mw-shape,.mw-card,.mw-btn{transition:none !important}
+  .mw-bob{animation:none !important}
+}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#FBF5EC;color:#2A2238;overflow-x:hidden">
+
+  <!-- NAV -->
+  <header style="max-width:1240px;margin:0 auto;padding:1.5rem clamp(1.25rem,4vw,2.5rem) 0">
+    <nav class="mw-nav" aria-label="Main" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem">
+      <a href="#top" style="display:inline-flex;align-items:center;gap:0.7rem;text-decoration:none;min-height:44px">
+        <svg aria-hidden="true" width="40" height="40" viewBox="0 0 40 40"><circle cx="13" cy="15" r="10" fill="#E8604C" stroke="#2A2238" stroke-width="2.5"></circle><rect x="18" y="16" width="18" height="18" rx="6" fill="#2E9C8F" stroke="#2A2238" stroke-width="2.5"></rect><circle cx="31" cy="9" r="5" fill="#F2B441" stroke="#2A2238" stroke-width="2.5"></circle></svg>
+        <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.45rem;letter-spacing:-0.02em">Middle Watch</span>
+      </a>
+      <div style="display:flex;flex-wrap:wrap;gap:0.25rem;align-items:center">
+        <a class="mw-navlink" href="#make">What we make</a>
+        <a class="mw-navlink" href="#about">About</a>
+        <a class="mw-navlink" href="mailto:hello@middlewatch.co" style="background:#2A2238;color:#FBF5EC;padding:0.65rem 1.25rem">Say hello</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section style="max-width:1240px;margin:0 auto;padding:clamp(2.5rem,6vw,5rem) clamp(1.25rem,4vw,2.5rem) clamp(3rem,6vw,5rem);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:clamp(2rem,5vw,4rem);align-items:center">
+      <div style="display:flex;flex-direction:column;gap:1.5rem">
+        <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:0.5rem;background:#FFFFFF;border:2.5px solid #2A2238;border-radius:999px;padding:0.4rem 0.9rem;font-weight:700;font-size:0.9rem;transform:rotate(-2deg)">
+          <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="#2E9C8F"></circle></svg>
+          A small independent studio
+        </span>
+        <h1 style="margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2.6rem,5.6vw,4.6rem);line-height:1.02;letter-spacing:-0.035em">Hi. I make stories you can <span style="background:#FCD9CF;border-radius:0.3em;padding:0 0.15em">listen to</span> and sounds you can <span style="background:#CDEBE5;border-radius:0.3em;padding:0 0.15em">live in.</span></h1>
+        <p style="margin:0;font-size:clamp(1.1rem,1.6vw,1.3rem);line-height:1.55;max-width:34rem;color:#463D52">Middle Watch is a one-person studio making narrated short fiction and long, unhurried ambient soundscapes. Both are headed to YouTube soon.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:0.9rem;margin-top:0.5rem">
+          <a class="mw-btn" href="#make" style="display:inline-flex;align-items:center;gap:0.6rem;min-height:52px;padding:0 1.5rem;background:#2A2238;color:#FBF5EC;border:3px solid #2A2238;border-radius:999px;font-weight:700;font-size:1.05rem;text-decoration:none;box-shadow:4px 4px 0 #2A2238">
+            See what I make
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"></path></svg>
+          </a>
+          <button class="mw-btn" type="button" onClick="{{shuffle}}" style="display:inline-flex;align-items:center;gap:0.6rem;min-height:52px;padding:0 1.4rem;background:#F2B441;color:#2A2238;border:3px solid #2A2238;border-radius:999px;font-family:inherit;font-weight:700;font-size:1.05rem;box-shadow:4px 4px 0 #2A2238">
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"></path><path d="M4 20 21 3"></path><path d="M21 16v5h-5"></path><path d="M15 15l6 6"></path><path d="M4 4l5 5"></path></svg>
+            Shuffle the shapes
+          </button>
+        </div>
+      </div>
+
+      <!-- playful composition -->
+      <div class="mw-art" aria-hidden="true" style="position:relative;height:480px;border-radius:40px;background:#F3E7D3;border:3px solid #2A2238;overflow:hidden">
+        <svg width="100%" height="100%" style="position:absolute;inset:0;opacity:0.5"><defs><pattern id="mwdots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.6" fill="#C9B796"></circle></pattern></defs><rect width="100%" height="100%" fill="url(#mwdots)"></rect></svg>
+
+        <div class="mw-shape" style="{{shapes.blob}}">
+          <svg viewBox="-100 -100 200 200" width="100%" style="display:block;overflow:visible"><path d="M60,-58C76,-41,84,-20,83,0C82,20,71,40,55,55C40,70,20,80,-1,81C-22,82,-44,74,-59,59C-74,44,-82,22,-81,1C-80,-21,-70,-42,-55,-58C-40,-74,-20,-84,0,-84C20,-84,43,-74,60,-58Z" fill="currentColor" stroke="#2A2238" stroke-width="5"></path></svg>
+        </div>
+        <div class="mw-shape" style="{{shapes.circle}}">
+          <div style="width:100%;aspect-ratio:1;border-radius:50%;background:currentColor;border:4px solid #2A2238"></div>
+        </div>
+        <div class="mw-shape" style="{{shapes.square}}">
+          <div style="width:100%;aspect-ratio:1;border-radius:30%;background:currentColor;border:4px solid #2A2238"></div>
+        </div>
+        <div class="mw-shape" style="{{shapes.bubble}}">
+          <svg viewBox="0 0 200 172" width="100%" style="display:block;overflow:visible"><path d="M32 10H168Q190 10 190 32V108Q190 130 168 130H84L46 164L54 130H32Q10 130 10 108V32Q10 10 32 10Z" fill="currentColor" stroke="#2A2238" stroke-width="5" stroke-linejoin="round"></path><text x="100" y="88" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="54" fill="#2A2238">hi!</text></svg>
+        </div>
+        <div class="mw-shape" style="{{shapes.wave}}">
+          <svg viewBox="0 0 290 80" width="100%" style="display:block;overflow:visible"><path d="M8 40Q22 6 36 40T64 40T92 40T120 40T148 40T176 40T204 40T232 40T260 40T282 40" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round"></path></svg>
+        </div>
+        <div class="mw-shape" style="{{shapes.ring}}">
+          <div style="width:100%;aspect-ratio:1;border-radius:50%;border:5px dashed #2A2238"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHAT WE MAKE -->
+    <section id="make" style="max-width:1240px;margin:0 auto;padding:clamp(3rem,6vw,5rem) clamp(1.25rem,4vw,2.5rem)">
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1.5rem;margin-bottom:clamp(2rem,4vw,3rem)">
+        <div style="display:flex;flex-direction:column;gap:0.9rem;max-width:40rem">
+          <span style="font-weight:700;font-size:0.95rem;letter-spacing:0.08em;text-transform:uppercase;color:#5B5167">What we make</span>
+          <h2 style="margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2.1rem,4vw,3.2rem);line-height:1.05;letter-spacing:-0.03em">Two kinds of listening, each with its own channel.</h2>
+        </div>
+        <p style="margin:0;max-width:26rem;font-size:1.1rem;line-height:1.55;color:#463D52">Pick the one that fits the moment: a story to follow, or a place to sit in for a while.</p>
+      </div>
+
+      <!-- Shelf grid: auto-fit so new cards drop straight in. Palette order: #E8604C, #2E9C8F, #F2B441, #A08FE3, #7FB069 -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(1.5rem,3vw,2.5rem)">
+
+        <!-- Card 1: Audio stories (colour 1, tomato) -->
+        <article class="mw-card" style="position:relative;display:flex;flex-direction:column;gap:1.4rem;background:#FCE3DB;border:3px solid #2A2238;border-radius:34px;box-shadow:8px 8px 0 #2A2238;padding:clamp(1.5rem,3vw,2.5rem)">
+          <span style="{{stickerStyle}}">Coming soon</span>
+          <div style="width:96px;height:96px;border-radius:28px;background:#E8604C;border:3px solid #2A2238;display:flex;align-items:center;justify-content:center">
+            <svg aria-hidden="true" width="58" height="58" viewBox="0 0 48 48" fill="none" stroke="#2A2238" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12c5-2 10-2 15 1v25c-5-3-10-3-15-1Z" fill="#FBF5EC"></path><path d="M21 13c3-2 6-2.6 9-2.4"></path><path d="M21 38c3-2 6-2.6 9-2.4"></path><path d="M34 18q4 6 0 12"></path><path d="M39 14q7 10 0 20"></path></svg>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0.75rem">
+            <h3 style="margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.8rem,3vw,2.4rem);letter-spacing:-0.025em;line-height:1.05">Audio stories</h3>
+            <p style="margin:0;font-size:1.1rem;line-height:1.6;color:#3A3146">Original short fiction, written and narrated here. Most are historically grounded, often with a Regency feel. Every story stands on its own, and some link up across four-episode arcs.</p>
+          </div>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:0.5rem">
+            <li style="background:#FFFFFF;border:2px solid #2A2238;border-radius:999px;padding:0.35rem 0.85rem;font-size:0.92rem;font-weight:600">Standalone stories</li>
+            <li style="background:#FFFFFF;border:2px solid #2A2238;border-radius:999px;padding:0.35rem 0.85rem;font-size:0.92rem;font-weight:600">Four-episode arcs</li>
+            <li style="background:#FFFFFF;border:2px solid #2A2238;border-radius:999px;padding:0.35rem 0.85rem;font-size:0.92rem;font-weight:600">Historical &amp; Regency</li>
+            <li style="background:transparent;border:2px dashed #2A2238;border-radius:999px;padding:0.35rem 0.85rem;font-size:0.92rem;font-weight:600">In the works: cozy sci-fi</li>
+            <li style="background:transparent;border:2px dashed #2A2238;border-radius:999px;padding:0.35rem 0.85rem;font-size:0.92rem;font-weight:600">In the works: post-cataclysm fantasy</li>
+          </ul>
+          <div style="margin-top:auto;display:flex;flex-wrap:wrap;align-items:center;gap:0.9rem;padding-top:1.25rem;border-top:2.5px dashed #2A2238">
+            <span style="width:44px;height:44px;border-radius:50%;background:#2A2238;display:inline-flex;align-items:center;justify-content:center;flex:none">
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="#FCE3DB"><path d="M8 5v14l11-7z"></path></svg>
+            </span>
+            <div style="display:flex;flex-direction:column;gap:0.1rem">
+              <span style="font-size:0.85rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#4E4459">YouTube</span>
+              <span style="font-weight:700;font-size:1.1rem">[@STORIES_HANDLE]</span>
+            </div>
+            <span style="margin-left:auto;font-size:0.95rem;color:#4E4459">Channel opens soon</span>
+          </div>
+        </article>
+
+        <!-- Card 2: Ambience (colour 2, teal) -->
+        <article class="mw-card" style="position:relative;display:flex;flex-direction:column;gap:1.4rem;background:#D6EFEA;border:3px solid #2A2238;border-radius:34px;box-shadow:8px 8px 0 #2A2238;padding:clamp(1.5rem,3vw,2.5rem)">
+          <span style="{{stickerStyleAlt}}">Coming soon</span>
+          <div style="width:96px;height:96px;border-radius:50%;background:#2E9C8F;border:3px solid #2A2238;display:flex;align-items:center;justify-content:center">
+            <svg aria-hidden="true" width="58" height="58" viewBox="0 0 48 48" fill="none" stroke="#2A2238" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M24 6c5 7 8 11 8 15a8 8 0 0 1-16 0c0-4 3-8 8-15Z" fill="#FBF5EC"></path><path d="M5 34q4.5-4 9 0t9 0 9 0 9 0"></path><path d="M5 41q4.5-4 9 0t9 0 9 0 9 0"></path></svg>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0.75rem">
+            <h3 style="margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.8rem,3vw,2.4rem);letter-spacing:-0.025em;line-height:1.05">Ambience</h3>
+            <p style="margin:0;font-size:1.1rem;line-height:1.6;color:#2F3A3F">Long-form soundscapes for reading, working or winding down. Some are built from places in the stories, and some are simply good places to be.</p>
+          </div>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:0.5rem">
+            <li style="background:#FFFFFF;border:2px solid #2A2238;border-radius:999px;padding:0.35rem 0.85rem;font-size:0.92rem;font-weight:600">Rain</li>
+            <li style="background:#FFFFFF;border:2px solid #2A2238;border-radius:999px;padding:0.35rem 0.85rem;font-size:0.92rem;font-weight:600">Snow</li>
+            <li style="background:#FFFFFF;border:2px solid #2A2238;border-radius:999px;padding:0.35rem 0.85rem;font-size:0.92rem;font-weight:600">Candlelit rooms</li>
+            <li style="background:#FFFFFF;border:2px solid #2A2238;border-radius:999px;padding:0.35rem 0.85rem;font-size:0.92rem;font-weight:600">The sea at night</li>
+            <li style="background:transparent;border:2px dashed #2A2238;border-radius:999px;padding:0.35rem 0.85rem;font-size:0.92rem;font-weight:600">Places from the stories</li>
+          </ul>
+          <div style="margin-top:auto;display:flex;flex-wrap:wrap;align-items:center;gap:0.9rem;padding-top:1.25rem;border-top:2.5px dashed #2A2238">
+            <span style="width:44px;height:44px;border-radius:50%;background:#2A2238;display:inline-flex;align-items:center;justify-content:center;flex:none">
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="#D6EFEA"><path d="M8 5v14l11-7z"></path></svg>
+            </span>
+            <div style="display:flex;flex-direction:column;gap:0.1rem">
+              <span style="font-size:0.85rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#3E4A4F">YouTube</span>
+              <span style="font-weight:700;font-size:1.1rem">[@AMBIENCE_HANDLE]</span>
+            </div>
+            <span style="margin-left:auto;font-size:0.95rem;color:#3E4A4F">Channel opens soon</span>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" style="max-width:1240px;margin:0 auto;padding:clamp(3rem,6vw,5rem) clamp(1.25rem,4vw,2.5rem)">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(2rem,5vw,4rem);align-items:center;background:#FFFFFF;border:3px solid #2A2238;border-radius:40px;padding:clamp(1.75rem,4vw,3.5rem)">
+        <div aria-hidden="true" class="mw-bob" style="position:relative;height:260px;max-width:320px;width:100%;margin:0 auto">
+          <div style="position:absolute;left:6%;top:12%;width:58%;aspect-ratio:1;border-radius:50%;background:#A08FE3;border:4px solid #2A2238"></div>
+          <div style="position:absolute;right:4%;top:2%;width:38%;aspect-ratio:1;border-radius:30%;background:#F2B441;border:4px solid #2A2238;transform:rotate(12deg)"></div>
+          <div style="position:absolute;right:12%;bottom:4%;width:44%;aspect-ratio:1;border-radius:50% 50% 50% 12%;background:#E8604C;border:4px solid #2A2238"></div>
+          <svg viewBox="0 0 120 40" style="position:absolute;left:2%;bottom:6%;width:46%"><path d="M4 20Q14 4 24 20T44 20T64 20T84 20T104 20T116 20" fill="none" stroke="#2E9C8F" stroke-width="7" stroke-linecap="round"></path></svg>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:1.1rem">
+          <span style="font-weight:700;font-size:0.95rem;letter-spacing:0.08em;text-transform:uppercase;color:#5B5167">About</span>
+          <h2 style="margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2rem,3.6vw,2.9rem);line-height:1.05;letter-spacing:-0.03em">I'm Scott. This is my one-person studio.</h2>
+          <p style="margin:0;font-size:1.15rem;line-height:1.65;color:#463D52;max-width:36rem">I write and narrate the stories, build the soundscapes, and make everything you see here myself, one piece at a time. If you like a good story, or just want something calm playing while you work, read or drift off, I hope you'll find a favourite here.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer style="max-width:1240px;margin:0 auto;padding:clamp(1rem,3vw,2rem) clamp(1.25rem,4vw,2.5rem) clamp(2rem,4vw,3rem)">
+    <div style="position:relative;overflow:hidden;background:#2A2238;color:#FBF5EC;border-radius:40px;padding:clamp(2rem,5vw,4rem);display:flex;flex-direction:column;gap:2.5rem">
+      <svg aria-hidden="true" viewBox="0 0 200 200" style="position:absolute;right:-40px;top:-50px;width:240px;opacity:0.9"><circle cx="100" cy="100" r="80" fill="#E8604C"></circle></svg>
+      <svg aria-hidden="true" viewBox="0 0 200 200" style="position:absolute;right:150px;top:70px;width:90px"><rect x="20" y="20" width="160" height="160" rx="48" fill="#F2B441" transform="rotate(14 100 100)"></rect></svg>
+      <div style="position:relative;display:flex;flex-direction:column;gap:1rem;max-width:36rem">
+        <h2 style="margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2.4rem,5vw,4rem);line-height:1;letter-spacing:-0.035em">Say hello</h2>
+        <p style="margin:0;font-size:1.15rem;line-height:1.6;color:#E4DCEC">Questions, ideas, or a place you'd love to hear as a soundscape? Send a note. A real person reads every one.</p>
+        <a class="mw-btn" href="mailto:hello@middlewatch.co" style="align-self:flex-start;margin-top:0.75rem;display:inline-flex;align-items:center;gap:0.7rem;min-height:56px;padding:0 1.6rem;background:#F2B441;color:#2A2238;border:3px solid #FBF5EC;border-radius:999px;font-weight:700;font-size:1.15rem;text-decoration:none;box-shadow:4px 4px 0 #FBF5EC">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"></rect><path d="m4 7 8 6 8-6"></path></svg>
+          hello@middlewatch.co
+        </a>
+      </div>
+      <div style="position:relative;display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem;padding-top:1.5rem;border-top:2px dashed #6E6380;font-size:0.95rem;color:#D3CADD">
+        <span>&#169; [YEAR] Middle Watch. Made by one person, with care.</span>
+        <span>The name is borrowed from the midnight-to-four watch at sea.</span>
+        <nav aria-label="Footer" style="display:flex;flex-wrap:wrap;gap:1.25rem">
+          <a class="mw-footlink" href="#make" style="color:#FBF5EC;min-height:44px;display:inline-flex;align-items:center">What we make</a>
+          <a class="mw-footlink" href="#about" style="color:#FBF5EC;min-height:44px;display:inline-flex;align-items:center">About</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"tiltStickers":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":2650}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { layout: 0 };
+  }
+  renderVals() {
+    const layout = (this.state && this.state.layout) || 0;
+    const ink = '#2A2238';
+    // Product palette, in shelf order: stories, ambience, then the next three shelves.
+    const palette = ['#E8604C', '#2E9C8F', '#F2B441', '#A08FE3'];
+    const layouts = [
+      { blob:{l:6,t:8,w:48,r:0},   circle:{l:60,t:6,w:30,r:0},   square:{l:58,t:56,w:28,r:12},  bubble:{l:10,t:56,w:36,r:-8}, wave:{l:22,t:40,w:58,r:-6}, ring:{l:76,t:34,w:16,r:0} },
+      { blob:{l:46,t:38,w:50,r:40},circle:{l:6,t:54,w:30,r:0},   square:{l:10,t:6,w:26,r:-18},  bubble:{l:50,t:4,w:38,r:6},   wave:{l:4,t:38,w:52,r:10},  ring:{l:36,t:70,w:18,r:0} },
+      { blob:{l:26,t:18,w:46,r:-30},circle:{l:64,t:58,w:28,r:0}, square:{l:68,t:6,w:24,r:24},   bubble:{l:4,t:4,w:34,r:-4},   wave:{l:14,t:72,w:56,r:0},  ring:{l:6,t:52,w:20,r:0} }
+    ];
+    const order = ['blob', 'circle', 'square', 'bubble'];
+    const L = layouts[layout];
+    const shapes = {};
+    Object.keys(L).forEach((key, idx) => {
+      const p = L[key];
+      const ci = order.indexOf(key);
+      const color = ci === -1 ? ink : palette[(ci + layout) % palette.length];
+      shapes[key] = 'position:absolute;left:' + p.l + '%;top:' + p.t + '%;width:' + p.w + '%;' +
+        'transform:rotate(' + p.r + 'deg);color:' + color + ';z-index:' + (idx + 1) + ';' +
+        'transition:left .7s cubic-bezier(.5,1.5,.4,1), top .7s cubic-bezier(.5,1.5,.4,1), transform .7s cubic-bezier(.5,1.5,.4,1), color .4s ease;';
+    });
+    const tilt = !(this.props && this.props.tiltStickers === false);
+    const sticker = 'position:absolute;top:-16px;right:clamp(1rem,3vw,2rem);background:#F2B441;color:#2A2238;border:3px solid #2A2238;border-radius:999px;padding:0.45rem 1rem;font-family:Bricolage Grotesque,sans-serif;font-weight:800;font-size:0.95rem;letter-spacing:0.01em;box-shadow:3px 3px 0 #2A2238;';
+    return {
+      shapes,
+      stickerStyle: sticker + 'transform:rotate(' + (tilt ? 6 : 0) + 'deg);',
+      stickerStyleAlt: sticker + 'transform:rotate(' + (tilt ? -5 : 0) + 'deg);',
+      shuffle: () => this.setState({ layout: (layout + 1) % layouts.length })
+    };
+  }
+}
+</script>
+</body>
+</html>

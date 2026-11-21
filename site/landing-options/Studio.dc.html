@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Middle Watch: Studio Index</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#F6F5F1;color:#111111;font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#111111;text-decoration-color:#E4481C;text-underline-offset:0.22em;text-decoration-thickness:2px}
+a:hover{color:#B8320C}
+a:focus-visible,button:focus-visible{outline:2px solid #111111;outline-offset:3px}
+.mw-nav a{text-decoration:none}
+.mw-nav a:hover{text-decoration:underline;text-decoration-color:#E4481C}
+.mw-row{transition:background-color .2s ease}
+.mw-row:hover{background-color:#EEEDE7}
+.mw-row a{text-decoration:none}
+.mw-row:hover .mw-arrow{transform:translateX(4px)}
+.mw-arrow{transition:transform .2s ease}
+@keyframes mwPulse{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.72)}}
+@keyframes mwDrift{0%,100%{opacity:1}50%{opacity:.45}}
+.mw-bar{animation:mwPulse 3.6s ease-in-out infinite;transform-origin:center}
+.mw-dot{animation:mwDrift 6s ease-in-out infinite}
+@media (prefers-reduced-motion: reduce){.mw-bar,.mw-dot{animation:none}}
+@media (max-width: 900px){
+  .mw-indexhead{display:none !important}
+  .mw-row{grid-template-columns:repeat(2, minmax(0, 1fr)) !important;row-gap:12px !important}
+  .mw-row .mw-desc{grid-column:1 / -1}
+  .mw-feature{grid-template-columns:minmax(0, 1fr) !important}
+  .mw-feature .mw-visual{order:0 !important}
+  .mw-feature .mw-copy{order:1 !important}
+  .mw-split{grid-template-columns:minmax(0, 1fr) !important}
+  .mw-meta{grid-template-columns:repeat(2, minmax(0, 1fr)) !important}
+}
+@media (max-width: 560px){
+  .mw-meta{grid-template-columns:minmax(0, 1fr) !important}
+  .mw-specs{grid-template-columns:minmax(0, 1fr) !important}
+}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#F6F5F1;color:#111111;">
+<div style="max-width:1320px;margin:0 auto;padding:0 clamp(1.25rem, 4vw, 3.5rem);">
+
+  <!-- NAV -->
+  <header style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem 2rem;padding:1.5rem 0;border-bottom:1px solid #111111;">
+    <a href="#top" aria-label="Middle Watch, home" style="display:flex;align-items:center;gap:0.75rem;text-decoration:none;min-height:44px;">
+      <span aria-hidden="true" style="display:grid;grid-template-columns:repeat(2, 10px);gap:3px;">
+        <span style="width:10px;height:10px;background:#111111;"></span>
+        <span style="width:10px;height:10px;background:{{accent}};"></span>
+        <span style="width:10px;height:10px;background:#111111;"></span>
+        <span style="width:10px;height:10px;background:#111111;"></span>
+      </span>
+      <span style="font-family:'Inter Tight',sans-serif;font-weight:600;font-size:1.25rem;letter-spacing:-0.02em;">Middle Watch</span>
+    </a>
+    <nav class="mw-nav" aria-label="Primary" style="display:flex;flex-wrap:wrap;gap:0.25rem 1.75rem;font-size:0.95rem;font-weight:500;">
+      <a href="#index" style="display:inline-flex;align-items:center;min-height:44px;">Listen</a>
+      <a href="#studio" style="display:inline-flex;align-items:center;min-height:44px;">About</a>
+      <a href="mailto:hello@middlewatch.co" style="display:inline-flex;align-items:center;min-height:44px;">Contact</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section id="top" aria-labelledby="hero-title" style="padding:clamp(4rem, 10vw, 9rem) 0 clamp(3rem, 6vw, 5rem);">
+    <p style="margin:0 0 2rem;font-family:'JetBrains Mono',monospace;font-size:0.8rem;letter-spacing:0.08em;text-transform:uppercase;color:#55554F;">Independent studio</p>
+    <h1 id="hero-title" style="margin:0;font-family:'Inter Tight',sans-serif;font-weight:600;font-size:clamp(3rem, 8.4vw, 8.5rem);line-height:0.94;letter-spacing:-0.045em;max-width:12ch;">Something for every quiet hour<span style="color:{{accent}};">.</span></h1>
+    <p style="margin:clamp(2rem, 4vw, 3rem) 0 0;max-width:38rem;font-size:clamp(1.1rem, 1.6vw, 1.35rem);line-height:1.5;color:#2A2A27;">Stories to listen to, soundscapes to settle into, and more on the way.</p>
+
+    <dl class="mw-meta" style="margin:clamp(3.5rem, 7vw, 6rem) 0 0;display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:1.5rem 2rem;border-top:1px solid #111111;padding-top:1.25rem;">
+      <div>
+        <dt style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:#55554F;">Listen</dt>
+        <dd style="margin:0.5rem 0 0;font-weight:500;">Audio stories, ambience</dd>
+      </div>
+      <div>
+        <dt style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:#55554F;">Read &amp; play</dt>
+        <dd style="margin:0.5rem 0 0;font-weight:500;">On the way</dd>
+      </div>
+      <div>
+        <dt style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:#55554F;">Published on</dt>
+        <dd style="margin:0.5rem 0 0;font-weight:500;">YouTube</dd>
+      </div>
+      <div>
+        <dt style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:#55554F;">Contact</dt>
+        <dd style="margin:0.5rem 0 0;font-weight:500;"><a href="mailto:hello@middlewatch.co" style="display:inline-flex;align-items:center;min-height:44px;margin-top:-12px;">hello@middlewatch.co</a></dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- INDEX -->
+  <section id="index" aria-labelledby="index-title" style="padding:clamp(3rem, 6vw, 5rem) 0;">
+    <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:2rem;">
+      <h2 id="index-title" style="margin:0;font-family:'Inter Tight',sans-serif;font-weight:600;font-size:clamp(2rem, 4vw, 3.25rem);letter-spacing:-0.035em;line-height:1;">Listen</h2>
+      <p style="margin:0;font-family:'JetBrains Mono',monospace;font-size:0.8rem;letter-spacing:0.06em;text-transform:uppercase;color:#55554F;">Listen / 02 entries</p>
+    </div>
+
+    <div role="table" aria-label="Studio formats" style="border-top:2px solid #111111;">
+      <div class="mw-indexhead" role="row" style="display:grid;grid-template-columns:4rem minmax(0, 1.4fr) minmax(0, 2.6fr) minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, 1.1fr);gap:1.5rem;padding:0.9rem 0;border-bottom:1px solid #111111;font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:#55554F;">
+        <span role="columnheader">No.</span>
+        <span role="columnheader">Format</span>
+        <span role="columnheader">What it is</span>
+        <span role="columnheader">Platform</span>
+        <span role="columnheader">Handle</span>
+        <span role="columnheader">Status</span>
+      </div>
+
+      <div class="mw-row" role="row" style="display:grid;grid-template-columns:4rem minmax(0, 1.4fr) minmax(0, 2.6fr) minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, 1.1fr);gap:1.5rem;align-items:center;padding:1.6rem 0;border-bottom:1px solid #111111;">
+        <span role="cell" style="font-family:'JetBrains Mono',monospace;font-size:0.9rem;color:#55554F;">01</span>
+        <span role="cell"><a href="#audio-stories" style="display:inline-flex;align-items:center;gap:0.6rem;min-height:44px;font-family:'Inter Tight',sans-serif;font-weight:600;font-size:clamp(1.35rem, 2vw, 1.75rem);letter-spacing:-0.025em;">Audio stories <span class="mw-arrow" aria-hidden="true" style="display:inline-flex;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="2.2" stroke-linecap="square"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg></span></a></span>
+        <span role="cell" class="mw-desc" style="font-size:1rem;line-height:1.5;color:#2A2A27;">For an evening in, a long drive or the walk home. Short fiction, read aloud, each one complete on its own.</span>
+        <span role="cell" style="font-size:0.95rem;font-weight:500;">YouTube</span>
+        <span role="cell" style="font-family:'JetBrains Mono',monospace;font-size:0.85rem;">[@STORIES_HANDLE]</span>
+        <span role="cell"><span style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.4rem 0.8rem;border:1px solid #111111;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.06em;text-transform:uppercase;white-space:nowrap;"><span aria-hidden="true" style="width:7px;height:7px;border-radius:50%;background:{{accent}};"></span>Coming soon</span></span>
+      </div>
+
+      <div class="mw-row" role="row" style="display:grid;grid-template-columns:4rem minmax(0, 1.4fr) minmax(0, 2.6fr) minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, 1.1fr);gap:1.5rem;align-items:center;padding:1.6rem 0;border-bottom:1px solid #111111;">
+        <span role="cell" style="font-family:'JetBrains Mono',monospace;font-size:0.9rem;color:#55554F;">02</span>
+        <span role="cell"><a href="#ambience" style="display:inline-flex;align-items:center;gap:0.6rem;min-height:44px;font-family:'Inter Tight',sans-serif;font-weight:600;font-size:clamp(1.35rem, 2vw, 1.75rem);letter-spacing:-0.025em;">Ambience <span class="mw-arrow" aria-hidden="true" style="display:inline-flex;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="2.2" stroke-linecap="square"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg></span></a></span>
+        <span role="cell" class="mw-desc" style="font-size:1rem;line-height:1.5;color:#2A2A27;">For falling asleep, settling into work or a slow morning. Long soundscapes: rain, snow, candlelight, the sea at night.</span>
+        <span role="cell" style="font-size:0.95rem;font-weight:500;">YouTube</span>
+        <span role="cell" style="font-family:'JetBrains Mono',monospace;font-size:0.85rem;">[@AMBIENCE_HANDLE]</span>
+        <span role="cell"><span style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.4rem 0.8rem;border:1px solid #111111;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.06em;text-transform:uppercase;white-space:nowrap;"><span aria-hidden="true" style="width:7px;height:7px;border-radius:50%;background:{{accent}};"></span>Coming soon</span></span>
+      </div>
+    </div>
+    <p style="margin:1.25rem 0 0;font-size:0.9rem;color:#55554F;">Both channels are being set up now. Handles will appear here at launch.</p>
+  </section>
+
+  <!-- FEATURE 01: AUDIO STORIES -->
+  <section id="audio-stories" aria-labelledby="audio-title" style="padding:clamp(3rem, 6vw, 5rem) 0;border-top:1px solid #111111;">
+    <div class="mw-feature" style="display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:clamp(2rem, 5vw, 5rem);align-items:center;">
+      <div class="mw-visual" style="order:0;">
+        <div aria-hidden="true" style="position:relative;background:#111111;aspect-ratio:4 / 3;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(1.25rem, 3vw, 2rem);box-sizing:border-box;">
+          <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:#CFCEC8;">
+            <span>01</span><span>Voice</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:3px;height:58%;">
+            <sc-for list="{{bars}}" as="bar" hint-placeholder-count="56">
+              <span class="mw-bar" style="{{bar.style}}"></span>
+            </sc-for>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.75rem;">
+            <span style="flex:1;height:2px;background:#3A3A36;position:relative;"><span style="position:absolute;left:0;top:0;height:2px;width:38%;background:{{accent}};"></span></span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:#CFCEC8;">[RUNTIME]</span>
+          </div>
+        </div>
+      </div>
+      <div class="mw-copy" style="order:1;">
+        <p style="margin:0 0 1.25rem;font-family:'JetBrains Mono',monospace;font-size:0.8rem;letter-spacing:0.08em;text-transform:uppercase;color:#55554F;">Listen / 01 Audio stories</p>
+        <h2 id="audio-title" style="margin:0;font-family:'Inter Tight',sans-serif;font-weight:600;font-size:clamp(2.25rem, 4.6vw, 4rem);line-height:1;letter-spacing:-0.04em;">For an evening in.</h2>
+        <p style="margin:1.5rem 0 0;font-size:1.1rem;line-height:1.6;color:#2A2A27;max-width:34rem;">Short fiction, read aloud. Put one on for a long drive, the dishes or the last half hour before bed. Many are historically grounded with a Regency feel, and cozy science fiction and post-cataclysm fantasy are on the way. Start anywhere: every story is complete on its own.</p>
+        <dl class="mw-specs" style="margin:2rem 0 0;display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:0;border-top:1px solid #111111;">
+          <div style="padding:0.9rem 0;border-bottom:1px solid #D2D1CB;">
+            <dt style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:#55554F;">Format</dt>
+            <dd style="margin:0.35rem 0 0;font-weight:500;">Narrated short fiction</dd>
+          </div>
+          <div style="padding:0.9rem 0;border-bottom:1px solid #D2D1CB;">
+            <dt style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:#55554F;">Good for</dt>
+            <dd style="margin:0.35rem 0 0;font-weight:500;">Evenings, drives, winding down</dd>
+          </div>
+          <div style="padding:0.9rem 0;border-bottom:1px solid #D2D1CB;">
+            <dt style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:#55554F;">Where</dt>
+            <dd style="margin:0.35rem 0 0;font-weight:500;">YouTube, <span style="font-family:'JetBrains Mono',monospace;font-size:0.9rem;">[@STORIES_HANDLE]</span></dd>
+          </div>
+          <div style="padding:0.9rem 0;border-bottom:1px solid #D2D1CB;">
+            <dt style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:#55554F;">Status</dt>
+            <dd style="margin:0.35rem 0 0;font-weight:500;">Channel coming soon</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURE 02: AMBIENCE -->
+  <section id="ambience" aria-labelledby="ambience-title" style="padding:clamp(3rem, 6vw, 5rem) 0;border-top:1px solid #111111;">
+    <div class="mw-feature" style="display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:clamp(2rem, 5vw, 5rem);align-items:center;">
+      <div class="mw-copy" style="order:0;">
+        <p style="margin:0 0 1.25rem;font-family:'JetBrains Mono',monospace;font-size:0.8rem;letter-spacing:0.08em;text-transform:uppercase;color:#55554F;">Listen / 02 Ambience</p>
+        <h2 id="ambience-title" style="margin:0;font-family:'Inter Tight',sans-serif;font-weight:600;font-size:clamp(2.25rem, 4.6vw, 4rem);line-height:1;letter-spacing:-0.04em;">For falling asleep, or settling in.</h2>
+        <p style="margin:1.5rem 0 0;font-size:1.1rem;line-height:1.6;color:#2A2A27;max-width:34rem;">Long soundscapes made to sit in the background while you read, work or drift off: rain on glass, falling snow, a room lit by candles, the sea after dark. Put one on and forget it's there.</p>
+        <dl class="mw-specs" style="margin:2rem 0 0;display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:0;border-top:1px solid #111111;">
+          <div style="padding:0.9rem 0;border-bottom:1px solid #D2D1CB;">
+            <dt style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:#55554F;">Format</dt>
+            <dd style="margin:0.35rem 0 0;font-weight:500;">Long-form ambient audio</dd>
+          </div>
+          <div style="padding:0.9rem 0;border-bottom:1px solid #D2D1CB;">
+            <dt style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:#55554F;">Good for</dt>
+            <dd style="margin:0.35rem 0 0;font-weight:500;">Reading, focus, sleep</dd>
+          </div>
+          <div style="padding:0.9rem 0;border-bottom:1px solid #D2D1CB;">
+            <dt style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:#55554F;">Where</dt>
+            <dd style="margin:0.35rem 0 0;font-weight:500;">YouTube, <span style="font-family:'JetBrains Mono',monospace;font-size:0.9rem;">[@AMBIENCE_HANDLE]</span></dd>
+          </div>
+          <div style="padding:0.9rem 0;border-bottom:1px solid #D2D1CB;">
+            <dt style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:#55554F;">Status</dt>
+            <dd style="margin:0.35rem 0 0;font-weight:500;">Channel coming soon</dd>
+          </div>
+        </dl>
+      </div>
+      <div class="mw-visual" style="order:1;">
+        <div aria-hidden="true" style="background:#EAE9E3;aspect-ratio:4 / 3;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(1.25rem, 3vw, 2rem);box-sizing:border-box;border:1px solid #D2D1CB;">
+          <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:#55554F;">
+            <span>02</span><span>Field</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(24, minmax(0, 1fr));row-gap:clamp(6px, 1.2vw, 14px);align-items:center;justify-items:center;">
+            <sc-for list="{{dots}}" as="dot" hint-placeholder-count="240">
+              <span class="mw-dot" style="{{dot.style}}"></span>
+            </sc-for>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:#55554F;">
+            <span>[DURATION]</span><span>Loop</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="studio" aria-labelledby="studio-title" style="padding:clamp(4rem, 8vw, 7rem) 0;border-top:1px solid #111111;">
+    <div class="mw-split" style="display:grid;grid-template-columns:minmax(0, 1fr) minmax(0, 2fr);gap:clamp(1.5rem, 4vw, 4rem);">
+      <h2 id="studio-title" style="margin:0;font-family:'JetBrains Mono',monospace;font-weight:500;font-size:0.8rem;letter-spacing:0.08em;text-transform:uppercase;color:#55554F;">About the studio</h2>
+      <div>
+        <p style="margin:0;font-family:'Inter Tight',sans-serif;font-weight:500;font-size:clamp(1.5rem, 2.8vw, 2.35rem);line-height:1.25;letter-spacing:-0.02em;">Middle Watch makes things for the quiet parts of the day: stories to listen to, sound to settle into, and soon, things to read and play.</p>
+        <p style="margin:1.75rem 0 0;font-size:1.05rem;line-height:1.6;color:#2A2A27;max-width:40rem;">It's a small studio that makes stories, sound and games using modern tools, including AI, with a lot of human direction. New formats will join the index as they're ready. To collaborate, license audio or just say hello, email is the best way in.</p>
+        <sc-if value="{{showOrigin}}" hint-placeholder-val="{{ true }}">
+          <p style="margin:1.25rem 0 0;font-size:0.9rem;color:#55554F;">The name comes from the midnight-to-four watch at sea, the quiet shift.</p>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="padding:clamp(3rem, 6vw, 5rem) 0 2rem;border-top:2px solid #111111;">
+    <p style="margin:0 0 1rem;font-family:'JetBrains Mono',monospace;font-size:0.8rem;letter-spacing:0.08em;text-transform:uppercase;color:#55554F;">Contact</p>
+    <a href="mailto:hello@middlewatch.co" style="display:inline-block;font-family:'Inter Tight',sans-serif;font-weight:600;font-size:clamp(2rem, 6.5vw, 6rem);line-height:1.05;letter-spacing:-0.045em;text-decoration-thickness:0.06em;text-underline-offset:0.12em;word-break:break-word;">hello@middlewatch.co</a>
+    <div style="margin-top:clamp(3rem, 6vw, 5rem);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1rem 2rem;padding-top:1.25rem;border-top:1px solid #D2D1CB;font-size:0.875rem;color:#55554F;">
+      <span>Middle Watch, an independent studio. middlewatch.co</span>
+      <nav class="mw-nav" aria-label="Footer" style="display:flex;flex-wrap:wrap;gap:0.25rem 1.5rem;">
+        <a href="#index" style="display:inline-flex;align-items:center;min-height:44px;color:#3A3A36;">Listen</a>
+        <a href="#studio" style="display:inline-flex;align-items:center;min-height:44px;color:#3A3A36;">About</a>
+        <a href="#top" style="display:inline-flex;align-items:center;min-height:44px;color:#3A3A36;">Back to top</a>
+      </nav>
+    </div>
+  </footer>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#E4481C"},"showOrigin":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":3700}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const accent = (this.props && this.props.accent) || '#E4481C';
+    const showOrigin = !(this.props && this.props.showOrigin === false);
+
+    const bars = [];
+    const n = 56;
+    for (let i = 0; i < n; i++) {
+      const t = i / (n - 1);
+      const env = Math.sin(Math.PI * t);
+      const v = Math.abs(Math.sin(i * 0.9) * 0.55 + Math.sin(i * 0.31 + 1.2) * 0.35 + Math.sin(i * 2.3) * 0.1);
+      const h = Math.max(6, Math.round((0.18 + 0.82 * v) * (0.35 + 0.65 * env) * 100));
+      const played = t < 0.38;
+      const delay = ((i * 0.137) % 3.6).toFixed(2);
+      bars.push({
+        style: 'flex:1;min-width:2px;height:' + h + '%;background:' + (played ? accent : '#F6F5F1') + ';animation-delay:-' + delay + 's;'
+      });
+    }
+
+    const dots = [];
+    const cols = 24, rows = 10;
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const w = Math.sin(c * 0.42 + r * 0.55) * 0.5 + Math.sin(c * 0.17 - r * 0.33 + 0.8) * 0.5;
+        const s = (2 + (w + 1) * 2.6).toFixed(1);
+        const hot = w > 0.82;
+        const delay = (((c + r * 3) * 0.21) % 6).toFixed(2);
+        dots.push({
+          style: 'display:block;width:' + s + 'px;height:' + s + 'px;border-radius:50%;background:' + (hot ? accent : '#111111') + ';opacity:' + (hot ? 1 : (0.35 + (w + 1) * 0.3).toFixed(2)) + ';animation-delay:-' + delay + 's;'
+        });
+      }
+    }
+
+    return { accent, showOrigin, bars, dots };
+  }
+}
+</script>
+</body>
+</html>

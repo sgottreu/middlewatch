@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Middle Watch: The Harbour Chart</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#0a181b}
+a{color:#e8dcc0;text-decoration-color:rgba(232,220,192,.45);text-underline-offset:3px}
+a:hover{color:#f2b45a;text-decoration-color:#f2b45a}
+a:focus-visible{outline:2px solid #f2b45a;outline-offset:3px}
+.mw-nav a{text-decoration:none}
+.mw-nav a:hover .mw-nav-num{color:#f2b45a}
+.mw-btn{text-decoration:none}
+.mw-btn:hover{background:#f2b45a;color:#0a181b}
+.mw-port{cursor:pointer}
+.mw-port:hover .mw-port-ring{stroke-width:2.5}
+.mw-port:hover .mw-port-label{fill:#f2b45a}
+.mw-port:focus-visible{outline:none}
+.mw-port:focus-visible .mw-port-ring{stroke-width:3}
+.mw-beam{transform-box:view-box;transform-origin:782px 92px}
+.mw-beam-on{animation:mwSweep 18s linear infinite}
+.mw-lamp-glow{animation:mwGlow 4.5s ease-in-out infinite}
+.mw-port-pulse{transform-box:fill-box;transform-origin:center;animation:mwPulse 3.6s ease-out infinite}
+.mw-port-pulse-late{animation-delay:1.8s}
+.mw-legend-row:hover .mw-legend-key{color:#f2b45a}
+@keyframes mwSweep{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes mwGlow{0%,100%{opacity:.35}50%{opacity:.8}}
+@keyframes mwPulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.6);opacity:0}}
+@media (max-width:820px){
+  .mw-two{grid-template-columns:minmax(0,1fr) !important}
+  .mw-cartouche{position:static !important;width:auto !important;margin:14px 0 0 !important}
+  .mw-hero-row{flex-direction:column !important;align-items:flex-start !important}
+  .mw-head{flex-direction:column !important;align-items:flex-start !important}
+}
+@media (prefers-reduced-motion:reduce){
+  .mw-beam-on,.mw-lamp-glow,.mw-port-pulse{animation:none}
+}
+</style>
+</helmet>
+<div style="background:#0a181b;color:#dde8e2;font-family:'IBM Plex Sans',system-ui,sans-serif;font-size:17px;line-height:1.65;min-height:100vh">
+
+  <!-- HEADER / NAV -->
+  <header style="border-bottom:1px solid rgba(169,203,191,.22)">
+    <div class="mw-head" style="max-width:1240px;margin:0 auto;padding:18px clamp(16px,4vw,40px);display:flex;align-items:center;justify-content:space-between;gap:16px 32px;flex-wrap:wrap">
+      <a href="#top" style="display:flex;align-items:center;gap:14px;text-decoration:none;min-height:44px">
+        <svg aria-hidden="true" width="34" height="34" viewBox="0 0 34 34" fill="none" stroke="#a9cbbf" stroke-width="1.2">
+          <circle cx="17" cy="17" r="15.5"></circle>
+          <path d="M17 3 L19.5 17 L17 31 L14.5 17 Z" fill="#a9cbbf" stroke="none"></path>
+          <path d="M3 17 L17 14.8 L31 17 L17 19.2 Z"></path>
+          <circle cx="17" cy="17" r="2.6" fill="#f2b45a" stroke="none"></circle>
+        </svg>
+        <span style="display:flex;flex-direction:column;line-height:1.1">
+          <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;font-weight:500;color:#e8dcc0;letter-spacing:.01em">Middle Watch</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;color:#9dbcb1">MIDDLEWATCH.CO</span>
+        </span>
+      </a>
+      <nav class="mw-nav" aria-label="Primary">
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 26px;font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.12em">
+          <li><a href="#stories" style="display:inline-flex;align-items:center;gap:8px;min-height:44px;color:#dde8e2"><span class="mw-nav-num" style="color:#9dbcb1">I</span>STORIES</a></li>
+          <li><a href="#ambience" style="display:inline-flex;align-items:center;gap:8px;min-height:44px;color:#dde8e2"><span class="mw-nav-num" style="color:#9dbcb1">II</span>AMBIENCE</a></li>
+          <li><a href="#the-name" style="display:inline-flex;align-items:center;gap:8px;min-height:44px;color:#dde8e2"><span class="mw-nav-num" style="color:#9dbcb1">&#183;</span>THE NAME</a></li>
+          <li><a href="#legend" style="display:inline-flex;align-items:center;gap:8px;min-height:44px;color:#dde8e2"><span class="mw-nav-num" style="color:#9dbcb1">&#183;</span>HAIL THE KEEPER</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO: THE CHART -->
+  <main id="top">
+  <section aria-labelledby="mw-title" style="max-width:1240px;margin:0 auto;padding:28px clamp(16px,4vw,40px) 64px">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 24px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9dbcb1;margin-bottom:12px">
+      <span>CHART No. 1 &#183; THE HARBOUR AT MIDDLE WATCH</span>
+      <span>SOUNDINGS IN FATHOMS &#183; SURVEYED 00:00&#8211;04:00</span>
+    </div>
+
+    <div style="position:relative;border:1px solid rgba(169,203,191,.5);background:#0b1c20;padding:6px">
+      <svg viewBox="0 0 1200 720" role="group" aria-label="A night chart of the Middle Watch harbour. Two berths are lit: Stories and Ambience." style="display:block;width:100%;height:auto">
+        <defs>
+          <clipPath id="mwClip"><rect x="20" y="20" width="1160" height="680"></rect></clipPath>
+        </defs>
+
+        <g clip-path="url(#mwClip)">
+          <!-- water -->
+          <rect x="20" y="20" width="1160" height="680" fill="#0b1c20"></rect>
+
+          <!-- rhumb lines -->
+          <g aria-hidden="true" stroke="#a9cbbf" stroke-width=".6" opacity=".2">
+            <line x1="1080" y1="570" x2="2480" y2="570"></line><line x1="1072" y1="608" x2="2366" y2="1144"></line><line x1="1051" y1="641" x2="2041" y2="1631"></line><line x1="1018" y1="662" x2="1554" y2="1956"></line><line x1="980" y1="670" x2="980" y2="2070"></line><line x1="942" y1="662" x2="406" y2="1956"></line><line x1="909" y1="641" x2="-81" y2="1631"></line><line x1="888" y1="608" x2="-406" y2="1144"></line><line x1="880" y1="570" x2="-520" y2="570"></line><line x1="888" y1="532" x2="-406" y2="-4"></line><line x1="909" y1="499" x2="-81" y2="-491"></line><line x1="942" y1="478" x2="406" y2="-816"></line><line x1="980" y1="470" x2="980" y2="-930"></line><line x1="1018" y1="478" x2="1554" y2="-816"></line><line x1="1051" y1="499" x2="2041" y2="-491"></line><line x1="1072" y1="532" x2="2366" y2="-4"></line>
+          </g>
+
+          <!-- depth contours -->
+          <g aria-hidden="true" fill="none" stroke="#a9cbbf" stroke-width="1">
+            <path d="M0 395 C70 385 130 350 190 335 C250 318 290 290 330 275 C370 260 400 230 430 200 C460 170 500 130 530 100 C560 70 590 40 610 0" stroke-dasharray="7 5" opacity=".55"></path>
+            <path d="M0 450 C90 440 160 410 230 390 C300 370 360 340 410 310 C460 280 500 240 540 200 C580 160 620 110 650 60 C660 40 668 20 672 0" stroke-dasharray="1.5 5" opacity=".6"></path>
+            <path d="M690 0 C712 40 735 80 760 120 C790 160 830 190 870 225 C910 260 940 290 980 325 C1020 355 1060 370 1100 395 C1140 420 1170 450 1200 460" stroke-dasharray="7 5" opacity=".55"></path>
+            <path d="M660 0 C680 60 710 110 740 160 C780 215 830 250 880 290 C930 330 970 370 1030 400 C1080 420 1130 470 1200 500" stroke-dasharray="1.5 5" opacity=".6"></path>
+            <ellipse cx="603" cy="468" rx="62" ry="46" stroke-dasharray="7 5" opacity=".5"></ellipse>
+          </g>
+
+          <!-- soundings -->
+          <g aria-hidden="true" font-family="'IBM Plex Mono',monospace" font-size="11" fill="#8fb0a5" text-anchor="middle">
+            <text x="533" y="79">5</text><text x="718" y="90">9</text><text x="539" y="142">10</text><text x="606" y="135">12</text><text x="648" y="126">10</text><text x="474" y="184">11</text><text x="597" y="183">13</text><text x="463" y="235">12</text><text x="587" y="230">12</text><text x="664" y="224">14</text><text x="708" y="222">16</text><text x="402" y="290">15</text><text x="469" y="288">17</text><text x="591" y="285">18</text><text x="666" y="275">15</text><text x="734" y="280">15</text><text x="832" y="268">17</text><text x="900" y="290">17</text><text x="240" y="335">20</text><text x="357" y="319">17</text><text x="545" y="328">16</text><text x="589" y="321">16</text><text x="664" y="330">18</text><text x="734" y="335">19</text><text x="832" y="339">21</text><text x="898" y="329">17</text><text x="105" y="377">19</text><text x="161" y="378">23</text><text x="278" y="380">22</text><text x="355" y="364">19</text><text x="402" y="379">19</text><text x="461" y="374">23</text><text x="654" y="365">22</text><text x="725" y="364">18</text><text x="780" y="383">23</text><text x="910" y="381">23</text><text x="338" y="418">21</text><text x="550" y="416">21</text><text x="966" y="429">21</text><text x="1028" y="428">25</text><text x="1083" y="419">21</text><text x="530" y="461">23</text><text x="728" y="462">23</text><text x="859" y="463">25</text><text x="1102" y="467">24</text><text x="522" y="508">29</text><text x="785" y="525">28</text><text x="1153" y="509">25</text><text x="546" y="614">32</text><text x="593" y="627">31</text><text x="672" y="626">33</text><text x="786" y="628">30</text><text x="850" y="626">31</text><text x="1159" y="605">33</text><text x="529" y="675">33</text><text x="604" y="666">35</text><text x="709" y="671">33</text><text x="852" y="675">36</text><text x="1101" y="655">34</text>
+          </g>
+
+          <!-- lighthouse beam (sweeps) -->
+          <g class="{{beamClass}}" aria-hidden="true">
+            <polygon points="782,92 1560,-30 1560,214" fill="{{signal}}" opacity=".05"></polygon>
+            <polygon points="782,92 1560,50 1560,134" fill="{{signal}}" opacity=".1"></polygon>
+          </g>
+
+          <!-- land: north-west shore -->
+          <g aria-hidden="true">
+            <path d="M0 0 H560 C540 30 515 48 500 60 C480 76 462 96 440 120 C415 145 398 160 380 170 C355 190 340 222 320 230 C300 238 290 236 280 240 C240 262 220 285 200 290 C170 296 160 296 150 300 C110 318 85 334 60 340 C35 346 18 348 0 350 Z" fill="#132a2e" stroke="#a9cbbf" stroke-width="1.4"></path>
+            <path d="M0 0 H520 C500 24 480 40 462 60 C440 84 420 110 395 128 C370 146 350 170 330 190 C305 212 270 214 240 232 C205 252 170 268 120 280 C80 290 40 304 0 310" fill="none" stroke="#a9cbbf" stroke-width=".6" opacity=".35"></path>
+            <path d="M0 0 H470 C450 30 420 60 380 90 C340 120 290 150 230 180 C170 210 100 240 0 262" fill="none" stroke="#a9cbbf" stroke-width=".6" opacity=".25"></path>
+            <!-- land: eastern headland -->
+            <path d="M720 0 C740 20 752 38 760 50 C775 80 786 104 800 120 C812 136 820 144 830 150 C852 164 866 180 880 190 C900 206 915 218 930 230 C945 242 950 252 960 260 C975 275 988 292 1000 300 C1015 310 1028 316 1040 320 C1055 326 1068 332 1080 340 C1110 362 1130 390 1150 400 C1170 410 1185 416 1200 420 V0 Z" fill="#132a2e" stroke="#a9cbbf" stroke-width="1.4"></path>
+            <path d="M770 0 C790 40 810 80 850 110 C890 140 920 170 960 200 C1000 230 1040 260 1090 280 C1130 296 1170 320 1200 340" fill="none" stroke="#a9cbbf" stroke-width=".6" opacity=".35"></path>
+            <path d="M840 0 C860 40 890 70 930 100 C980 136 1040 170 1100 190 C1140 204 1170 220 1200 236" fill="none" stroke="#a9cbbf" stroke-width=".6" opacity=".25"></path>
+            <!-- the quiet island -->
+            <path d="M570 470 C572 452 592 440 612 444 C632 448 640 462 634 476 C626 492 600 496 584 490 C574 486 569 480 570 470 Z" fill="#132a2e" stroke="#a9cbbf" stroke-width="1.2"></path>
+            <!-- rocks -->
+            <g stroke="#a9cbbf" stroke-width="1" fill="none" opacity=".8">
+              <path d="M690 300 l6 -6 m-6 0 l6 6"></path><path d="M705 312 l6 -6 m-6 0 l6 6"></path>
+              <path d="M120 430 l6 -6 m-6 0 l6 6"></path>
+            </g>
+          </g>
+
+          <!-- land names and coordinates on land -->
+          <g aria-hidden="true" font-family="'Cormorant Garamond',Georgia,serif" font-style="italic" fill="#c9d9d1">
+            <text x="150" y="110" font-size="22" letter-spacing="3">The Sleeping Shore</text>
+            <text x="1000" y="120" font-size="22" letter-spacing="3" text-anchor="middle">Lamp Head</text>
+          </g>
+          <g aria-hidden="true" font-family="'IBM Plex Mono',monospace" font-size="11" fill="#9dbcb1" letter-spacing="1.5">
+            <text x="100" y="42" text-anchor="middle">00:00</text>
+            <text x="350" y="42" text-anchor="middle">01:00</text>
+            <text x="600" y="42" text-anchor="middle">02:00</text>
+            <text x="850" y="42" text-anchor="middle">03:00</text>
+            <text x="1100" y="42" text-anchor="middle">04:00</text>
+            <text x="1000" y="140" text-anchor="middle" font-size="10">FL. AMBER 18s</text>
+          </g>
+
+          <!-- lighthouse -->
+          <g aria-hidden="true">
+            <circle class="mw-lamp-glow" cx="782" cy="92" r="16" fill="{{signal}}" opacity=".5"></circle>
+            <path d="M776 112 L779 96 L785 96 L788 112 Z" fill="#e8dcc0"></path>
+            <circle cx="782" cy="92" r="5" fill="{{signal}}"></circle>
+            <path d="M782 78 v-6 M796 92 h6 M768 92 h-6 M792 82 l4 -4 M772 82 l-4 -4" stroke="{{signal}}" stroke-width="1.4"></path>
+          </g>
+
+          <!-- compass rose -->
+          <g aria-hidden="true">
+            <circle cx="980" cy="570" r="104" fill="#0b1c20" stroke="#a9cbbf" stroke-width="1"></circle>
+            <circle cx="980" cy="570" r="96" fill="none" stroke="#a9cbbf" stroke-width=".8"></circle>
+            <circle cx="980" cy="570" r="70" fill="none" stroke="#a9cbbf" stroke-width=".5" stroke-dasharray="2 4"></circle>
+            <g stroke="#a9cbbf" stroke-width=".8">
+              <line x1="980.0" y1="474.0" x2="980.0" y2="466.0"></line><line x1="988.4" y1="474.4" x2="988.6" y2="471.4"></line><line x1="996.7" y1="475.5" x2="997.2" y2="472.5"></line><line x1="1004.8" y1="477.3" x2="1006.1" y2="472.4"></line><line x1="1012.8" y1="479.8" x2="1013.9" y2="477.0"></line><line x1="1020.6" y1="483.0" x2="1021.8" y2="480.3"></line><line x1="1028.0" y1="486.9" x2="1030.5" y2="482.5"></line><line x1="1035.1" y1="491.4" x2="1036.8" y2="488.9"></line><line x1="1041.7" y1="496.5" x2="1043.6" y2="494.2"></line><line x1="1047.9" y1="502.1" x2="1053.5" y2="496.5"></line><line x1="1053.5" y1="508.3" x2="1055.8" y2="506.4"></line><line x1="1058.6" y1="514.9" x2="1061.1" y2="513.2"></line><line x1="1063.1" y1="522.0" x2="1067.5" y2="519.5"></line><line x1="1067.0" y1="529.4" x2="1069.7" y2="528.2"></line><line x1="1070.2" y1="537.2" x2="1073.0" y2="536.1"></line><line x1="1072.7" y1="545.2" x2="1077.6" y2="543.9"></line><line x1="1074.5" y1="553.3" x2="1077.5" y2="552.8"></line><line x1="1075.6" y1="561.6" x2="1078.6" y2="561.4"></line><line x1="1076.0" y1="570.0" x2="1084.0" y2="570.0"></line><line x1="1075.6" y1="578.4" x2="1078.6" y2="578.6"></line><line x1="1074.5" y1="586.7" x2="1077.5" y2="587.2"></line><line x1="1072.7" y1="594.8" x2="1077.6" y2="596.1"></line><line x1="1070.2" y1="602.8" x2="1073.0" y2="603.9"></line><line x1="1067.0" y1="610.6" x2="1069.7" y2="611.8"></line><line x1="1063.1" y1="618.0" x2="1067.5" y2="620.5"></line><line x1="1058.6" y1="625.1" x2="1061.1" y2="626.8"></line><line x1="1053.5" y1="631.7" x2="1055.8" y2="633.6"></line><line x1="1047.9" y1="637.9" x2="1053.5" y2="643.5"></line><line x1="1041.7" y1="643.5" x2="1043.6" y2="645.8"></line><line x1="1035.1" y1="648.6" x2="1036.8" y2="651.1"></line><line x1="1028.0" y1="653.1" x2="1030.5" y2="657.5"></line><line x1="1020.6" y1="657.0" x2="1021.8" y2="659.7"></line><line x1="1012.8" y1="660.2" x2="1013.9" y2="663.0"></line><line x1="1004.8" y1="662.7" x2="1006.1" y2="667.6"></line><line x1="996.7" y1="664.5" x2="997.2" y2="667.5"></line><line x1="988.4" y1="665.6" x2="988.6" y2="668.6"></line><line x1="980.0" y1="666.0" x2="980.0" y2="674.0"></line><line x1="971.6" y1="665.6" x2="971.4" y2="668.6"></line><line x1="963.3" y1="664.5" x2="962.8" y2="667.5"></line><line x1="955.2" y1="662.7" x2="953.9" y2="667.6"></line><line x1="947.2" y1="660.2" x2="946.1" y2="663.0"></line><line x1="939.4" y1="657.0" x2="938.2" y2="659.7"></line><line x1="932.0" y1="653.1" x2="929.5" y2="657.5"></line><line x1="924.9" y1="648.6" x2="923.2" y2="651.1"></line><line x1="918.3" y1="643.5" x2="916.4" y2="645.8"></line><line x1="912.1" y1="637.9" x2="906.5" y2="643.5"></line><line x1="906.5" y1="631.7" x2="904.2" y2="633.6"></line><line x1="901.4" y1="625.1" x2="898.9" y2="626.8"></line><line x1="896.9" y1="618.0" x2="892.5" y2="620.5"></line><line x1="893.0" y1="610.6" x2="890.3" y2="611.8"></line><line x1="889.8" y1="602.8" x2="887.0" y2="603.9"></line><line x1="887.3" y1="594.8" x2="882.4" y2="596.1"></line><line x1="885.5" y1="586.7" x2="882.5" y2="587.2"></line><line x1="884.4" y1="578.4" x2="881.4" y2="578.6"></line><line x1="884.0" y1="570.0" x2="876.0" y2="570.0"></line><line x1="884.4" y1="561.6" x2="881.4" y2="561.4"></line><line x1="885.5" y1="553.3" x2="882.5" y2="552.8"></line><line x1="887.3" y1="545.2" x2="882.4" y2="543.9"></line><line x1="889.8" y1="537.2" x2="887.0" y2="536.1"></line><line x1="893.0" y1="529.4" x2="890.3" y2="528.2"></line><line x1="896.9" y1="522.0" x2="892.5" y2="519.5"></line><line x1="901.4" y1="514.9" x2="898.9" y2="513.2"></line><line x1="906.5" y1="508.3" x2="904.2" y2="506.4"></line><line x1="912.1" y1="502.1" x2="906.5" y2="496.5"></line><line x1="918.3" y1="496.5" x2="916.4" y2="494.2"></line><line x1="924.9" y1="491.4" x2="923.2" y2="488.9"></line><line x1="932.0" y1="486.9" x2="929.5" y2="482.5"></line><line x1="939.4" y1="483.0" x2="938.2" y2="480.3"></line><line x1="947.2" y1="479.8" x2="946.1" y2="477.0"></line><line x1="955.2" y1="477.3" x2="953.9" y2="472.4"></line><line x1="963.3" y1="475.5" x2="962.8" y2="472.5"></line><line x1="971.6" y1="474.4" x2="971.4" y2="471.4"></line>
+            </g>
+            <path d="M980 570 L976.7 554.3 L980.0 482.0 Z" fill="#a9cbbf"></path><path d="M980 570 L983.3 554.3 L980.0 482.0 Z" fill="#0b1c20" stroke="#a9cbbf" stroke-width="1"></path><path d="M980 570 L988.7 556.6 L1021.0 529.0 Z" fill="#a9cbbf"></path><path d="M980 570 L993.4 561.3 L1021.0 529.0 Z" fill="#0b1c20" stroke="#a9cbbf" stroke-width="1"></path><path d="M980 570 L995.7 566.7 L1068.0 570.0 Z" fill="#a9cbbf"></path><path d="M980 570 L995.7 573.3 L1068.0 570.0 Z" fill="#0b1c20" stroke="#a9cbbf" stroke-width="1"></path><path d="M980 570 L993.4 578.7 L1021.0 611.0 Z" fill="#a9cbbf"></path><path d="M980 570 L988.7 583.4 L1021.0 611.0 Z" fill="#0b1c20" stroke="#a9cbbf" stroke-width="1"></path><path d="M980 570 L983.3 585.7 L980.0 658.0 Z" fill="#a9cbbf"></path><path d="M980 570 L976.7 585.7 L980.0 658.0 Z" fill="#0b1c20" stroke="#a9cbbf" stroke-width="1"></path><path d="M980 570 L971.3 583.4 L939.0 611.0 Z" fill="#a9cbbf"></path><path d="M980 570 L966.6 578.7 L939.0 611.0 Z" fill="#0b1c20" stroke="#a9cbbf" stroke-width="1"></path><path d="M980 570 L964.3 573.3 L892.0 570.0 Z" fill="#a9cbbf"></path><path d="M980 570 L964.3 566.7 L892.0 570.0 Z" fill="#0b1c20" stroke="#a9cbbf" stroke-width="1"></path><path d="M980 570 L966.6 561.3 L939.0 529.0 Z" fill="#a9cbbf"></path><path d="M980 570 L971.3 556.6 L939.0 529.0 Z" fill="#0b1c20" stroke="#a9cbbf" stroke-width="1"></path>
+            <circle cx="980" cy="570" r="5" fill="{{signal}}"></circle>
+            <text x="980" y="458" font-family="'Cormorant Garamond',Georgia,serif" font-size="20" font-weight="600" fill="#e8dcc0" text-anchor="middle">N</text>
+          </g>
+
+          <!-- BERTH I: STORIES (lit port) -->
+          <a href="#stories" class="mw-port" aria-label="Berth I, Stories. Go to the Stories section.">
+            <circle cx="335" cy="262" r="34" fill="transparent"></circle>
+            <path d="M318 248 L312 214" stroke="#a9cbbf" stroke-width=".8" stroke-dasharray="2 3" aria-hidden="true"></path>
+            <circle class="mw-port-pulse" cx="335" cy="262" r="10" fill="none" stroke="{{signal}}" stroke-width="1.2"></circle>
+            <circle class="mw-port-ring" cx="335" cy="262" r="15" fill="#0b1c20" stroke="{{signal}}" stroke-width="1.5"></circle>
+            <circle cx="335" cy="262" r="6" fill="{{signal}}"></circle>
+            <text class="mw-port-label" x="312" y="196" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="17" font-weight="500" letter-spacing="4" fill="#e8dcc0">STORIES</text>
+            <text x="312" y="178" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="2" fill="#f2b45a">BERTH I &#183; LIT</text>
+          </a>
+
+          <!-- BERTH II: AMBIENCE (lit port) -->
+          <a href="#ambience" class="mw-port" aria-label="Berth II, Ambience. Go to the Ambience section.">
+            <circle cx="1010" cy="345" r="34" fill="transparent"></circle>
+            <path d="M1022 332 L1046 300" stroke="#a9cbbf" stroke-width=".8" stroke-dasharray="2 3" aria-hidden="true"></path>
+            <circle class="mw-port-pulse mw-port-pulse-late" cx="1010" cy="345" r="10" fill="none" stroke="{{signal}}" stroke-width="1.2"></circle>
+            <circle class="mw-port-ring" cx="1010" cy="345" r="15" fill="#0b1c20" stroke="{{signal}}" stroke-width="1.5"></circle>
+            <circle cx="1010" cy="345" r="6" fill="{{signal}}"></circle>
+            <text class="mw-port-label" x="1050" y="290" font-family="'IBM Plex Mono',monospace" font-size="17" font-weight="500" letter-spacing="4" fill="#e8dcc0">AMBIENCE</text>
+            <text x="1050" y="272" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="2" fill="#f2b45a">BERTH II &#183; LIT</text>
+          </a>
+        </g>
+
+        <!-- neatline and graduated border -->
+        <g aria-hidden="true" fill="none" stroke="#a9cbbf">
+          <rect x="12" y="12" width="1176" height="696" stroke-width="1.2"></rect>
+          <rect x="20" y="20" width="1160" height="680" stroke-width=".8"></rect>
+          <g stroke-width=".8">
+            <line x1="100" y1="12" x2="100" y2="20"></line><line x1="200" y1="12" x2="200" y2="20"></line><line x1="300" y1="12" x2="300" y2="20"></line><line x1="400" y1="12" x2="400" y2="20"></line><line x1="500" y1="12" x2="500" y2="20"></line><line x1="600" y1="12" x2="600" y2="20"></line><line x1="700" y1="12" x2="700" y2="20"></line><line x1="800" y1="12" x2="800" y2="20"></line><line x1="900" y1="12" x2="900" y2="20"></line><line x1="1000" y1="12" x2="1000" y2="20"></line><line x1="1100" y1="12" x2="1100" y2="20"></line>
+            <line x1="100" y1="700" x2="100" y2="708"></line><line x1="200" y1="700" x2="200" y2="708"></line><line x1="300" y1="700" x2="300" y2="708"></line><line x1="400" y1="700" x2="400" y2="708"></line><line x1="500" y1="700" x2="500" y2="708"></line><line x1="600" y1="700" x2="600" y2="708"></line><line x1="700" y1="700" x2="700" y2="708"></line><line x1="800" y1="700" x2="800" y2="708"></line><line x1="900" y1="700" x2="900" y2="708"></line><line x1="1000" y1="700" x2="1000" y2="708"></line><line x1="1100" y1="700" x2="1100" y2="708"></line>
+            <line x1="12" y1="100" x2="20" y2="100"></line><line x1="12" y1="200" x2="20" y2="200"></line><line x1="12" y1="300" x2="20" y2="300"></line><line x1="12" y1="400" x2="20" y2="400"></line><line x1="12" y1="500" x2="20" y2="500"></line><line x1="12" y1="600" x2="20" y2="600"></line>
+            <line x1="1180" y1="100" x2="1188" y2="100"></line><line x1="1180" y1="200" x2="1188" y2="200"></line><line x1="1180" y1="300" x2="1188" y2="300"></line><line x1="1180" y1="400" x2="1188" y2="400"></line><line x1="1180" y1="500" x2="1188" y2="500"></line><line x1="1180" y1="600" x2="1188" y2="600"></line>
+          </g>
+          <path d="M12 16 H1188 M12 704 H1188" stroke-width="3" stroke-dasharray="20 20" opacity=".55"></path>
+        </g>
+      </svg>
+
+      <!-- cartouche -->
+      <div class="mw-cartouche" style="position:absolute;left:3%;bottom:6%;width:min(33%,400px);background:#0a181b;border:1px solid #a9cbbf;outline:1px solid rgba(169,203,191,.45);outline-offset:4px;padding:22px 24px 20px;text-align:center;box-sizing:border-box">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;color:#9dbcb1">A CHART OF THE HARBOUR</div>
+        <h1 id="mw-title" style="margin:6px 0 4px;font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-style:italic;font-size:clamp(34px,3.6vw,52px);line-height:1;color:#e8dcc0">Middle Watch</h1>
+        <div aria-hidden="true" style="display:flex;align-items:center;gap:10px;justify-content:center;margin:10px 0">
+          <span style="height:1px;width:48px;background:#a9cbbf"></span>
+          <span style="width:7px;height:7px;transform:rotate(45deg);background:#f2b45a"></span>
+          <span style="height:1px;width:48px;background:#a9cbbf"></span>
+        </div>
+        <p style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:19px;line-height:1.4;color:#dde8e2">Stories and soundscapes, kept by lamplight between midnight and four.</p>
+        <div style="margin-top:12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.16em;color:#9dbcb1">ONE KEEPER &#183; TWO BERTHS LIT</div>
+      </div>
+    </div>
+
+    <div class="mw-hero-row" style="display:flex;align-items:center;justify-content:space-between;gap:20px 32px;margin-top:28px">
+      <p style="margin:0;max-width:560px;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(21px,2vw,25px);line-height:1.4;color:#dde8e2">Two berths are lit tonight. The rest of the chart is quiet water.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px">
+        <a class="mw-btn" href="#stories" style="display:inline-flex;align-items:center;min-height:48px;padding:0 22px;border:1px solid #f2b45a;color:#f2b45a;font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.14em">MAKE FOR STORIES</a>
+        <a class="mw-btn" href="#ambience" style="display:inline-flex;align-items:center;min-height:48px;padding:0 22px;border:1px solid #f2b45a;color:#f2b45a;font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.14em">MAKE FOR AMBIENCE</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BERTH I: STORIES -->
+  <section id="stories" aria-labelledby="mw-stories-h" style="border-top:1px solid rgba(169,203,191,.22)">
+    <div style="max-width:1240px;margin:0 auto;padding:88px clamp(16px,4vw,40px)">
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 20px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.18em;color:#9dbcb1">
+        <span style="color:#f2b45a">BERTH I</span>
+        <span>LAT 00&#176;00&#8242; &#183; LON 04&#176;00&#8242;</span>
+        <span aria-hidden="true" style="flex:1 1 80px;height:1px;background:rgba(169,203,191,.3);align-self:center"></span>
+      </div>
+      <h2 id="mw-stories-h" style="margin:14px 0 36px;font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:clamp(44px,6vw,80px);line-height:1;color:#e8dcc0">Stories</h2>
+
+      <div class="mw-two" style="display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:48px 64px;align-items:start">
+        <div>
+          <p style="margin:0 0 28px;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(23px,2.2vw,28px);line-height:1.45;color:#dde8e2">Original short fiction, narrated slowly, the way a story ought to be told after dark: to one listener, with the lamp turned low.</p>
+          <ul style="list-style:none;margin:0;padding:0;display:grid;gap:0">
+            <li style="display:grid;grid-template-columns:72px minmax(0,1fr);gap:16px;padding:16px 0;border-top:1px solid rgba(169,203,191,.22)">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9dbcb1;padding-top:3px">BRG 000</span>
+              <span>Grounded in history, and often carrying the hush of the Regency: candlelit rooms, long roads, letters sent and waited for.</span>
+            </li>
+            <li style="display:grid;grid-template-columns:72px minmax(0,1fr);gap:16px;padding:16px 0;border-top:1px solid rgba(169,203,191,.22)">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9dbcb1;padding-top:3px">BRG 090</span>
+              <span>Every story stands on its own. Some also keep company with others across arcs of four episodes.</span>
+            </li>
+            <li style="display:grid;grid-template-columns:72px minmax(0,1fr);gap:16px;padding:16px 0;border-top:1px solid rgba(169,203,191,.22);border-bottom:1px solid rgba(169,203,191,.22)">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9dbcb1;padding-top:3px">BRG 180</span>
+              <span>On the drafting table: cozy science fiction, and fantasy set in the quiet after a cataclysm.</span>
+            </li>
+          </ul>
+        </div>
+
+        <aside aria-label="Stories channel" style="border:1px solid #a9cbbf;outline:1px solid rgba(169,203,191,.4);outline-offset:5px;background:#0e2125;padding:28px">
+          <svg aria-hidden="true" viewBox="0 0 360 150" style="display:block;width:100%;height:auto;margin-bottom:22px">
+            <rect x="1" y="1" width="358" height="148" fill="none" stroke="#a9cbbf" stroke-width=".8"></rect>
+            <path d="M0 40 C60 52 110 70 150 74 C190 78 220 60 260 46 C300 32 330 28 360 30 V0 H0 Z" fill="#132a2e" stroke="#a9cbbf" stroke-width="1"></path>
+            <rect x="166" y="72" width="10" height="46" fill="#132a2e" stroke="#a9cbbf" stroke-width="1"></rect>
+            <circle cx="171" cy="126" r="5" fill="#f2b45a"></circle>
+            <g fill="none" stroke="#f2b45a" stroke-width="1" stroke-dasharray="3 4">
+              <path d="M150 132 A24 24 0 0 0 192 132"></path>
+              <path d="M136 136 A40 40 0 0 0 206 136" opacity=".7"></path>
+              <path d="M122 140 A56 56 0 0 0 220 140" opacity=".45"></path>
+            </g>
+            <g font-family="'IBM Plex Mono',monospace" font-size="10" fill="#9dbcb1">
+              <text x="16" y="100">6</text><text x="60" y="124">9</text><text x="290" y="96">7</text><text x="318" y="128">11</text>
+            </g>
+            <text x="16" y="24" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="2" fill="#9dbcb1">INSET A &#183; THE STORY BERTH</text>
+          </svg>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.18em;color:#9dbcb1">LOGBOOK &#183; YOUTUBE CHANNEL</div>
+          <div style="margin:10px 0 18px;font-family:'IBM Plex Mono',monospace;font-size:clamp(18px,1.8vw,22px);color:#e8dcc0;word-break:break-word">[@STORIES_HANDLE]</div>
+          <div style="display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid rgba(169,203,191,.22)">
+            <span aria-hidden="true" style="flex:none;width:12px;height:12px;border-radius:50%;border:1.5px solid #f2b45a;box-sizing:border-box"></span>
+            <span style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:20px;color:#dde8e2">The lamp is trimmed but not yet lit. The channel opens soon.</span>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- BERTH II: AMBIENCE -->
+  <section id="ambience" aria-labelledby="mw-ambience-h" style="border-top:1px solid rgba(169,203,191,.22);background:#0c1d21">
+    <div style="max-width:1240px;margin:0 auto;padding:88px clamp(16px,4vw,40px)">
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 20px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.18em;color:#9dbcb1">
+        <span style="color:#f2b45a">BERTH II</span>
+        <span>LAT 02&#176;00&#8242; &#183; LON 04&#176;00&#8242;</span>
+        <span aria-hidden="true" style="flex:1 1 80px;height:1px;background:rgba(169,203,191,.3);align-self:center"></span>
+      </div>
+      <h2 id="mw-ambience-h" style="margin:14px 0 36px;font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:clamp(44px,6vw,80px);line-height:1;color:#e8dcc0">Ambience</h2>
+
+      <div class="mw-two" style="display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:48px 64px;align-items:start">
+        <div>
+          <p style="margin:0 0 28px;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(23px,2.2vw,28px);line-height:1.45;color:#dde8e2">Long, unbroken soundscapes for reading, working, sleeping, or simply keeping watch. Some are drawn from the places in the stories. Others stand on their own.</p>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.18em;color:#9dbcb1;margin-bottom:6px">TABLE OF SOUNDINGS</div>
+          <ul style="list-style:none;margin:0;padding:0">
+            <li style="display:grid;grid-template-columns:64px minmax(0,1fr);gap:16px;align-items:baseline;padding:14px 0;border-top:1px solid rgba(169,203,191,.22)">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.12em;color:#9dbcb1">S.01</span>
+              <span><span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;color:#e8dcc0">Candlelight</span><span style="color:#9dbcb1"> &#8212; a wick, a still room</span></span>
+            </li>
+            <li style="display:grid;grid-template-columns:64px minmax(0,1fr);gap:16px;align-items:baseline;padding:14px 0;border-top:1px solid rgba(169,203,191,.22)">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.12em;color:#9dbcb1">S.02</span>
+              <span><span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;color:#e8dcc0">Snow</span><span style="color:#9dbcb1"> &#8212; the hush after it settles</span></span>
+            </li>
+            <li style="display:grid;grid-template-columns:64px minmax(0,1fr);gap:16px;align-items:baseline;padding:14px 0;border-top:1px solid rgba(169,203,191,.22)">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.12em;color:#9dbcb1">S.03</span>
+              <span><span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;color:#e8dcc0">Rain</span><span style="color:#9dbcb1"> &#8212; on glass, on slate, on canvas</span></span>
+            </li>
+            <li style="display:grid;grid-template-columns:64px minmax(0,1fr);gap:16px;align-items:baseline;padding:14px 0;border-top:1px solid rgba(169,203,191,.22);border-bottom:1px solid rgba(169,203,191,.22)">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.12em;color:#9dbcb1">S.04</span>
+              <span><span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;color:#e8dcc0">The sea at night</span><span style="color:#9dbcb1"> &#8212; swell against a moored hull</span></span>
+            </li>
+          </ul>
+        </div>
+
+        <aside aria-label="Ambience channel" style="border:1px solid #a9cbbf;outline:1px solid rgba(169,203,191,.4);outline-offset:5px;background:#0e2125;padding:28px">
+          <svg aria-hidden="true" viewBox="0 0 360 150" style="display:block;width:100%;height:auto;margin-bottom:22px">
+            <rect x="1" y="1" width="358" height="148" fill="none" stroke="#a9cbbf" stroke-width=".8"></rect>
+            <g fill="none" stroke="#a9cbbf" stroke-width="1">
+              <path d="M10 70 C40 60 70 80 100 70 C130 60 160 80 190 70 C220 60 250 80 280 70 C310 60 330 76 350 70"></path>
+              <path d="M10 95 C40 85 70 105 100 95 C130 85 160 105 190 95 C220 85 250 105 280 95 C310 85 330 101 350 95" opacity=".7"></path>
+              <path d="M10 120 C40 110 70 130 100 120 C130 110 160 130 190 120 C220 110 250 130 280 120 C310 110 330 126 350 120" opacity=".45"></path>
+            </g>
+            <g stroke="#9dbcb1" stroke-width="1">
+              <path d="M220 30 l-4 12 M236 26 l-4 12 M252 32 l-4 12 M268 28 l-4 12"></path>
+            </g>
+            <g fill="#e8dcc0">
+              <circle cx="300" cy="30" r="1.6"></circle><circle cx="314" cy="40" r="1.6"></circle><circle cx="328" cy="28" r="1.6"></circle><circle cx="340" cy="44" r="1.6"></circle>
+            </g>
+            <path d="M175 52 C168 44 172 36 175 30 C178 36 182 44 175 52 Z" fill="#f2b45a"></path>
+            <rect x="171" y="52" width="8" height="12" fill="#132a2e" stroke="#a9cbbf" stroke-width=".8"></rect>
+            <text x="16" y="24" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="2" fill="#9dbcb1">INSET B &#183; TIDE OF SOUND</text>
+          </svg>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.18em;color:#9dbcb1">LOGBOOK &#183; YOUTUBE CHANNEL</div>
+          <div style="margin:10px 0 18px;font-family:'IBM Plex Mono',monospace;font-size:clamp(18px,1.8vw,22px);color:#e8dcc0;word-break:break-word">[@AMBIENCE_HANDLE]</div>
+          <div style="display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid rgba(169,203,191,.22)">
+            <span aria-hidden="true" style="flex:none;width:12px;height:12px;border-radius:50%;border:1.5px solid #f2b45a;box-sizing:border-box"></span>
+            <span style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:20px;color:#dde8e2">Not yet sounding. The channel opens soon.</span>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ON THE MIDDLE WATCH -->
+  <section id="the-name" aria-labelledby="mw-name-h" style="border-top:1px solid rgba(169,203,191,.22)">
+    <div style="max-width:860px;margin:0 auto;padding:96px clamp(16px,4vw,40px);text-align:center">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.22em;color:#9dbcb1">A NOTE ON THE NAME</div>
+      <h2 id="mw-name-h" style="margin:14px 0 26px;font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-style:italic;font-size:clamp(38px,4.6vw,60px);line-height:1.05;color:#e8dcc0">On the middle watch</h2>
+      <p style="margin:0 auto;max-width:640px;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(21px,2vw,25px);line-height:1.55;color:#dde8e2">At sea, the middle watch runs from midnight until four. The ship sleeps. One person stays on deck, holds the course, and keeps the lamp lit. Everything made here is meant for those hours, and for whoever is awake in them.</p>
+
+      <svg viewBox="0 0 800 110" role="img" aria-label="The middle watch, midnight to 4am, marked by eight bells struck each half hour." style="display:block;width:100%;height:auto;margin-top:48px">
+        <g font-family="'IBM Plex Mono',monospace" font-size="13" fill="#9dbcb1" text-anchor="middle" letter-spacing="1">
+          <text x="40" y="26">00:00</text><text x="220" y="26">01:00</text><text x="400" y="26">02:00</text><text x="580" y="26">03:00</text><text x="760" y="26">04:00</text>
+        </g>
+        <line x1="40" y1="52" x2="760" y2="52" stroke="#a9cbbf" stroke-width="1"></line>
+        <g stroke="#a9cbbf" stroke-width="1">
+          <line x1="40" y1="40" x2="40" y2="64"></line><line x1="220" y1="40" x2="220" y2="64"></line><line x1="400" y1="40" x2="400" y2="64"></line><line x1="580" y1="40" x2="580" y2="64"></line>
+        </g>
+        <g fill="#0a181b" stroke="#a9cbbf" stroke-width="1.2">
+          <circle cx="130" cy="52" r="5"></circle><circle cx="220" cy="52" r="5"></circle><circle cx="310" cy="52" r="5"></circle><circle cx="400" cy="52" r="5"></circle><circle cx="490" cy="52" r="5"></circle><circle cx="580" cy="52" r="5"></circle><circle cx="670" cy="52" r="5"></circle>
+        </g>
+        <circle cx="760" cy="52" r="7" fill="{{signal}}"></circle>
+        <g font-family="'IBM Plex Mono',monospace" font-size="12" fill="#9dbcb1" text-anchor="middle">
+          <text x="130" y="88">1</text><text x="220" y="88">2</text><text x="310" y="88">3</text><text x="400" y="88">4</text><text x="490" y="88">5</text><text x="580" y="88">6</text><text x="670" y="88">7</text><text x="760" y="88" fill="#f2b45a">8 BELLS</text>
+        </g>
+      </svg>
+      <p style="margin:10px 0 0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9dbcb1">A BELL FOR EVERY HALF HOUR &#183; EIGHT BELLS, AND THE WATCH IS RELIEVED</p>
+    </div>
+  </section>
+  </main>
+
+  <!-- FOOTER: CHART LEGEND -->
+  <footer id="legend" style="border-top:1px solid rgba(169,203,191,.22);background:#08151a">
+    <div style="max-width:1240px;margin:0 auto;padding:72px clamp(16px,4vw,40px) 40px">
+      <div style="border:1px solid #a9cbbf;outline:1px solid rgba(169,203,191,.4);outline-offset:5px;padding:clamp(20px,3vw,36px)">
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 24px;margin-bottom:24px">
+          <h2 style="margin:0;font-family:'IBM Plex Mono',monospace;font-weight:500;font-size:14px;letter-spacing:.28em;color:#e8dcc0">LEGEND</h2>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9dbcb1">CHART No. 1 &#183; FIRST EDITION</span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:0 40px">
+          <a class="mw-legend-row" href="#stories" style="display:flex;align-items:center;gap:16px;min-height:56px;border-top:1px solid rgba(169,203,191,.22);text-decoration:none;color:#dde8e2">
+            <svg aria-hidden="true" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="11" fill="none" stroke="#f2b45a" stroke-width="1.5"></circle><circle cx="15" cy="15" r="4.5" fill="#f2b45a"></circle></svg>
+            <span><span class="mw-legend-key" style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.14em">BERTH I</span><span style="color:#9dbcb1"> &#8212; Stories</span></span>
+          </a>
+          <a class="mw-legend-row" href="#ambience" style="display:flex;align-items:center;gap:16px;min-height:56px;border-top:1px solid rgba(169,203,191,.22);text-decoration:none;color:#dde8e2">
+            <svg aria-hidden="true" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="11" fill="none" stroke="#f2b45a" stroke-width="1.5"></circle><circle cx="15" cy="15" r="4.5" fill="#f2b45a"></circle></svg>
+            <span><span class="mw-legend-key" style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.14em">BERTH II</span><span style="color:#9dbcb1"> &#8212; Ambience</span></span>
+          </a>
+          <div style="display:flex;align-items:center;gap:16px;min-height:56px;border-top:1px solid rgba(169,203,191,.22)">
+            <svg aria-hidden="true" width="30" height="30" viewBox="0 0 30 30"><text x="15" y="20" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="13" fill="#9dbcb1">17</text></svg>
+            <span><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.14em">SOUNDING</span><span style="color:#9dbcb1"> &#8212; depth in fathoms</span></span>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;min-height:56px;border-top:1px solid rgba(169,203,191,.22)">
+            <svg aria-hidden="true" width="30" height="30" viewBox="0 0 30 30"><path d="M2 15 H28" stroke="#a9cbbf" stroke-width="1.2" stroke-dasharray="5 3"></path></svg>
+            <span><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.14em">CONTOUR</span><span style="color:#9dbcb1"> &#8212; line of equal depth</span></span>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;min-height:56px;border-top:1px solid rgba(169,203,191,.22)">
+            <svg aria-hidden="true" width="30" height="30" viewBox="0 0 30 30"><rect x="4" y="6" width="22" height="18" fill="#0b1c20" stroke="#a9cbbf" stroke-width="1" stroke-dasharray="1.5 3"></rect></svg>
+            <span><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.14em">OPEN WATER</span><span style="color:#9dbcb1"> &#8212; not yet charted</span></span>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;min-height:56px;border-top:1px solid rgba(169,203,191,.22)">
+            <svg aria-hidden="true" width="30" height="30" viewBox="0 0 30 30"><path d="M12 26 L13.5 14 L16.5 14 L18 26 Z" fill="#e8dcc0"></path><circle cx="15" cy="10" r="3.5" fill="#f2b45a"></circle><path d="M15 2 v3 M22 10 h3 M8 10 h-3" stroke="#f2b45a" stroke-width="1.2"></path></svg>
+            <span><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.14em">LIGHT</span><span style="color:#9dbcb1"> &#8212; the keeper, below</span></span>
+          </div>
+        </div>
+
+        <div style="margin-top:28px;padding-top:28px;border-top:1px solid #a9cbbf;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 32px">
+          <div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.2em;color:#9dbcb1">HAIL THE KEEPER</div>
+            <a href="mailto:hello@middlewatch.co" style="display:inline-flex;align-items:center;min-height:48px;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(28px,3.4vw,42px);font-style:italic;color:#e8dcc0">hello@middlewatch.co</a>
+          </div>
+          <p style="margin:0;max-width:340px;color:#9dbcb1;font-size:15px">Letters are read by lamplight and answered by the same hand that keeps the watch.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:32px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9dbcb1">
+        <span>&#169; MIDDLE WATCH &#183; MIDDLEWATCH.CO</span>
+        <span>KEPT FROM MIDNIGHT UNTIL FOUR</span>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"signal":{"editor":"color","default":"#f2b45a"},"sweep":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":3600}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props || {};
+    const signal = p.signal || '#f2b45a';
+    const sweep = p.sweep !== false;
+    return {
+      signal: signal,
+      beamClass: sweep ? 'mw-beam mw-beam-on' : 'mw-beam'
+    };
+  }
+}
+</script>
+</body>
+</html>

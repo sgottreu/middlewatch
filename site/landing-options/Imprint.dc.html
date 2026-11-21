@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Middle Watch: The Imprint</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=DM+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F5F1EA;color:#1D1F21;font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#1D1F21}a:hover{color:#1F5B59}
+.mw-nav a{text-decoration:none}
+.mw-nav a:hover{text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+.mw-cta{text-decoration:none;transition:background-color .2s ease,color .2s ease}
+.mw-cta:hover{color:#F5F1EA !important}
+.mw-cta-stories:hover{background:#1F5B59 !important}
+.mw-cta-ambience:hover{background:#94434F !important}
+.mw-cover{transition:transform .35s ease}
+.mw-card:hover .mw-cover{transform:translateY(-4px)}
+.mw-mail{text-decoration:none;border-bottom:1px solid currentColor}
+.mw-mail:hover{color:#F5F1EA;opacity:.85}
+@media (max-width:900px){
+  .mw-shelf{grid-template-columns:minmax(0,1fr) !important}
+  .mw-facts{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+  .mw-about{grid-template-columns:minmax(0,1fr) !important}
+}
+@media (max-width:560px){
+  .mw-header{flex-direction:column;align-items:flex-start !important}
+  .mw-facts{grid-template-columns:minmax(0,1fr) !important}
+  .mw-foot{flex-direction:column;align-items:flex-start !important}
+}
+</style>
+</helmet>
+<div style="width:100%;background:#F5F1EA;color:#1D1F21;font-family:'DM Sans',system-ui,sans-serif">
+
+  <!-- Header -->
+  <header style="border-bottom:1px solid #DDD6CA">
+    <div class="mw-header" style="max-width:1200px;margin:0 auto;padding:1rem clamp(1.25rem,4vw,2.5rem);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+      <a href="#top" style="display:inline-flex;align-items:center;gap:0.75rem;text-decoration:none;min-height:44px">
+        <svg aria-hidden="true" width="30" height="30" viewBox="0 0 30 30"><rect x="1" y="1" width="12" height="28" fill="{{c.stories}}"></rect><rect x="17" y="1" width="12" height="28" fill="{{c.ambience}}"></rect></svg>
+        <span style="font-family:'Fraunces',Georgia,serif;font-size:1.375rem;font-weight:500;letter-spacing:-0.01em;color:#1D1F21">Middle Watch</span>
+      </a>
+      <nav class="mw-nav" aria-label="Main" style="display:flex;flex-wrap:wrap;gap:0.25rem 1.5rem;font-size:0.9375rem;font-weight:500">
+        <a href="#listen" style="display:inline-flex;align-items:center;min-height:44px;color:#1D1F21">Listen</a>
+        <a href="#about" style="display:inline-flex;align-items:center;min-height:44px;color:#1D1F21">About</a>
+        <a href="#contact" style="display:inline-flex;align-items:center;min-height:44px;color:#1D1F21">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="top" style="max-width:1200px;margin:0 auto;padding:clamp(4rem,9vw,7.5rem) clamp(1.25rem,4vw,2.5rem) clamp(3rem,6vw,5rem)">
+    <p style="margin:0 0 1.75rem;font-size:0.8125rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#55534D">An independent studio for stories and sound</p>
+    <h1 style="margin:0;max-width:15ch;font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:clamp(2.75rem,7vw,6rem);line-height:1.02;letter-spacing:-0.025em;color:#1D1F21">Something for every quiet&#160;hour.</h1>
+    <div style="margin-top:2.5rem;display:flex;gap:1.5rem;align-items:flex-start;max-width:40rem">
+      <span aria-hidden="true" style="flex:none;width:3rem;height:1px;background:#1D1F21;margin-top:0.85rem"></span>
+      <p style="margin:0;font-size:clamp(1.0625rem,1.6vw,1.25rem);line-height:1.6;color:#3A3B3C">Stories to listen to, soundscapes to settle into, and more on the way. Each has its own YouTube channel, so you can come for one and stay for the other.</p>
+    </div>
+  </section>
+
+  <!-- Shelf -->
+  <section id="listen" aria-labelledby="shelf-title" style="max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,4vw,2.5rem) clamp(4rem,8vw,6.5rem)">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;flex-wrap:wrap;border-top:1px solid #1D1F21;padding-top:1rem;margin-bottom:2.5rem">
+      <h2 id="shelf-title" style="margin:0;font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:1.5rem;letter-spacing:-0.01em">Listen</h2>
+      <p style="margin:0;font-size:0.875rem;color:#55534D">Two shelves now. Read and play are on the way.</p>
+    </div>
+
+    <div class="mw-shelf" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(2rem,4vw,3.5rem)">
+
+      <!-- Stories cover -->
+      <article id="stories" class="mw-card" style="display:flex;flex-direction:column;gap:1.75rem">
+        <div class="mw-cover" style="position:relative;aspect-ratio:4/5;background:{{c.stories}};color:#F5F1EA;padding:clamp(1.5rem,3vw,2.25rem);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;box-shadow:0 1px 0 rgba(29,31,33,0.08),0 18px 40px -24px rgba(29,31,33,0.45)">
+          <svg aria-hidden="true" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%">
+            <circle cx="290" cy="215" r="128" fill="#F5F1EA" fill-opacity="0.14"></circle>
+            <path d="M162 215 A128 128 0 0 1 418 215 Z" fill="#F5F1EA" fill-opacity="0.22"></path>
+            <rect x="40" y="300" width="150" height="3" fill="#F5F1EA" fill-opacity="0.55"></rect>
+            <rect x="40" y="314" width="118" height="3" fill="#F5F1EA" fill-opacity="0.4"></rect>
+            <rect x="40" y="328" width="136" height="3" fill="#F5F1EA" fill-opacity="0.4"></rect>
+            <rect x="40" y="342" width="84" height="3" fill="#F5F1EA" fill-opacity="0.4"></rect>
+          </svg>
+          <div style="position:relative;display:flex;justify-content:space-between;align-items:center;font-size:0.75rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase">
+            <span>Middle Watch</span>
+            <span>01</span>
+          </div>
+          <div style="position:relative">
+            <p style="margin:0 0 0.5rem;font-size:0.8125rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase">Audio fiction</p>
+            <h3 style="margin:0;font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:clamp(3rem,6.5vw,5.25rem);line-height:0.95;letter-spacing:-0.03em">Stories</h3>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:1rem">
+          <p style="margin:0;font-size:1.0625rem;line-height:1.65;color:#2E3032">For an evening in, a long drive or the walk home. Original short fiction, read aloud in full. Many are historically grounded with a Regency-era feel, and cozy science fiction and post-cataclysm fantasy are on the way. Every story stands alone.</p>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.75rem 1rem;margin-top:0.5rem">
+            <a class="mw-cta mw-cta-stories" href="https://www.youtube.com/[@STORIES_HANDLE]" style="display:inline-flex;align-items:center;gap:0.6rem;min-height:44px;padding:0 1.25rem;border:1.5px solid {{c.stories}};color:{{c.stories}};font-weight:600;font-size:0.9375rem">
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="13" height="10" rx="2.5"></rect><path d="M6.5 6v4l3.5-2z" stroke-linejoin="round"></path></svg>
+              Listen on YouTube
+            </a>
+            <span style="font-family:ui-monospace,Menlo,monospace;font-size:0.875rem;color:#3A3B3C">[@STORIES_HANDLE]</span>
+          </div>
+          <p style="margin:0;display:inline-flex;align-items:center;gap:0.5rem;font-size:0.8125rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#55534D">
+            <span aria-hidden="true" style="width:0.5rem;height:0.5rem;border-radius:50%;background:{{c.stories}}"></span>
+            Channel coming soon
+          </p>
+        </div>
+      </article>
+
+      <!-- Ambience cover -->
+      <article id="ambience" class="mw-card" style="display:flex;flex-direction:column;gap:1.75rem">
+        <div class="mw-cover" style="position:relative;aspect-ratio:4/5;background:{{c.ambience}};color:#F5F1EA;padding:clamp(1.5rem,3vw,2.25rem);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;box-shadow:0 1px 0 rgba(29,31,33,0.08),0 18px 40px -24px rgba(29,31,33,0.45)">
+          <svg aria-hidden="true" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%">
+            <rect x="0" y="120" width="400" height="26" fill="#F5F1EA" fill-opacity="0.10"></rect>
+            <rect x="60" y="156" width="340" height="26" fill="#F5F1EA" fill-opacity="0.14"></rect>
+            <rect x="20" y="192" width="380" height="26" fill="#F5F1EA" fill-opacity="0.18"></rect>
+            <rect x="110" y="228" width="290" height="26" fill="#F5F1EA" fill-opacity="0.22"></rect>
+            <rect x="40" y="264" width="360" height="26" fill="#F5F1EA" fill-opacity="0.16"></rect>
+            <rect x="170" y="300" width="230" height="26" fill="#F5F1EA" fill-opacity="0.12"></rect>
+            <circle cx="96" cy="241" r="9" fill="#F5F1EA" fill-opacity="0.7"></circle>
+          </svg>
+          <div style="position:relative;display:flex;justify-content:space-between;align-items:center;font-size:0.75rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase">
+            <span>Middle Watch</span>
+            <span>02</span>
+          </div>
+          <div style="position:relative">
+            <p style="margin:0 0 0.5rem;font-size:0.8125rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase">Soundscapes</p>
+            <h3 style="margin:0;font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:clamp(3rem,6.5vw,5.25rem);line-height:0.95;letter-spacing:-0.03em">Ambience</h3>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:1rem">
+          <p style="margin:0;font-size:1.0625rem;line-height:1.65;color:#2E3032">For falling asleep, settling into work or a slow Sunday morning. Long-form soundscapes: rain, snow, candlelight, the sea after dark and more. Put one on and forget it's there.</p>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.75rem 1rem;margin-top:0.5rem">
+            <a class="mw-cta mw-cta-ambience" href="https://www.youtube.com/[@AMBIENCE_HANDLE]" style="display:inline-flex;align-items:center;gap:0.6rem;min-height:44px;padding:0 1.25rem;border:1.5px solid {{c.ambience}};color:{{c.ambience}};font-weight:600;font-size:0.9375rem">
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="13" height="10" rx="2.5"></rect><path d="M6.5 6v4l3.5-2z" stroke-linejoin="round"></path></svg>
+              Listen on YouTube
+            </a>
+            <span style="font-family:ui-monospace,Menlo,monospace;font-size:0.875rem;color:#3A3B3C">[@AMBIENCE_HANDLE]</span>
+          </div>
+          <p style="margin:0;display:inline-flex;align-items:center;gap:0.5rem;font-size:0.8125rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#55534D">
+            <span aria-hidden="true" style="width:0.5rem;height:0.5rem;border-radius:50%;background:{{c.ambience}}"></span>
+            Channel coming soon
+          </p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- What we make -->
+  <section aria-labelledby="make-title" style="background:#EBE5DA;border-top:1px solid #DDD6CA;border-bottom:1px solid #DDD6CA">
+    <div style="max-width:1200px;margin:0 auto;padding:clamp(2.5rem,5vw,3.5rem) clamp(1.25rem,4vw,2.5rem)">
+      <h2 id="make-title" style="margin:0 0 2rem;font-size:0.8125rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#55534D">What we make</h2>
+      <ul class="mw-facts" style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2rem">
+        <li style="display:flex;flex-direction:column;gap:0.5rem;border-top:3px solid {{c.stories}};padding-top:1rem">
+          <span style="font-family:'Fraunces',Georgia,serif;font-size:1.375rem;font-weight:500;letter-spacing:-0.01em">Original fiction</span>
+          <span style="font-size:0.9375rem;line-height:1.55;color:#3A3B3C">New stories, not adaptations.</span>
+        </li>
+        <li style="display:flex;flex-direction:column;gap:0.5rem;border-top:3px solid {{c.stories}};padding-top:1rem">
+          <span style="font-family:'Fraunces',Georgia,serif;font-size:1.375rem;font-weight:500;letter-spacing:-0.01em">Stand-alone by design</span>
+          <span style="font-size:0.9375rem;line-height:1.55;color:#3A3B3C">Start anywhere. Some stories link up in four-part arcs.</span>
+        </li>
+        <li style="display:flex;flex-direction:column;gap:0.5rem;border-top:3px solid {{c.ambience}};padding-top:1rem">
+          <span style="font-family:'Fraunces',Georgia,serif;font-size:1.375rem;font-weight:500;letter-spacing:-0.01em">Long-form soundscapes</span>
+          <span style="font-size:0.9375rem;line-height:1.55;color:#3A3B3C">Made to play in the background for a long while.</span>
+        </li>
+        <li style="display:flex;flex-direction:column;gap:0.5rem;border-top:3px solid #1D1F21;padding-top:1rem">
+          <span style="font-family:'Fraunces',Georgia,serif;font-size:1.375rem;font-weight:500;letter-spacing:-0.01em">More on the way</span>
+          <span style="font-size:0.9375rem;line-height:1.55;color:#3A3B3C">Things to read and play are in the works.</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" aria-labelledby="about-title" style="max-width:1200px;margin:0 auto;padding:clamp(4rem,8vw,6.5rem) clamp(1.25rem,4vw,2.5rem)">
+    <div class="mw-about" style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:2rem">
+      <h2 id="about-title" style="grid-column:span 4;margin:0;font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:1.5rem;letter-spacing:-0.01em">About the studio</h2>
+      <div style="grid-column:span 8;display:flex;flex-direction:column;gap:1.25rem;max-width:44rem">
+        <p style="margin:0;font-family:'Fraunces',Georgia,serif;font-size:clamp(1.375rem,2.4vw,1.875rem);line-height:1.4;letter-spacing:-0.01em;color:#1D1F21">Middle Watch makes things for the quiet parts of the day: stories with a beginning, a middle and an end, and sound you can leave on for hours.</p>
+        <p style="margin:0;font-size:1.0625rem;line-height:1.65;color:#3A3B3C">It's a small studio that makes stories, sound and games using modern tools, including AI, with a lot of human direction.</p>
+        <p style="margin:0;font-size:0.875rem;line-height:1.6;color:#55534D">The name comes from the midnight-to-four watch at sea, when most of the world is asleep.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact" style="background:#1D1F21;color:#F5F1EA">
+    <div style="max-width:1200px;margin:0 auto;padding:clamp(3rem,6vw,4.5rem) clamp(1.25rem,4vw,2.5rem) 2rem;display:flex;flex-direction:column;gap:3rem">
+      <div style="display:flex;flex-direction:column;gap:1rem">
+        <p style="margin:0;font-size:0.8125rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#BDB6AA">Say hello</p>
+        <a class="mw-mail" href="mailto:hello@middlewatch.co" style="align-self:flex-start;font-family:'Fraunces',Georgia,serif;font-size:clamp(1.75rem,4vw,3rem);font-weight:400;letter-spacing:-0.02em;color:#F5F1EA;padding-bottom:0.15rem">hello@middlewatch.co</a>
+      </div>
+      <div class="mw-foot" style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;border-top:1px solid #45474A;padding-top:1.5rem;font-size:0.875rem;color:#C9C3B8">
+        <div style="display:flex;align-items:center;gap:0.75rem">
+          <svg aria-hidden="true" width="22" height="22" viewBox="0 0 30 30"><rect x="1" y="1" width="12" height="28" fill="{{c.storiesLight}}"></rect><rect x="17" y="1" width="12" height="28" fill="{{c.ambienceLight}}"></rect></svg>
+          <span>&#169; 2026 Middle Watch</span>
+        </div>
+        <nav class="mw-nav" aria-label="Footer" style="display:flex;flex-wrap:wrap;gap:0.25rem 1.5rem">
+          <a href="#listen" style="display:inline-flex;align-items:center;min-height:44px;color:#F5F1EA">Listen</a>
+          <a href="#about" style="display:inline-flex;align-items:center;min-height:44px;color:#F5F1EA">About</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2650},"storiesColor":{"editor":"color","default":"#1F5B59"},"ambienceColor":{"editor":"color","default":"#94434F"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props || {};
+    const stories = p.storiesColor || "#1F5B59";
+    const ambience = p.ambienceColor || "#94434F";
+    return {
+      c: {
+        stories: stories,
+        ambience: ambience,
+        storiesLight: "#7FB3AE",
+        ambienceLight: "#D99AA3"
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

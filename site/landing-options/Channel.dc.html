@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Middle Watch: The Channel</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap">
+<style>
+body{margin:0;background:#131418;color:#F4F5F7;font-family:Manrope,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#F4F5F7;text-decoration:none}a:hover{color:#FFFFFF}
+a:focus-visible,button:focus-visible{outline:2px solid #FFFFFF;outline-offset:3px}
+.mw-tab:hover{background:#24272E}
+.mw-btn-ghost:hover{background:#2A2D35;color:#FFFFFF}
+.mw-tile{transition:transform .25s ease}
+.mw-tile:hover{transform:translateY(-4px)}
+.mw-tile:hover .mw-tile-art{border-color:#3C414B}
+.mw-play:hover{filter:brightness(1.08)}
+.mw-mail:hover{color:#FFFFFF;border-color:#F4F5F7}
+@keyframes mweq{0%{transform:scaleY(.25)}50%{transform:scaleY(1)}100%{transform:scaleY(.4)}}
+@keyframes mwprog{from{width:0%}to{width:100%}}
+@keyframes mwfloat{0%{transform:translate(0,0)}50%{transform:translate(10px,-8px)}100%{transform:translate(0,0)}}
+.mw-eqbar{transform-origin:bottom center;animation:mweq .9s ease-in-out infinite alternate}
+.mw-drift{animation:mwfloat 9s ease-in-out infinite}
+@media (prefers-reduced-motion: reduce){.mw-eqbar,.mw-drift{animation:none}.mw-tile{transition:none}}
+@media (max-width: 900px){
+  .mw-hero{grid-template-columns:minmax(0,1fr) !important}
+  .mw-about{grid-template-columns:minmax(0,1fr) !important}
+}
+@media (max-width: 720px){
+  .mw-topbar{flex-direction:column;align-items:flex-start !important}
+  .mw-tabs{width:100%;overflow-x:auto;flex-wrap:nowrap !important}
+  .mw-shelf-head{flex-direction:column;align-items:flex-start !important}
+  .mw-row{display:flex !important;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:.75rem;margin-right:-1.25rem;padding-right:1.25rem}
+  .mw-row > *{flex:0 0 72%;scroll-snap-align:start}
+  .mw-footer{flex-direction:column;align-items:flex-start !important}
+}
+</style>
+</helmet>
+
+<div style="background:#131418;color:#F4F5F7;font-family:Manrope,system-ui,sans-serif;min-height:100vh;">
+
+  <!-- TOP BAR -->
+  <header style="border-bottom:1px solid #24272E;background:#16171C;">
+    <div class="mw-topbar" style="max-width:1240px;margin:0 auto;padding:.9rem clamp(1.25rem,4vw,2.5rem);display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+      <a href="#top" aria-label="Middle Watch home" style="display:flex;align-items:center;gap:.7rem;min-height:44px;">
+        <svg aria-hidden="true" width="30" height="30" viewBox="0 0 30 30"><rect x="1" y="1" width="28" height="28" rx="8" fill="#24272E"></rect><circle cx="12" cy="15" r="6" fill="#9D8CFF"></circle><circle cx="18" cy="15" r="6" fill="#4FE3C1" fill-opacity=".85"></circle></svg>
+        <span style="font-weight:800;font-size:1.08rem;letter-spacing:-.01em;">Middle Watch</span>
+      </a>
+      <nav aria-label="Primary">
+        <ul class="mw-tabs" style="list-style:none;margin:0;padding:.25rem;display:flex;flex-wrap:wrap;gap:.25rem;background:#1D1F25;border:1px solid #2A2D35;border-radius:999px;">
+          <li><a class="mw-tab" href="#top" aria-current="page" style="display:flex;align-items:center;min-height:44px;padding:0 1rem;border-radius:999px;background:#2E323B;font-weight:600;font-size:.9rem;white-space:nowrap;">Home</a></li>
+          <sc-for list="{{tabs}}" as="t" hint-placeholder-count="2">
+            <li><a class="mw-tab" href="{{t.href}}" style="display:flex;align-items:center;gap:.5rem;min-height:44px;padding:0 1rem;border-radius:999px;font-weight:600;font-size:.9rem;color:#C9CDD5;white-space:nowrap;"><span aria-hidden="true" style="{{t.dot}}"></span>{{t.label}}</a></li>
+          </sc-for>
+          <li><a class="mw-tab" href="#about" style="display:flex;align-items:center;min-height:44px;padding:0 1rem;border-radius:999px;font-weight:600;font-size:.9rem;color:#C9CDD5;white-space:nowrap;">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- HERO -->
+    <section aria-labelledby="hero-title" style="max-width:1240px;margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) clamp(1.25rem,4vw,2.5rem) clamp(2rem,5vw,3.5rem);">
+      <div class="mw-hero" style="display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(2rem,4vw,3.5rem);align-items:center;">
+
+        <div style="display:flex;flex-direction:column;gap:1.4rem;">
+          <p style="margin:0;font-size:.8rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#A3A9B5;">An independent studio</p>
+          <h1 id="hero-title" style="margin:0;font-size:clamp(2.4rem,5vw,3.9rem);line-height:1.04;font-weight:800;letter-spacing:-.035em;">Something for every quiet hour.</h1>
+          <p style="margin:0;font-size:1.1rem;line-height:1.6;color:#C9CDD5;max-width:32rem;">Stories to listen to, soundscapes to settle into, and more on the way. Both channels are launching on YouTube.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:.75rem;padding-top:.4rem;">
+            <a href="#stories" style="{{storiesCta}}">Audio stories</a>
+            <a href="#ambience" class="mw-btn-ghost" style="display:inline-flex;align-items:center;gap:.55rem;min-height:48px;padding:0 1.35rem;border-radius:999px;background:#1F2128;border:1px solid #33373F;font-weight:700;font-size:.95rem;color:#F4F5F7;"><span aria-hidden="true" style="{{ambienceDot}}"></span>Ambience</a>
+          </div>
+        </div>
+
+        <!-- FEATURED CARD -->
+        <article aria-label="Featured preview" style="background:#1B1D22;border:1px solid #2A2D35;border-radius:28px;padding:clamp(.75rem,1.5vw,1rem);display:flex;flex-direction:column;gap:1rem;">
+          <div style="position:relative;height:clamp(220px,28vw,340px);border-radius:20px;overflow:hidden;background:#1F1C33;">
+            <svg aria-hidden="true" viewBox="0 0 700 340" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%;">
+              <defs>
+                <filter id="mwsoft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="28"></feGaussianBlur></filter>
+                <filter id="mwsoft2" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"></feGaussianBlur></filter>
+              </defs>
+              <rect width="700" height="340" fill="#1F1C33"></rect>
+              <g filter="url(#mwsoft)">
+                <circle cx="190" cy="120" r="150" fill="#6F5CF0" fill-opacity=".85"></circle>
+                <circle cx="520" cy="250" r="140" fill="#2FBF9F" fill-opacity=".7"></circle>
+                <circle cx="420" cy="70" r="90" fill="#C66BD9" fill-opacity=".45"></circle>
+              </g>
+              <g class="mw-drift">
+                <circle cx="300" cy="185" r="88" fill="none" stroke="#F4F5F7" stroke-opacity=".28" stroke-width="1.5"></circle>
+                <circle cx="372" cy="185" r="88" fill="none" stroke="#F4F5F7" stroke-opacity=".18" stroke-width="1.5"></circle>
+              </g>
+              <g filter="url(#mwsoft2)">
+                <rect x="470" y="110" width="120" height="120" rx="60" fill="#9D8CFF" fill-opacity=".5"></rect>
+              </g>
+              <circle cx="560" cy="80" r="5" fill="#F4F5F7" fill-opacity=".7"></circle>
+              <circle cx="120" cy="270" r="3" fill="#F4F5F7" fill-opacity=".5"></circle>
+            </svg>
+            <div style="position:absolute;left:1rem;top:1rem;display:flex;gap:.5rem;flex-wrap:wrap;">
+              <span style="display:inline-flex;align-items:center;min-height:30px;padding:0 .8rem;border-radius:999px;background:#131418;color:#F4F5F7;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;">Featured</span>
+              <span style="{{storiesChip}}">Audio story</span>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:.35rem;padding:0 .35rem;">
+            <h2 style="margin:0;font-size:clamp(1.3rem,2.2vw,1.6rem);font-weight:800;letter-spacing:-.02em;">First episode coming soon</h2>
+            <p style="margin:0;font-size:.95rem;color:#A3A9B5;line-height:1.5;">[EPISODE TITLE] &middot; [RUNTIME]. The player below is a preview of how episodes will appear here.</p>
+          </div>
+
+          <!-- PLAYER BAR -->
+          <div style="display:flex;align-items:center;gap:1rem;background:#24272E;border-radius:18px;padding:.75rem 1rem .75rem .75rem;">
+            <button type="button" class="mw-play" onClick="{{togglePlay}}" aria-label="{{playLabel}}" aria-pressed="{{playPressed}}" style="{{playBtn}}">
+              <sc-if value="{{isPlaying}}" hint-placeholder-val="{{ false }}">
+                <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#131418" stroke-width="2.6" stroke-linecap="round"><line x1="8" y1="5" x2="8" y2="19"></line><line x1="16" y1="5" x2="16" y2="19"></line></svg>
+              </sc-if>
+              <sc-if value="{{isPaused}}" hint-placeholder-val="{{ true }}">
+                <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#131418" stroke-width="2.4" stroke-linejoin="round"><path d="M8 5.5v13l10.5-6.5z"></path></svg>
+              </sc-if>
+            </button>
+
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:.5rem;">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:.75rem;">
+                <span aria-live="polite" style="font-size:.85rem;font-weight:700;color:#F4F5F7;">{{statusText}}</span>
+                <div aria-hidden="true" style="display:flex;align-items:flex-end;gap:3px;height:20px;">
+                  <sc-if value="{{isPlaying}}" hint-placeholder-val="{{ false }}">
+                    <span class="mw-eqbar" style="{{eq1}}"></span>
+                    <span class="mw-eqbar" style="{{eq2}}"></span>
+                    <span class="mw-eqbar" style="{{eq3}}"></span>
+                    <span class="mw-eqbar" style="{{eq4}}"></span>
+                    <span class="mw-eqbar" style="{{eq5}}"></span>
+                  </sc-if>
+                  <sc-if value="{{isPaused}}" hint-placeholder-val="{{ true }}">
+                    <span style="display:block;width:3px;height:5px;border-radius:2px;background:#6B717D;"></span>
+                    <span style="display:block;width:3px;height:5px;border-radius:2px;background:#6B717D;"></span>
+                    <span style="display:block;width:3px;height:5px;border-radius:2px;background:#6B717D;"></span>
+                    <span style="display:block;width:3px;height:5px;border-radius:2px;background:#6B717D;"></span>
+                    <span style="display:block;width:3px;height:5px;border-radius:2px;background:#6B717D;"></span>
+                  </sc-if>
+                </div>
+              </div>
+              <div style="height:6px;border-radius:999px;background:#363A44;overflow:hidden;">
+                <sc-if value="{{isPlaying}}" hint-placeholder-val="{{ false }}">
+                  <div style="{{progressFill}}"></div>
+                </sc-if>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:.78rem;font-weight:600;color:#A3A9B5;font-variant-numeric:tabular-nums;">
+                <span>[0:00]</span><span>[RUNTIME]</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- LISTEN: shelves for audio. Read and Play get their own headed groups later. -->
+    <div id="listen" style="max-width:1240px;margin:0 auto;padding:clamp(1.5rem,3vw,2.5rem) clamp(1.25rem,4vw,2.5rem) 0;display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+      <h2 style="margin:0;font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-.035em;">Listen</h2>
+      <p style="margin:0;font-size:.95rem;color:#A3A9B5;">Things to read and play are on the way.</p>
+    </div>
+
+    <!-- SHELF: AUDIO STORIES -->
+    <section id="stories" aria-labelledby="stories-title" style="max-width:1240px;margin:0 auto;padding:clamp(2rem,4vw,3rem) clamp(1.25rem,4vw,2.5rem);">
+      <div style="background:#1B1D22;border:1px solid #24272E;border-radius:28px;padding:clamp(1.25rem,3vw,2rem);display:flex;flex-direction:column;gap:1.5rem;overflow:hidden;">
+        <div class="mw-shelf-head" style="display:flex;align-items:flex-end;justify-content:space-between;gap:1.25rem;">
+          <div style="display:flex;flex-direction:column;gap:.6rem;max-width:46rem;">
+            <span style="{{storiesEyebrow}}"><span aria-hidden="true" style="{{storiesDot}}"></span>Listen · 01</span>
+            <h2 id="stories-title" style="margin:0;font-size:clamp(1.7rem,3vw,2.3rem);font-weight:800;letter-spacing:-.025em;">Audio stories</h2>
+            <p style="margin:0;font-size:1rem;line-height:1.6;color:#C9CDD5;">For an evening in, a long drive or the walk home. Original short fiction, read aloud, often historically grounded with a Regency feel. Every story stands alone.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:.45rem;padding-top:.2rem;">
+              <span style="display:inline-flex;align-items:center;min-height:30px;padding:0 .75rem;border-radius:999px;background:#24272E;font-size:.8rem;font-weight:600;color:#C9CDD5;">Historical</span>
+              <span style="display:inline-flex;align-items:center;min-height:30px;padding:0 .75rem;border-radius:999px;background:#24272E;font-size:.8rem;font-weight:600;color:#C9CDD5;">Cozy sci-fi, in development</span>
+              <span style="display:inline-flex;align-items:center;min-height:30px;padding:0 .75rem;border-radius:999px;background:#24272E;font-size:.8rem;font-weight:600;color:#C9CDD5;">Post-cataclysm fantasy, in development</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-start;gap:.35rem;flex-shrink:0;">
+            <span style="display:inline-flex;align-items:center;gap:.5rem;min-height:44px;padding:0 1rem;border-radius:999px;border:1px solid #33373F;font-weight:700;font-size:.9rem;">
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F4F5F7" stroke-width="1.8" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="4"></rect><path d="M10 9.2v5.6l4.8-2.8z"></path></svg>
+              [@STORIES_HANDLE]
+            </span>
+            <span style="font-size:.8rem;color:#A3A9B5;padding-left:.25rem;">YouTube channel coming soon</span>
+          </div>
+        </div>
+
+        <ul class="mw-row" aria-label="Audio story placeholders" style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;">
+          <li class="mw-tile" style="display:flex;flex-direction:column;gap:.7rem;">
+            <div class="mw-tile-art" style="{{storiesTileA}}">
+              <svg aria-hidden="true" viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;display:block;"><circle cx="55" cy="55" r="38" fill="currentColor" fill-opacity=".85"></circle><circle cx="105" cy="45" r="26" fill="#F4F5F7" fill-opacity=".14"></circle><rect x="96" y="66" width="44" height="8" rx="4" fill="currentColor" fill-opacity=".45"></rect></svg>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:.15rem;">
+              <span style="font-weight:700;font-size:.98rem;">[EPISODE TITLE]</span>
+              <span style="font-size:.82rem;color:#A3A9B5;">Audio story &middot; [RUNTIME]</span>
+            </div>
+          </li>
+          <li class="mw-tile" style="display:flex;flex-direction:column;gap:.7rem;">
+            <div class="mw-tile-art" style="{{storiesTileB}}">
+              <svg aria-hidden="true" viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;display:block;"><rect x="20" y="18" width="64" height="64" rx="32" fill="currentColor" fill-opacity=".7"></rect><rect x="60" y="30" width="80" height="40" rx="20" fill="#F4F5F7" fill-opacity=".12"></rect><circle cx="128" cy="24" r="6" fill="currentColor"></circle></svg>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:.15rem;">
+              <span style="font-weight:700;font-size:.98rem;">[EPISODE TITLE]</span>
+              <span style="font-size:.82rem;color:#A3A9B5;">Audio story &middot; [RUNTIME]</span>
+            </div>
+          </li>
+          <li class="mw-tile" style="display:flex;flex-direction:column;gap:.7rem;">
+            <div class="mw-tile-art" style="{{storiesTileA}}">
+              <svg aria-hidden="true" viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;display:block;"><path d="M0 78 C40 50 80 96 160 60 L160 100 L0 100 Z" fill="currentColor" fill-opacity=".6"></path><circle cx="112" cy="36" r="20" fill="#F4F5F7" fill-opacity=".16"></circle><circle cx="40" cy="30" r="10" fill="currentColor" fill-opacity=".9"></circle></svg>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:.15rem;">
+              <span style="font-weight:700;font-size:.98rem;">[EPISODE TITLE]</span>
+              <span style="font-size:.82rem;color:#A3A9B5;">Audio story &middot; [RUNTIME]</span>
+            </div>
+          </li>
+          <li class="mw-tile" style="display:flex;flex-direction:column;gap:.7rem;">
+            <div class="mw-tile-art" style="{{storiesTileB}}">
+              <svg aria-hidden="true" viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;display:block;"><circle cx="80" cy="50" r="34" fill="none" stroke="currentColor" stroke-width="10" stroke-opacity=".75"></circle><circle cx="80" cy="50" r="12" fill="#F4F5F7" fill-opacity=".2"></circle><rect x="16" y="16" width="22" height="22" rx="7" fill="currentColor" fill-opacity=".4"></rect></svg>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:.15rem;">
+              <span style="font-weight:700;font-size:.98rem;">[EPISODE TITLE]</span>
+              <span style="font-size:.82rem;color:#A3A9B5;">Audio story &middot; [RUNTIME]</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SHELF: AMBIENCE -->
+    <section id="ambience" aria-labelledby="ambience-title" style="max-width:1240px;margin:0 auto;padding:clamp(1rem,2vw,1.5rem) clamp(1.25rem,4vw,2.5rem) clamp(2rem,4vw,3rem);">
+      <div style="background:#1B1D22;border:1px solid #24272E;border-radius:28px;padding:clamp(1.25rem,3vw,2rem);display:flex;flex-direction:column;gap:1.5rem;overflow:hidden;">
+        <div class="mw-shelf-head" style="display:flex;align-items:flex-end;justify-content:space-between;gap:1.25rem;">
+          <div style="display:flex;flex-direction:column;gap:.6rem;max-width:46rem;">
+            <span style="{{ambienceEyebrow}}"><span aria-hidden="true" style="{{ambienceDot}}"></span>Listen · 02</span>
+            <h2 id="ambience-title" style="margin:0;font-size:clamp(1.7rem,3vw,2.3rem);font-weight:800;letter-spacing:-.025em;">Ambience</h2>
+            <p style="margin:0;font-size:1rem;line-height:1.6;color:#C9CDD5;">For falling asleep, settling into work or a slow morning. Long-form soundscapes: candlelight, snow, rain, the sea at night. Put one on and forget it's there.</p>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-start;gap:.35rem;flex-shrink:0;">
+            <span style="display:inline-flex;align-items:center;gap:.5rem;min-height:44px;padding:0 1rem;border-radius:999px;border:1px solid #33373F;font-weight:700;font-size:.9rem;">
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F4F5F7" stroke-width="1.8" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="4"></rect><path d="M10 9.2v5.6l4.8-2.8z"></path></svg>
+              [@AMBIENCE_HANDLE]
+            </span>
+            <span style="font-size:.8rem;color:#A3A9B5;padding-left:.25rem;">YouTube channel coming soon</span>
+          </div>
+        </div>
+
+        <ul class="mw-row" aria-label="Soundscape placeholders" style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;">
+          <li class="mw-tile" style="display:flex;flex-direction:column;gap:.7rem;">
+            <div class="mw-tile-art" style="{{ambienceTileA}}">
+              <svg aria-hidden="true" viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;display:block;"><circle cx="80" cy="58" r="30" fill="currentColor" fill-opacity=".55"></circle><circle cx="80" cy="58" r="14" fill="currentColor" fill-opacity=".9"></circle><circle cx="80" cy="58" r="46" fill="none" stroke="currentColor" stroke-opacity=".25" stroke-width="1.5"></circle></svg>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:.15rem;">
+              <span style="font-weight:700;font-size:.98rem;">[SOUNDSCAPE TITLE]</span>
+              <span style="font-size:.82rem;color:#A3A9B5;">Ambience &middot; [LENGTH]</span>
+            </div>
+          </li>
+          <li class="mw-tile" style="display:flex;flex-direction:column;gap:.7rem;">
+            <div class="mw-tile-art" style="{{ambienceTileB}}">
+              <svg aria-hidden="true" viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;display:block;"><circle cx="30" cy="22" r="3" fill="#F4F5F7" fill-opacity=".7"></circle><circle cx="62" cy="40" r="2.5" fill="#F4F5F7" fill-opacity=".6"></circle><circle cx="98" cy="18" r="3" fill="#F4F5F7" fill-opacity=".7"></circle><circle cx="130" cy="44" r="2.5" fill="#F4F5F7" fill-opacity=".6"></circle><circle cx="46" cy="66" r="2" fill="#F4F5F7" fill-opacity=".5"></circle><circle cx="114" cy="72" r="2" fill="#F4F5F7" fill-opacity=".5"></circle><path d="M0 86 C50 74 110 74 160 86 L160 100 L0 100 Z" fill="currentColor" fill-opacity=".7"></path></svg>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:.15rem;">
+              <span style="font-weight:700;font-size:.98rem;">[SOUNDSCAPE TITLE]</span>
+              <span style="font-size:.82rem;color:#A3A9B5;">Ambience &middot; [LENGTH]</span>
+            </div>
+          </li>
+          <li class="mw-tile" style="display:flex;flex-direction:column;gap:.7rem;">
+            <div class="mw-tile-art" style="{{ambienceTileA}}">
+              <svg aria-hidden="true" viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;display:block;"><g stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-opacity=".7"><line x1="30" y1="14" x2="22" y2="38"></line><line x1="64" y1="24" x2="56" y2="48"></line><line x1="98" y1="10" x2="90" y2="34"></line><line x1="132" y1="22" x2="124" y2="46"></line><line x1="46" y1="54" x2="38" y2="78"></line><line x1="112" y1="58" x2="104" y2="82"></line></g></svg>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:.15rem;">
+              <span style="font-weight:700;font-size:.98rem;">[SOUNDSCAPE TITLE]</span>
+              <span style="font-size:.82rem;color:#A3A9B5;">Ambience &middot; [LENGTH]</span>
+            </div>
+          </li>
+          <li class="mw-tile" style="display:flex;flex-direction:column;gap:.7rem;">
+            <div class="mw-tile-art" style="{{ambienceTileB}}">
+              <svg aria-hidden="true" viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;display:block;"><path d="M0 50 C30 38 50 62 80 50 S130 38 160 50" fill="none" stroke="currentColor" stroke-width="3" stroke-opacity=".85"></path><path d="M0 64 C30 52 50 76 80 64 S130 52 160 64" fill="none" stroke="currentColor" stroke-width="3" stroke-opacity=".5"></path><path d="M0 78 C30 66 50 90 80 78 S130 66 160 78" fill="none" stroke="currentColor" stroke-width="3" stroke-opacity=".28"></path></svg>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:.15rem;">
+              <span style="font-weight:700;font-size:.98rem;">[SOUNDSCAPE TITLE]</span>
+              <span style="font-size:.82rem;color:#A3A9B5;">Ambience &middot; [LENGTH]</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" aria-labelledby="about-title" style="max-width:1240px;margin:0 auto;padding:clamp(2rem,5vw,4rem) clamp(1.25rem,4vw,2.5rem);">
+      <div class="mw-about" style="display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(1.5rem,4vw,3.5rem);align-items:start;">
+        <h2 id="about-title" style="margin:0;font-size:clamp(1.7rem,3vw,2.3rem);font-weight:800;letter-spacing:-.025em;line-height:1.15;">Made for the quiet parts of the day.</h2>
+        <div style="display:flex;flex-direction:column;gap:1rem;font-size:1.05rem;line-height:1.7;color:#C9CDD5;">
+          <p style="margin:0;">Middle Watch is a small studio that makes stories, sound and games using modern tools, including AI, with a lot of human direction.</p>
+          <p style="margin:0;">Each format gets its own channel, so you can follow the one you want. The first episodes are in production now, and things to read and play are on the way.</p>
+          <p style="margin:0;font-size:.9rem;color:#A3A9B5;">The name is borrowed from the midnight-to-4am watch at sea.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer style="border-top:1px solid #24272E;background:#16171C;">
+    <div class="mw-footer" style="max-width:1240px;margin:0 auto;padding:2rem clamp(1.25rem,4vw,2.5rem);display:flex;align-items:center;justify-content:space-between;gap:1.25rem;">
+      <div style="display:flex;flex-direction:column;gap:.3rem;">
+        <span style="font-weight:800;font-size:1rem;">Middle Watch</span>
+        <span style="font-size:.85rem;color:#A3A9B5;">Audio stories and ambience. &copy; [YEAR]</span>
+      </div>
+      <a class="mw-mail" href="mailto:hello@middlewatch.co" style="display:inline-flex;align-items:center;gap:.6rem;min-height:48px;padding:0 1.25rem;border-radius:999px;border:1px solid #3C414B;font-weight:700;font-size:.95rem;color:#E4E6EA;">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"></rect><path d="M4 7l8 6 8-6"></path></svg>
+        hello@middlewatch.co
+      </a>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2300},"storiesAccent":{"editor":"color","default":"#9D8CFF"},"ambienceAccent":{"editor":"color","default":"#4FE3C1"}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { playing: false };
+  }
+  renderVals() {
+    var self = this;
+    var p = this.props || {};
+    var sa = p.storiesAccent || '#9D8CFF';
+    var aa = p.ambienceAccent || '#4FE3C1';
+    var playing = !!this.state.playing;
+
+    function dot(c) { return 'display:inline-block;width:8px;height:8px;border-radius:999px;background:' + c + ';'; }
+    function eyebrow(c) { return 'display:inline-flex;align-items:center;gap:.5rem;font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:' + c + ';'; }
+    function tile(c, bg) { return 'aspect-ratio:16/10;border-radius:18px;overflow:hidden;background:' + bg + ';border:1px solid #2A2D35;color:' + c + ';'; }
+    function bar(h, dur, delay) {
+      return 'display:block;width:3px;height:' + h + 'px;border-radius:2px;background:' + sa + ';animation-duration:' + dur + 's;animation-delay:' + delay + 's;';
+    }
+
+    return {
+      tabs: [
+        { label: 'Audio stories', href: '#stories', dot: dot(sa) },
+        { label: 'Ambience', href: '#ambience', dot: dot(aa) }
+      ],
+      storiesCta: 'display:inline-flex;align-items:center;min-height:48px;padding:0 1.35rem;border-radius:999px;background:' + sa + ';color:#131418;font-weight:800;font-size:.95rem;',
+      ambienceDot: dot(aa),
+      storiesDot: dot(sa),
+      storiesEyebrow: eyebrow(sa),
+      ambienceEyebrow: eyebrow(aa),
+      storiesChip: 'display:inline-flex;align-items:center;min-height:30px;padding:0 .8rem;border-radius:999px;background:' + sa + ';color:#131418;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;',
+      storiesTileA: tile(sa, '#22203A'),
+      storiesTileB: tile(sa, '#2A2540'),
+      ambienceTileA: tile(aa, '#16302C'),
+      ambienceTileB: tile(aa, '#1B2A2E'),
+
+      isPlaying: playing,
+      isPaused: !playing,
+      playLabel: playing ? 'Pause preview' : 'Play preview',
+      playPressed: playing ? 'true' : 'false',
+      statusText: playing ? 'Playing preview' : 'Preview, paused',
+      togglePlay: function () { self.setState({ playing: !self.state.playing }); },
+      playBtn: 'flex-shrink:0;width:56px;height:56px;border-radius:999px;border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;background:' + (playing ? '#F4F5F7' : sa) + ';',
+      eq1: bar(14, 0.8, 0),
+      eq2: bar(20, 1.1, 0.15),
+      eq3: bar(12, 0.7, 0.3),
+      eq4: bar(18, 1.0, 0.1),
+      eq5: bar(10, 0.9, 0.25),
+      progressFill: 'height:100%;border-radius:999px;background:' + sa + ';animation:mwprog 30s linear infinite;'
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Middle Watch: The Watch Band</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&amp;family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&amp;family=Libre+Caslon+Display&amp;display=swap">
+<style>
+body{margin:0;background:#0A1C30;color:#EDE6D6;-webkit-font-smoothing:antialiased}
+a{color:#F0B45A;text-decoration:none}a:hover{color:#FFD9A0}
+.mw-nav a{display:inline-flex;align-items:center;min-height:44px;color:#C9D2DC}
+.mw-nav a:hover{color:#F0B45A}
+.mw-seg{background:transparent;border:0;cursor:pointer;padding:0}
+.mw-seg:hover .mw-seg-hint{opacity:1}
+.mw-seg:focus-visible{outline:2px solid #F0B45A;outline-offset:2px}
+.mw-entry:hover{border-color:#3B5C80}
+@keyframes mw-flicker{0%,100%{opacity:1}45%{opacity:.86}55%{opacity:.95}}
+@keyframes mw-pulse{0%,100%{box-shadow:0 0 0 0 rgba(240,180,90,.55)}50%{box-shadow:0 0 0 8px rgba(240,180,90,0)}}
+@media (max-width:820px){
+  .mw-grid{grid-template-columns:repeat(1,minmax(0,1fr)) !important}
+  .mw-why{grid-template-columns:repeat(1,minmax(0,1fr)) !important}
+  .mw-whycol{grid-column:auto !important}
+  .mw-navrow{flex-direction:column;align-items:flex-start !important}
+  .mw-ticklabel{font-size:10px !important}
+  .mw-hidesm{display:none !important}
+}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#0A1C30;color:#EDE6D6;font-family:'Libre Caslon Text',Georgia,serif;">
+
+  <!-- NAV: one link per watch; future watches are added as sibling links -->
+  <header style="border-bottom:1px solid #1F3A58;">
+    <div class="mw-navrow" style="max-width:72rem;margin:0 auto;padding:1rem clamp(1.25rem,4vw,2.5rem);display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+      <a href="#top" style="display:inline-flex;align-items:center;gap:.75rem;color:#EDE6D6;min-height:44px;">
+        <svg aria-hidden="true" width="22" height="28" viewBox="0 0 22 28" fill="none" stroke="currentColor" stroke-width="1.3">
+          <path d="M7 4h8M11 1v3M6 8h10l-1 14H7L6 8z"></path>
+          <path d="M4 26h14"></path>
+          <circle cx="11" cy="15" r="2.4" fill="{{accent}}" stroke="none" style="animation:mw-flicker 4s ease-in-out infinite;"></circle>
+        </svg>
+        <span style="font-family:'Libre Caslon Display',Georgia,serif;font-size:1.5rem;letter-spacing:.01em;">Middle Watch</span>
+      </a>
+      <nav class="mw-nav" aria-label="Primary" style="display:flex;flex-wrap:wrap;gap:.25rem 1.75rem;font-family:Archivo,system-ui,sans-serif;font-size:.8125rem;letter-spacing:.14em;text-transform:uppercase;">
+        <a href="#stories">Stories</a>
+        <a href="#ambience">Ambience</a>
+        <a href="#the-name">The Name</a>
+        <a href="mailto:hello@middlewatch.co">Write</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO + WATCH BAND -->
+  <section id="top" style="max-width:72rem;margin:0 auto;padding:clamp(4rem,9vw,7.5rem) clamp(1.25rem,4vw,2.5rem) clamp(3.5rem,7vw,6rem);">
+    <p style="margin:0 0 1.5rem;font-family:Archivo,system-ui,sans-serif;font-size:.8125rem;letter-spacing:.2em;text-transform:uppercase;color:{{accent}};">Stories &amp; ambience for the small hours</p>
+    <h1 style="margin:0;max-width:16ch;font-family:'Libre Caslon Display',Georgia,serif;font-weight:400;font-size:clamp(2.75rem,7vw,5.75rem);line-height:1.02;letter-spacing:-.01em;color:#F3EDE0;">One lamp lit while the house sleeps.</h1>
+    <p style="margin:1.75rem 0 0;max-width:36rem;font-size:clamp(1.125rem,1.6vw,1.3rem);line-height:1.6;color:#C9D2DC;">Narrated short fiction and long, quiet soundscapes, made by one person keeping watch between midnight and four.</p>
+
+    <!-- INTERACTIVE: live watch band driven by the visitor's local clock -->
+    <div style="margin-top:clamp(3.5rem,7vw,5.5rem);" data-interactive="live-clock">
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.75rem 2rem;margin-bottom:1.25rem;">
+        <div style="display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;">
+          <span style="font-family:Archivo,system-ui,sans-serif;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:#A3B1C2;">Your time</span>
+          <span style="font-family:'Libre Caslon Display',Georgia,serif;font-size:2rem;color:#F3EDE0;font-variant-numeric:tabular-nums;">{{timeText}}</span>
+          <span style="font-family:Archivo,system-ui,sans-serif;font-size:.8125rem;letter-spacing:.12em;text-transform:uppercase;color:{{accent}};">{{watchName}}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:.75rem;">
+          <span style="font-family:Archivo,system-ui,sans-serif;font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:#A3B1C2;">{{bellText}}</span>
+          <span aria-hidden="true" style="display:flex;gap:5px;">
+            <sc-for list="{{bellDots}}" as="dot" hint-placeholder-count="8">
+              <span style="{{dot.style}}"></span>
+            </sc-for>
+          </span>
+        </div>
+      </div>
+
+      <!-- the band itself: 8pm to 8am, middle watch lit -->
+      <div style="position:relative;height:88px;">
+        <!-- base rail -->
+        <div style="position:absolute;left:0;right:0;top:40px;height:8px;background:#132C47;border:1px solid #24466A;border-radius:1px;"></div>
+        <!-- middle watch segment (midnight to 4am) -->
+        <div style="position:absolute;left:33.333%;width:33.334%;top:40px;height:8px;background:{{accent}};box-shadow:0 0 22px {{accentGlow}};"></div>
+        <!-- half-hour bell ticks -->
+        <sc-for list="{{ticks}}" as="t" hint-placeholder-count="25">
+          <span aria-hidden="true" style="{{t.style}}"></span>
+        </sc-for>
+        <!-- clickable watch segments -->
+        <sc-for list="{{segments}}" as="s" hint-placeholder-count="3">
+          <button type="button" class="mw-seg" onClick="{{s.onClick}}" aria-label="{{s.label}}" aria-pressed="{{s.pressed}}" style="{{s.style}}">
+            <span class="mw-seg-hint" style="{{s.hintStyle}}">{{s.short}}</span>
+          </button>
+        </sc-for>
+        <!-- now marker -->
+        <sc-if value="{{onBand}}" hint-placeholder-val="{{ true }}">
+          <div aria-hidden="true" style="{{markerStyle}}">
+            <span style="width:1px;height:58px;background:#F3EDE0;"></span>
+            <span style="width:11px;height:11px;border-radius:50%;background:#F3EDE0;margin-top:-35px;animation:mw-pulse 2.4s ease-out infinite;"></span>
+          </div>
+        </sc-if>
+      </div>
+      <!-- hour labels -->
+      <div style="position:relative;height:24px;margin-top:.5rem;">
+        <sc-for list="{{labels}}" as="l" hint-placeholder-count="7">
+          <span class="mw-ticklabel" style="{{l.style}}">{{l.text}}</span>
+        </sc-for>
+      </div>
+
+      <div style="margin-top:2rem;display:flex;flex-wrap:wrap;gap:1rem 3rem;align-items:flex-start;justify-content:space-between;border-top:1px solid #1F3A58;padding-top:1.5rem;">
+        <p aria-live="polite" style="margin:0;max-width:34rem;font-style:italic;font-size:1.2rem;line-height:1.55;color:#E3DBC8;">{{nowLine}}</p>
+        <div style="max-width:22rem;">
+          <p style="margin:0 0 .35rem;font-family:Archivo,system-ui,sans-serif;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:{{accent}};">{{selTitle}} &middot; {{selHours}}</p>
+          <p style="margin:0;font-size:1rem;line-height:1.55;color:#C9D2DC;">{{selNote}}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE LOG: one article per watch; future watches are added as entries 03+ in this grid -->
+  <section aria-labelledby="log-h" style="border-top:1px solid #1F3A58;background:#08182A;">
+    <div style="max-width:72rem;margin:0 auto;padding:clamp(4rem,8vw,6.5rem) clamp(1.25rem,4vw,2.5rem);">
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:clamp(2rem,4vw,3rem);">
+        <h2 id="log-h" style="margin:0;font-family:'Libre Caslon Display',Georgia,serif;font-weight:400;font-size:clamp(2rem,4vw,3rem);color:#F3EDE0;">The log</h2>
+        <p style="margin:0;font-family:Archivo,system-ui,sans-serif;font-size:.8125rem;letter-spacing:.16em;text-transform:uppercase;color:#A3B1C2;">Two watches kept so far</p>
+      </div>
+
+      <div class="mw-grid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1.25rem,2.5vw,2rem);">
+
+        <!-- Entry 01: Stories -->
+        <article id="stories" class="mw-entry" style="border:1px solid #24466A;background:#0C2138;padding:clamp(1.5rem,3vw,2.5rem);display:flex;flex-direction:column;gap:1.5rem;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-bottom:1rem;border-bottom:1px solid #24466A;font-family:Archivo,system-ui,sans-serif;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:#A3B1C2;">
+            <span>Entry 01</span>
+            <span style="color:{{accent}};">Watch: Stories</span>
+          </div>
+          <svg aria-hidden="true" width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="{{accent}}" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 10c5-2 10-2 14 1 4-3 9-3 14-1v20c-5-2-10-2-14 1-4-3-9-3-14-1V10z"></path>
+            <path d="M20 11v20"></path>
+            <path d="M10 15h6M10 19h6M24 15h6M24 19h6"></path>
+          </svg>
+          <h3 style="margin:0;font-family:'Libre Caslon Display',Georgia,serif;font-weight:400;font-size:clamp(1.75rem,3vw,2.25rem);line-height:1.15;color:#F3EDE0;">Stories, read aloud</h3>
+          <p style="margin:0;font-size:1.0625rem;line-height:1.65;color:#C9D2DC;">Original short fiction, narrated. Grounded in history and often lit with a Regency hand: candle smoke, letters sealed with wax, roads that take a week. Each story stands on its own; some quietly join others across four-part arcs. Cozy science fiction and fantasy after the fall are on the chart for later voyages.</p>
+          <div style="margin-top:auto;padding-top:1.25rem;border-top:1px dashed #2C4E73;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.5rem 1rem;">
+            <span style="font-family:Archivo,system-ui,sans-serif;font-size:.9375rem;color:#EDE6D6;">YouTube &middot; [@STORIES_HANDLE]</span>
+            <span style="font-style:italic;font-size:.9375rem;color:#A3B1C2;">Channel opens soon</span>
+          </div>
+        </article>
+
+        <!-- Entry 02: Ambience -->
+        <article id="ambience" class="mw-entry" style="border:1px solid #24466A;background:#0C2138;padding:clamp(1.5rem,3vw,2.5rem);display:flex;flex-direction:column;gap:1.5rem;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-bottom:1rem;border-bottom:1px solid #24466A;font-family:Archivo,system-ui,sans-serif;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:#A3B1C2;">
+            <span>Entry 02</span>
+            <span style="color:{{accent}};">Watch: Ambience</span>
+          </div>
+          <svg aria-hidden="true" width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="{{accent}}" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 24c3-3 6-3 9 0s6 3 9 0 6-3 9 0 4 2 5 1"></path>
+            <path d="M4 31c3-3 6-3 9 0s6 3 9 0 6-3 9 0 4 2 5 1"></path>
+            <path d="M28 6a6 6 0 1 0 6 9 5 5 0 0 1-6-9z"></path>
+          </svg>
+          <h3 style="margin:0;font-family:'Libre Caslon Display',Georgia,serif;font-weight:400;font-size:clamp(1.75rem,3vw,2.25rem);line-height:1.15;color:#F3EDE0;">Ambience, kept long</h3>
+          <p style="margin:0;font-size:1.0625rem;line-height:1.65;color:#C9D2DC;">Hours of sound to read by, work by or sleep under: candlelight in a still room, snow against the glass, rain on slate, the sea turning over at night. Some are the rooms and shores the stories live in. Others are simply somewhere quiet to be.</p>
+          <div style="margin-top:auto;padding-top:1.25rem;border-top:1px dashed #2C4E73;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.5rem 1rem;">
+            <span style="font-family:Archivo,system-ui,sans-serif;font-size:.9375rem;color:#EDE6D6;">YouTube &middot; [@AMBIENCE_HANDLE]</span>
+            <span style="font-style:italic;font-size:.9375rem;color:#A3B1C2;">Channel opens soon</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY THE MIDDLE WATCH -->
+  <section id="the-name" aria-labelledby="name-h" style="border-top:1px solid #1F3A58;">
+    <div class="mw-why" style="max-width:72rem;margin:0 auto;padding:clamp(4rem,8vw,6.5rem) clamp(1.25rem,4vw,2.5rem);display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:2rem;">
+      <div class="mw-whycol" style="grid-column:span 4;">
+        <p style="margin:0 0 1rem;font-family:Archivo,system-ui,sans-serif;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:{{accent}};">Why the name</p>
+        <h2 id="name-h" style="margin:0;font-family:'Libre Caslon Display',Georgia,serif;font-weight:400;font-size:clamp(2rem,4vw,3rem);line-height:1.1;color:#F3EDE0;">Midnight to four, while the ship sleeps.</h2>
+      </div>
+      <div class="mw-whycol" style="grid-column:span 8;display:flex;flex-direction:column;gap:1.25rem;font-size:clamp(1.0625rem,1.4vw,1.1875rem);line-height:1.7;color:#C9D2DC;">
+        <p style="margin:0;">Aboard a sailing ship the night is cut into watches. The <em style="color:#EDE6D6;">middle watch</em> runs from midnight to four in the morning, the long dark stretch when the ship is asleep and one hand stays up to mind the lamp and listen to the bell.</p>
+        <p style="margin:0;">That is when this work gets made, and it is the hour it is made for: for whoever is still awake, or wants help not to be. A story to keep you company. A sound to keep the room.</p>
+        <p style="margin:0;font-style:italic;color:#E3DBC8;">The bell rings each half hour. Eight bells and the watch is kept.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="border-top:1px solid #1F3A58;background:#08182A;">
+    <div style="max-width:72rem;margin:0 auto;padding:clamp(2.5rem,5vw,3.5rem) clamp(1.25rem,4vw,2.5rem);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.5rem;">
+      <div style="display:flex;flex-direction:column;gap:.35rem;">
+        <span style="font-family:'Libre Caslon Display',Georgia,serif;font-size:1.375rem;color:#F3EDE0;">Middle Watch</span>
+        <span style="font-family:Archivo,system-ui,sans-serif;font-size:.8125rem;color:#A3B1C2;">A one-person studio. Lamp lit nightly.</span>
+      </div>
+      <a href="mailto:hello@middlewatch.co" style="display:inline-flex;align-items:center;gap:.6rem;min-height:44px;padding:0 1.25rem;border:1px solid #3B5C80;font-family:Archivo,system-ui,sans-serif;font-size:.9375rem;letter-spacing:.04em;">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1.5" y="3.5" width="15" height="11"></rect><path d="M1.5 4.5l7.5 5.5 7.5-5.5"></path></svg>
+        hello@middlewatch.co
+      </a>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2450},"accent":{"editor":"color","default":"#F0B45A"},"clock":{"editor":"enum","options":["live","first","middle","morning","day"],"default":"live"}}'>
+class Component extends DCLogic {
+  // INTERACTIVE: live clock. Ticks every 20s; cleared on unmount.
+  componentDidMount() {
+    this.setState({ now: new Date() });
+    this._timer = setInterval(() => this.setState({ now: new Date() }), 20000);
+  }
+  componentWillUnmount() {
+    if (this._timer) clearInterval(this._timer);
+  }
+
+  renderVals() {
+    const p = this.props || {};
+    const accent = (p.accent && p.accent.value) || p.accent || '#F0B45A';
+    const mode = (p.clock && p.clock.value) || p.clock || 'live';
+    const st = this.state || {};
+
+    // Resolve time (live, or a frozen preview for the canvas tweak)
+    let h, m;
+    const fixed = { first: [22, 17], middle: [2, 31], morning: [5, 48], day: [13, 5] }[mode];
+    if (fixed) { h = fixed[0]; m = fixed[1]; }
+    else { const d = st.now || new Date(); h = d.getHours(); m = d.getMinutes(); }
+
+    const pad = (n) => (n < 10 ? '0' + n : '' + n);
+    const h12 = ((h + 11) % 12) + 1;
+    const timeText = h12 + ':' + pad(m) + (h < 12 ? ' am' : ' pm');
+
+    // Which watch are we in?
+    let key, watchName;
+    if (h >= 20) { key = 'first'; watchName = 'First watch'; }
+    else if (h < 4) { key = 'middle'; watchName = 'Middle watch'; }
+    else if (h < 8) { key = 'morning'; watchName = 'Morning watch'; }
+    else if (h < 12) { key = 'day'; watchName = 'Forenoon watch'; }
+    else if (h < 16) { key = 'day'; watchName = 'Afternoon watch'; }
+    else if (h < 18) { key = 'day'; watchName = 'First dog watch'; }
+    else { key = 'day'; watchName = 'Last dog watch'; }
+
+    // Ship's bells: one per half hour into the watch, eight at the turn
+    let bells = Math.floor(((h % 4) * 60 + m) / 30);
+    if (bells === 0) bells = 8;
+    const words = ['', 'One bell', 'Two bells', 'Three bells', 'Four bells', 'Five bells', 'Six bells', 'Seven bells', 'Eight bells'];
+    const bellText = words[bells];
+    const bellDots = [];
+    for (let i = 1; i <= 8; i++) {
+      const on = i <= bells;
+      bellDots.push({ style: 'width:7px;height:7px;border-radius:50%;' + (on ? 'background:' + accent + ';' : 'border:1px solid #4A6A8E;box-sizing:border-box;') });
+    }
+
+    // Marker position on the 8pm to 8am band
+    const mins = h * 60 + m;
+    const rel = (mins - 1200 + 1440) % 1440;
+    const onBand = rel <= 720;
+    const pct = Math.max(0, Math.min(100, (rel / 720) * 100));
+    const markerStyle = 'position:absolute;left:' + pct.toFixed(3) + '%;top:15px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;pointer-events:none;';
+
+    const untilDark = Math.ceil((1200 - mins) / 60);
+    const lines = {
+      first: 'The first watch. The house is winding down, and the lamp has just been lit.',
+      middle: 'You are in the middle watch. The ship is asleep; someone is keeping the lamp.',
+      morning: 'The morning watch. Grey at the rail, the long night very nearly kept.',
+      day: 'It is daylight where you are. The lamp is trimmed and waiting, about ' + untilDark + (untilDark === 1 ? ' hour' : ' hours') + ' from dark.'
+    };
+    const nowLine = lines[key];
+
+    // Half-hour bell ticks (25 across 12 hours)
+    const ticks = [];
+    for (let i = 0; i <= 24; i++) {
+      const left = (i / 24) * 100;
+      const isHour = i % 2 === 0;
+      const isWatchTurn = i % 8 === 0;
+      const inMiddle = i >= 8 && i <= 16;
+      const hgt = isWatchTurn ? 34 : (isHour ? 22 : 12);
+      const col = inMiddle ? accent : '#4A6A8E';
+      ticks.push({ style: 'position:absolute;left:' + left.toFixed(3) + '%;top:' + (44 - hgt / 2) + 'px;width:1px;height:' + hgt + 'px;background:' + col + ';transform:translateX(-50%);pointer-events:none;' });
+    }
+
+    const labelText = ['8 pm', '10', 'Midnight', '2', '4 am', '6', '8 am'];
+    const labels = labelText.map((t, i) => {
+      const left = (i / 6) * 100;
+      const align = i === 0 ? 'left:0;' : (i === 6 ? 'right:0;' : 'left:' + left.toFixed(3) + '%;transform:translateX(-50%);');
+      const col = (i >= 2 && i <= 4) ? accent : '#A3B1C2';
+      return { text: t, style: 'position:absolute;top:0;' + align + 'white-space:nowrap;font-family:Archivo,system-ui,sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:' + col + ';' };
+    });
+
+    // Clickable watch segments on the band
+    const info = {
+      first: { title: 'First watch', hours: '8 pm to midnight', short: 'First', note: 'Supper cleared, candles lit, the last letters written. A good hour to begin a story.' },
+      middle: { title: 'Middle watch', hours: 'Midnight to 4 am', short: 'Middle', note: 'The deep of the night and the watch this studio is named for. One lamp, one bell, one voice.' },
+      morning: { title: 'Morning watch', hours: '4 am to 8 am', short: 'Morning', note: 'Frost on the rigging and the first grey light. Ambience for the slow return of the world.' }
+    };
+    const selKey = st.sel || (key === 'day' ? 'middle' : key);
+    const order = ['first', 'middle', 'morning'];
+    const segments = order.map((k, i) => {
+      const sel = k === selKey;
+      return {
+        label: 'Show the ' + info[k].title.toLowerCase() + ', ' + info[k].hours,
+        pressed: sel ? 'true' : 'false',
+        short: info[k].short,
+        onClick: () => this.setState({ sel: k }),
+        style: 'position:absolute;top:0;height:88px;left:' + (i * 33.333).toFixed(3) + '%;width:33.334%;display:flex;align-items:flex-start;justify-content:center;',
+        hintStyle: 'margin-top:0;font-family:Archivo,system-ui,sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:' + (sel ? '#F3EDE0' : '#A3B1C2') + ';opacity:' + (sel ? '1' : '.75') + ';transition:opacity .2s;'
+      };
+    });
+    const s = info[selKey];
+
+    return {
+      accent: accent,
+      accentGlow: accent + '66',
+      timeText: timeText,
+      watchName: watchName,
+      bellText: bellText,
+      bellDots: bellDots,
+      onBand: onBand,
+      markerStyle: markerStyle,
+      nowLine: nowLine,
+      ticks: ticks,
+      labels: labels,
+      segments: segments,
+      selTitle: s.title,
+      selHours: s.hours,
+      selNote: s.note
+    };
+  }
+}
+</script>
+</body>
+</html>

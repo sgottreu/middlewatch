@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Middle Watch: The Listening Room</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..600,50..100;1,9..144,300..500,50..100&amp;family=Inter:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400&amp;display=swap">
+<style>
+body{margin:0;background:#0E0D1A;color:#ECE6DA;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#E8A54B;text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:#F6CB86}
+a:focus-visible,button:focus-visible{outline:2px solid #8FB8D9;outline-offset:3px}
+.mw-nav a{color:#C9C3DA;text-decoration:none}
+.mw-nav a:hover{color:#ECE6DA}
+.mw-scene-btn{transition:background-color .4s ease,color .4s ease,border-color .4s ease}
+.mw-scene-btn:hover{border-color:#8A86A3 !important}
+.mw-flame{transform-box:fill-box;transform-origin:50% 100%;animation:mw-flicker 2.7s ease-in-out infinite}
+.mw-flame-core{transform-box:fill-box;transform-origin:50% 100%;animation:mw-flicker 1.9s ease-in-out infinite reverse}
+.mw-glow{animation:mw-glow 3.3s ease-in-out infinite}
+.mw-swell{animation:mw-swell 14s linear infinite}
+.mw-swell-slow{animation:mw-swell 22s linear infinite}
+.mw-blink{animation:mw-blink 6s linear infinite}
+.mw-fade{animation:mw-fade .9s ease both}
+@keyframes mw-flicker{0%,100%{transform:scale(1,1) skewX(0deg)}20%{transform:scale(.96,1.05) skewX(1.6deg)}45%{transform:scale(1.03,.96) skewX(-1.2deg)}70%{transform:scale(.98,1.03) skewX(.8deg)}85%{transform:scale(1.01,.99) skewX(-.4deg)}}
+@keyframes mw-glow{0%,100%{opacity:.82}30%{opacity:1}55%{opacity:.88}80%{opacity:.97}}
+@keyframes mw-fall{from{transform:translate3d(0,-24px,0)}to{transform:translate3d(var(--dx,0px),480px,0)}}
+@keyframes mw-twinkle{0%,100%{opacity:.25}50%{opacity:.95}}
+@keyframes mw-swell{from{transform:translateX(0)}to{transform:translateX(-200px)}}
+@keyframes mw-blink{0%,84%,100%{opacity:.12}89%{opacity:1}94%{opacity:.3}}
+@keyframes mw-fade{from{opacity:0}to{opacity:1}}
+@media (max-width:900px){
+  .mw-hero-grid{grid-template-columns:minmax(0,1fr) !important}
+  .mw-rooms{grid-template-columns:minmax(0,1fr) !important}
+  .mw-watch-grid{grid-template-columns:minmax(0,1fr) !important}
+}
+@media (max-width:560px){
+  .mw-nav{justify-content:flex-start !important}
+  .mw-scenes{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+  .mw-sky{height:340px !important}
+}
+@media (prefers-reduced-motion:reduce){
+  .mw-flame,.mw-flame-core,.mw-glow,.mw-swell,.mw-swell-slow,.mw-blink,.mw-p,.mw-fade{animation:none !important}
+}
+</style>
+</helmet>
+<div style="min-height:100%;background:#0E0D1A;color:#ECE6DA;font-family:Inter,system-ui,sans-serif;">
+
+  <!-- HERO: the listening room -->
+  <header id="top" style="{{heroStyle}}">
+    <div style="max-width:1240px;margin:0 auto;padding:0 clamp(1.25rem,4vw,3rem);">
+
+      <!-- Nav: each tab is a room -->
+      <nav aria-label="Rooms" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem 2rem;padding:1.5rem 0;">
+        <a href="#top" style="display:inline-flex;align-items:center;gap:.7rem;min-height:44px;color:#ECE6DA;text-decoration:none;">
+          <svg aria-hidden="true" width="22" height="28" viewBox="0 0 22 28" fill="none" stroke="#E8A54B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2.5c2.4 2.6 3.4 4.6 3.4 6.4a3.4 3.4 0 0 1-6.8 0c0-1.8 1-3.8 3.4-6.4z"></path><path d="M7 15h8v11H7z"></path><path d="M4 26h14"></path></svg>
+          <span style="font-family:Fraunces,Georgia,serif;font-size:1.3rem;font-weight:400;letter-spacing:.01em;font-variation-settings:'SOFT' 100,'opsz' 48;">Middle Watch</span>
+        </a>
+        <div class="mw-nav" style="display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.5rem;font-size:.9rem;letter-spacing:.02em;">
+          <a href="#stories" style="display:inline-flex;align-items:center;min-height:44px;">Stories</a>
+          <a href="#ambience" style="display:inline-flex;align-items:center;min-height:44px;">Ambience</a>
+          <a href="#watch" style="display:inline-flex;align-items:center;min-height:44px;">The watch</a>
+          <a href="mailto:hello@middlewatch.co" style="display:inline-flex;align-items:center;min-height:44px;">Write in</a>
+        </div>
+      </nav>
+
+      <div class="mw-hero-grid" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(2rem,5vw,5rem);align-items:center;padding:clamp(2rem,5vw,4rem) 0 clamp(3rem,6vw,5.5rem);">
+
+        <!-- Words -->
+        <div style="display:flex;flex-direction:column;gap:1.75rem;">
+          <p style="{{eyebrowStyle}}">00:00 to 04:00 &#183; the middle watch</p>
+          <h1 style="margin:0;font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(2.6rem,5.4vw,4.6rem);line-height:1.04;letter-spacing:-.015em;font-variation-settings:'SOFT' 100,'opsz' 144;color:#ECE6DA;">Something to listen to while the house sleeps.</h1>
+          <p style="margin:0;max-width:34rem;font-size:1.075rem;line-height:1.7;color:#B4AEC8;">Original stories, read aloud slowly. Long, quiet soundscapes to leave running. Both made for the hours between midnight and four, and for whoever is still awake in them.</p>
+
+          <div role="group" aria-labelledby="mw-scene-label" style="display:flex;flex-direction:column;gap:.85rem;margin-top:.5rem;">
+            <p id="mw-scene-label" style="margin:0;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:#8F8AA8;">Choose a scene</p>
+            <div class="mw-scenes" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.5rem;max-width:34rem;">
+              <sc-for list="{{scenes}}" as="s" hint-placeholder-count="4">
+                <button type="button" class="mw-scene-btn" aria-pressed="{{s.pressed}}" onClick="{{s.onPick}}" style="{{s.style}}">{{s.label}}</button>
+              </sc-for>
+            </div>
+            <p style="margin:0;max-width:34rem;font-size:.85rem;line-height:1.6;color:#A39DBA;">A visual preview of the kind of soundscapes coming to the ambience channel. Nothing plays here; the sound lives on YouTube.</p>
+          </div>
+        </div>
+
+        <!-- The window -->
+        <div style="position:relative;max-width:520px;width:100%;justify-self:center;padding-bottom:30px;">
+          <div style="position:relative;border:14px solid #2A2340;border-bottom-width:10px;border-radius:4px 4px 0 0;background:#2A2340;box-shadow:0 0 0 1px #3A3152 inset;">
+            <div class="mw-sky" style="{{skyStyle}}">
+
+              <!-- stars -->
+              <sc-for list="{{stars}}" as="st" hint-placeholder-count="20">
+                <span class="mw-p" aria-hidden="true" style="{{st.style}}"></span>
+              </sc-for>
+
+              <!-- moon -->
+              <sc-if value="{{showMoon}}" hint-placeholder-val="{{ true }}">
+                <svg class="mw-fade" aria-hidden="true" viewBox="0 0 80 80" style="position:absolute;top:44px;right:52px;width:64px;height:64px;">
+                  <circle cx="40" cy="40" r="22" fill="#E9E4D4"></circle>
+                  <circle cx="49" cy="34" r="20" fill="{{moonShade}}"></circle>
+                </svg>
+              </sc-if>
+
+              <!-- sea at night -->
+              <sc-if value="{{showSea}}" hint-placeholder-val="{{ false }}">
+                <svg class="mw-fade" aria-hidden="true" viewBox="0 0 400 200" preserveAspectRatio="xMidYMax slice" style="position:absolute;left:0;right:0;bottom:0;width:100%;height:46%;">
+                  <rect x="0" y="40" width="400" height="160" fill="#0B1424"></rect>
+                  <line x1="0" y1="40" x2="400" y2="40" stroke="#2B3D57" stroke-width="1"></line>
+                  <g opacity=".7"><rect x="292" y="52" width="26" height="2" fill="#C8CFD9"></rect><rect x="286" y="64" width="38" height="2" fill="#B5BFCC" opacity=".7"></rect><rect x="296" y="78" width="20" height="2" fill="#B5BFCC" opacity=".5"></rect><rect x="284" y="94" width="42" height="2" fill="#B5BFCC" opacity=".35"></rect></g>
+                  <g transform="translate(58 26)"><rect x="0" y="4" width="4" height="10" fill="#1F2A3D"></rect><circle class="mw-blink" cx="2" cy="3" r="2.4" fill="#F2C57A"></circle></g>
+                  <g class="mw-swell-slow"><path d="M0 92 q25 -6 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0" fill="none" stroke="#24405E" stroke-width="1.4"></path></g>
+                  <g class="mw-swell"><path d="M0 130 q25 -9 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0" fill="none" stroke="#2E5476" stroke-width="1.8"></path></g>
+                  <g class="mw-swell-slow"><path d="M0 172 q25 -12 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0" fill="none" stroke="#3A6A8E" stroke-width="2"></path></g>
+                </svg>
+              </sc-if>
+
+              <!-- snow or rain -->
+              <sc-for list="{{particles}}" as="p" hint-placeholder-count="30">
+                <span class="mw-p" aria-hidden="true" style="{{p.style}}"></span>
+              </sc-for>
+
+              <!-- snow settling on the outer ledge -->
+              <sc-if value="{{showSnowLedge}}" hint-placeholder-val="{{ false }}">
+                <svg class="mw-fade" aria-hidden="true" viewBox="0 0 400 30" preserveAspectRatio="none" style="position:absolute;left:0;right:0;bottom:0;width:100%;height:22px;">
+                  <path d="M0 30 V18 q30 -10 70 -6 q50 -8 100 -2 q60 -10 110 -1 q60 -7 120 -3 V30z" fill="#D9DEEA"></path>
+                </svg>
+              </sc-if>
+
+              <!-- beads on the glass -->
+              <sc-if value="{{showBeads}}" hint-placeholder-val="{{ false }}">
+                <svg class="mw-fade" aria-hidden="true" viewBox="0 0 400 440" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;">
+                  <g fill="#9FB6D6" opacity=".35"><circle cx="42" cy="120" r="2"></circle><circle cx="88" cy="260" r="2.6"></circle><circle cx="150" cy="70" r="1.6"></circle><circle cx="250" cy="300" r="2.2"></circle><circle cx="312" cy="160" r="1.8"></circle><circle cx="356" cy="342" r="2.8"></circle><circle cx="226" cy="190" r="1.5"></circle><circle cx="118" cy="372" r="2"></circle></g>
+                  <g stroke="#9FB6D6" stroke-width="1" opacity=".22" fill="none"><path d="M88 263 q2 30 -1 60"></path><path d="M356 345 q-2 24 1 50"></path></g>
+                </svg>
+              </sc-if>
+
+              <!-- mullions -->
+              <div aria-hidden="true" style="position:absolute;top:0;bottom:0;left:50%;width:10px;margin-left:-5px;background:#2A2340;"></div>
+              <div aria-hidden="true" style="position:absolute;left:0;right:0;top:44%;height:10px;background:#2A2340;"></div>
+
+              <!-- the candle's reflection in the glass -->
+              <div aria-hidden="true" class="mw-glow" style="position:absolute;left:20%;bottom:70px;width:14px;height:22px;border-radius:50%;background:#E8A54B;opacity:.18;filter:blur(3px);"></div>
+            </div>
+          </div>
+
+          <!-- sill -->
+          <div aria-hidden="true" style="position:relative;margin:0 -6%;height:22px;background:#30284A;border-top:2px solid #4A3D57;border-radius:2px;"></div>
+
+          <!-- candle and its glow -->
+          <svg aria-hidden="true" viewBox="0 0 260 300" style="position:absolute;left:2%;bottom:40px;width:clamp(170px,40%,240px);height:auto;overflow:visible;">
+            <defs>
+              <radialGradient id="mw-halo" cx="50%" cy="50%" r="50%">
+                <stop offset="0" stop-color="#F3B65F" stop-opacity=".42"></stop>
+                <stop offset=".45" stop-color="#E8A54B" stop-opacity=".12"></stop>
+                <stop offset="1" stop-color="#E8A54B" stop-opacity="0"></stop>
+              </radialGradient>
+            </defs>
+            <circle class="mw-glow" cx="130" cy="150" r="130" fill="url(#mw-halo)"></circle>
+            <ellipse cx="130" cy="296" rx="70" ry="6" fill="#E8A54B" opacity=".16"></ellipse>
+            <rect x="106" y="190" width="48" height="106" rx="3" fill="#E7DCC4"></rect>
+            <rect x="106" y="190" width="14" height="106" fill="#F3EBDA" opacity=".55"></rect>
+            <path d="M106 196 q8 -8 22 -6 q16 -3 26 6 v10 q-4 6 -6 0 q-3 -6 -8 2 q-3 18 -7 0 q-4 -8 -11 -2 q-6 10 -9 -2z" fill="#F4ECDC"></path>
+            <line x1="130" y1="190" x2="130" y2="178" stroke="#2A2340" stroke-width="2" stroke-linecap="round"></line>
+            <path class="mw-flame" d="M130 118 C140 136 146 152 146 164 C146 174 139 181 130 181 C121 181 114 174 114 164 C114 152 120 136 130 118 Z" fill="#E8A54B"></path>
+            <path class="mw-flame-core" d="M130 146 C135 156 138 163 138 169 C138 175 134 178 130 178 C126 178 122 175 122 169 C122 163 125 156 130 146 Z" fill="#FBE3B4"></path>
+          </svg>
+
+          <p aria-live="polite" style="margin:1.1rem 0 0;display:flex;flex-wrap:wrap;gap:.35rem .75rem;align-items:baseline;font-size:.85rem;color:#A39DBA;">
+            <span style="{{sceneTagStyle}}">{{sceneLabel}}</span>
+            <span>{{sceneNote}}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- THE ROOMS -->
+  <main>
+    <section aria-labelledby="mw-rooms-title" style="max-width:1240px;margin:0 auto;padding:clamp(4rem,8vw,7rem) clamp(1.25rem,4vw,3rem) clamp(3rem,6vw,5rem);">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:1rem 3rem;margin-bottom:2.5rem;">
+        <h2 id="mw-rooms-title" style="margin:0;font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(1.9rem,3.4vw,2.8rem);letter-spacing:-.01em;font-variation-settings:'SOFT' 100,'opsz' 96;">Two rooms, both lamplit.</h2>
+        <p style="margin:0;max-width:28rem;font-size:.95rem;line-height:1.65;color:#A9A3BF;">Each room is its own YouTube channel. Pick the one that suits the hour.</p>
+      </div>
+
+      <div class="mw-rooms" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1.25rem,2.5vw,2rem);">
+
+        <!-- Room I: Stories -->
+        <article id="stories" style="display:flex;flex-direction:column;background:#16142A;border:1px solid #29253F;border-radius:6px;overflow:hidden;">
+          <div style="position:relative;height:300px;background:#110F22;border-bottom:1px solid #29253F;overflow:hidden;">
+            <svg aria-hidden="true" viewBox="0 0 560 300" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%;">
+              <defs>
+                <radialGradient id="mw-halo-s" cx="50%" cy="50%" r="50%">
+                  <stop offset="0" stop-color="#F3B65F" stop-opacity=".35"></stop>
+                  <stop offset="1" stop-color="#E8A54B" stop-opacity="0"></stop>
+                </radialGradient>
+              </defs>
+              <rect x="0" y="232" width="560" height="68" fill="#1C1932"></rect>
+              <line x1="0" y1="232" x2="560" y2="232" stroke="#2F2A48" stroke-width="1"></line>
+              <circle class="mw-glow" cx="400" cy="140" r="120" fill="url(#mw-halo-s)"></circle>
+              <!-- open book -->
+              <path d="M150 238 C190 222 240 222 276 236 L276 168 C240 154 190 154 150 170 Z" fill="#E3D8C0"></path>
+              <path d="M402 238 C362 222 312 222 276 236 L276 168 C312 154 362 154 402 170 Z" fill="#EDE4D0"></path>
+              <path d="M276 168 V236" stroke="#BBAE92" stroke-width="1.4"></path>
+              <g stroke="#B4A688" stroke-width="1.4" stroke-linecap="round" opacity=".75">
+                <path d="M166 180 q40 -10 96 -2"></path><path d="M166 192 q40 -10 96 -2"></path><path d="M166 204 q40 -10 80 -2"></path><path d="M166 216 q40 -10 92 -2"></path>
+                <path d="M290 178 q48 -8 96 2"></path><path d="M290 190 q48 -8 96 2"></path><path d="M290 202 q48 -8 70 2"></path>
+              </g>
+              <!-- small candle -->
+              <rect x="390" y="182" width="20" height="50" rx="2" fill="#E7DCC4"></rect>
+              <line x1="400" y1="182" x2="400" y2="175" stroke="#2A2340" stroke-width="1.6"></line>
+              <path class="mw-flame" d="M400 146 C406 156 409 164 409 170 C409 176 405 179 400 179 C395 179 391 176 391 170 C391 164 394 156 400 146 Z" fill="#E8A54B"></path>
+              <path class="mw-flame-core" d="M400 160 C403 165 404 169 404 172 C404 175 402 177 400 177 C398 177 396 175 396 172 C396 169 397 165 400 160 Z" fill="#FBE3B4"></path>
+            </svg>
+            <span style="position:absolute;top:1.1rem;left:1.25rem;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:#C9A36A;">Room I</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:1rem;padding:clamp(1.5rem,3vw,2.25rem);flex:1;">
+            <h3 style="margin:0;font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(1.6rem,2.6vw,2.1rem);line-height:1.15;font-variation-settings:'SOFT' 100,'opsz' 72;">Stories, read aloud in the dark</h3>
+            <p style="margin:0;font-size:1rem;line-height:1.7;color:#B4AEC8;">Original short fiction, narrated unhurriedly. Most have a Regency hush to them: letters by lamplight, roads in winter, houses with long memories. Every story stands on its own, and a few quietly lead into the next. Cozy science fiction and stranger, after-the-fall fantasy are on the desk too.</p>
+            <div style="margin-top:auto;padding-top:1.25rem;border-top:1px solid #29253F;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.75rem 1rem;">
+              <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:.9rem;color:#ECE6DA;">[@STORIES_HANDLE]</span>
+              <span style="font-size:.82rem;color:#A9A3BF;">The first reading is coming soon.</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Room II: Ambience -->
+        <article id="ambience" style="display:flex;flex-direction:column;background:#16142A;border:1px solid #29253F;border-radius:6px;overflow:hidden;">
+          <div style="position:relative;height:300px;background:#0E1626;border-bottom:1px solid #29253F;overflow:hidden;">
+            <svg aria-hidden="true" viewBox="0 0 560 300" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%;">
+              <g fill="#DCE3EF"><circle cx="60" cy="40" r="1.2" opacity=".7"></circle><circle cx="140" cy="76" r="1" opacity=".5"></circle><circle cx="230" cy="30" r="1.3" opacity=".8"></circle><circle cx="330" cy="62" r="1" opacity=".55"></circle><circle cx="470" cy="34" r="1.2" opacity=".7"></circle><circle cx="520" cy="96" r="1" opacity=".45"></circle><circle cx="96" cy="118" r="1" opacity=".45"></circle></g>
+              <circle cx="410" cy="92" r="20" fill="#E9E4D4"></circle>
+              <rect x="0" y="160" width="560" height="140" fill="#0A1220"></rect>
+              <line x1="0" y1="160" x2="560" y2="160" stroke="#2B3D57" stroke-width="1"></line>
+              <g fill="#C8CFD9" opacity=".6"><rect x="396" y="172" width="28" height="2"></rect><rect x="388" y="186" width="44" height="2" opacity=".7"></rect><rect x="400" y="202" width="20" height="2" opacity=".5"></rect><rect x="384" y="220" width="52" height="2" opacity=".35"></rect></g>
+              <g transform="translate(86 144)"><rect x="0" y="5" width="4" height="11" fill="#1F2A3D"></rect><circle class="mw-blink" cx="2" cy="3" r="2.4" fill="#F2C57A"></circle></g>
+              <g class="mw-swell-slow"><path d="M0 200 q25 -6 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0" fill="none" stroke="#24405E" stroke-width="1.4"></path></g>
+              <g class="mw-swell"><path d="M0 236 q25 -9 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0" fill="none" stroke="#2E5476" stroke-width="1.8"></path></g>
+              <g class="mw-swell-slow"><path d="M0 276 q25 -12 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0" fill="none" stroke="#3A6A8E" stroke-width="2"></path></g>
+            </svg>
+            <span style="position:absolute;top:1.1rem;left:1.25rem;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:#8FB8D9;">Room II</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:1rem;padding:clamp(1.5rem,3vw,2.25rem);flex:1;">
+            <h3 style="margin:0;font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(1.6rem,2.6vw,2.1rem);line-height:1.15;font-variation-settings:'SOFT' 100,'opsz' 72;">Ambience for the small hours</h3>
+            <p style="margin:0;font-size:1rem;line-height:1.7;color:#B4AEC8;">Long soundscapes to work, read or sleep beside: candlelight, falling snow, rain on old glass, the sea at night. Some are the very rooms and shorelines the stories happen in. Others simply keep you company until morning.</p>
+            <div style="margin-top:auto;padding-top:1.25rem;border-top:1px solid #29253F;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.75rem 1rem;">
+              <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:.9rem;color:#ECE6DA;">[@AMBIENCE_HANDLE]</span>
+              <span style="font-size:.82rem;color:#A9A3BF;">The first soundscape is coming soon.</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- THE NAME -->
+    <section id="watch" aria-labelledby="mw-watch-title" style="max-width:1240px;margin:0 auto;padding:clamp(3rem,6vw,5rem) clamp(1.25rem,4vw,3rem) clamp(4rem,8vw,7rem);">
+      <div class="mw-watch-grid" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:clamp(2rem,5vw,5rem);align-items:center;padding-top:clamp(3rem,6vw,4.5rem);border-top:1px solid #241F38;">
+        <div style="display:flex;flex-direction:column;gap:1.25rem;">
+          <p style="margin:0;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:#C9A36A;">Why the name</p>
+          <h2 id="mw-watch-title" style="margin:0;font-family:Fraunces,Georgia,serif;font-weight:300;font-style:italic;font-size:clamp(2.2rem,4.4vw,3.6rem);line-height:1.08;letter-spacing:-.01em;font-variation-settings:'SOFT' 100,'opsz' 144;">Midnight to four.</h2>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:1.75rem;">
+          <p style="margin:0;font-size:1.1rem;line-height:1.75;color:#C3BDD4;">At sea, the middle watch runs from midnight until four in the morning. The ship sleeps. One person stays up, keeps the lamp lit and listens to the dark. Everything made here is meant for those hours, and for anyone keeping one of their own.</p>
+          <div aria-hidden="true" style="display:flex;align-items:center;gap:.9rem;">
+            <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:.8rem;color:#A9A3BF;">00:00</span>
+            <div style="flex:1;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:.4rem;align-items:center;">
+              <span style="height:6px;border-radius:3px;background:#3A3355;"></span>
+              <span style="height:6px;border-radius:3px;background:#3A3355;"></span>
+              <span style="height:6px;border-radius:3px;background:#3A3355;"></span>
+              <span style="height:6px;border-radius:3px;background:#3A3355;"></span>
+              <span style="height:6px;border-radius:3px;background:#3A3355;"></span>
+              <span style="height:6px;border-radius:3px;background:#3A3355;"></span>
+              <span style="height:6px;border-radius:3px;background:#3A3355;"></span>
+              <span style="height:6px;border-radius:3px;background:#E8A54B;"></span>
+            </div>
+            <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:.8rem;color:#A9A3BF;">04:00</span>
+          </div>
+          <p style="margin:-.75rem 0 0;font-size:.85rem;color:#A39DBA;">One bell at half past twelve, one more each half hour, eight bells at four.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer style="border-top:1px solid #241F38;background:#0B0A15;">
+    <div style="max-width:1240px;margin:0 auto;padding:2.5rem clamp(1.25rem,4vw,3rem) 3rem;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1.5rem 3rem;">
+      <div style="display:flex;flex-direction:column;gap:.35rem;">
+        <span style="font-family:Fraunces,Georgia,serif;font-size:1.15rem;font-variation-settings:'SOFT' 100,'opsz' 48;color:#ECE6DA;">Middle Watch</span>
+        <span style="font-size:.85rem;color:#A39DBA;">A small studio, working by lamplight. &#169; [YEAR]</span>
+      </div>
+      <p style="margin:0;font-size:.95rem;color:#C3BDD4;">Letters to the watch: <a href="mailto:hello@middlewatch.co" style="display:inline-block;padding:.7rem 0;">hello@middlewatch.co</a></p>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2500},"startScene":{"editor":"enum","options":["candle","snow","rain","sea"],"default":"candle"},"candleColor":{"editor":"color","default":"#E8A54B"}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    var start = (props && props.startScene) || 'candle';
+    this.state = { scene: start };
+  }
+  renderVals() {
+    var self = this;
+    var amber = (this.props && this.props.candleColor) || '#E8A54B';
+    var SCENES = {
+      candle: { label: 'Candlelight', sky: '#16133A', room: '#0E0D1A', tag: amber, note: 'A clear, still night. Stars, a slip of moon, one flame.' },
+      snow:   { label: 'Snowfall',    sky: '#1D1F3A', room: '#0F0E1D', tag: '#C9D3E8', note: 'Slow snow against the glass. The room stays warm.' },
+      rain:   { label: 'Rain',        sky: '#111629', room: '#0C0D19', tag: '#8FB8D9', note: 'Steady rain, the kind that keeps you in.' },
+      sea:    { label: 'Sea at night',sky: '#0F1A2E', room: '#0B0E19', tag: '#7EC3BE', note: 'A dark swell, a far light, the hours turning over.' }
+    };
+    var order = ['candle', 'snow', 'rain', 'sea'];
+    var cur = SCENES[this.state.scene] ? this.state.scene : 'candle';
+    var sc = SCENES[cur];
+
+    var seed = 11;
+    function r() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
+    function f(n) { return Math.round(n * 100) / 100; }
+
+    var scenes = order.map(function (key) {
+      var on = key === cur;
+      var bg = on ? SCENES[key].tag : 'transparent';
+      return {
+        label: SCENES[key].label,
+        pressed: on ? 'true' : 'false',
+        onPick: function () { self.setState({ scene: key }); },
+        style: 'min-height:44px;padding:.55rem .6rem;border-radius:999px;font:500 .82rem/1.2 Inter,system-ui,sans-serif;letter-spacing:.01em;cursor:pointer;' +
+          'background:' + bg + ';color:' + (on ? '#0E0D1A' : '#DCD6E6') + ';border:1px solid ' + (on ? SCENES[key].tag : '#4A4466') + ';'
+      };
+    });
+
+    var stars = [];
+    if (cur === 'candle' || cur === 'sea') {
+      var maxTop = cur === 'sea' ? 46 : 80;
+      for (var i = 0; i < 34; i++) {
+        var s = f(1 + r() * 1.6), d = f(3 + r() * 5);
+        stars.push({ style: 'position:absolute;left:' + f(r() * 100) + '%;top:' + f(r() * maxTop) + '%;width:' + s + 'px;height:' + s + 'px;border-radius:50%;background:#E6E9F5;opacity:.5;animation:mw-twinkle ' + d + 's ease-in-out ' + f(-r() * d) + 's infinite;' });
+      }
+    }
+
+    var particles = [];
+    if (cur === 'snow') {
+      for (var j = 0; j < 56; j++) {
+        var sz = f(2 + r() * 3.5), dur = f(9 + r() * 10), dx = Math.round(-30 + r() * 60);
+        particles.push({ style: 'position:absolute;top:0;left:' + f(r() * 100) + '%;width:' + sz + 'px;height:' + sz + 'px;border-radius:50%;background:#E6E9F5;opacity:' + f(.45 + r() * .5) + ';--dx:' + dx + 'px;animation:mw-fall ' + dur + 's linear ' + f(-r() * dur) + 's infinite;' });
+      }
+    } else if (cur === 'rain') {
+      for (var k = 0; k < 80; k++) {
+        var len = Math.round(14 + r() * 14), rd = f(.65 + r() * .55);
+        particles.push({ style: 'position:absolute;top:0;left:' + f(r() * 104) + '%;width:1px;height:' + len + 'px;background:#9FB6D6;opacity:' + f(.3 + r() * .35) + ';--dx:-26px;animation:mw-fall ' + rd + 's linear ' + f(-r() * rd) + 's infinite;' });
+      }
+    }
+
+    return {
+      scenes: scenes,
+      stars: stars,
+      particles: particles,
+      showMoon: cur === 'candle' || cur === 'sea',
+      showSea: cur === 'sea',
+      showSnowLedge: cur === 'snow',
+      showBeads: cur === 'rain',
+      moonShade: sc.sky,
+      sceneLabel: sc.label,
+      sceneNote: sc.note,
+      heroStyle: 'position:relative;min-height:min(100vh,900px);background:' + sc.room + ';transition:background-color .9s ease;',
+      skyStyle: 'position:relative;height:440px;overflow:hidden;background:' + sc.sky + ';transition:background-color .9s ease;',
+      eyebrowStyle: 'margin:0;font-size:.75rem;letter-spacing:.22em;text-transform:uppercase;color:' + sc.tag + ';transition:color .6s ease;',
+      sceneTagStyle: 'font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:' + sc.tag + ';'
+    };
+  }
+}
+</script>
+</body>
+</html>
