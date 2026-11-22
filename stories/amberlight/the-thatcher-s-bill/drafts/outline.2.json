@@ -1,0 +1,151 @@
+{
+  "title": "The Thatcher's Bill",
+  "genre": "regency",
+  "subgenre": "comedy_of_manners",
+  "tropes": [
+    "The secret benefactor",
+    "Enemies of manner",
+    "The unwelcome proposal"
+  ],
+  "bible_conflict": null,
+  "logline": "When Mr Rowe runs up a debt to save the parish school's roof, the woman who secretly pays it goes unthanked, and a stranger who lets the credit fall to him by accident very nearly wins her hand for a kindness he never did.",
+  "promise": "A secret good deed is traced by the viewer alone to its true giver, a borrowed credit is stripped from the man who claimed it, and the two who misjudge each other are left exactly where they began.",
+  "setting": "Amberlight, Hampshire, autumn 1815",
+  "target_words": 2250,
+  "cast": [
+    {
+      "name": "Mr Silas Rowe",
+      "role": "protagonist",
+      "age": 32,
+      "gender": "male",
+      "station": "curate of Amberlight; eighty a year and no expectations. Two rooms over Mrs Copp's, looking at the churchyard wall.",
+      "want": "to serve his parish well without the shame of owing money he cannot pay",
+      "appearance": "Tall and thin, dark hair worn slightly too long, with the stoop of a man used to low doorways and a face that gives away more than he intends.",
+      "dress": "Worn black coat, carefully brushed, and linen that has been turned at the cuffs.",
+      "voice_note": "earnest, talks quickly when embarrassed",
+      "voice": "Sam",
+      "recurring": true
+    },
+    {
+      "name": "Miss Judith Vane",
+      "role": "love_interest",
+      "age": 25,
+      "gender": "female",
+      "station": "keeps house for her brother, the apothecary; no fortune of her own",
+      "want": "to do real good in the parish without ever being thanked for it",
+      "appearance": "Fair, freckled, of middling height, with reddish hair she cannot keep pinned and a habit of looking directly at whoever is speaking.",
+      "dress": "Sprigged muslin in summer, a grey wool pelisse in winter, both mended with more thrift than skill.",
+      "voice_note": "says little, precise when she does speak",
+      "voice": "Emilia",
+      "recurring": true
+    },
+    {
+      "name": "Mr Owen Vane",
+      "role": "supporting",
+      "age": 28,
+      "gender": "male",
+      "station": "apothecary of Amberlight; modest trade income. Judith's brother and only guardian since their father died.",
+      "want": "to keep his sister's secret and his shop's accounts equally in order",
+      "appearance": "Broad-shouldered with his sister's dark colouring, sleeves always rolled to the elbow from the dispensary.",
+      "dress": "A brown workaday coat and an apron dusted with chalk and powders.",
+      "voice_note": "brisk, practical, uneasy with secrets",
+      "voice": "Archer",
+      "recurring": true
+    },
+    {
+      "name": "Mrs Honoria Pike",
+      "role": "supporting",
+      "age": 56,
+      "gender": "female",
+      "station": "widow of a naval surgeon; three hundred a year and a house on the green",
+      "want": "to be first in Amberlight to know anything, and last to admit she had it wrong",
+      "appearance": "Short and broad, with grey hair pinned severely under a lace cap, and small quick eyes set in a round weathered face.",
+      "dress": "Black bombazine with a plain white fichu, ten years out of fashion and immaculately kept.",
+      "voice_note": "warm, talks too much, trails off",
+      "voice": "Meera",
+      "recurring": true
+    },
+    {
+      "name": "Mr Lionel Pryce",
+      "role": "antagonist",
+      "age": 32,
+      "gender": "male",
+      "station": "gentleman of Winchester, come to view Amberlight House for the family's agent; a comfortable six hundred a year of his own",
+      "want": "to be thought a man of consequence and secure a comfortable match without the trouble of true generosity",
+      "appearance": "lean and sharply groomed, dark hair oiled smooth, a narrow assessing gaze",
+      "dress": "a well-cut travelling coat of dark blue superfine, and gloves too fine for a country lane",
+      "voice_note": "smooth, over-polite, rarely answers a question directly"
+    }
+  ],
+  "chapters": [
+    {
+      "n": 1,
+      "title": "The Lane",
+      "beats": [
+        "Rowe, hopeless with money but devoted to the work, ordered the old parish schoolroom re-thatched that summer on his own credit, unwilling to see the scholars sit through winter under a leaking roof.",
+        "The thatcher corners Rowe in the lane before the Bell, demanding his eleven pounds aloud while several parishioners look on.",
+        "Mrs Pike carries the scene round the green by evening, swearing Rowe is one step from the sponging-house.",
+        "At the library, Judith overhears the story and, recalling a curt note Rowe once sent her returning a borrowed book, judges him proud as well as careless with money."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 2,
+      "title": "A Friend to the Parish",
+      "beats": [
+        "Judith resolves to pay the debt from her own small savings rather than see the scholars lose their schoolroom over a curate's pride.",
+        "She swears her brother Owen to secrecy and asks him to carry the coin to the thatcher himself.",
+        "Owen pays the thatcher on a Tuesday morning, naming only 'a friend to the parish' and no one further.",
+        "Word of the settled debt runs round Amberlight by nightfall, and Rowe, relieved and mystified in equal measure, begins asking who could have done such a kindness."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 3,
+      "title": "The Gentleman from Winchester",
+      "beats": [
+        "Mr Lionel Pryce arrives on the Friday coach to view Amberlight House on behalf of the family's agent, weighing whether to take it.",
+        "At Mrs Pike's tea the talk turns entirely to the mysterious benefactor, and Mrs Pike, flattered by his town manners, declares Pryce must surely be the one.",
+        "Pryce, charmed by the notion and by Judith's quiet presence in the room, lets the credit stand rather than correct it.",
+        "Over the following days Pryce calls twice at the apothecary's shop under pretence of custom, plainly working toward a proposal, while Rowe tries and fails to thank him properly."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 4,
+      "title": "Refused and Found Out",
+      "beats": [
+        "Pryce proposes to Judith directly, citing his generosity to the parish as proof of his character; Judith, knowing the claim false, refuses him plainly and without explanation.",
+        "Rowe, going over the thatcher's own account book, realises the debt was paid on a Tuesday morning, two full days before Pryce's coach ever reached Amberlight.",
+        "Rowe confronts Pryce quietly before Mrs Pike can deliver her planned public toast, and Pryce admits his vanity got the better of him.",
+        "Pryce decides against taking the house after all, and departs on the next Friday coach before the parish can ask him any further questions."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 5,
+      "title": "What Neither Learned",
+      "beats": [
+        "Mrs Pike, unable to leave the matter unsolved, settles on a new theory that Rowe arranged the payment himself out of secret shame, and repeats it round the green as settled fact.",
+        "Rowe, embarrassed by credit he cannot account for and too proud to make a fuss of denying it, lets the story stand rather than draw further attention to his debts.",
+        "Judith, who alone knows the truth, watches Rowe return a borrowed book to the library with another short, formal note of thanks, and concludes he is prouder than ever.",
+        "The two pass in the lane with a correct, distant bow, each still certain of the other's pride, the truth of the thatcher's bill settled forever between the viewer and no one in the parish."
+      ],
+      "target_words": 450
+    }
+  ],
+  "length_min": 15,
+  "bible": "amberlight",
+  "series": "Middle Watch: Amberlight",
+  "slug": "the-thatcher-s-bill",
+  "revisions": [
+    {
+      "feedback": "Keep these exactly as they are, word for word where they are text: the title.\n\nReplace these wholesale rather than adjusting what is there: the logline; the promise; the setting; the tropes, exactly as named; the cast, including their names, ages and stations; the chapters and their beats.\n\nThe new chapters must carry 3 to 4 concrete beats each \u2014 things that happen, not moods. That density is what stops the prose stretching to fill the words rather than the story getting bigger.\n\nInvent a genuinely new cast. Recurring characters from the series bible may still appear where the story needs them, copied verbatim as always, but the guest characters should be new people with new names \u2014 not the previous ones renamed.\n\nSet this story firmly in the autumn of 1815, and end it in dramatic irony. Mr Silas Rowe and Miss Judith Vane each think the other proud, and that misjudgment must still be standing on the last page: Judith pays his debt in secret, and Rowe never learns who did it. The viewer knows; he does not.\n\nKeep exactly: the title; the comic shape \u2014 a debt seen by half the parish, an anonymous payment, the wrong man credited, a public toast that must be stopped.\n\nChange: the setting to \"Amberlight, Hampshire, autumn 1815\". The tropes to: The secret benefactor; Enemies of manner; The unwelcome proposal. Replace the logline, the promise, the guest cast and the chapters. Five chapters, 3 to 4 concrete beats each \u2014 things that happen, not moods.\n\nFixes:\n- The debt is a thatcher's bill for re-thatching the old parish schoolroom, which Mr Rowe ordered on his own credit for the scholars' sake before he had the money \u2014 true to a man good at the work and hopeless with money. Not a parsonage roof; he lodges in two rooms over Mrs Copp's.\n- Judith pays it from her own small savings through her brother, Mr Owen Vane (not \"Edmund\"), who carries the coin to the thatcher himself and says only that it is from a friend to the parish. No Winchester solicitor.\n- The guest who takes the credit is a new man, not a Marchmont relation and not named Aldous: a gentleman from Winchester come to look over the empty Amberlight House as a possible tenant on behalf of the family's agent. He does not take the house, which stays empty. Flattered by Mrs Pike, he lets the credit stand, and means to use it to propose to Judith.\n- How Rowe knows the credit is false: the thatcher was paid on a Tuesday morning, and the gentleman came in on the Friday coach. Rowe confronts him privately before Mrs Pike's toast, and he admits his vanity and withdraws, taking the Friday coach out.\n- Judith refuses the gentleman's proposal before Rowe ever speaks to him; she never needs rescuing.\n- Rowe never finds out who paid. His own wrong guess (Mrs Pike, or nobody in particular) is allowed to stand. Mrs Pike settles on a new wrong version crediting Rowe's modesty.\n- The last beat sharpens their misjudgment rather than mending it: Rowe returns a borrowed book to the library with another curt note, and Judith, who has just paid his debt, thinks him prouder than ever.\n- Copy recurring characters exactly as the bible gives them, including \"Mr Silas Rowe\".\n\nNothing may depend on having seen another Amberlight story. Set bible_conflict to null unless these notes truly contradict the bible.",
+      "previous_title": "The Thatcher's Bill"
+    },
+    {
+      "feedback": "Keep these exactly as they are, word for word where they are text: the logline; the promise; the setting; the tropes, exactly as named; the title; the cast, including their names, ages and stations; the chapters and their beats.\n\nwould rethatching the schoolroom now likely cause the roof not to leak later when the cracked beam is discovered in The Cracked Beam",
+      "previous_title": "The Thatcher's Bill"
+    }
+  ]
+}
