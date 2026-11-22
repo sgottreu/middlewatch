@@ -46,7 +46,7 @@ regency / romance · Middle Watch: Amberlight
 
 | Stage | |
 |---|---|
-| ideate | awaiting_review |
+| ideate | approved |
 | write | pending |
 | edit | pending |
 | record | pending |
