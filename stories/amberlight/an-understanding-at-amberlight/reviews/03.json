@@ -1,0 +1,66 @@
+{
+  "n": 3,
+  "pass": false,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Mrs Pike asks Mr Rowe to read the banns for Margaret and Dene directly, and he declines, saying he will read banns only when the couple comes and asks him for themselves.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Forced to keep up appearances, Margaret and Dene are walked and dined together daily by Mrs Pike's arranging, and real feeling begins to grow between them under the pretence.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Margaret overhears Dene telling a fellow schoolmaster that he means to 'put an end to it' the moment Mrs Ferris leaves, and takes it to mean an end to his regard for her rather than the sham itself.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "She turns cold to him without explanation, and Dene, baffled, cannot ask why with Mrs Pike and Mrs Ferris both watching the pair for any sign of trouble.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Chapter ends on Mrs Ferris's suspicion that Margaret has overheard something, which drives her into the role of investigator going into chapter 4."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [
+    "Opening sentence 'with the banns already settled in her own mind' leans on a referent (whose banns) that is only confirmed in the next line of dialogue; naming the couple in the sentence itself would let it stand alone.",
+    "'So it had gone further than he meant, and what had gone further was his liking for her; and he would have it back again the moment civility no longer required it of him.' shifts grammatical subject mid-chain from the impersonal 'it' to 'he' across three coordinated clauses; split after the semicolon."
+  ],
+  "generic_prose": [
+    {
+      "quote": "Dene had learnt in a fortnight what that meant, and had not yet learnt what to do about it.",
+      "replace_with": "Name the specific thing he does or fails to do \u2014 e.g. he has learned to let her silence alone, but not learned how to ask without making it worse."
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Serves the false engagement and the meddling matchmaker directly through Pike's banns attempt and the daily-outing campaign, and plants the compromising-situation turn via the overheard, misread line.",
+  "length_note": null,
+  "fixes": [
+    "Rewrite the opening sentence to name the engagement outright, e.g. 'On Tuesday Mrs Pike came into the vestry with Margaret and Dene's banns already settled in her own mind,' so it stands alone.",
+    "Split 'So it had gone further than he meant, and what had gone further was his liking for her; and he would have it back again the moment civility no longer required it of him.' after the semicolon into two sentences so the subject doesn't shift from 'it' to 'he' mid-chain.",
+    "Consider showing one beat of the Thursday dinner directly rather than only naming it in summary, to make the 'real feeling begins to grow' beat land with the same weight as the walk."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "chapter_hash": "84712ebb4162b9da",
+  "length_over": 546,
+  "length_target": 450
+}

@@ -1,0 +1,70 @@
+{
+  "n": 3,
+  "pass": false,
+  "score": 7,
+  "beats": [
+    {
+      "beat": "Mrs Pike asks Mr Rowe to read the banns for Margaret and Dene directly, and he declines, saying he will read banns only when the couple comes and asks him for themselves.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Forced to keep up appearances, Margaret and Dene are walked and dined together daily by Mrs Pike's arranging, and real feeling begins to grow between them under the pretence.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Margaret overhears Dene telling a fellow schoolmaster that he means to 'put an end to it' the moment Mrs Ferris leaves, and takes it to mean an end to his regard for her rather than the sham itself.",
+      "covered": true,
+      "note": "The overhearing happens and her coldness follows, but the chapter never states, even in one clause of free indirect discourse, that she specifically reads it as the end of his regard rather than the end of the sham. The listener must infer this from her reaction alone, which weakens the setup chapter 4 depends on."
+    },
+    {
+      "beat": "She turns cold to him without explanation, and Dene, baffled, cannot ask why with Mrs Pike and Mrs Ferris both watching the pair for any sign of trouble.",
+      "covered": true,
+      "note": "Dene's 'Have I said something?' is cut off by the arrival of Pike and Ferris, which lands the beat cleanly."
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Mrs Ferris's closing line reframes Margaret's coldness as evidence of a real problem, not nerves, which is exactly what sends Judith digging in chapter 4."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [
+    "The clause-chain sentence beginning 'There was the walk to Nine Acres on Wednesday' shifts from an elliptical list ('there was X, and Y') to a full new clause ('and Margaret was to take Mr Dene's arm'), changing shape mid-sentence."
+  ],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "All three tropes are active and advancing: the meddler is now scheduling the couple's public life, the false engagement is visibly becoming real feeling, and the near-discovery at the schoolroom window edges toward a compromising moment without yet delivering one.",
+  "length_note": null,
+  "fixes": [
+    "After the overheard schoolroom speech, add one line of free indirect discourse giving Margaret's actual misreading \u2014 that she takes 'put an end to it' to mean his regard for her, not the pretence \u2014 so chapter 4's correction has something concrete to correct.",
+    "Split 'There was the walk to Nine Acres on Wednesday, and boiled fowl at her own table on Thursday, and Margaret was to take Mr Dene's arm along the church path on Sunday where the whole green could see it done' into two sentences, or recast the third item to match the elliptical noun-phrase shape of the first two.",
+    "The chapter runs well over target length; trim within the Nine Acres/piano paragraph, which carries the most incident-free description, rather than cutting dialogue that carries beats."
+  ],
+  "lint": {
+    "total": 1,
+    "errors": 0,
+    "by_rule": {
+      "clause_chain": 1
+    },
+    "findings": [
+      {
+        "rule": "clause_chain",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "There was the walk to Nine Acres on Wednesday, and boiled fowl at her own table on Thursday, and Margaret was to take Mr Dene's arm along th...",
+        "note": "3 clauses coordinated in 40 words. Heard once, the last one lands with the subject of the first already gone. Split after the first clause, or make every member the same grammatical shape so the ear can follow the pattern."
+      }
+    ]
+  },
+  "chapter_hash": "8537c821e710d3e4",
+  "length_over": 587,
+  "length_target": 450
+}

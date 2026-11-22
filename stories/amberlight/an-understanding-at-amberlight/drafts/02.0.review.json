@@ -1,0 +1,98 @@
+{
+  "n": 2,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Dene calls at Mrs Copp's to put the mistake right, but Margaret points out that denying it now would only prove to her aunt that she has nothing and must be carried off at once.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "They agree between them to let the engagement stand until Mrs Ferris departs, meaning to let it lapse quietly afterward.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Miss Judith Vane, delivering a message for her brother's shop, meets Mr Rowe on the same errand at Mrs Copp's door and exchanges nothing warmer with him than correct civility, each still privately certain the other is proud; she overhears enough of Margaret and Dene's planning to suspect the engagement does not add up, and says nothing yet.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mrs Ferris announces she wishes to see the schoolroom and meet Dene's scholars before she is satisfied, forcing more public performance on the couple than either wanted.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Mrs Ferris's demand to inspect the schoolroom on Wednesday raises the stakes and sets up the forced performance of chapter 3."
+  },
+  "continuity": [
+    "Old Nan Corbin appears here (autumn 1815) receiving a draught; the bible fixes her as 'laid up with her hip through the spring of 1817' - not a contradiction but worth confirming the ailment is unrelated, since the bible ties her specifically to that later date."
+  ],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": [
+      "The sentence beginning 'He thanked her with great correctness' coordinates three clauses that shift shape mid-stream, the third sliding into an embedded clause the first two don't have."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Advances the false engagement cleanly and keeps the meddler's damage alive by forcing a schoolroom inspection; the compromising-situation trope is still coiled for chapter 3, not yet spent.",
+  "length_note": null,
+  "fixes": [
+    "Split 'He thanked her with great correctness, and she wished him a good morning with as much, and each went away thinking the other had a very high opinion of themselves...' - end it after 'with as much' and start a new sentence with 'Each went away thinking...'",
+    "Trim toward the 450-word target by tightening 'But Judith had stood in the passage the length of six words, and the six words were these: until she goes, and then let it lapse.' into a single shorter sentence."
+  ],
+  "lint": {
+    "total": 5,
+    "errors": 0,
+    "by_rule": {
+      "clause_chain": 3,
+      "long_sentence": 2
+    },
+    "findings": [
+      {
+        "rule": "clause_chain",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "Then she goes back to Bath, and by Christmas people will say I thought better of it, and by Lady Day they will have found something else to...",
+        "note": "3 clauses coordinated in 29 words. Heard once, the last one lands with the subject of the first already gone. Split after the first clause, or make every member the same grammatical shape so the ear can follow the pattern."
+      },
+      {
+        "rule": "long_sentence",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "In the passage outside, Miss Judith Vane had come to the door with a draught from her brother's shop for old Nan Corbin, and found Mr Rowe,...",
+        "note": "41 words in one sentence. A listener cannot re-read it. Split it, or cut it to under 40."
+      },
+      {
+        "rule": "clause_chain",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "I was told at the shop that nothing had been sent up, and as I lodge here, and as the matter was pressing, it seemed to me that the shortest...",
+        "note": "3 clauses coordinated in 35 words. Heard once, the last one lands with the subject of the first already gone. Split after the first clause, or make every member the same grammatical shape so the ear can follow the pattern."
+      },
+      {
+        "rule": "long_sentence",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "He thanked her with great correctness, and she wished him a good morning with as much, and each went away thinking the other had a very high...",
+        "note": "41 words in one sentence. A listener cannot re-read it. Split it, or cut it to under 40."
+      },
+      {
+        "rule": "clause_chain",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "But Judith had stood in the passage the length of six words, and the six words were these: until she goes, and then let it lapse.",
+        "note": "3 clauses coordinated in 26 words. Heard once, the last one lands with the subject of the first already gone. Split after the first clause, or make every member the same grammatical shape so the ear can follow the pattern."
+      }
+    ]
+  },
+  "chapter_hash": "21c4f018bb5e8121"
+}

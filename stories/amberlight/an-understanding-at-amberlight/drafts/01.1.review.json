@@ -1,0 +1,55 @@
+{
+  "n": 1,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Mrs Augusta Ferris arrives in Amberlight to call on her niece Margaret Selby and declares she means to take her back to Bath as an unpaid companion, since teaching music to farmers' daughters is no future at all.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "After Sunday service, on the church porch, Mrs Pike overhears Margaret and Mr Robert Dene discussing an 'understanding' over the schoolroom accounts and mistakes it entirely for a private attachment.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Before the whole departing congregation, with Mrs Ferris standing by, Mrs Pike congratulates Margaret aloud on her engagement to Mr Dene.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mrs Ferris, delighted rather than deterred, announces she will stay a fortnight to see her niece properly courted before deciding anything about Bath, and Dene realises he has just been engaged in front of the parish.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Chapter closes on Dene having been publicly engaged without speaking a word of it, which sets the entire next chapter's problem in motion."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "The false engagement and the meddling matchmaker are both delivered straight here; the compromising situation is not yet due and is rightly absent.",
+  "length_note": null,
+  "fixes": [
+    "Chapter runs to roughly 490 words against a 450 target; trim the narrator's closing summary paragraph ('Mr Dene stood with his hat in his hand...') by one clause, since the last two sentences both restate the same idea of his silent, accidental engagement.",
+    "Consider trimming 'and her aunt was not deceived by it for a moment' slightly, as it duplicates the point already made by Margaret's silence itself."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "chapter_hash": "7a2a2a678537eec4"
+}
