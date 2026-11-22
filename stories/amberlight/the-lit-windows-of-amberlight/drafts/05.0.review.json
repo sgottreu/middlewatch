@@ -1,0 +1,83 @@
+{
+  "n": 5,
+  "pass": false,
+  "score": 7,
+  "beats": [
+    {
+      "beat": "Phoebe and Harker meet the two women in the hall and give them the plain truth of a broken engagement and a cruel family, which ends the madwoman story outright.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mrs Pike at once declares she always suspected grief rather than madness, and turns to prophesying an understanding between Phoebe and Harker, which Mrs Hale promises to repeat exactly as heard.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "On Monday, Augusta, dressed at last in mourning Phoebe has properly made for her, crosses to the east wing with Mr Rowe and offers to hear the youngest scholars read.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "At dusk Phoebe and Harker walk down the lane and exchange the apology neither gave before, while behind them every window of Amberlight House stands lit, the schoolroom's included.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Harker's closing line opens an above-board exchange between them, replacing the secrecy that drove the whole story; a satisfying close rather than a cliffhanger, which is correct for a last chapter."
+  },
+  "continuity": [
+    "Mrs Pike's claim 'I said to Mrs Hale only on Saturday that there was a sorrow in that house' is not shown in any earlier chapter; her actual Saturday line (ch.3) was about a chained door and a withheld reason, not grief. This reads as her established habit of being wrong and never admitting it, per the bible's 'wrong about a third of it' and 'never doubts herself' \u2014 acceptable as characterisation rather than an error, but worth confirming it is read as ironic rather than as an unflagged retcon."
+  ],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": [
+      "Harker reveals the full, painful story of Augusta's broken engagement to the parish's two worst gossips with no line acknowledging the reversal of his established want 'to shield his ward from parish talk' \u2014 the turn is in the outline, but nothing in his dialogue marks that he is choosing the lesser harm."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [
+    "'The Ludd boy, who had put his ear to that wall and heard her crying through it, read four lines to her about a ship and got two of them right.' \u2014 a relative clause breaks subject from verb; split into two sentences.",
+    "'A gentleman who settles a young woman's account at the draper's and will not put his name to it is not being mean, my dear.' \u2014 same nested-clause problem; give Mrs Pike two shorter sentences instead."
+  ],
+  "generic_prose": [
+    {
+      "quote": "I have thought of it every day since.",
+      "replace_with": "Name the specific thing he did with the guilt \u2014 e.g. he kept the worn poplin gown, or avoided the draper's window \u2014 rather than a vague claim of constant thought."
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "All three tropes land here: the secret benefactor is named aloud, the meddling matchmaker (Mrs Pike) pivots instantly to prophesying a match and recruits Mrs Hale as her megaphone, and the enemies-of-manner thread resolves in the dusk exchange \u2014 delivered straight, as required.",
+  "length_note": null,
+  "fixes": [
+    "Split 'The Ludd boy, who had put his ear to that wall and heard her crying through it, read four lines to her about a ship and got two of them right.' at the relative clause: 'The Ludd boy had put his ear to that wall and heard her crying through it. He read four lines to her about a ship and got two of them right.'",
+    "Split 'A gentleman who settles a young woman's account at the draper's and will not put his name to it is not being mean, my dear.' similarly: give Mrs Pike the fact, then the verdict, as two sentences.",
+    "Replace 'I have thought of it every day since' with a concrete image tied to an object already in the story (the poplin gown, the three guineas) so the line is not interchangeable with any apology in any story.",
+    "Add one line from Harker explaining why he now speaks openly to Mrs Pike and Mrs Hale \u2014 e.g. that a known grief is safer for Augusta than a guessed madness \u2014 so the reversal of his stated want to shield her from parish talk reads as a decision rather than a convenience of plot.",
+    "Trim 'And I stood in the lane counting your money and decided you had bought my silence with it' slightly \u2014 it restates chapter 3's line almost verbatim ('paid off once and paid for twice'); keep one version, not two across the story.",
+    "Chapter runs noticeably over its 450-word target; the Monday schoolroom scene (Mr Rowe's stove line plus the Ludd-boy aside) is the most cuttable block if trimming is needed, since neither adds a new beat."
+  ],
+  "lint": {
+    "total": 1,
+    "errors": 0,
+    "by_rule": {
+      "clause_chain": 1
+    },
+    "findings": [
+      {
+        "rule": "clause_chain",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "The shutters were off the main block, and there was a candle in every window of it, and the east wing was lit too, where Mr Rowe was locking...",
+        "note": "3 clauses coordinated in 39 words. Heard once, the last one lands with the subject of the first already gone. Split after the first clause, or make every member the same grammatical shape so the ear can follow the pattern."
+      }
+    ]
+  },
+  "chapter_hash": "b0a0f21eb32fdc57",
+  "length_over": 570,
+  "length_target": 450
+}

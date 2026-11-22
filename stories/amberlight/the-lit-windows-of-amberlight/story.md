@@ -10,7 +10,7 @@ regency / gothic · Middle Watch: Amberlight
 |---|---|---|
 | Target (15 min) | 2,250 | 15:00 |
 | Planned | 2,250 | 15:00 |
-| Written | *not yet written* | |
+| Written | 2,484 | 16:34 |
 | **Narrated** | | *not yet recorded* |
 
 ## Chapters
@@ -19,11 +19,11 @@ regency / gothic · Middle Watch: Amberlight
 
 | # | Title | Beats | Target | Written | Narrated |
 |---|---|---|---|---|---|
-| 1 | Lights Above the Schoolroom | 4 | 450 | — | — |
-| 2 | The Measuring | 4 | 450 | — | — |
-| 3 | An Account Settled | 4 | 450 | — | — |
-| 4 | What the House Hid | 4 | 450 | — | — |
-| 5 | Every Window Lit | 4 | 450 | — | — |
+| 1 | Lights Above the Schoolroom | 4 | 450 | 475 (+6%) | — |
+| 2 | The Measuring | 4 | 450 | 446 | — |
+| 3 | An Account Settled | 4 | 450 | 535 (+19%) | — |
+| 4 | What the House Hid | 4 | 450 | 531 (+18%) | — |
+| 5 | Every Window Lit | 4 | 450 | 497 (+10%) | — |
 
 ## Cast
 
@@ -47,8 +47,8 @@ regency / gothic · Middle Watch: Amberlight
 | Stage | |
 |---|---|
 | ideate | approved |
-| write | pending |
-| edit | pending |
+| write | done |
+| edit | awaiting_review |
 | record | pending |
 | design | pending |
 | direct | pending |

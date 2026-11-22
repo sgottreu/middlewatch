@@ -1,0 +1,56 @@
+{
+  "n": 5,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Phoebe and Harker meet the two women in the hall and give them the plain truth of a broken engagement and a cruel family, which ends the madwoman story outright.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mrs Pike at once declares she always suspected grief rather than madness, and turns to prophesying an understanding between Phoebe and Harker, which Mrs Hale promises to repeat exactly as heard.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "On Monday, Augusta, dressed at last in mourning Phoebe has properly made for her, crosses to the east wing with Mr Rowe and offers to hear the youngest scholars read.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "At dusk Phoebe and Harker walk down the lane and exchange the apology neither gave before, while behind them every window of Amberlight House stands lit, the schoolroom's included.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Harker's closing line moves the account from secret charity to an openly named arrangement, a decision that resolves the benefactor plot and opens the courtship."
+  },
+  "continuity": [
+    "Ch1-2 establish Phoebe working the gown in 'black crape' ('four yards of black crape under her hand'; 'the black crape under her arm'), but Ch5 describes the finished gown as 'black bombazine' with no acknowledgment of the change of material."
+  ],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Delivers the secret benefactor reveal straight, pays off the meddling matchmaker's prophecy through Mrs Pike and Mrs Hale, and closes the enemies-of-manner thread with the mutual apology; no fourth trope introduced.",
+  "length_note": null,
+  "fixes": [
+    "Reconcile the gown's fabric: either change 'black bombazine' in the Monday paragraph to 'black crape' to match the material Phoebe carried in Chapters 1 and 2, or add a line noting she used bombazine under the crape trim."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "chapter_hash": "823f702969b58a4e"
+}
