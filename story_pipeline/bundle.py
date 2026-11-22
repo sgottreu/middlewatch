@@ -129,6 +129,13 @@ def ear_key(name: str) -> str:
 class Bundle:
     root: Path
 
+    # Folders the stages write into. git does not track an empty folder, so a
+    # bundle made on one machine arrives on another (the Lightsail box, via a
+    # pull) without the ones nothing has been written to yet, and the first
+    # write into them fails with FileNotFoundError. `create` makes them and
+    # `open` puts back any that are missing.
+    SUBDIRS = ("chapters", "drafts", "reviews", "audio", "images/cast", "video")
+
     # --- paths -------------------------------------------------------------
 
     @property
@@ -247,8 +254,7 @@ class Bundle:
             raise ValueError(f"{slug} already exists at {elsewhere[0]}; slugs must "
                              "be unique across arcs")
         b = cls(root)
-        for sub in ("chapters", "drafts", "reviews", "audio", "images/cast", "video"):
-            (root / sub).mkdir(parents=True, exist_ok=True)
+        b._ensure_dirs()
         if not b.manifest_path.exists():
             b.write_manifest(
                 {
@@ -270,7 +276,12 @@ class Bundle:
         b = cls(Path(path))
         if not b.manifest_path.exists():
             raise FileNotFoundError(f"no manifest at {b.manifest_path}")
+        b._ensure_dirs()
         return b
+
+    def _ensure_dirs(self) -> None:
+        for sub in self.SUBDIRS:
+            (self.root / sub).mkdir(parents=True, exist_ok=True)
 
     # --- manifest ----------------------------------------------------------
 

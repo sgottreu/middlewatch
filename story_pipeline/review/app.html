@@ -373,6 +373,11 @@
   #revise .cost { border:1px solid var(--accent); background:rgba(201,162,39,.09);
                   border-radius:6px; padding:9px 12px; font-size:13px; margin:14px 0; }
   #revise .warn2 { color:var(--danger); font-size:13px; margin:8px 0 0; }
+  #answer { border:1px solid var(--line); border-left:3px solid var(--accent);
+            border-radius:6px; padding:10px 13px; margin:0 0 14px; font-size:14px;
+            white-space:pre-wrap; max-height:40vh; overflow-y:auto; }
+  #answer .m2 { display:block; font-family:var(--mono); font-size:11px;
+                color:var(--dim); margin-bottom:6px; text-transform:uppercase; }
   #status { display:none; border-radius:6px; padding:10px 13px; margin:14px 0 0;
             font-size:14px; border:1px solid var(--line); }
   #status.working { display:block; border-color:var(--accent); }
@@ -625,14 +630,16 @@
       word; anything else is replaced wholesale, not nudged.</p>
     <fieldset><legend>Keep</legend><div id="keeps"></div></fieldset>
     <fieldset><legend>Anything else to tell it</legend>
-      <textarea id="note" placeholder="Optional. e.g. give the antagonist a reason to be sympathetic."></textarea>
+      <textarea id="note" placeholder="Optional. A change for Revise (e.g. give the antagonist a reason to be sympathetic), or a question for Ask the ideator."></textarea>
     </fieldset>
+    <div id="answer" hidden></div>
     <p class="warn2" id="combo" hidden></p>
     <div id="status"></div>
     <div class="cost"><b>This spends about $0.07.</b> The outline it replaces is
       saved to <code>drafts/</code>, so a worse revision is recoverable.</div>
     <div class="row2">
       <button type="button" id="cancel" title="Close this dialog. A run already started keeps going in the background.">Cancel</button>
+      <button type="button" id="ask" title="Ask about the outline without changing it. A few cents; the answer is also saved to questions.md in the story's folder.">Ask the ideator</button>
       <button type="submit" id="go" class="primary">Revise</button>
     </div>
   </form></div>
@@ -1334,6 +1341,8 @@ async function openRevise() {
   st.className = ""; st.innerHTML = "";
   document.getElementById("go").textContent = "Revise";
   document.getElementById("cancel").disabled = false;
+  const ans = document.getElementById("answer");
+  ans.hidden = true; ans.innerHTML = "";
   syncRevise();
   scrim.classList.add("show");
   document.getElementById("note").focus();
@@ -1353,6 +1362,8 @@ function syncRevise() {
   const nothingToDo = keep.length === state.keepable.length &&
                       !document.getElementById("note").value.trim();
   document.getElementById("go").disabled = nothingToDo;
+  document.getElementById("ask").disabled =
+    !document.getElementById("note").value.trim();
 
   const combo = document.getElementById("combo");
   if (keep.includes("chapters") && !keep.includes("cast")) {
@@ -1371,6 +1382,57 @@ document.getElementById("keeps").addEventListener("change", syncRevise);
 document.getElementById("note").addEventListener("input", syncRevise);
 document.getElementById("cancel").onclick = () => scrim.classList.remove("show");
 scrim.onclick = e => { if (e.target === scrim) scrim.classList.remove("show"); };
+
+// A POST whose reply may not be the server's JSON. oauth2-proxy gives up on a
+// slow upstream and answers with its own HTML page, which .json() reports as a
+// bare "JSON.parse: unexpected character" — true, and no help at all.
+async function postJSON(url, body) {
+  const r = await fetch(url, { method: "POST",
+    headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  const text = await r.text();
+  try { return JSON.parse(text); }
+  catch {
+    return { error: (r.status === 502 || r.status === 504)
+      ? `The proxy in front of the review server stopped waiting (HTTP ${r.status}). ` +
+        `The call may still have finished on the server, so check before trying again.`
+      : `The server sent back something that isn't JSON (HTTP ${r.status}).` };
+  }
+}
+
+// Ask, don't revise: one plain-text call about the outline as it stands. The
+// dialog stays open, so the answer can shape the revision that follows it.
+document.getElementById("ask").onclick = async () => {
+  const ask = document.getElementById("ask"), go = document.getElementById("go");
+  const cancel = document.getElementById("cancel");
+  const status = document.getElementById("status");
+  const ans = document.getElementById("answer");
+  const question = document.getElementById("note").value.trim();
+  if (!question) return;
+
+  ask.disabled = go.disabled = cancel.disabled = true;
+  ask.textContent = "Asking…";
+  status.className = "working";
+  status.innerHTML = `Asking the ideator…<span class="m2">nothing in the outline changes</span>`;
+
+  let res;
+  try { res = await postJSON("/api/ask", { slug: state.sel, question }); }
+  catch (err) { res = { error: String(err) }; }
+
+  ask.textContent = "Ask the ideator";
+  cancel.disabled = false;
+  syncRevise();
+  if (res.error) {
+    status.className = "bad";
+    status.innerHTML = `<b>That didn't run.</b>${esc(explain(res.error))}` +
+      (/proxy/.test(res.error)
+        ? "\n\nIf it did finish, the answer is in questions.md in the story's folder." : "");
+    return;
+  }
+  status.className = ""; status.innerHTML = "";
+  ans.innerHTML = `<span class="m2">The ideator</span>${esc(res.answer)}`;
+  ans.hidden = false;
+  ans.scrollTop = 0;
+};
 
 document.getElementById("revise").onsubmit = async e => {
   e.preventDefault();

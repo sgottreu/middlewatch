@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import re
+from datetime import datetime
 from typing import Any
 
 from .. import bibles, genres, history, lint, llm
@@ -536,6 +537,63 @@ def revise_outline(cfg: dict, b: Bundle, feedback: str) -> dict:
     b.outline_path.write_text(json.dumps(outline, indent=2) + "\n")
     b.set_stage("ideate", "awaiting_review")
     return outline
+
+
+ASK_SYSTEM = """You are the ideator for Middle Watch, an audio fiction series, and you
+wrote the outline you are about to be shown. The person reviewing it has a
+question about it.
+
+Answer the question in plain prose. Do not write an outline, do not return
+JSON, and do not rewrite anything you were not asked about. Be brief: a few
+short paragraphs at most. Ground the answer in the outline and the series bible
+below, and where they are silent, say so rather than inventing what they hold.
+
+If the honest answer is that something should change, say what you would
+change and which parts of the outline it touches (logline, promise, setting,
+tropes, title, cast, chapters), so they know what to untick before revising.
+
+## Genre
+
+{genre_guide}
+
+{bible_block}
+"""
+
+
+def ask_ideator(cfg: dict, b: Bundle, question: str) -> dict:
+    """Ask the ideator a question about the outline. Changes nothing.
+
+    Revise is the wrong tool for a question: it wants a JSON outline back, so a
+    prose answer is stripped by the parser, and a question filed under "these
+    changes are required" gets read as a request to change something. This is
+    one plain-text call. The answer is appended to `questions.md` in the bundle,
+    so a reply the browser never received (a proxy timeout) is not lost.
+    """
+    question = (question or "").strip()
+    if not question:
+        raise ValueError("Write the question in the note first.")
+    outline = b.outline()
+    bible = (bibles.load(outline["bible"], cfg["bibles_dir"])
+             if outline.get("bible") else None)
+    genre = genres.load(outline["genre"])
+    system = (ASK_SYSTEM
+              .replace("{genre_guide}", genre.guide)
+              .replace("{bible_block}",
+                       bible.prompt_block(ideator=True) if bible else ""))
+    user = ("Here is the outline you produced:\n\n"
+            + json.dumps(outline, indent=2)
+            + "\n\nThe question:\n\n" + question)
+    # The ideator's own ceiling, not a small one: if the model thinks before
+    # answering, that spends the same allowance, and a short ceiling would come
+    # back as a truncated reply. Only tokens produced are billed.
+    text, usage = llm.complete(cfg["models"]["ideator"], system, user,
+                               max_tokens=_ceiling(cfg, "ideator"))
+    answer = text.strip()
+
+    stamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+    with (b.root / "questions.md").open("a") as f:
+        f.write(f"## {stamp}\n\n**Q:** {question}\n\n{answer}\n\n")
+    return {"answer": answer, "usage": usage}
 
 
 def approve(b: Bundle) -> None:

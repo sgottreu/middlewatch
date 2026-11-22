@@ -32,6 +32,8 @@ Routes:
     GET  /api/log/<slug>       that stage's own output; ?from=<byte offset>
     POST /api/cancel           stop it — kills the process group
     POST /api/revise           regenerate the outline — a paid call
+    POST /api/ask              ask the ideator a question about the outline —
+                               paid but small; changes nothing
     POST /api/write            draft the chapters not yet written; the most
                                expensive action. {"restart": true} rewrites all
     POST /api/critique         re-run the editor on written chapters — paid,
@@ -635,6 +637,13 @@ def revise(cfg: dict, slug: str, keep: list[str], note: str) -> dict:
         "feedback": feedback,
     }
 
+
+
+def ask(cfg: dict, slug: str, question: str) -> dict:
+    """Ask the ideator about the outline. One small paid call; writes nothing
+    but the bundle's `questions.md` log."""
+    b = Bundle.open(find_bundle(cfg["stories_dir"], slug))
+    return {"ok": True, "slug": slug, **textagent.ask_ideator(cfg, b, question)}
 
 # --------------------------------------------------------------------------- #
 # Stages, which run as detached processes
@@ -1256,6 +1265,8 @@ def _handler(cfg: dict):
                 elif path == "/api/revise":
                     self._json(revise(cfg, body["slug"], body.get("keep", []),
                                       body.get("note", "")))
+                elif path == "/api/ask":
+                    self._json(ask(cfg, body["slug"], body.get("question", "")))
                 elif path == "/api/write":
                     self._json(write_start(cfg, body["slug"],
                                            restart=bool(body.get("restart"))))
