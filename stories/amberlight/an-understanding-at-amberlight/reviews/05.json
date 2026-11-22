@@ -1,0 +1,80 @@
+{
+  "n": 5,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Mrs Ferris settles money on Margaret as a wedding gift rather than a condition, so Dene can accept it now that it buys nothing from him.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Margaret and Dene go together to Mr Rowe to ask for their banns properly, as he had required, and he reads them on an ordinary Sunday.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Judith Vane and Mr Rowe exchange no more than correct courtesy throughout the service, neither yet easy with the other.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mrs Pike takes full credit for the match at every house on the green, entirely untroubled by how near her mistake had come to ruining it, while Judith goes back to keeping her brother's house exactly as before.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "No forward plot turn, but this is the closing chapter, so the turn is the quiet irony of Pike's unearned credit and Judith's silence, which is the correct note to end the series-standard arc on."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": false,
+    "irony_in_dialogue": true,
+    "problems": [
+      "'It is a wedding gift and not a condition' and 'I had the parish's word for it and not yours' are both negative-parallelism constructions in a single chapter; chapter 1 already used the series' one allowance ('That is not a future... That is a way of postponing one'), so this chapter pushes the story to three instances total, over the hard cap of one.",
+      "The chapter has almost no interiority \u2014 it runs on dialogue and plain narrative report throughout, so the required free indirect discourse is effectively absent; even the near-miss ('Mrs Pike looked round the church to be sure of it') is too thin to count."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [
+    "'She said it at the draper's and at Mrs Copp's and twice at the Bell' is a three-item list where two locations would carry the same comic effect without tripping the rule of three."
+  ],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "All three tropes land here: the false engagement pays off straight with real banns, the meddler is rewarded rather than punished for her error (an inversion that is satisfying because the near-disaster is acknowledged by the narrator even as Pike erases it), and the compromising situation's consequence (Ferris's test) resolves cleanly.",
+  "length_note": null,
+  "fixes": [
+    "Cut one of the two negative-parallelism lines in this chapter \u2014 revise 'It is a wedding gift and not a condition' to something like 'This is freely given, and nothing is owed for it' \u2014 since the story's one allowance was spent in chapter 1.",
+    "Revise Rowe's closing line 'I had the parish's word for it and not yours' to drop the second negative-parallelism construction, e.g. 'I had only Mrs Pike's word for it until this morning.'",
+    "Add one line of free indirect discourse somewhere in the chapter, most naturally when Margaret looks at the six hundred pounds \u2014 what the sum means to a woman who has had eighteen pounds a year, given in her own thought-register rather than reported by the narrator.",
+    "Trim the three-site list of Pike's gossip rounds to two locations to avoid the rule-of-three pattern."
+  ],
+  "lint": {
+    "total": 2,
+    "errors": 0,
+    "by_rule": {
+      "long_sentence": 1,
+      "clause_chain": 1
+    },
+    "findings": [
+      {
+        "rule": "long_sentence",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "Between the second lesson and the hymn Mr Rowe published the banns of marriage between Robert Dene, schoolmaster of this parish, and Margare...",
+        "note": "41 words in one sentence. A listener cannot re-read it. Split it, or cut it to under 40."
+      },
+      {
+        "rule": "clause_chain",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "I have expected it since Easter, and I said so at the time, and there is not a soul in this parish who can say I did not.",
+        "note": "3 clauses coordinated in 28 words. Heard once, the last one lands with the subject of the first already gone. Split after the first clause, or make every member the same grammatical shape so the ear can follow the pattern."
+      }
+    ]
+  },
+  "chapter_hash": "192025bddc34cbf2"
+}

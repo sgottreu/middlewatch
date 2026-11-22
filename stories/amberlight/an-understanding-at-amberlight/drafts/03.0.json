@@ -4,31 +4,24 @@
   "segments": [
     {
       "speaker": "narrator",
-      "text": "On Tuesday Mrs Pike came into the vestry with the banns already settled in her own mind, and found Mr Rowe writing up a burial."
-    },
-    {
-      "speaker": "Mrs Honoria Pike",
-      "text": "Three Sundays, beginning with the next. Miss Selby and Mr Dene. You need not trouble yourself over the particulars, for I have them all, and her father was a clergyman in Berkshire."
-    },
-    {
-      "speaker": "narrator",
-      "text": "Mr Rowe put down the pen."
+      "text": "Mrs Pike found the curate in the vestry on Tuesday, putting away the sacrament linen, and asked him for the banns of Margaret Selby and Robert Dene to be read on Sunday."
     },
     {
       "speaker": "Mr Silas Rowe",
-      "text": "I am sure you have them, ma'am. I shall read banns when Mr Dene and Miss Selby come to me and ask me for them. That is the whole of my practice and I have never varied it."
+      "text": "I read banns when the two parties come to me and ask for them. Both of them. In this room."
     },
     {
       "speaker": "Mrs Honoria Pike",
-      "text": "They are shy of you."
+      "text": "I heard the engagement with my own ears in the porch, Mr Rowe, and so did forty people."
     },
     {
       "speaker": "Mr Silas Rowe",
-      "text": "Then they may be shy of me in this room, and I shall be very glad of it. I do not publish a marriage at the word of a third person, however kindly the word is meant."
+      "text": "I heard it from you as well, ma'am. That is precisely the difficulty."
     },
     {
       "speaker": "narrator",
-      "text": "He said it with perfect civility, and Mrs Pike went down the path observing to herself that eighty pounds a year had never made a man so grand before."
+      "text": "She went down the path convinced he was proud, which was a thing the parish had long since settled about him on less evidence.",
+      "tag": "[dry]"
     },
     {
       "speaker": "break",
@@ -36,52 +29,48 @@
     },
     {
       "speaker": "narrator",
-      "text": "By Thursday Mrs Pike had the week arranged for them. There was the walk to Nine Acres on Wednesday, and boiled fowl at her own table on Thursday, and Margaret was to take Mr Dene's arm along the church path on Sunday where the whole green could see it done.\n\nOn the Nine Acres road Dene talked about the Ludd boy, who could do long division in his head and could not be got to hold a pen above a minute together. Margaret found she had asked three questions, and had wanted the answers to all three. At the piano afterwards he turned her page a bar early, and apologised, and turned the next one early too."
-    },
-    {
-      "speaker": "break",
-      "text": ""
-    },
-    {
-      "speaker": "narrator",
-      "text": "On Friday she came up to the schoolroom with the singing book under her arm. The window was propped open with a slate, and Dene was inside with the schoolmaster from Bramdean, who had walked over about a globe."
-    },
-    {
-      "speaker": "Mr Robert Dene",
-      "text": "The moment her aunt is on the coach I shall put an end to it. It has gone a great deal further than I ever meant it to go, and I have no business in it at all. A man on forty pounds a year has no business in it."
-    },
-    {
-      "speaker": "narrator",
-      "text": "Margaret stood on the gravel with the book against her and did not go in. She laid it on the sill instead, where he would find it.\n\nHe came out at the sound and caught her at the gate."
-    },
-    {
-      "speaker": "Mr Robert Dene",
-      "text": "You are early. Will you come in and hear them? They have the round in three parts now, after a fashion."
+      "text": "For the next ten days Mrs Pike arranged them. There was a walk to Nine Acres on Wednesday and cold mutton at the house on the green on Friday, and on Saturday the pair were sent to look at the lime trees for no reason anybody could name. Dene carried the music case without being asked. He told Margaret that the youngest Ludd boy had got through a whole page of Hollis's psalter aloud, and his ears went red telling it, and Margaret found she had stopped walking to listen."
     },
     {
       "speaker": "Miss Margaret Selby",
-      "text": "Thank you, no. I shall be ready at four, as Mrs Pike arranged."
-    },
-    {
-      "speaker": "narrator",
-      "text": "Her hands were folded. Dene had learnt in a fortnight what that meant, and had not yet learnt what to do about it."
+      "text": "You are very proud of them."
     },
     {
       "speaker": "Mr Robert Dene",
-      "text": "Miss Selby. Have I said something?"
+      "text": "I have forty pounds a year and twenty-two children. One of those numbers is worth boasting of."
     },
     {
       "speaker": "narrator",
-      "text": "But Mrs Pike was already coming up the lane with Mrs Ferris beside her, the two of them walking at the pace of women who mean to arrive before anything is finished. Margaret turned and wished them both good morning. Mrs Ferris looked at her niece over the top of her spectacles, and then rather longer at Mr Dene."
+      "text": "On the Thursday following, Margaret came to the schoolroom door with the singing books and heard Dene inside, talking to the schoolmaster from Bramdean, who had walked over about a stove."
     },
     {
-      "speaker": "Mrs Honoria Pike",
-      "text": "Nerves. It is always nerves, so near the banns.",
-      "tag": "[comfortably]"
+      "speaker": "Mr Robert Dene",
+      "text": "The day her aunt takes the coach, I shall put an end to it. I have had the good of it and I never earned a shilling of it, and it cannot stand another week after she is gone."
     },
     {
-      "speaker": "Mrs Augusta Ferris",
-      "text": "I have seen a good many engaged couples, ma'am. That is not nerves. That is a young woman who has heard something she was not meant to hear, and I should very much like to know what it was."
+      "speaker": "narrator",
+      "text": "Margaret set the books on the step and went home along the lane. He meant to be done with her the hour it stopped being necessary. She had known that from the first; she had agreed to it in Mrs Copp's parlour, in her own words. It was not to be borne that hearing it should be so different from saying it."
+    },
+    {
+      "speaker": "narrator",
+      "text": "At dinner that evening she passed him the salt and nothing else. He asked whether the Hollis girls had paid at Michaelmas and she said they had. Mrs Pike beamed at the pair of them from the head of the table. Mrs Ferris looked at her niece over the top of her spectacles and said nothing at all, which was worse."
+    },
+    {
+      "speaker": "narrator",
+      "text": "At the gate he had perhaps four seconds, with two women watching from the lit window."
+    },
+    {
+      "speaker": "Mr Robert Dene",
+      "text": "Have I done something?",
+      "tag": "[low]"
+    },
+    {
+      "speaker": "Miss Margaret Selby",
+      "text": "Nothing whatever. You have done exactly what we agreed."
+    },
+    {
+      "speaker": "narrator",
+      "text": "She went in. Behind the glass, Mrs Pike remarked that it was very pretty to see young people say good night."
     }
   ]
 }

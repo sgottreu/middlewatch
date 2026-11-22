@@ -10,7 +10,7 @@ regency / romance · Middle Watch: Amberlight
 |---|---|---|
 | Target (15 min) | 2,250 | 15:00 |
 | Planned | 2,250 | 15:00 |
-| Written | 1,529 | 10:12 |
+| Written | 2,414 | 16:06 |
 | **Narrated** | | *not yet recorded* |
 
 ## Chapters
@@ -21,9 +21,9 @@ regency / romance · Middle Watch: Amberlight
 |---|---|---|---|---|---|
 | 1 | A Visitor from Bath | 4 | 450 | 491 (+9%) | — |
 | 2 | The Convenient Fiction | 4 | 450 | 492 (+9%) | — |
-| 3 | Playing the Part | 4 | 450 | 546 (+21%) | — |
-| 4 | Found Out | 4 | 450 | — | — |
-| 5 | What It Cost | 4 | 450 | — | — |
+| 3 | Playing the Part | 4 | 450 | 463 (+3%) | — |
+| 4 | Found Out | 4 | 450 | 464 (+3%) | — |
+| 5 | What It Cost | 4 | 450 | 504 (+12%) | — |
 
 ## Cast
 
@@ -47,8 +47,8 @@ regency / romance · Middle Watch: Amberlight
 | Stage | |
 |---|---|
 | ideate | approved |
-| write | pending |
-| edit | pending |
+| write | done |
+| edit | awaiting_review |
 | record | pending |
 | design | pending |
 | direct | pending |

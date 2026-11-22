@@ -1,0 +1,68 @@
+{
+  "n": 4,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Judith Vane, having pieced the misunderstanding together from what she overheard, calls on Margaret and quietly explains that Dene's words meant ending the pretence, not his feeling for her.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Margaret goes at once to find Dene, and the two are discovered unmistakably close and sincere by Mrs Ferris and Mrs Pike arriving together at the schoolroom door.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mrs Ferris asks Dene plainly whether he would marry Margaret with not a shilling of her aunt's money attached to her.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Dene says he would rather have Margaret penniless and honestly his than owe the marriage to anyone's fortune, an answer Mrs Ferris had not expected from a poor man, and she is satisfied something real has happened.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Mrs Ferris's test and Dene's answer confirm the false engagement has become real, which reorients the next chapter toward settlement and banns; the closing Pike line is a comic button rather than the turn itself but does not undercut it."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [
+    "\"to a young man in Bath in the year nine\" uses a period year-convention that a listener may not parse quickly; consider \"in the year her husband courted her\" or stating 1809 plainly.",
+    "Dene says \"in two rooms,\" which echoes the bible's fixed detail that Mr Rowe (not Dene) lodges in two rooms over Mrs Copp's; harmless as written but worth changing to avoid an unintended echo for listeners who know the series."
+  ],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Serves all three tropes directly: the meddler (Pike's closing credit-claim), the compromising situation turned confession (hand-holding discovered by both older women), and the false engagement tipping into a real proposal via Ferris's plain test.",
+  "length_note": null,
+  "fixes": [
+    "Clarify \"the year nine\" with a plainer period marker (e.g. \"in the year nine, when Bonaparte was still at large\" or simply \"in 1809\") so the listener need not do date arithmetic.",
+    "Consider changing Dene's \"in two rooms\" to a different concrete detail of his prospective household, since two rooms over Mrs Copp's is already fixed as Mr Rowe's lodging in the bible."
+  ],
+  "lint": {
+    "total": 1,
+    "errors": 0,
+    "by_rule": {
+      "break_unanchored": 1
+    },
+    "findings": [
+      {
+        "rule": "break_unanchored",
+        "severity": "warn",
+        "segment": 13,
+        "quote": "Margaret reached the schoolroom before eleven, with her bonnet strings loose.",
+        "note": "The sentence after a scene break has to say when or where we now are \u2014 it is the only cue a listener gets that time has passed."
+      }
+    ]
+  },
+  "chapter_hash": "57af039dbf1648fd"
+}
