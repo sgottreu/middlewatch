@@ -1,0 +1,87 @@
+{
+  "n": 2,
+  "pass": false,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Harker receives Phoebe in the cold front hall, will not let her see Miss Fairfax, and hands her an old gown to take the measurements from instead.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Phoebe tells him plainly that a tradeswoman is owed the same civility as any customer, and he answers that her business is the cloth, not his household's affairs.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Through a part-opened door Phoebe glimpses Augusta Fairfax in unrelieved black, quietly weeping over a packet of letters, plainly grieved and not raving.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Harker abruptly cancels the order, presses payment well above its worth into Phoebe's hand, and shows her out, leaving her certain she has been paid to keep silent.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Phoebe's closing line names the suspicion that will drive her into the house again in chapter 3."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": [
+      "\"He put the coins into her hand and closed her fingers over them, and she felt that it was a great deal more than four yards of crape and a week of her needle.\" shifts subject from Harker to Phoebe across a three-clause chain; split after \"over them.\""
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [
+    {
+      "quote": "When he spoke he was perfectly even, which she found worse than anger.",
+      "replace_with": "Give a physical tell instead of the interpretive judgement \u2014 a hand flat on the table, a voice dropped rather than raised."
+    },
+    {
+      "quote": "she felt that it was a great deal more than four yards of crape and a week of her needle",
+      "replace_with": "Cut this telling beat; the following line, where she counts three guineas in the lane, already makes the point concretely."
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Delivers Enemies of manner straight through the hall exchange and lays the groundwork for The secret benefactor via the glimpsed letters and the overpaid cancellation.",
+  "length_note": null,
+  "fixes": [
+    "Cut \"she felt that it was a great deal more than four yards of crape and a week of her needle\" \u2014 it restates what the guinea count two lines later already shows.",
+    "Trim \"There was a pause of some length. When he spoke he was perfectly even, which she found worse than anger\" to a single concrete beat rather than a judgement plus explanation.",
+    "Split \"He put the coins into her hand and closed her fingers over them, and she felt...\" at \"over them\" \u2014 the subject changes from Harker to Phoebe mid-chain.",
+    "The chapter runs well over its 450-word target; use the two cuts above plus a trim of the window-seat description (currently four clauses) to bring it down."
+  ],
+  "lint": {
+    "total": 2,
+    "errors": 0,
+    "by_rule": {
+      "clause_chain": 2
+    },
+    "findings": [
+      {
+        "rule": "clause_chain",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "There were no candles lit either, at eleven in the morning, and the shutters on that side were still across, so that the whole of the light...",
+        "note": "3 clauses coordinated in 34 words. Heard once, the last one lands with the subject of the first already gone. Split after the first clause, or make every member the same grammatical shape so the ear can follow the pattern."
+      },
+      {
+        "rule": "clause_chain",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "Phoebe saw a window seat, and the grey morning on it, and a young lady in black sitting with a packet of letters loose in her lap.",
+        "note": "3 clauses coordinated in 27 words. Heard once, the last one lands with the subject of the first already gone. Split after the first clause, or make every member the same grammatical shape so the ear can follow the pattern."
+      }
+    ]
+  },
+  "chapter_hash": "80b22198ada12d8f",
+  "length_over": 548,
+  "length_target": 450
+}

@@ -1,0 +1,89 @@
+{
+  "n": 1,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Dismissing his scholars from the east-wing schoolroom one dusk in late October, Mr Rowe sees candlelight moving behind the shuttered main windows of Amberlight House, dark these six years, and mentions it next morning at the draper's counter.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mrs Hale reports a Mr Edward Harker has taken the main block by the Marchmont family's leave, as trustee for a young ward's bequest from the late Sir Edward Marchmont's estate, the family itself still never having come into the parish.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Through the same counter Phoebe Langton is handed a curt note, signed only with initials, ordering full mourning made up within the week for a 'Miss Fairfax.'",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mrs Pike declares that a house does not light itself after six years dark unless something is being kept from the parish, and tells Phoebe to look sharp about her when she carries the order up.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Mrs Pike's instruction to look sharp sets Phoebe's errand up the lane, which is exactly what chapter two opens on."
+  },
+  "continuity": [
+    "The chapter's claim, carried over from the outline's own beat, that the Marchmont family 'have never once set foot in it' / 'still never having come into the parish' contradicts the series bible, which has Miss Louisa Marchmont spend a fortnight at the Amberlight gatehouse in 1817 and secure her uncle's promise on the schoolroom in writing. By late 1818 the family has in fact come into the parish once. The line should be softened to acknowledge that single visit rather than deny it outright."
+  ],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": [
+      "The opening sentence coordinates three clauses that shift subject from Rowe to 'there' to 'candles' across one sentence, which risks losing the listener by the third clause.",
+      "The scene break falls immediately after a sentence that has already named the time and place ('by nine the next morning he was telling the draper's counter'), so nothing is gained by the silence and the break reads as decorative rather than orienting."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [
+    "Break placement: the break lands right after the scene's time and place have already been stated, so it marks no actual jump; either move the break earlier (before the 'next morning' clause) or remove it.",
+    "Clause chain: 'Mr Silas Rowe let his scholars out ... because by half past there was no reading to be had without candles, and candles came out of the eighty pounds a year he was paid to be curate' changes grammatical subject twice in one sentence; split after 'without candles.'"
+  ],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Sets up the secret-benefactor mystery and gives Mrs Pike her first wrong-guess gossip, both on cue; enemies-of-manner has not started since Phoebe and Harker have not yet met, which is appropriate this early.",
+  "length_note": null,
+  "fixes": [
+    "Soften 'they have never once set foot in it' to allow for Miss Louisa Marchmont's 1817 visit established in the bible, e.g. 'they have set foot in it exactly once, and that was last summer, to see to the schoolroom.'",
+    "Split the opening sentence after 'without candles' so the second clause about his pay stands alone and keeps its own subject.",
+    "Move the scene break to fall before 'by nine the next morning he was telling the draper's counter,' so the sentence after the break is the one that orients the listener to the new scene, or delete the break and let the paragraph run on."
+  ],
+  "lint": {
+    "total": 3,
+    "errors": 0,
+    "by_rule": {
+      "long_sentence": 2,
+      "break_unanchored": 1
+    },
+    "findings": [
+      {
+        "rule": "long_sentence",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "On the last Tuesday in October, Mr Silas Rowe let his scholars out of the east wing of Amberlight House at four, because by half past there...",
+        "note": "51 words in one sentence. A listener cannot re-read it. Split it, or cut it to under 40."
+      },
+      {
+        "rule": "long_sentence",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "He came Friday on the coach with two boxes and a man, and he has the main rooms by the Marchmont family's leave, which is all the Marchmont...",
+        "note": "44 words in one sentence. A listener cannot re-read it. Split it, or cut it to under 40."
+      },
+      {
+        "rule": "break_unanchored",
+        "severity": "warn",
+        "segment": 5,
+        "quote": "Mrs Hale, who keeps the circulating library above the draper's shop and the draper's counter below it, had the matter ready before he had fi...",
+        "note": "The sentence after a scene break has to say when or where we now are \u2014 it is the only cue a listener gets that time has passed."
+      }
+    ]
+  },
+  "chapter_hash": "d1ffc7222c61bd39"
+}

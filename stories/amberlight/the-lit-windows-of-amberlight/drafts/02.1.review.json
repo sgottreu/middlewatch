@@ -1,0 +1,60 @@
+{
+  "n": 2,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Harker receives Phoebe in the cold front hall, will not let her see Miss Fairfax, and hands her an old gown to take the measurements from instead.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Phoebe tells him plainly that a tradeswoman is owed the same civility as any customer, and he answers that her business is the cloth, not his household's affairs.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Through a part-opened door Phoebe glimpses Augusta Fairfax in unrelieved black, quietly weeping over a packet of letters, plainly grieved and not raving.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Harker abruptly cancels the order, presses payment well above its worth into Phoebe's hand, and shows her out, leaving her certain she has been paid to keep silent.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Chapter ends on Phoebe's flat conclusion that she has been paid for silence, which sets up her account-tracing in chapter 3."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [
+    {
+      "quote": "in the way of a person who has been at it some while and expects to be at it longer",
+      "replace_with": "a concrete physical detail of Augusta's grief \u2014 the letters crushed in her fist, a particular gesture \u2014 rather than a generalised description of weeping that could belong to any crying character in any story"
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Delivers the madwoman misdirection straight (reader sees grief, not madness, before the parish does) and advances enemies-of-manner through the Harker/Phoebe clash; the secret benefactor trope is seeded by the suspicious over-payment.",
+  "length_note": null,
+  "fixes": [
+    "Replace 'in the way of a person who has been at it some while and expects to be at it longer' with one concrete physical detail specific to Augusta.",
+    "Consider trimming the opening sentence's trailing clause slightly, though it currently holds only two coordinated members and is acceptable as is."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "chapter_hash": "931b5a0b62dd358d"
+}

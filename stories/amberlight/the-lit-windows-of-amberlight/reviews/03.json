@@ -1,0 +1,88 @@
+{
+  "n": 3,
+  "pass": true,
+  "score": 7,
+  "beats": [
+    {
+      "beat": "By Saturday Mrs Pike has the story whole, with a chained door added, and Mrs Hale repeats word for word what two scholars claim to have heard crying through the schoolroom wall.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Phoebe calls at the draper's to settle her own running account for thread and trim, and finds it already paid in full; Mrs Hale says a gentleman's man came in, paid in coin, and gave no name.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Phoebe recognises the hand on the receipt as the same curt hand that wrote Harker's cancelled order, and sets out up the lane meaning to return the money to his face.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "She finds the front door of Amberlight House standing open, and hears from above a fall and a man's voice calling a name in open fear.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Harker's fearful cry of Augusta's name ends the chapter on a reversal that pulls Phoebe into the house rather than away from it."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": [
+      "'It was half past three when Phoebe came up the lane to Amberlight House, and already going grey over the yard wall.' loses its subject mid-sentence; nothing in the clause is doing the going-grey, and read aloud it sounds like the house or the hour is going grey over a wall."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [
+    "'and already going grey over the yard wall' has no stated subject (the sky, the light) and will confuse a listener on first hearing.",
+    "'By Saturday Mrs Pike had the whole of it, and the whole of it now had a chained door in it.' opens the chapter on an abstract pronoun-referent ('the whole of it') rather than naming what is being gossiped about."
+  ],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Serves the meddling matchmaker (Mrs Pike escalating the madwoman theory) and the secret benefactor (the traced payment) directly; enemies of manner stays dormant this chapter, which is fine at this point in the arc.",
+  "length_note": null,
+  "fixes": [
+    "Fix the dangling clause: 'and already going grey over the yard wall' needs a subject, e.g. 'the sky already going grey over the yard wall.'",
+    "Open on a named referent instead of 'the whole of it' \u2014 e.g. 'By Saturday Mrs Pike had turned the shuttered house into a whole story, and the story now had a chained door in it.'",
+    "The chapter runs well over its 450-word target (roughly 550); trim Mrs Pike's opening speech ('Chained, my dear...it is not the damp.') by a clause or two, and tighten 'She found the receipt under the till and handed it over. Phoebe read the line at the foot of it, where the man had written the sum in words at Mrs Hale's asking.' into one sentence.",
+    "Consider trimming 'The front door stood open. Not ajar. Open, wide,' to one of the two formulations \u2014 both make the same point."
+  ],
+  "lint": {
+    "total": 3,
+    "errors": 0,
+    "by_rule": {
+      "clause_chain": 1,
+      "long_sentence": 1,
+      "break_unanchored": 1
+    },
+    "findings": [
+      {
+        "rule": "clause_chain",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "They were doing their letters in the east wing, and they put their ears to the wall by the stove, and they heard a lady crying the other sid...",
+        "note": "3 clauses coordinated in 31 words. Heard once, the last one lands with the subject of the first already gone. Split after the first clause, or make every member the same grammatical shape so the ear can follow the pattern."
+      },
+      {
+        "rule": "long_sentence",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "She had the coins in her fist and the plain speech ready: that she had been paid off once and paid for twice, and would be obliged if Mr Har...",
+        "note": "51 words in one sentence. A listener cannot re-read it. Split it, or cut it to under 40."
+      },
+      {
+        "rule": "break_unanchored",
+        "severity": "warn",
+        "segment": 13,
+        "quote": "It was half past three when Phoebe came up the lane to Amberlight House, and already going grey over the yard wall.",
+        "note": "The sentence after a scene break has to say when or where we now are \u2014 it is the only cue a listener gets that time has passed."
+      }
+    ]
+  },
+  "chapter_hash": "af16ad52672c9f47"
+}
