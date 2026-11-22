@@ -373,6 +373,8 @@
   #revise .cost { border:1px solid var(--accent); background:rgba(201,162,39,.09);
                   border-radius:6px; padding:9px 12px; font-size:13px; margin:14px 0; }
   #revise .warn2 { color:var(--danger); font-size:13px; margin:8px 0 0; }
+  #revise label.askst { font-size:13px; color:var(--dim); padding:8px 0 0; }
+  #revise label.askst .m2 { display:block; font-family:var(--mono); font-size:11px; }
   #answer { border:1px solid var(--line); border-left:3px solid var(--accent);
             border-radius:6px; padding:10px 13px; margin:0 0 14px; font-size:14px;
             white-space:pre-wrap; max-height:40vh; overflow-y:auto; }
@@ -631,6 +633,9 @@
     <fieldset><legend>Keep</legend><div id="keeps"></div></fieldset>
     <fieldset><legend>Anything else to tell it</legend>
       <textarea id="note" placeholder="Optional. A change for Revise (e.g. give the antagonist a reason to be sympathetic), or a question for Ask the ideator."></textarea>
+      <label class="askst"><input type="checkbox" id="askstories">
+        <span>Let the ideator read this series' finished stories
+          <span class="m2">Ask the ideator only · about 2¢ more per story</span></span></label>
     </fieldset>
     <div id="answer" hidden></div>
     <p class="warn2" id="combo" hidden></p>
@@ -1343,6 +1348,7 @@ async function openRevise() {
   document.getElementById("cancel").disabled = false;
   const ans = document.getElementById("answer");
   ans.hidden = true; ans.innerHTML = "";
+  document.getElementById("askstories").checked = false;
   syncRevise();
   scrim.classList.add("show");
   document.getElementById("note").focus();
@@ -1412,10 +1418,12 @@ document.getElementById("ask").onclick = async () => {
   ask.disabled = go.disabled = cancel.disabled = true;
   ask.textContent = "Asking…";
   status.className = "working";
-  status.innerHTML = `Asking the ideator…<span class="m2">nothing in the outline changes</span>`;
+  status.innerHTML = `Asking the ideator…<span class="m2">nothing in the outline changes` +
+    `${document.getElementById("askstories").checked ? " · reading the finished stories" : ""}</span>`;
 
   let res;
-  try { res = await postJSON("/api/ask", { slug: state.sel, question }); }
+  const stories = document.getElementById("askstories").checked;
+  try { res = await postJSON("/api/ask", { slug: state.sel, question, stories }); }
   catch (err) { res = { error: String(err) }; }
 
   ask.textContent = "Ask the ideator";
@@ -1429,7 +1437,9 @@ document.getElementById("ask").onclick = async () => {
     return;
   }
   status.className = ""; status.innerHTML = "";
-  ans.innerHTML = `<span class="m2">The ideator</span>${esc(res.answer)}`;
+  const read = res.read == null ? ""
+    : res.read.length ? ` · read ${res.read.join(", ")}` : " · no finished stories to read";
+  ans.innerHTML = `<span class="m2">The ideator${esc(read)}</span>${esc(res.answer)}`;
   ans.hidden = false;
   ans.scrollTop = 0;
 };

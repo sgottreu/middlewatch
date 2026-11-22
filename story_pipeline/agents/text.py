@@ -545,8 +545,9 @@ question about it.
 
 Answer the question in plain prose. Do not write an outline, do not return
 JSON, and do not rewrite anything you were not asked about. Be brief: a few
-short paragraphs at most. Ground the answer in the outline and the series bible
-below, and where they are silent, say so rather than inventing what they hold.
+short paragraphs at most. Ground the answer in the outline, the series bible
+and, where they are given, the finished stories below. Where they are silent,
+say so rather than inventing what they hold.
 
 If the honest answer is that something should change, say what you would
 change and which parts of the outline it touches (logline, promise, setting,
@@ -557,10 +558,51 @@ tropes, title, cast, chapters), so they know what to untick before revising.
 {genre_guide}
 
 {bible_block}
+{stories_block}"""
+
+STORIES_TEMPLATE = """
+## Finished stories in this series
+
+These are written and produced, so they cannot change. Their text is canon
+alongside the bible, and where the two disagree the finished text is what a
+viewer has actually heard. When your answer rests on something a finished story
+says, quote the line and name the story and chapter. If nothing in them bears
+on the question, say that too.
+
+{stories}
 """
 
 
-def ask_ideator(cfg: dict, b: Bundle, question: str) -> dict:
+def finished_stories(b: Bundle) -> list[tuple[str, str]]:
+    """(title, text) of every other story in the same series with every chapter
+    written. Same arc folder and same bible; the one being asked about is left
+    out, since its outline is already in front of the model."""
+    try:
+        bible = b.outline().get("bible")
+    except (OSError, ValueError):
+        bible = None
+    found = []
+    for root in sorted(b.root.parent.iterdir()):
+        if root == b.root or not (root / "manifest.json").exists():
+            continue
+        try:
+            other = Bundle.open(root)
+            o = other.outline()
+        except (OSError, ValueError, KeyError):
+            continue
+        if o.get("bible") != bible:
+            continue
+        numbers = [c["n"] for c in o.get("chapters", [])]
+        if not numbers or not all(other.chapter_md(n).exists() for n in numbers):
+            continue
+        title = o.get("title") or root.name
+        body = "\n\n".join(other.chapter_md(n).read_text().strip() for n in numbers)
+        found.append((title, f"# {title}\n\nSetting: {o.get('setting', '')}\n\n{body}"))
+    return found
+
+
+def ask_ideator(cfg: dict, b: Bundle, question: str,
+                read_stories: bool = False) -> dict:
     """Ask the ideator a question about the outline. Changes nothing.
 
     Revise is the wrong tool for a question: it wants a JSON outline back, so a
@@ -568,6 +610,10 @@ def ask_ideator(cfg: dict, b: Bundle, question: str) -> dict:
     changes are required" gets read as a request to change something. This is
     one plain-text call. The answer is appended to `questions.md` in the bundle,
     so a reply the browser never received (a proxy timeout) is not lost.
+
+    `read_stories` adds the full text of the series' finished stories, for
+    questions about continuity with what has already been produced. Off by
+    default: each one is several thousand words of input.
     """
     question = (question or "").strip()
     if not question:
@@ -580,6 +626,11 @@ def ask_ideator(cfg: dict, b: Bundle, question: str) -> dict:
               .replace("{genre_guide}", genre.guide)
               .replace("{bible_block}",
                        bible.prompt_block(ideator=True) if bible else ""))
+    stories = finished_stories(b) if read_stories else []
+    system = system.replace(
+        "{stories_block}",
+        STORIES_TEMPLATE.format(stories="\n\n---\n\n".join(t for _, t in stories))
+        if stories else "")
     user = ("Here is the outline you produced:\n\n"
             + json.dumps(outline, indent=2)
             + "\n\nThe question:\n\n" + question)
@@ -592,8 +643,11 @@ def ask_ideator(cfg: dict, b: Bundle, question: str) -> dict:
 
     stamp = datetime.now().strftime("%Y-%m-%d %H:%M")
     with (b.root / "questions.md").open("a") as f:
-        f.write(f"## {stamp}\n\n**Q:** {question}\n\n{answer}\n\n")
-    return {"answer": answer, "usage": usage}
+        read = (f"*Read: {', '.join(t for t, _ in stories)}*\n\n"
+                if read_stories else "")
+        f.write(f"## {stamp}\n\n**Q:** {question}\n\n{read}{answer}\n\n")
+    return {"answer": answer, "usage": usage,
+            "read": [t for t, _ in stories] if read_stories else None}
 
 
 def approve(b: Bundle) -> None:
