@@ -16,6 +16,15 @@ models:
   editor: claude-sonnet-5
   designer: claude-sonnet-5
 
+# Reply ceilings, per agent. A ceiling is not a charge — you are billed for the
+# tokens produced, thinking included — so these only stop a runaway reply. Raise
+# one if a stage fails with TruncatedReply; read the block breakdown first.
+max_tokens:
+  ideator: 32000    # 2026-11-11: long revise notes + thinking overran 16000
+  writer: 32000     # 2026-11-21: thinking spent 8000 on a 450-word revision
+  editor: 16000
+  designer: 8000
+
 max_edit_passes: 2
 trope_sample: 8        # tropes shown to the ideator per run, of ~15 per genre
 

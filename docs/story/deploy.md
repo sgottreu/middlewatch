@@ -375,6 +375,12 @@ upstreams    = ["http://127.0.0.1:8765/"]
 # nginx terminates TLS, so trust its X-Forwarded-* headers
 reverse_proxy = true
 
+# How long to wait on the review server before giving up with a 502. The
+# default is 30s, and Revise, Critique, New outline and Ask the ideator each
+# hold the request open for a whole model call. Keep it equal to nginx's
+# proxy_read_timeout in section 11. Added 2026-11-21, after a 30s timeout.
+upstream_timeout = "900s"
+
 # any domain, but only the addresses in this file
 email_domains             = ["*"]
 authenticated_emails_file = "/etc/oauth2-proxy/emails"
@@ -418,9 +424,15 @@ location / {
 }
 ```
 
-The timeout mattered because paid stages ran synchronously inside the request.
-`runner.py` has since moved them to child processes, so the 900s may now be
-protecting nothing — harmless either way, but it is no longer the reason.
+The long stages (write, record, design, render) run as child processes
+(`runner.py`), but Revise, Critique, New outline and Ask the ideator are still
+one model call held open inside the request, so the 900s still matters. It has
+to be set in **both** proxies: here, and as `upstream_timeout` in oauth2-proxy
+(section 10). With only nginx raised, oauth2-proxy's 30-second default answered
+first, with its own 502 page, which the review page reported as
+`JSON.parse: unexpected character at line 2 column 1` (2026-11-21). The revise
+behind it had finished and saved anyway — the server keeps working after the
+proxy gives up, so reload before retrying a paid action.
 
 ## 12. Retiring the old Bitnami instance
 

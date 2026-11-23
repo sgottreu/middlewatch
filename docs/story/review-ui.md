@@ -453,6 +453,41 @@ Two guards worth having:
   that is what you want — and the composed note tells the ideator to preserve the
   events while changing who is in them.
 
+**The note is not a place for questions.** Revise files it under "these changes
+are required" and wants a JSON outline back, so a question either changes
+nothing (a paid call for the same outline) or gets read as a request and quietly
+edits something — even with every box ticked. Ask the ideator, below, is the
+tool for questions.
+
+### Ask the ideator
+
+*Added 2026-11-21.* A second button in the revise dialog, beside Revise. It
+sends the note as a question about the outline as it stands, with the series
+bible, and the ideator answers in plain prose in the dialog. Nothing in the
+bundle changes, and the dialog stays open, so the answer can shape the revision
+that follows it. If the honest answer is a change, it is told to say which parts
+of the outline it touches, so you know what to untick.
+
+- **Route:** `POST /api/ask` `{slug, question, stories?}` →
+  `textagent.ask_ideator()`. One `llm.complete()` call, plain text, at the
+  ideator's ceiling (thinking spends the same allowance).
+- **Log:** every question and answer is appended to `questions.md` in the
+  story's folder. A reply the browser never received — a proxy timeout — is
+  still there.
+- **"Let the ideator read this series' finished stories"** (checkbox, off by
+  default, reset on every open). Adds the full chapter text of every *other*
+  story in the same arc folder and bible whose chapters are all written, as
+  canon alongside the bible, with an instruction to quote the line, story and
+  chapter it relies on. Roughly 7,500 input tokens, about 2¢, per story. The
+  answer's header and `questions.md` record which stories were read.
+- **Why the checkbox exists:** the first real use (The Thatcher's Bill) got a
+  confident "The Cracked Beam is silent on the estrangement" — from the bible
+  alone. The finished chapters are not silent; they date it to January 1817.
+  The bible summarises; the produced text is what a viewer has heard.
+- **Errors:** the call reads the reply as text before parsing, so a proxy
+  502/504 shows a readable message instead of a `JSON.parse` error. Revise does
+  not do this yet (see `clean-up.md`).
+
 ### Note to writer
 
 Some problems are only visible to someone reading the whole story: chapter 3
@@ -672,6 +707,7 @@ and disabled once they have, because the chapters would no longer match.
 | Reject | Deletes the bundle, with a confirm | free |
 | Save edits | Writes back, re-validates, re-renders `story.md` | free |
 | Revise… | A form: checkboxes for what to keep, plus a free note. Composes the feedback and calls `revise_outline()`. | **~$0.07** |
+| Ask the ideator | In the revise dialog. A question about the outline, answered in prose; changes nothing. Optionally reads the series' finished stories. `ask_ideator()` | **a few cents**, ~2¢ more per story read |
 | Note to writer… | Sends one chapter back to the writer with your note; editor re-judges. `redraft_chapter()` | **~$0.09–0.26** |
 | Re-record | Clears the stale chapter's audio | costs narration |
 

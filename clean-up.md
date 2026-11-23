@@ -918,3 +918,64 @@ git commit -m "Devlog ideas export; clean-up section AA"
 | "Agent Team Behind the Stories" in the devlog doc vs `docs/story/ideation.md` + `docs/story/architecture.md` | **Overlap, not conflict.** The devlog copy is a talking-points summary. Link to the real docs from it rather than letting it grow into a second description of the pipeline. |
 | `docs/devlog/` as its own folder vs `docs/story/` | **Keep separate.** Devlogs cover the story pipeline, the ambience pipeline and two apps outside this repo, so they don't belong under either channel's docs. Add a line to `README.md` or a docs index if one is wanted. |
 | `docs/story/review-ui-roadmap.md` / `review-ui-handoff-2026-09-13.md` | The September design listed ideate and edit as missing; both now exist. Already covered by §T/§W-era notes; mentioned here only because this session hit the stale version first. |
+
+---
+
+# Clean-up — review UI: Ask the ideator, proxy timeout, empty folders (2026-11-21/22)
+
+*From a chat session. Everything below is committed; this is what is left to
+decide or do.*
+
+## AF. Merge state
+
+- `51fcdf0`: Ask the ideator (`/api/ask`, button, `questions.md` log), and
+  `Bundle.open` recreating missing folders.
+- `19d9f98`: Ask the ideator can read the series' finished stories (checkbox).
+- This commit: docs (`deploy.md` sections 10–11, `review-ui.md`,
+  `troubleshooting.md`), `max_tokens` in `config.example.yaml`, this section,
+  and `stories/amberlight/the-thatcher-s-bill/drafts/continuity-2026-11-22.md`.
+- Done by hand on the server, not in git: `upstream_timeout = "900s"` in
+  `/etc/oauth2-proxy/oauth2-proxy.cfg`; `max_tokens.writer: 32000` in the
+  server's `config.yaml`.
+
+## AG. To do
+
+- **Revise still calls `.json()` on the raw response.** A proxy error page
+  shows as `JSON.parse: unexpected character`. `postJSON()` in `app.html`
+  already handles it for Ask; switch the revise submit handler to it (two
+  lines). Worth checking the other dialogs that `fetch(...).json()` too.
+- **`mw-ship` hides ssh's real error** (`2>/dev/null` on the BatchMode check).
+  Print it, so "cannot reach" says why: unknown host, passphrase, host key.
+- **Writer thinking cost.** Raising the ceiling lets Opus 5 think as long as it
+  likes, and thinking is billed as output. If writer passes get expensive, pass
+  a thinking/effort setting for the writer in `llm.complete()` — test on one
+  chapter first, since it may change the prose.
+- **`config.py` DEFAULTS** still say ideator 16000 and writer 8000; the live and
+  example configs say 32000. Bring the defaults up, or a hand-trimmed config
+  falls back to the ceilings that already failed.
+- **No test for `Bundle.open` recreating folders.** One case in a new
+  `tests/test_bundle.py`: delete `chapters/`, open, write a chapter.
+- **`TruncatedReply` advice points at repetition.** On a short chapter with the
+  tail near the opening, the cause was thinking. Say so when the tail is early
+  and the chapter target is small.
+
+## AH. Decide
+
+- **Amberlight bible: date the estrangement.** The Cracked Beam's finished text
+  puts Rowe's dislike at January 1817 (the misquoted verse, ch. 2, and "built
+  the dislike myself out of one morning in January", ch. 6) and Judith's at
+  February 1817 (the novels, ch. 2). The bible only says a pre-June-1817 story
+  "may use the estrangement", so The Thatcher's Bill (autumn 1815) used it and
+  collided. Suggested addition to "What must stay consistent", via the bible's
+  changelog:
+
+  > The estrangement has a date. Mr Rowe's dislike of Miss Vane begins in
+  > January 1817, when she corrects his misquoted text in the library; hers of
+  > him in February 1817, when he calls her list of novels for Nan Corbin
+  > circulating trash. Before January 1817 they are acquaintances of four
+  > years with no settled opinion of each other. A story set earlier may give
+  > them friction, but not a settled judgment of the other's pride.
+
+- **The Thatcher's Bill.** See `drafts/continuity-2026-11-22.md` in its folder.
+  The 1815 setting and the mutual-pride ending were both deliberate (the
+  2026-11-11 revision notes), so the fix is a choice, not a correction.
