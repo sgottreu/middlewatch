@@ -980,3 +980,22 @@ decide or do.*
 - **The Thatcher's Bill.** See `drafts/continuity-2026-11-22.md` in its folder.
   The 1815 setting and the mutual-pride ending were both deliberate (the
   2026-11-11 revision notes), so the fix is a choice, not a correction.
+
+# Clean-up — landing page options and messaging (2026-11-20/22)
+
+Eight landing page options are committed in `site/landing-options/` (16e818d).
+The messaging guide is at `brand/messaging.md`, and the design briefs are in
+`site/landing-options/briefs/`. The last two are not committed.
+
+## AI. To do
+
+- [ ] **AI disclosure rules.** Before launch, check YouTube's current
+  altered/synthetic content label and Amazon KDP's AI-generated content
+  disclosure. Note which uploads and books need what.
+- [ ] **One tagline.** The bios in `brand/launch-checklist.md` use "Somewhere
+  else, for a while." The redesigned site copy (E/F/H) uses "Something for every
+  quiet hour." Pick one, or decide they're used in different places.
+- [ ] **Pick a landing direction** from `site/landing-options/` and build it
+  into `site/index.html` (single file, no build step). A–D and G still carry
+  the old one-person-studio copy, so they need the `brand/messaging.md` rewrite
+  if chosen.
