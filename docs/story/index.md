@@ -199,6 +199,13 @@ them changes output.
 genre + bible + ai-tells into one prompt, so the writer and editor always judge
 against identical text.
 
+**Reference, not loaded.** `_render()` never reads these. An agent opens them
+only when a task calls for them.
+
+| File | Use it when | What it governs |
+|---|---|---|
+| `authors/scott-voice.md` | Writing *as Scott* (essays, devotionals, memoir, or fiction under his own name) | His personal voice, built from 183 codeoffaith.com posts. Pipeline stories still take their voice from `genres/`. |
+
 `house.md` carries a `{structure}` placeholder rather than a fixed chapter and
 word count; `_render()` fills it from `LENGTHS`. The designer assembles its own
 prompt and so fills the placeholder separately — both paths must stay in step,

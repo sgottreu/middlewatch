@@ -999,3 +999,14 @@ The messaging guide is at `brand/messaging.md`, and the design briefs are in
   into `site/index.html` (single file, no build step). A–D and G still carry
   the old one-person-studio copy, so they need the `brand/messaging.md` rewrite
   if chosen.
+
+## Story prompts. To do
+
+- [ ] **`arc.md` is never loaded.** No code reads `story_pipeline/prompts/arc.md`
+  (`_render()` in `agents/text.py` only pulls house, boundaries, ai-tells, the
+  genre guide and the bible), so its ideator/writer/editor rules never reach the
+  agents. Wire it in, or fold it into the format split in the
+  "split agent rules" plan (Claude project doc `claude/agent-rules-split-plan.md`).
+- [ ] **Duplicate prompt copy.** `working/middle-watch/pipeline/prompts/arc.md`
+  is identical to the `story_pipeline` one. Check whether the rest of
+  `working/middle-watch/` is stale and can go.
