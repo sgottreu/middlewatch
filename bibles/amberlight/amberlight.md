@@ -131,6 +131,16 @@ anybody else, in any story, at any date. A story set before that summer may use
 the estrangement between them; a story set after it may not. She is Miss Vane
 before the wedding and Mrs Rowe after it.
 
+The estrangement has a date, fixed by the finished text of *The Cracked Beam*.
+Mr Rowe's dislike of Miss Vane begins in January 1817, when she corrects his
+misquoted text in the library in front of customers; hers of him in February
+1817, when he hands back her list of novels for Nan Corbin as circulating
+trash. He has known her four years by that summer and disliked her for the last
+of them. Before January 1817 they are acquaintances with no settled opinion of
+each other: a story set earlier may give them friction, a slight or a
+disappointment kept private, but not a settled judgment of the other's pride,
+and neither may come away from it disliking the other.
+
 The wedding itself is not yet written. *The Cracked Beam* ends with the banns
 first read, so the exact date is still open and a later story may set it, but
 only between those banns and whenever that story is placed.

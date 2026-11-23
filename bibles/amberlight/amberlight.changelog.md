@@ -12,6 +12,10 @@ story that caused them.
 
 ---
 
+## 2026-11-23 01:34 · Scott Gottreu · edit · sha=08114334
+
+Estrangement dated from The Cracked Beam's finished text: Rowe's dislike from January 1817 (the misquoted verse), Judith's from February 1817 (the novels). Before January 1817 a story may give them friction but not a settled judgment of each other's pride. Prompted by The Thatcher's Bill (autumn 1815) colliding with The Cracked Beam.
+
 ## 2026-11-11 17:33 · Scott Gottreu · edit · sha=dab39361
 
 anchor_year: 1817 made explicit; Miss Judith Vane gains alias Mrs Judith Rowe

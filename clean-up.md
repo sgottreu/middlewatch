@@ -961,7 +961,8 @@ decide or do.*
 
 ## AH. Decide
 
-- **Amberlight bible: date the estrangement.** The Cracked Beam's finished text
+- **Done 2026-11-22 (bible sha 08114334).** ~~**Amberlight bible: date the estrangement.**~~ Added to "What must stay consistent", worded a little more fully than the draft below.
+  Original note: The Cracked Beam's finished text
   puts Rowe's dislike at January 1817 (the misquoted verse, ch. 2, and "built
   the dislike myself out of one morning in January", ch. 6) and Judith's at
   February 1817 (the novels, ch. 2). The bible only says a pre-June-1817 story
