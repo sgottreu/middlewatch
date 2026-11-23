@@ -1,0 +1,65 @@
+{
+  "n": 1,
+  "pass": false,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Mrs Augusta Ferris arrives in Amberlight to call on her niece Margaret Selby and declares she means to take her back to Bath as an unpaid companion, since teaching music to farmers' daughters is no future at all.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "After Sunday service, on the church porch, Mrs Pike overhears Margaret and Mr Robert Dene discussing an 'understanding' over the schoolroom accounts and mistakes it entirely for a private attachment.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Before the whole departing congregation, with Mrs Ferris standing by, Mrs Pike congratulates Margaret aloud on her engagement to Mr Dene.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mrs Ferris, delighted rather than deterred, announces she will stay a fortnight to see her niece properly courted before deciding anything about Bath, and Dene realises he has just been engaged in front of the parish.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Chapter closes on Dene walking away engaged without having spoken a word, with his aunt-in-waiting now resident at the Bell to watch him do it, which hands chapter two its entire problem."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [
+    "\"Mrs Ferris came through them with her spectacles up\" is slightly unclear as a physical image; her established habit is looking over the top of her spectacles, and 'up' reads ambiguously on a single hearing."
+  ],
+  "generic_prose": [
+    {
+      "quote": "the congregation came out slowly into a grey wind",
+      "replace_with": "tie the weather to something concrete already in play, e.g. the four shillings owed for glazing, rather than an atmospheric 'grey wind' that could belong to any village Sunday"
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Delivers the meddling matchmaker straight (Mrs Pike's public error) and sets the false engagement and compromising-situation machinery in motion in the same beat; no fourth trope introduced.",
+  "length_note": null,
+  "fixes": [
+    "Chapter runs well over the 450-word target (roughly 540 words); trim the Ferris/Margaret rent-and-chimney exchange (the 'Three shillings a week... And the chimney smokes' beat) by a line or two, since it establishes station but can do so faster.",
+    "Smooth 'Mrs Ferris came through them with her spectacles up' into something closer to the established gesture of looking over the spectacles, so the image reads clearly on first hearing.",
+    "Consider cutting one line of Mrs Pike's triple 'and' chain ('and I said so to Mrs Hale on the Tuesday, and she will tell you I did') if further trimming is needed; it is good character voice but is the easiest cut without losing a beat."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "chapter_hash": "7bd50b2e19af230e",
+  "length_over": 553,
+  "length_target": 450
+}

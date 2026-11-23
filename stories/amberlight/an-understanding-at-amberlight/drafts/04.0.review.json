@@ -1,0 +1,69 @@
+{
+  "n": 4,
+  "pass": false,
+  "score": 7,
+  "beats": [
+    {
+      "beat": "Judith Vane, having pieced the misunderstanding together from what she overheard, calls on Margaret and quietly explains that Dene's words meant ending the pretence, not his feeling for her.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Margaret goes at once to find Dene, and the two are discovered unmistakably close and sincere by Mrs Ferris and Mrs Pike arriving together at the schoolroom door.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mrs Ferris asks Dene plainly whether he would marry Margaret with not a shilling of her aunt's money attached to her.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Dene says he would rather have Margaret penniless and honestly his than owe the marriage to anyone's fortune, an answer Mrs Ferris had not expected from a poor man, and she is satisfied something real has happened.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Mrs Ferris's satisfaction converts the false engagement into one she will now actively support, which sets up chapter 5's settlement and banns."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": [
+      "\"He had her hand by then, and she had let him take it, and neither of them heard the latch\" coordinates three clauses that shift subject each time (He / she / neither of them) and loses its thread partway."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [
+    "\"He had her hand by then, and she had let him take it, and neither of them heard the latch\" is a three-clause chain with changing grammatical subject; split after \"take it.\""
+  ],
+  "generic_prose": [
+    {
+      "quote": "She had put that question to three men in her life and had never before had it answered so fast.",
+      "replace_with": "Name or specify the circumstance of one of those three men so the line belongs to Mrs Ferris's own history rather than reading as any wealthy widow's generic backstory."
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Delivers the compromising situation straight (the hand-holding discovery) and advances the false engagement toward a real one, with Mrs Pike's meddling given its payoff of being half-right for the wrong reasons.",
+  "length_note": null,
+  "fixes": [
+    "Split \"He had her hand by then, and she had let him take it, and neither of them heard the latch\" into two sentences at \"take it.\"",
+    "The chapter runs well over target (roughly 560 words against 450). Trim Judith's second speech (\"You need not answer me... once in three\") to a single sentence \u2014 the gossip-context is already established by Mrs Pike's visibility in chapter 3.",
+    "Compress Judith's explanation beat (\"He said he had had the good of it... wrong end of it\") \u2014 the first two sentences make the point; the third and fourth restate it.",
+    "Tighten Mrs Ferris's question in segment 23 \u2014 \"where you stand\" and \"now or at my death\" can both go without losing the force of the challenge.",
+    "Replace the generic aside about \"three men in her life\" with one concrete detail (a name, a year, a sum) so it reads as Mrs Ferris's history rather than any widow's."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "chapter_hash": "c760348484c505bb",
+  "length_over": 558,
+  "length_target": 450
+}

@@ -1,0 +1,125 @@
+{
+  "n": 4,
+  "title": "Found Out",
+  "segments": [
+    {
+      "speaker": "narrator",
+      "text": "Miss Judith Vane came to Mrs Copp's on Friday morning with nothing in her hands and no errand from the shop, which was unlike her."
+    },
+    {
+      "speaker": "Miss Judith Vane",
+      "text": "I heard six words in your passage a fortnight ago. Until she goes, and then let it lapse. I have told nobody, and I shall not."
+    },
+    {
+      "speaker": "narrator",
+      "text": "Margaret folded her hands and said nothing at all."
+    },
+    {
+      "speaker": "Miss Judith Vane",
+      "text": "You need not answer me. I only came because Mrs Pike has been saying all week that you and Mr Dene have quarrelled, and I find Mrs Pike is right about a thing perhaps once in three."
+    },
+    {
+      "speaker": "Miss Margaret Selby",
+      "text": "He told the Bramdean master he would put an end to it the day my aunt takes the coach.",
+      "tag": "[flat]"
+    },
+    {
+      "speaker": "Miss Judith Vane",
+      "text": "Yes. To the pretence."
+    },
+    {
+      "speaker": "narrator",
+      "text": "Margaret looked up."
+    },
+    {
+      "speaker": "Miss Judith Vane",
+      "text": "He said he had had the good of it and never earned a shilling of it. A man does not speak of earning a woman's regard as a debt unless he minds very much about the owing. He meant he would not keep you on false terms. You heard the same sentence and put yourself at the wrong end of it."
+    },
+    {
+      "speaker": "narrator",
+      "text": "There was a silence in which the kitchen clock was extremely audible."
+    },
+    {
+      "speaker": "Miss Margaret Selby",
+      "text": "You might have left me in it."
+    },
+    {
+      "speaker": "Miss Judith Vane",
+      "text": "I might. But I dislike a story that does not add up, and this one has not added up since Monday the ninth.",
+      "tag": "[dryly]"
+    },
+    {
+      "speaker": "narrator",
+      "text": "She went down the green towards her brother's shop and did not look back, and she told nobody there either."
+    },
+    {
+      "speaker": "break",
+      "text": ""
+    },
+    {
+      "speaker": "narrator",
+      "text": "Margaret reached the schoolroom before eleven, with her bonnet strings loose and the singing books left behind her on the hall chair. Dene was alone at the long desk, ruling a line in the coal account."
+    },
+    {
+      "speaker": "Miss Margaret Selby",
+      "text": "What did you mean to put an end to?"
+    },
+    {
+      "speaker": "Mr Robert Dene",
+      "text": "The lie. What else was there?"
+    },
+    {
+      "speaker": "Miss Margaret Selby",
+      "text": "I thought you meant me."
+    },
+    {
+      "speaker": "narrator",
+      "text": "He put the pen down and came round the desk."
+    },
+    {
+      "speaker": "Mr Robert Dene",
+      "text": "I meant to say it to you honestly, once, with nobody arranging us. I have been eleven days trying to find a quarter of an hour when Mrs Pike was not at the window."
+    },
+    {
+      "speaker": "narrator",
+      "text": "He had her hand by then, and she had let him take it, and neither of them heard the latch."
+    },
+    {
+      "speaker": "Mrs Honoria Pike",
+      "text": "There! And they said they had quarrelled."
+    },
+    {
+      "speaker": "narrator",
+      "text": "Mrs Ferris came in past her, looked at the two of them, and set her gloves down on the nearest desk."
+    },
+    {
+      "speaker": "Mrs Augusta Ferris",
+      "text": "Mr Dene. I shall ask you one question and I will have it answered where you stand. My niece has eighteen pounds a year and a turned gown. If I go back to Bath on Tuesday and settle not one shilling on her, now or at my death, would you marry her?"
+    },
+    {
+      "speaker": "Mr Robert Dene",
+      "text": "Yes."
+    },
+    {
+      "speaker": "Mrs Augusta Ferris",
+      "text": "On forty pounds a year."
+    },
+    {
+      "speaker": "Mr Robert Dene",
+      "text": "On forty pounds a year, in two rooms, with the coal account unpaid. Ma'am, I would rather have her penniless and honestly mine than take her with your money and spend the rest of my life knowing which of us had bought the marriage. I am poor. I am not for sale."
+    },
+    {
+      "speaker": "narrator",
+      "text": "Mrs Ferris looked at him over the top of her spectacles for a long moment. She had put that question to three men in her life and had never before had it answered so fast."
+    },
+    {
+      "speaker": "Mrs Augusta Ferris",
+      "text": "Well. Something has happened here after all.",
+      "tag": "[quietly]"
+    },
+    {
+      "speaker": "Mrs Honoria Pike",
+      "text": "Of course something has happened. I have been saying so since Easter."
+    }
+  ]
+}

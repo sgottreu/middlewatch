@@ -4,8 +4,8 @@
   "created": "2026-08-29T15:52:30",
   "stages": {
     "ideate": "approved",
-    "write": "pending",
-    "edit": "pending",
+    "write": "done",
+    "edit": "awaiting_review",
     "record": "pending",
     "design": "pending",
     "direct": "pending"
@@ -35,5 +35,10 @@
       }
     },
     "bible": "amberlight"
+  },
+  "stage_info": {
+    "edit": {
+      "unpassed": []
+    }
   }
 }

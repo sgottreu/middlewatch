@@ -72,8 +72,8 @@
       "gender": "male",
       "station": "gentleman of Winchester, come to view Amberlight House for the family's agent; a comfortable six hundred a year of his own",
       "want": "to be thought a man of consequence and secure a comfortable match without the trouble of true generosity",
-      "appearance": "lean and sharply groomed, dark hair oiled smooth, a narrow assessing gaze",
-      "dress": "a well-cut travelling coat of dark blue superfine, and gloves too fine for a country lane",
+      "appearance": "Lean and sharply groomed, dark hair oiled smooth, a narrow assessing gaze.",
+      "dress": "A well-cut travelling coat of dark blue superfine, and gloves too fine for a country lane.",
       "voice_note": "smooth, over-polite, rarely answers a question directly"
     }
   ],
@@ -82,10 +82,10 @@
       "n": 1,
       "title": "The Lane",
       "beats": [
-        "Rowe, hopeless with money but devoted to the work, ordered the worst-worn patch of the old parish schoolroom's roof rethatched that summer on his own credit, unwilling to see the scholars sit through winter under a leak, though the rest of the ageing roof and its timbers went untouched for want of funds.",
-        "The thatcher corners Rowe in the lane before the Bell, demanding his eleven pounds aloud while several parishioners look on.",
-        "Mrs Pike carries the scene round the green by evening, swearing Rowe is one step from the sponging-house.",
-        "At the library, Judith overhears the story and, recalling a curt note Rowe once sent her returning a borrowed book, judges him proud as well as careless with money."
+        "Mr Rowe, devoted to the schoolroom but hopeless with his own accounts, ordered the worst-worn patch of its roof re-thatched that autumn on his own credit, unwilling to see the scholars sit through winter under a leak, though the rest of the ageing roof and its beams went untouched for want of money.",
+        "The thatcher corners Rowe outside the Bell on market day, demanding his eleven pounds aloud while half the parish looks on.",
+        "Mrs Pike carries the scene round the green within the hour, declaring the curate one step from the sponging-house.",
+        "At the library, Judith hears the tale and recalls a curt note Rowe once sent her over a borrowed book, and sets him down as careless with money and too proud to ask for help."
       ],
       "target_words": 450
     },
@@ -93,10 +93,10 @@
       "n": 2,
       "title": "A Friend to the Parish",
       "beats": [
-        "Judith resolves to pay the debt from her own small savings rather than see the scholars lose their schoolroom over a curate's pride.",
-        "She swears her brother Owen to secrecy and asks him to carry the coin to the thatcher himself.",
-        "Owen pays the thatcher on a Tuesday morning, naming only 'a friend to the parish' and no one further.",
-        "Word of the settled debt runs round Amberlight by nightfall, and Rowe, relieved and mystified in equal measure, begins asking who could have done such a kindness."
+        "Judith resolves privately to pay the debt from her own small savings rather than see the scholars lose the roof over a curate's pride.",
+        "She swears Owen to secrecy and asks him to carry the money to the thatcher in her stead.",
+        "Owen settles the account on a Tuesday morning, naming only 'a friend to the parish.'",
+        "By evening the settled debt is the talk of Amberlight, and Rowe, relieved and bewildered, begins asking everyone he meets who could have done him such a kindness."
       ],
       "target_words": 450
     },
@@ -104,10 +104,10 @@
       "n": 3,
       "title": "The Gentleman from Winchester",
       "beats": [
-        "Mr Lionel Pryce arrives on the Friday coach to view Amberlight House on behalf of the family's agent, weighing whether to take it.",
-        "At Mrs Pike's tea the talk turns entirely to the mysterious benefactor, and Mrs Pike, flattered by his town manners, declares Pryce must surely be the one.",
-        "Pryce, charmed by the notion and by Judith's quiet presence in the room, lets the credit stand rather than correct it.",
-        "Over the following days Pryce calls twice at the apothecary's shop under pretence of custom, plainly working toward a proposal, while Rowe tries and fails to thank him properly."
+        "Mr Pryce arrives on the Friday coach to view empty Amberlight House on behalf of the family's agent.",
+        "At Mrs Pike's tea the talk turns wholly to the mysterious benefactor, and Mrs Pike, charmed by his town manners, declares aloud that Pryce must be the one.",
+        "Pryce, pleased by the notion and by Judith's quiet presence in the room, lets the mistaken credit stand rather than correct it.",
+        "Over the following days Pryce calls twice at the apothecary's shop on pretext of custom, plainly working toward a proposal, while Rowe tries and fails to thank him properly."
       ],
       "target_words": 450
     },
@@ -115,10 +115,10 @@
       "n": 4,
       "title": "Refused and Found Out",
       "beats": [
-        "Pryce proposes to Judith directly, citing his generosity to the parish as proof of his character; Judith, knowing the claim false, refuses him plainly and without explanation.",
-        "Rowe, going over the thatcher's own account book, realises the debt was paid on a Tuesday morning, two full days before Pryce's coach ever reached Amberlight.",
-        "Rowe confronts Pryce quietly before Mrs Pike can deliver her planned public toast, and Pryce admits his vanity got the better of him.",
-        "Pryce decides against taking the house after all, and departs on the next Friday coach before the parish can ask him any further questions."
+        "Pryce proposes to Judith, citing his generosity to the parish as proof of his worth, and Judith, knowing the claim false, refuses him plainly.",
+        "Rowe, checking the thatcher's own account book for his records, discovers the debt was settled on a Tuesday morning, two days before Pryce's coach ever reached Amberlight.",
+        "Rowe confronts Pryce quietly before Mrs Pike can deliver a planned public toast, and Pryce admits his vanity got the better of him.",
+        "Pryce abandons his interest in the house and departs on the next Friday coach before anyone can question him further, leaving the parish without a name for its benefactor."
       ],
       "target_words": 450
     },
@@ -126,10 +126,10 @@
       "n": 5,
       "title": "What Neither Learned",
       "beats": [
-        "Mrs Pike, unable to leave the matter unsolved, settles on a new theory that Rowe arranged the payment himself out of secret shame, and repeats it round the green as settled fact.",
-        "Rowe, embarrassed by credit he cannot account for and too proud to make a fuss of denying it, lets the story stand rather than draw further attention to his debts.",
-        "Judith, who alone knows the truth, watches Rowe return a borrowed book to the library with another short, formal note of thanks, and concludes he is prouder than ever.",
-        "The two pass in the lane with a correct, distant bow, each still certain of the other's pride, the truth of the thatcher's bill settled forever between the viewer and no one in the parish."
+        "With Pryce gone, Mrs Pike needs a new candidate, and at the next tea she declares to the room, Rowe among them, that the curate must have quietly settled his own debt through his own frugal management.",
+        "Rowe, unable to correct the story without confessing he still does not know who paid, and unwilling to seem to go chasing after thanks, lets Mrs Pike's praise stand and thanks her for her good opinion.",
+        "Judith, present at the tea, hears Rowe accept credit for the very kindness she gave in secret, and concludes he is prouder than she had ever supposed.",
+        "Days later Rowe returns a borrowed book to the library with another short, formal note of thanks that says nothing of the debt, and the two pass in the lane with a correct, distant bow, each still certain of the other's pride."
       ],
       "target_words": 450
     }
@@ -145,6 +145,10 @@
     },
     {
       "feedback": "Keep these exactly as they are, word for word where they are text: the logline; the promise; the setting; the tropes, exactly as named; the title; the cast, including their names, ages and stations; the chapters and their beats.\n\nwould rethatching the schoolroom now likely cause the roof not to leak later when the cracked beam is discovered in The Cracked Beam",
+      "previous_title": "The Thatcher's Bill"
+    },
+    {
+      "feedback": "Keep these exactly as they are, word for word where they are text: the logline; the promise; the setting; the tropes, exactly as named; the title; the cast, including their names, ages and stations.\n\nReplace these wholesale rather than adjusting what is there: the chapters and their beats.\n\nThe new chapters must carry 3 to 4 concrete beats each \u2014 things that happen, not moods. That density is what stops the prose stretching to fill the words rather than the story getting bigger.\n\nwouldn't rowe taking credit for the bill be something more substantial to keep them apart than what is discussed in the Cracked Beam",
       "previous_title": "The Thatcher's Bill"
     }
   ]

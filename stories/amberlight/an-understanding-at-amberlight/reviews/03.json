@@ -1,0 +1,74 @@
+{
+  "n": 3,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Mrs Pike asks Mr Rowe to read the banns for Margaret and Dene directly, and he declines, saying he will read banns only when the couple comes and asks him for themselves.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Forced to keep up appearances, Margaret and Dene are walked and dined together daily by Mrs Pike's arranging, and real feeling begins to grow between them under the pretence.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Margaret overhears Dene telling a fellow schoolmaster that he means to 'put an end to it' the moment Mrs Ferris leaves, and takes it to mean an end to his regard for her rather than the sham itself.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "She turns cold to him without explanation, and Dene, baffled, cannot ask why with Mrs Pike and Mrs Ferris both watching the pair for any sign of trouble.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Margaret's flat 'you have done exactly what we agreed' confirms the misunderstanding has taken hold and leaves Dene with no way to ask why, setting up the need for Judith's intervention in chapter four."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": [
+      "'It was not to be borne that hearing it should be so different from saying it' reuses the house-style example sentence from the genre file almost verbatim ('It was not to be borne that she should have been wrong about a thing so plain'); rewrite in the story's own terms."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [
+    "'He told Margaret that the youngest Ludd boy had got through a whole page of Hollis's psalter aloud, and his ears went red telling it, and Margaret found she had stopped walking to listen' shifts subject across three coordinated clauses (he / his ears / Margaret); split after 'aloud' into two sentences."
+  ],
+  "generic_prose": [
+    {
+      "quote": "It was not to be borne that hearing it should be so different from saying it.",
+      "replace_with": "Tie the feeling to a concrete object from the scene already in hand \u2014 the singing books left on the step, or the coal account she had just agreed to keep paying off \u2014 rather than an abstract statement of hurt."
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Serves the false engagement and the meddling matchmaker directly (Pike's arranged walks and dinners, Rowe's refusal); the compromising situation is correctly held back for a later chapter.",
+  "length_note": null,
+  "fixes": [
+    "Rewrite 'It was not to be borne that hearing it should be so different from saying it' to anchor the feeling in a concrete object rather than an abstract formula that echoes the house style guide's own example.",
+    "Split 'He told Margaret that the youngest Ludd boy had got through a whole page of Hollis's psalter aloud, and his ears went red telling it, and Margaret found she had stopped walking to listen' into two sentences to stop the subject drifting across three clauses."
+  ],
+  "lint": {
+    "total": 1,
+    "errors": 0,
+    "by_rule": {
+      "clause_chain": 1
+    },
+    "findings": [
+      {
+        "rule": "clause_chain",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "He told Margaret that the youngest Ludd boy had got through a whole page of Hollis's psalter aloud, and his ears went red telling it, and Ma...",
+        "note": "3 clauses coordinated in 34 words. Heard once, the last one lands with the subject of the first already gone. Split after the first clause, or make every member the same grammatical shape so the ear can follow the pattern."
+      }
+    ]
+  },
+  "chapter_hash": "c26fc7367df237fc"
+}
