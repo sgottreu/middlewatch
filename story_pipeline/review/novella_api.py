@@ -3,7 +3,7 @@
 A plugin of the review server (see server.PLUGIN_MODULES). It must not import
 server — that module is still loading when this one is imported.
 
-Paid work (draft, review) runs as a detached job through
+Paid work (outline, draft, review) runs as a detached job through
 `runner.start_command(key="novella-<slug>", ..., pipeline="novella")`, so it
 outlives a restart and can be cancelled; the CLI streams the model's text into
 the job log. Everything else is an instant read or write here.
@@ -19,6 +19,8 @@ import sys
 from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
 
+from novella_pipeline import expand as nexpand
+from novella_pipeline import outliner
 from novella_pipeline import prompts as nprompts
 from novella_pipeline import stages
 from novella_pipeline.bundle import (Bundle, NovellaError, bundle_roots, find_bundle,
@@ -92,7 +94,7 @@ def board(cfg: dict) -> dict:
             "bibles": bibles.available(cfg.get("bibles_dir") or "bibles"),
             "stages": [{"value": s.value, "label": LABELS[s]} for s in ORDER],
             "models": {k: (cfg.get("models") or {}).get(f"novella_{k}")
-                       for k in ("writer", "editor")}}
+                       for k in ("writer", "editor", "outliner")}}
 
 
 def novella(cfg: dict, slug: str) -> dict:
@@ -100,8 +102,24 @@ def novella(cfg: dict, slug: str) -> dict:
     out = _novella_row(b)
     out["brief"] = b.brief_path.read_text() if b.brief_path.exists() else ""
     out["outline"] = b.outline_path.read_text() if b.outline_path.exists() else ""
+    out["outline_versions"] = b.outline_versions()
+    out["source_story"] = b.manifest().get("source_story")
     out["job"] = job(cfg, slug)
     return out
+
+
+def outlines(cfg: dict, slug: str, v: str = "") -> dict:
+    """The kept outline versions, or one version's text when `v` is given."""
+    b = _bundle(cfg, slug)
+    if not v:
+        return {"versions": b.outline_versions()}
+    if not re.fullmatch(r"\d{1,2}", v) or not b.outline_version_path(int(v)).exists():
+        raise FileNotFoundError(f"no outline version {v}")
+    return {"version": int(v), "text": b.outline_version(int(v))}
+
+
+def stories(cfg: dict) -> dict:
+    return {"stories": nexpand.stories(cfg)}
 
 
 def chapter(cfg: dict, slug: str, n: int) -> dict:
@@ -196,6 +214,19 @@ def _start(cfg: dict, slug: str, kind: str, n: int, extra: list[str]) -> dict:
     return {"ok": True, "job": job(cfg, slug)}
 
 
+def start_outline(cfg: dict, slug: str, note: str = "") -> dict:
+    b = _bundle(cfg, slug)
+    outliner.check_ready(b, cfg)            # empty brief or missing bible: refuse, free
+    argv = [sys.executable, "-m", "novella_pipeline.cli",
+            "--config", cfg.get("_config_path", "config.yaml"),
+            "outline", str(b.root), *(["--note", note] if (note or "").strip() else [])]
+    runner.start_command(_key(slug), "outline", argv, pipeline=PIPELINE,
+                         busy=f"{b.title} already has a job running. Wait for it, "
+                              "or stop it first.",
+                         novella=slug)
+    return {"ok": True, "job": job(cfg, slug)}
+
+
 def start_draft(cfg: dict, slug: str, n: int, note: str = "") -> dict:
     b = _bundle(cfg, slug)
     b.check_draft(n)                        # refuse now, not in the job log
@@ -231,6 +262,17 @@ def create(cfg: dict, body: dict) -> dict:
         kw["target_words"] = int(body["target_words"])
     b = Bundle.create(_dir(cfg), (body.get("title") or "").strip(), series,
                       genre=genre, bible=name, slug=(body.get("slug") or None), **kw)
+    return {"ok": True, "slug": b.slug}
+
+
+def expand(cfg: dict, body: dict) -> dict:
+    """Seed a novella from a story picked on the page (`arc/slug`). Free."""
+    path = nexpand.story_path(cfg, (body.get("story") or "").strip())
+    kw = {}
+    if body.get("target_words"):
+        kw["target_words"] = int(body["target_words"])
+    b = nexpand.expand(cfg, path, series=(body.get("series") or "").strip() or None,
+                       title=(body.get("title") or "").strip() or None, **kw)
     return {"ok": True, "slug": b.slug}
 
 
@@ -299,6 +341,8 @@ def handle_get(handler, cfg: dict, path: str) -> bool:
         return True
     if path == "/api/novella":
         return _answer(handler, lambda: board(cfg))
+    if path == "/api/novella/stories":
+        return _answer(handler, lambda: stories(cfg))
     m = _ROUTE.match(path)
     if not m:
         return False
@@ -312,6 +356,8 @@ def handle_get(handler, cfg: dict, path: str) -> bool:
         return _answer(handler, lambda: log(cfg, slug, int((q.get("from") or ["0"])[0] or 0)))
     if what == "canon" and n is None:
         return _answer(handler, lambda: canon(cfg, slug))
+    if what == "outlines" and n is None:
+        return _answer(handler, lambda: outlines(cfg, slug, (q.get("v") or [""])[0]))
     if what == "chapter" and n is not None:
         if sub is None:
             return _answer(handler, lambda: chapter(cfg, slug, _n(n)))
@@ -323,6 +369,8 @@ def handle_get(handler, cfg: dict, path: str) -> bool:
 def handle_post(handler, cfg: dict, path: str, body: dict) -> bool:
     if path == "/api/novella/new":
         return _answer(handler, lambda: create(cfg, body))
+    if path == "/api/novella/expand":
+        return _answer(handler, lambda: expand(cfg, body))
     m = _ROUTE.match(path)
     if not m:
         return False
@@ -331,6 +379,8 @@ def handle_post(handler, cfg: dict, path: str, body: dict) -> bool:
         return _answer(handler, lambda: save_doc(cfg, slug, what, body.get("text", "")))
     if what == "cancel" and n is None:
         return _answer(handler, lambda: cancel(cfg, slug))
+    if what == "run-outline" and n is None:
+        return _answer(handler, lambda: start_outline(cfg, slug, body.get("note", "")))
     if what != "chapter" or n is None or m["kind"]:
         return False
     if sub is None:

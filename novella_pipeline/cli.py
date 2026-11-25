@@ -1,6 +1,8 @@
 """Novella command line. Run from the repo root:
 
     python3 -m novella_pipeline.cli new --series "Broken Edges" --title "Glasswood" --bible NAME
+    python3 -m novella_pipeline.cli expand stories/<arc>/<slug> [--series S]      # free
+    python3 -m novella_pipeline.cli outline <bundle> [--note "..."]               # paid
     python3 -m novella_pipeline.cli beats <bundle> --chapter 1 --title T --beats-file F
     python3 -m novella_pipeline.cli draft <bundle> --chapter 1 [--note "..."]     # paid
     python3 -m novella_pipeline.cli review <bundle> --chapter 1                   # paid
@@ -8,7 +10,7 @@
     python3 -m novella_pipeline.cli send-back <bundle> --chapter 1 --to outlined
     python3 -m novella_pipeline.cli status <bundle>
 
-<bundle> is a path (novellas/<series>/<slug>) or a bare slug. draft and review
+<bundle> is a path (novellas/<series>/<slug>) or a bare slug. outline, draft and review
 stream the model's text to stdout as it arrives, which is what the review
 page's job log shows.
 """
@@ -24,7 +26,8 @@ from pathlib import Path
 from story_pipeline import bibles
 from story_pipeline import config as cfgmod
 
-from . import stages
+from . import expand as expandmod
+from . import outliner, stages
 from .bundle import DEFAULT_BOOK_WORDS, Bundle, resolve
 from .parsing import bullets
 from .workflow import NEXT_ACTION, Stage
@@ -61,6 +64,41 @@ def cmd_new(args, cfg) -> None:
     print(f"created {b.root}")
     print("next: write brief.md and outline.md, then add chapter beats "
           "(cli beats, or the Novellas page)")
+
+
+def cmd_expand(args, cfg) -> None:
+    b = expandmod.expand(cfg, args.story, series=args.series, title=args.title,
+                         slug=args.slug, target_words=args.target_words)
+    print(f"created {b.root} from {args.story}")
+    print("next: read and fill in brief.md (tone, point of view), then run "
+          f"`python3 -m novella_pipeline.cli outline {b.root}` (paid)")
+
+
+def cmd_outline(args, cfg) -> None:
+    b = _open(args, cfg)
+    note = args.note or _read_file(args.note_file)
+    outliner.check_ready(b, cfg)
+    _progress(event="start", stage="outline", total=1, done=0)
+    print(f"Outlining {b.title}…\n", flush=True)
+
+    def retry(problems):
+        print("\n\nThe outline was rejected; asking once more:\n"
+              + "\n".join(f"- {x}" for x in problems) + "\n", flush=True)
+        _progress(event="retry", stage="outline", problems=problems, total=1, done=0)
+
+    res = outliner.outline(cfg, b, note=note, on_text=_stream, on_retry=retry)
+    print("\n\n" + outliner.summary_line(res), flush=True)
+    if res.written:
+        print(f"chapters written: {', '.join(map(str, res.written))}", flush=True)
+    if res.skipped:
+        print(f"skipped (past Outlined, beats left as drafted): "
+              f"{', '.join(map(str, res.skipped))}", flush=True)
+    if res.extra:
+        print(f"not in this outline, left alone: {', '.join(map(str, res.extra))}",
+              flush=True)
+    _progress(event="done", stage="outline", version=res.version,
+              chapters=len(res.outline["chapters"]), written=res.written,
+              skipped=res.skipped, total=1, done=1)
 
 
 def cmd_beats(args, cfg) -> None:
@@ -147,6 +185,20 @@ def main(argv=None):
     s.add_argument("--slug")
     s.add_argument("--target-words", type=int, default=DEFAULT_BOOK_WORDS)
     s.set_defaults(fn=cmd_new)
+
+    s = sub.add_parser("expand", help="seed a novella from a story bundle; free")
+    s.add_argument("story", help="stories/<arc>/<slug>")
+    s.add_argument("--series", help="defaults to the story's bible's series")
+    s.add_argument("--title", help="defaults to the story's title")
+    s.add_argument("--slug")
+    s.add_argument("--target-words", type=int, default=DEFAULT_BOOK_WORDS)
+    s.set_defaults(fn=cmd_expand)
+
+    s = sub.add_parser("outline", help="plan the chapters from the brief; PAID")
+    s.add_argument("bundle")
+    s.add_argument("--note", default="")
+    s.add_argument("--note-file")
+    s.set_defaults(fn=cmd_outline)
 
     s = sub.add_parser("beats", help="add a chapter or set its title, length and beats; free")
     s.add_argument("bundle")

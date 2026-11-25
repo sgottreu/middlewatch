@@ -70,6 +70,11 @@ class Recipe:
     summary: str
     params: dict[str, Any]
     build: Callable[..., Layer] = field(repr=False)
+    # The sensible range of each parameter, for the concept agent's prompt and
+    # the page: (low, high) for a number, a tuple of names for a choice. Advice,
+    # not a limit — `make` accepts anything the build function does, so a value
+    # found by ear outside the range still renders.
+    ranges: dict[str, Any] = field(default_factory=dict)
 
     def make(self, seed: int, overrides: dict[str, Any] | None = None,
              sr: int = SR) -> Layer:
@@ -87,9 +92,10 @@ class Recipe:
 REGISTRY: dict[str, Recipe] = {}
 
 
-def recipe(name: str, summary: str, **params):
+def recipe(name: str, summary: str, ranges: dict[str, Any] | None = None, **params):
     def wrap(fn):
-        REGISTRY[name] = Recipe(name=name, summary=summary, params=params, build=fn)
+        REGISTRY[name] = Recipe(name=name, summary=summary, params=params, build=fn,
+                                ranges=dict(ranges or {}))
         return fn
     return wrap
 
@@ -106,7 +112,18 @@ def _stereo_noise(rngs, colour, sos_factory):
 # --------------------------------------------------------------------------- #
 
 
+# surface -> (bed lo, bed hi, drop lo, drop hi, drop ms, drop decay). Module
+# level so the registry's `ranges` lists the same names the build accepts.
+RAIN_SURFACES = {
+    "glass":  (900.0, 11000.0, 2400.0, 9000.0, 14.0, 7.0),
+    "canvas": (500.0, 7000.0, 1200.0, 5000.0, 22.0, 5.0),
+    "leaves": (300.0, 5000.0, 700.0, 3500.0, 30.0, 4.0),
+    "roof":   (400.0, 9000.0, 1800.0, 7000.0, 18.0, 6.0),
+}
+
+
 @recipe("rain", "Rain on a surface — bed plus individual drops.",
+        ranges={"intensity": (0.05, 1.0), "surface": tuple(RAIN_SURFACES)},
         intensity=0.45, surface="glass", gain_db=-14.0)
 def rain(seed: int, sr: int, intensity: float, surface: str, gain_db: float) -> Layer:
     """Broadband hiss for the sheet, Poisson transients for the drops.
@@ -116,12 +133,7 @@ def rain(seed: int, sr: int, intensity: float, surface: str, gain_db: float) -> 
     drop rate scales with intensity far faster than the bed does, because heavy
     rain reads as *more events*, not as louder hiss.
     """
-    bands = {
-        "glass":  (900.0, 11000.0, 2400.0, 9000.0, 14.0, 7.0),
-        "canvas": (500.0, 7000.0, 1200.0, 5000.0, 22.0, 5.0),
-        "leaves": (300.0, 5000.0, 700.0, 3500.0, 30.0, 4.0),
-        "roof":   (400.0, 9000.0, 1800.0, 7000.0, 18.0, 6.0),
-    }
+    bands = RAIN_SURFACES
     if surface not in bands:
         raise ValueError(f"unknown surface {surface!r}; have {sorted(bands)}")
     lo, hi, dlo, dhi, ms, decay = bands[surface]
@@ -154,6 +166,7 @@ def rain(seed: int, sr: int, intensity: float, surface: str, gain_db: float) -> 
 
 
 @recipe("wind", "Wind with gusts — a resonance that wanders.",
+        ranges={"strength": (0.0, 1.0), "gust_s": (5.0, 60.0)},
         strength=0.5, gust_s=20.0, gain_db=-18.0)
 def wind(seed: int, sr: int, strength: float, gust_s: float, gain_db: float) -> Layer:
     """Brown noise through a bank of resonators, driven by gusts that arrive.
@@ -285,6 +298,7 @@ def wind(seed: int, sr: int, strength: float, gust_s: float, gain_db: float) -> 
 
 
 @recipe("fire", "A hearth — low roar under irregular crackle.",
+        ranges={"crackle": (0.2, 3.0), "roar": (0.0, 1.5)},
         crackle=1.0, roar=0.6, gain_db=-20.0)
 def fire(seed: int, sr: int, crackle: float, roar: float, gain_db: float) -> Layer:
     """Two populations of transient, not one.
@@ -382,6 +396,7 @@ def fire(seed: int, sr: int, crackle: float, roar: float, gain_db: float) -> Lay
 
 
 @recipe("ocean", "Surf — long swells breaking at an uneven interval.",
+        ranges={"swell_s": (5.0, 30.0), "brightness": (0.0, 1.0)},
         swell_s=11.0, brightness=0.5, gain_db=-16.0)
 def ocean(seed: int, sr: int, swell_s: float, brightness: float, gain_db: float) -> Layer:
     """Pink noise shaped by an asymmetric swell.
@@ -424,6 +439,7 @@ def ocean(seed: int, sr: int, swell_s: float, brightness: float, gain_db: float)
 
 
 @recipe("room_tone", "The sound of an enclosed space that is not silent.",
+        ranges={"size": (0.0, 1.0)},
         size=0.5, gain_db=-30.0)
 def room_tone(seed: int, sr: int, size: float, gain_db: float) -> Layer:
     """Almost nothing, deliberately.

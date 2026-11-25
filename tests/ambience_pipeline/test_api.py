@@ -35,7 +35,8 @@ def test_index_lists_recipes_stories_and_bibles(client, fake_story, real_bibles)
 
 
 def _new(client, **body):
-    r = client.post("/api/ambience/new", {"scene": "rain on a window", "hours": 1, **body})
+    r = client.post("/api/ambience/new", {"scene": "rain on a window", "hours": 1,
+                                          "starter": True, **body})
     assert r.status == 200, r.text
     return r.json["slug"]
 
@@ -45,7 +46,8 @@ def test_new_from_scene_and_story(client, fake_story, repo_root):
     d = client.get(f"/api/ambience/{slug}").json
     assert d["stages"]["concept"] == "awaiting_review" and d["problems"] == []
     assert d["concept"]["layers"][0]["recipe"]["type"] == "rain"
-    r = client.post("/api/ambience/new", {"from_story": "the-salt-house", "hours": 3})
+    r = client.post("/api/ambience/new", {"from_story": "the-salt-house", "hours": 3,
+                                          "starter": True})
     assert r.status == 200 and r.json["ambience"]["source_story"].endswith("the-salt-house")
     assert len(client.get("/api/ambience").json["ambiences"]) == 2
 

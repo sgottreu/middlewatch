@@ -27,8 +27,9 @@ Run every command from the repo root. Installs go into the venv —
 |---|---|
 | Built | `ambience_pipeline/synth/` and its tests. Five recipes, an audition CLI, a trim-measuring script. |
 | Built 2026-11-25 | The mixer (`mix.py`), the bundle and concept validator (`bundle.py`), the CLI (`cli.py`: `new`, `approve`, `sound`, `status`, `audition`), and the **Ambience** page in the review server (`story_pipeline/review/ambience.html` + `ambience_api.py`). Procedural layers only. Tests in `tests/ambience_pipeline/`. See [review-ui-plan-2026-11-24.md](review-ui-plan-2026-11-24.md#built-2026-11-25). |
+| Built 2026-11-25 (step 6) | The concept agent (`concept.py`, `prompts/concept.md`): `new` drafts `concept.json` with `models.concept` by default (`--starter` keeps the free keyword layers), `draft` re-runs it on the brief, `revise --note` revises it, keeping the old concept as `concept.N.json` and undoing approval. One retry on a reply that fails validation. Each call writes manifest token counts and ledger rows (`pipeline=ambience`, `stage=concept`), the first ambience rows in the ledger. The page runs these calls as jobs. See [review-ui-plan-2026-11-24.md](review-ui-plan-2026-11-24.md#concept-agent-built-2026-11-25). Not yet run against the real API. |
 | Signed off | Nothing. Fire and wind have been through several rounds and neither is accepted; rain, ocean and room tone are unheard. No mix has been listened to. |
-| Not built | The concept agent (`new` writes a keyword starter instead), `revise`, stems and `mix.flac`, the visual compositor, `design`, `direct`, the music module, costed ledger rows. |
+| Not built | Stems and `mix.flac`, the visual compositor, `design`, `direct`, the music module, the one-off art-style proposal (pipeline-design.md wants the concept agent to pin one; there is no visual stage to use it yet). |
 | Blocked | The generated-audio half, on whether the ElevenLabs plan grants commercial rights. Same decision covers SFX accents and music. |
 
 ## I want to change… → edit this
@@ -92,11 +93,12 @@ Run every command from the repo root. Installs go into the venv —
 | `tests/test_synth.py` | Determinism, block invariance, parameter wiring, levels, tones, balance. |
 | `mix.py` | Concept layers to one stereo 16-bit wav, block-streamed; trim to −21.5 LUFS from a probe; the ffmpeg `ebur128` gate. |
 | `bundle.py` | `ambience/<slug>/`, the manifest, `HOURS`, the concept validator, approval by hash. |
-| `cli.py` | `new`, `approve`, `sound`, `status`, `audition`. |
+| `cli.py` | `new` (`--starter`), `draft`, `revise`, `approve`, `sound`, `status`, `audition`. |
+| `concept.py`, `prompts/concept.md` | The concept agent: the prompt (recipes, ranges, roles and mixer conventions filled in from code), validation plus one retry, `concept.N.json` history, spend. |
 | `../story_pipeline/review/ambience_api.py`, `ambience.html` | The review server's Ambience page. |
 | `../tests/ambience_pipeline/` | Mixer, bundle, CLI, API and page-contract tests. |
 
-Planned, not built: `motion.py`, `music.py`, `agents/concept.py`. See
+Planned, not built: `motion.py`, `music.py`. See
 [pipeline-design.md](pipeline-design.md#build-order).
 
 ### Output

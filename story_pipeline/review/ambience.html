@@ -44,6 +44,9 @@
   .actions { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:12px; }
   audio { width:100%; margin-top:8px; }
   .players .mono { display:block; margin-top:8px; }
+  .revise { display:grid; gap:8px; margin-top:14px; padding-top:10px; border-top:1px solid var(--line); }
+  .revise .row { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+  .notes { font-size:14px; color:var(--dim); margin:8px 0 0; }
   @media (max-width: 760px) {
     .layer, .hdr { grid-template-columns: 1fr 1fr; }
     .hdr { display:none; }
@@ -58,12 +61,13 @@
   <h1>Ambience</h1>
   <nav id="pages"></nav>
   <span class="spacer"></span>
-  <span class="mono">procedural only · free · offline</span>
+  <span class="mono">procedural layers · one paid call per concept</span>
 </header>
 <main>
-  <p class="lede">Long-form soundscapes from a story or a prompt. New writes a starter
-    concept; edit the layers, audition them, approve, then render. Every layer is a
-    procedural recipe — no API calls, no spend.</p>
+  <p class="lede">Long-form soundscapes from a story or a prompt. New asks the concept
+    agent for the layers (one paid call), or proposes free starter layers from keywords;
+    edit them, audition, revise with a note, approve, then render. Every layer is a
+    procedural recipe — rendering costs nothing.</p>
 
   <section class="panel">
     <h2>New ambience</h2>
@@ -83,6 +87,7 @@
       </div>
       <div class="row">
         <label class="mono">Hours <select id="hours"></select></label>
+        <label class="mono"><input type="checkbox" id="starter"> Starter layers (free)</label>
         <button type="button" class="primary" id="create">Create</button>
       </div>
     </div>
@@ -108,6 +113,15 @@
       <span class="spacer"></span>
       <button type="button" id="preview">Preview 60 s</button>
       <button type="button" id="sound">Sound</button>
+    </div>
+    <p class="notes" id="eNotes" hidden></p>
+    <div class="revise">
+      <textarea id="note" rows="2" placeholder="Revise with a note: less fire, more wind; make it a summer storm"></textarea>
+      <div class="row">
+        <button type="button" id="revise">Revise</button>
+        <button type="button" class="quiet" id="redraft">Draft again from the brief</button>
+        <span class="mono" id="eHistory"></span>
+      </div>
     </div>
     <div id="soundJob"></div>
     <div class="players" id="players"></div>
@@ -135,6 +149,13 @@ let mode = "story";
 let lastAudition = null;
 
 const recipeBy = name => INDEX.recipes.find(r => r.name === name);
+
+// The armed label for a concept-agent call: an estimate if the server could price it.
+function paidLabel() {
+  const usd = INDEX.concept_estimate_usd;
+  return usd != null ? `Confirm — paid call, about $${usd < 0.01 ? usd.toFixed(3) : usd.toFixed(2)}`
+                     : "Confirm — paid call";
+}
 
 function stagePill(name, v) {
   const cls = v === "done" || v === "approved" ? "ok"
@@ -181,8 +202,8 @@ function setMode(m) {
 $("mStory").onclick = () => setMode("story");
 $("mPrompt").onclick = () => setMode("prompt");
 
-$("create").onclick = async () => {
-  const body = { hours: Number($("hours").value) || 1 };
+async function create() {
+  const body = { hours: Number($("hours").value) || 1, starter: $("starter").checked };
   if (mode === "story") {
     if (!$("story").value) { toast("Pick a story.", true); return; }
     body.from_story = $("story").value;
@@ -194,11 +215,18 @@ $("create").onclick = async () => {
   $("create").disabled = true;
   try {
     const r = await api("/api/ambience/new", body);
-    toast(`Created ${r.slug}. Edit the layers, then approve.`);
+    toast(r.job ? `Created ${r.slug}. Drafting the concept…`
+                : `Created ${r.slug}. Edit the starter layers, then approve.`);
     $("scene").value = "";
     await load(r.slug);
+    if (r.job) soundPanel.started(r.job);
   } catch (e) { toast(e.message, true); }
   finally { $("create").disabled = false; }
+}
+$("create").onclick = ev => {
+  if (mode === "story" ? !$("story").value : !$("scene").value.trim()) { create(); return; }
+  if ($("starter").checked) create();
+  else armed(ev.currentTarget, paidLabel(), create);
 };
 
 // ----------------------------------------------------------------- editor --
@@ -217,6 +245,12 @@ async function open(slug) {
     (CUR.stages.concept === "approved" && !CUR.approved
       ? ` <span class="pill bad">changed since approval</span>` : "");
   $("eBrief").textContent = CUR.brief || "(no brief)";
+  const notes = CUR.concept && CUR.concept.notes;
+  $("eNotes").hidden = !notes;
+  $("eNotes").textContent = notes ? `Agent's notes: ${notes}` : "";
+  const hist = CUR.history || [];
+  $("eHistory").textContent = (CUR.concept && CUR.concept.starter ? "starter layers · " : "") +
+    (hist.length ? `${hist.length} earlier concept${hist.length > 1 ? "s" : ""} kept (${hist[hist.length - 1]}…)` : "");
   renderLayers((CUR.concept && CUR.concept.layers) || []);
   showProblems(CUR.problems || []);
   renderPlayers();
@@ -328,6 +362,24 @@ $("approve").onclick = async () => {
   } catch (e) { toast(e.message, true); }
 };
 
+async function startConcept(send, what) {
+  try {
+    const r = await send();
+    soundPanel.started(r.job);
+    toast(what);
+  } catch (e) { toast(e.message, true); }
+}
+$("revise").onclick = ev => {
+  const note = $("note").value.trim();
+  if (!note) { toast("Say what to change.", true); return; }
+  armed(ev.currentTarget, paidLabel(), () =>
+    startConcept(() => api(`/api/ambience/${enc(CUR.slug)}/revise`, { note }),
+                 "Revising — the approval is undone when it lands."));
+};
+$("redraft").onclick = ev => armed(ev.currentTarget, paidLabel(), () =>
+  startConcept(() => api(`/api/ambience/${enc(CUR.slug)}/draft`, {}),
+               "Drafting again from the brief…"));
+
 async function startSound(seconds) {
   try {
     const r = await api(`/api/ambience/${enc(CUR.slug)}/sound`, seconds ? { seconds } : {});
@@ -345,12 +397,19 @@ const soundPanel = MW.jobPanel($("soundJob"), {
              cancel: `/api/ambience/${s}/cancel` };
   },
   describe: j => {
+    if (j.stage === "concept")
+      return j.state === "running" ? "Drafting the concept — one paid call"
+           : j.state === "done" ? "Concept drafted — review the layers"
+           : `Concept ${j.state} — what was there before is kept`;
     const what = j.state === "running" ? `Rendering — ${j.done || 0} of ${j.total || "?"} s`
                : j.failed ? `Failed the loudness gate${j.lufs != null ? ` (${j.lufs} LUFS)` : ""}`
                : `Render ${j.state}`;
     return j.lufs != null && !j.failed ? `${what} · ${j.lufs} LUFS` : what;
   },
-  onDone: () => { if (CUR) load(CUR.slug); },
+  onDone: j => {
+    if (j.stage === "concept" && j.state === "done") $("note").value = "";
+    if (CUR) load(CUR.slug);
+  },
 });
 
 function renderPlayers() {

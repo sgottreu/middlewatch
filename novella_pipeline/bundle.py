@@ -2,7 +2,9 @@
 
     novellas/<series>/<slug>/
         manifest.json               pipeline, slug, pinned labels, chapters + stages, spend
-        brief.md  outline.md        written by Scott
+        brief.md  outline.md        written by Scott (outline.md also by the outliner)
+        outlines/VV.md  VV.json     kept outlines: each outliner run, and Scott's
+                                    outline.md as it stood before a run replaced it
         chapters/NN/beats.md        what the chapter has to do
         chapters/NN/summary.md      the approved summary (fed to later chapters)
         chapters/NN/details.md      new details approved into the bible's changelog
@@ -221,6 +223,64 @@ class Bundle:
             "volume": "",
             "episode": "",
         }
+
+    # --- outline versions ----------------------------------------------------
+
+    @property
+    def outlines_dir(self) -> Path:
+        return self.root / "outlines"
+
+    def outline_version_path(self, v: int, ext: str = "md") -> Path:
+        return self.outlines_dir / f"{int(v):02d}.{ext}"
+
+    def outline_versions(self) -> list[dict[str, Any]]:
+        """Every kept outline, oldest first: {version, source, created, note,
+        chapters, words}. `source` is "outliner" (a generated outline) or
+        "edited" (outline.md as it stood before the outliner replaced it)."""
+        out = []
+        if not self.outlines_dir.exists():
+            return out
+        for p in sorted(self.outlines_dir.glob("[0-9][0-9].md")):
+            v = int(p.stem)
+            meta = _json(self.outline_version_path(v, "json"))
+            out.append({"version": v, "source": meta.get("source", "edited"),
+                        "created": meta.get("created", ""), "note": meta.get("note", ""),
+                        "model": meta.get("model", ""),
+                        "chapters": len((meta.get("outline") or {}).get("chapters") or []),
+                        "words": words(_read(p))})
+        return out
+
+    def outline_version(self, v: int) -> str:
+        return _read(self.outline_version_path(v))
+
+    def save_outline(self, text: str, meta: dict[str, Any]) -> int:
+        """Replace outline.md with a generated outline, keeping what it replaces.
+
+        If outline.md holds anything the kept versions do not (Scott's edits, or
+        the hand-written outline from before the outliner ran), it is saved
+        first as its own version, so nothing he wrote is lost. Returns the new
+        outline's version number."""
+        self.outlines_dir.mkdir(parents=True, exist_ok=True)
+        kept = self.outline_versions()
+        last = kept[-1]["version"] if kept else 0
+        current = _read(self.outline_path)
+        body = "\n".join(l for l in current.splitlines() if not l.startswith("# ")).strip()
+        if body and (not last or current.strip() != self.outline_version(last).strip()):
+            last += 1
+            self.outline_version_path(last).write_text(current)
+            self.outline_version_path(last, "json").write_text(json.dumps(
+                {"source": "edited", "created": time.strftime("%Y-%m-%dT%H:%M:%S")},
+                indent=2) + "\n")
+        v = last + 1
+        self.outline_version_path(v).write_text(_text(text))
+        self.outline_version_path(v, "json").write_text(json.dumps(
+            {"source": "outliner", "created": time.strftime("%Y-%m-%dT%H:%M:%S"), **meta},
+            indent=2) + "\n")
+        self.outline_path.write_text(_text(text))
+        m = self.manifest()
+        m["outline_version"] = v
+        self.write_manifest(m)
+        return v
 
     # --- chapters ----------------------------------------------------------
 

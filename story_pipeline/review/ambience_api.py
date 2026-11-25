@@ -8,18 +8,26 @@ bundle) and `ambience-_auditions` (one audition at a time), with
 `pipeline="ambience"` so a restart hands a dead job to `release` here rather
 than to the story releaser.
 
-Everything here is free: procedural layers only, rendered on this machine.
-Rendering is still slow — an hour of audio is minutes of CPU — so the page arms
-the Sound button.
+One thing here is paid: the concept agent (one Anthropic call, `models.concept`,
+plus one retry if its reply does not validate). `new` runs it as a job after
+creating the bundle — the bundle holds free keyword "starter" layers until the
+reply lands, and keeps them if the call fails — unless the body says
+`starter: true`. `revise` and `draft` run it again on an existing bundle. The
+page arms each of these with an estimate. Everything else is free: procedural
+layers only, rendered on this machine. Rendering is still slow — an hour of
+audio is minutes of CPU — so the page arms the Sound button too.
 
 Routes:
     GET  /ambience                       the page
     GET  /api/ambience                   bundles, recipes, stories, bibles
     GET  /api/ambience/recipes | /stories
-    POST /api/ambience/new               {scene | from_story, bible?, hours}
+    POST /api/ambience/new               {scene | from_story, bible?, hours, starter?}
+                                         — a concept job unless starter
     GET  /api/ambience/<slug>            one bundle
     GET  /api/ambience/<slug>/concept    POST it back to save
     POST /api/ambience/<slug>/approve
+    POST /api/ambience/<slug>/revise     {note} — a concept job (paid)
+    POST /api/ambience/<slug>/draft      redraft from the brief — a concept job (paid)
     POST /api/ambience/<slug>/sound      {seconds?, dry_run?} — a job
     GET  /api/ambience/<slug>/job, /log?from=
     POST /api/ambience/<slug>/cancel
@@ -100,7 +108,8 @@ def audio_path(cfg: dict, rel: str) -> Path:
 
 def recipes() -> list[dict]:
     from ambience_pipeline.synth.recipes import REGISTRY
-    return [{"name": n, "summary": r.summary, "params": r.params}
+    return [{"name": n, "summary": r.summary, "params": r.params,
+             "ranges": {k: list(v) for k, v in r.ranges.items()}}
             for n, r in sorted(REGISTRY.items())]
 
 
@@ -136,10 +145,19 @@ def _files(cfg: dict, b: AmbienceBundle) -> dict:
 
 
 def _reconcile(b: AmbienceBundle) -> None:
-    """A sound stage left `running` with no job running is released."""
-    if b.stage_status("sound") == "running" and \
-            runner.status(_key(b.slug)).get("state") != "running":
+    """A stage left `running` with no job running is released."""
+    if runner.status(_key(b.slug)).get("state") == "running":
+        return
+    if b.stage_status("sound") == "running":
         b.set_stage("sound", "pending")
+    if b.stage_status("concept") == "running":
+        _release_concept(b)
+
+
+def _release_concept(b: AmbienceBundle) -> None:
+    """A concept job died mid-call: concept.json was never replaced, so what is
+    on disk (the starter, or the previous concept) is back up for review."""
+    b.set_stage("concept", "awaiting_review" if b.concept_path.is_file() else "pending")
 
 
 def summary(cfg: dict, b: AmbienceBundle) -> dict:
@@ -163,9 +181,11 @@ def index(cfg: dict) -> dict:
         except Exception:
             continue
     bundles.sort(key=lambda x: x.get("created") or "", reverse=True)
+    from ambience_pipeline import concept as ca
     return {"ambiences": bundles, "recipes": recipes(), "stories": stories(cfg),
             "bibles": _bibles(cfg), "hours": sorted(ab.HOURS), "roles": list(ab.ROLES),
-            "gain_db": list(ab.GAIN_DB), "density_per_min": list(ab.DENSITY_PER_MIN)}
+            "gain_db": list(ab.GAIN_DB), "density_per_min": list(ab.DENSITY_PER_MIN),
+            "concept_model": ca._model(cfg)[0], "concept_estimate_usd": ca.estimate_usd(cfg)}
 
 
 def detail(cfg: dict, slug: str) -> dict:
@@ -176,6 +196,9 @@ def detail(cfg: dict, slug: str) -> dict:
     out["brief"] = b.brief_path.read_text() if b.brief_path.is_file() else ""
     out["sound_info"] = b.stage_info("sound")
     out["preview_info"] = b.manifest().get("stage_info", {}).get("preview", {})
+    out["concept_info"] = b.stage_info("concept")
+    from ambience_pipeline import concept as ca
+    out["history"] = [p.name for p in ca.history(b)]
     return out
 
 
@@ -192,8 +215,10 @@ def concept_view(cfg: dict, slug: str) -> dict:
 
 
 def _busy(b: AmbienceBundle) -> None:
-    if runner.status(_key(b.slug)).get("state") == "running":
-        raise _Bad(f"{b.slug} is rendering. Stop it first, or wait.")
+    j = runner.status(_key(b.slug))
+    if j.get("state") == "running":
+        what = "drafting its concept" if j.get("kind") == "concept" else "rendering"
+        raise _Bad(f"{b.slug} is {what}. Stop it first, or wait.")
 
 
 def new(cfg: dict, body: dict) -> dict:
@@ -220,7 +245,44 @@ def new(cfg: dict, body: dict) -> dict:
                        title=(body.get("title") or "").strip())
     except ValueError as e:
         raise _Bad(str(e))
-    return {"ok": True, "slug": b.slug, "ambience": detail(cfg, b.slug)}
+    out = {"ok": True, "slug": b.slug, "starter": bool(body.get("starter"))}
+    if not body.get("starter"):
+        out["job"] = _start_concept(cfg, b, ["draft", str(b.root)], revise=False)
+    out["ambience"] = detail(cfg, b.slug)
+    return out
+
+
+def _start_concept(cfg: dict, b: AmbienceBundle, args: list[str], revise: bool) -> dict:
+    """The concept agent as a job keyed like the bundle's renders, so a render
+    and a redraft can never run at once."""
+    argv = [sys.executable, "-m", "ambience_pipeline.cli", *args]
+    try:
+        runner.start_command(_key(b.slug), "concept", argv,
+                             busy=f"{b.slug} already has a job running.",
+                             pipeline=PIPELINE, ambience=b.slug, revise=revise)
+    except ValueError as e:
+        raise _Bad(str(e))
+    return job(cfg, _key(b.slug))
+
+
+def revise(cfg: dict, slug: str, body: dict) -> dict:
+    b = _open(cfg, slug)
+    _busy(b)
+    note = (body.get("note") or "").strip()
+    if not note:
+        raise _Bad("Say what to change.")
+    if len(note) > 4000:
+        raise _Bad("Keep the note under 4000 characters.")
+    if not b.concept_path.is_file():
+        raise _Bad("There is no concept to revise yet.")
+    return {"ok": True, "job": _start_concept(cfg, b, ["revise", str(b.root), "--note", note],
+                                              revise=True)}
+
+
+def redraft(cfg: dict, slug: str) -> dict:
+    b = _open(cfg, slug)
+    _busy(b)
+    return {"ok": True, "job": _start_concept(cfg, b, ["draft", str(b.root)], revise=False)}
 
 
 def save_concept(cfg: dict, slug: str, body: dict) -> dict:
@@ -245,6 +307,7 @@ def save_concept(cfg: dict, slug: str, body: dict) -> dict:
 
 def approve(cfg: dict, slug: str) -> dict:
     b = _open(cfg, slug)
+    _busy(b)
     problems = ab.validate_concept(b.concept())
     if problems:
         raise _Bad("Fix the concept first: " + "; ".join(problems), problems)
@@ -345,14 +408,20 @@ def cancel(cfg: dict, key: str) -> dict:
 
 
 def release(cfg: dict, meta: dict) -> None:
-    """Put a sound stage a dead or cancelled job left `running` back to pending."""
+    """Put a stage a dead or cancelled job left `running` back: sound to pending,
+    concept to awaiting_review (concept.json was not replaced)."""
     slug = meta.get("ambience")
-    if not slug or meta.get("stage") != "sound":
+    stage = meta.get("stage")
+    if not slug or stage not in ("sound", "concept"):
         return
     try:
         b = _open(cfg, slug)
-        if b.stage_status("sound") == "running":
+        if b.stage_status(stage) != "running":
+            return
+        if stage == "sound":
             b.set_stage("sound", "pending")
+        else:
+            _release_concept(b)
     except Exception:
         pass
 
@@ -442,6 +511,10 @@ def handle_post(handler, cfg: dict, path: str, body: dict) -> bool:
         return _answer(handler, lambda: save_concept(cfg, slug, body))
     if what == "approve":
         return _answer(handler, lambda: approve(cfg, slug))
+    if what == "revise":
+        return _answer(handler, lambda: revise(cfg, slug, body))
+    if what == "draft":
+        return _answer(handler, lambda: redraft(cfg, slug))
     if what == "sound":
         return _answer(handler, lambda: sound(cfg, slug, body))
     if what == "cancel":

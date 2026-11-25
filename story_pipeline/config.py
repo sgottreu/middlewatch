@@ -37,6 +37,11 @@ DEFAULTS: dict[str, Any] = {
         # a review that misses a canon slip costs more than the call.
         "novella_writer": "claude-opus-5",
         "novella_editor": "claude-opus-5",
+        # Novella outliner: 10-16 chapters of beats from the brief and bible.
+        "novella_outliner": "claude-opus-5",
+        # Ambience concept agent: a scene or story brief -> concept.json layers.
+        # Sonnet, as pipeline-design.md proposed: a small structured reply.
+        "concept": "claude-sonnet-5",
     },
     # Reply ceilings, per agent. A ceiling is not a charge — you pay for the
     # tokens produced, so these are only a stop on a runaway reply. They live
@@ -55,6 +60,8 @@ DEFAULTS: dict[str, Any] = {
         # new details and flags.
         "novella_writer": 16000,
         "novella_editor": 8000,
+        "novella_outliner": 16000,
+        "concept": 8000,
     },
     "max_edit_passes": 2,
     # How far a chapter may drift from its word target before it is sent back

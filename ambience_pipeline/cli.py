@@ -2,14 +2,19 @@
 
     python3 -m ambience_pipeline.cli new --scene "rain on a library window" [--bible amberlight] [--hours 1]
     python3 -m ambience_pipeline.cli new --from-story stories/<arc>/<slug> [--hours 3]
+    python3 -m ambience_pipeline.cli new --scene "…" --starter          # free keyword layers, no call
+    python3 -m ambience_pipeline.cli draft ambience/<slug>              # run the concept agent on the brief
+    python3 -m ambience_pipeline.cli revise ambience/<slug> --note "less fire, more wind"
     python3 -m ambience_pipeline.cli approve ambience/<slug>
     python3 -m ambience_pipeline.cli sound ambience/<slug> [--dry-run] [--seconds N]
     python3 -m ambience_pipeline.cli status ambience/<slug>
     python3 -m ambience_pipeline.cli audition rain -p surface=roof --seconds 30 --out rain.wav
 
-Everything here is free and offline: procedural layers only, no concept agent
-yet. `new` writes a starter concept.json from keywords in the scene or brief —
-edit it, then `approve`, then `sound`.
+`new`, `draft` and `revise` make one paid Anthropic call each (the concept
+agent, `models.concept`), plus one retry if its first reply does not validate.
+`new --starter` skips the call and proposes layers from keywords instead.
+Everything else is free and offline: procedural layers only. Edit concept.json,
+then `approve`, then `sound`.
 
 Under MW_PROGRESS (set by the review server's runner) each command also prints
 `::progress {json}` lines, the same contract story_pipeline.cli keeps.
@@ -41,8 +46,9 @@ def _progress(**fields) -> None:
 # new
 # --------------------------------------------------------------------------- #
 
-# Keyword -> layer, for the starter concept. Not the concept agent (that is
-# step 6 of the plan); just enough that `new` leaves something renderable.
+# Keyword -> layer, for the starter concept: the free alternative to the
+# concept agent (`new --starter`), and what a bundle holds until the agent's
+# reply lands — so a failed call still leaves something renderable.
 _KEYWORDS = {
     "rain": ("rain", "drizzle", "storm", "downpour", "shower", "wet", "puddle"),
     "ocean": ("sea", "ocean", "surf", "shore", "wave", "harbour", "harbor", "beach",
@@ -141,8 +147,6 @@ def build_brief(title: str, scene: str = "", story: dict | None = None,
             lines += [f"- {c}" for c in bible.canon[:12]]
     if art_style:
         lines += ["", "## Art style", "", str(art_style).strip()]
-    lines += ["", "*Starter brief. The concept agent is not built yet; "
-              "concept.json was proposed from keywords. Edit it before approving.*"]
     return "\n".join(lines) + "\n"
 
 
@@ -233,13 +237,74 @@ def _cfg() -> dict:
 
 
 def cmd_new(args) -> int:
-    b = create(_cfg(), scene=args.scene or "", from_story=args.from_story or "",
+    cfg = _cfg()
+    b = create(cfg, scene=args.scene or "", from_story=args.from_story or "",
                bible=args.bible or "", hours=args.hours, seed=args.seed,
                slug=args.slug or "", title=args.title or "")
     print(f"created {b.root}")
-    _print_concept(b)
-    print(f"\nEdit {b.concept_path}, then:  python3 -m ambience_pipeline.cli approve {b.root}")
     _progress(event="created", slug=b.slug)
+    if args.starter:
+        print("starter layers, from keywords (no call):")
+        _print_concept(b)
+        print(f"\nEdit {b.concept_path}, then:  python3 -m ambience_pipeline.cli approve {b.root}")
+        return 0
+    return _run_agent(b, cfg, revise=False, note="", stream=args.stream)
+
+
+def cmd_draft(args) -> int:
+    b = _open(args.bundle)
+    return _run_agent(b, _cfg(), revise=False, note="", stream=args.stream)
+
+
+def cmd_revise(args) -> int:
+    b = _open(args.bundle)
+    if not (args.note or "").strip():
+        raise ValueError("--note is required: say what to change")
+    return _run_agent(b, _cfg(), revise=True, note=args.note, stream=args.stream)
+
+
+def _run_agent(b: AmbienceBundle, cfg: dict, *, revise: bool, note: str,
+               stream: bool | None) -> int:
+    """One concept-agent run, printed. Exit 1 on failure; concept.json is left
+    as it was (for `new`, the starter layers)."""
+    import anthropic
+    from story_pipeline import llm
+
+    from . import concept as ca
+
+    model, _ = ca._model(cfg)
+    if stream is None:
+        stream = bool(os.environ.get("MW_PROGRESS"))
+    what = "revising" if revise else "drafting"
+    print(f"{what} the concept with {model} (one paid call, one retry at most)…", flush=True)
+    _progress(event="plan", total=1)
+    on_text = (lambda piece: print(piece, end="", flush=True)) if stream else None
+    try:
+        ca.draft(b, cfg, note=note, revise=revise, on_text=on_text)
+    except (ca.ConceptError, llm.ConfigurationError, llm.TruncatedReply, ValueError,
+            anthropic.APIError) as e:
+        if stream:
+            print()
+        print(f"error: {e}", file=sys.stderr)
+        if b.concept_path.is_file() and b.concept().get("starter"):
+            print(f"  the starter layers are still in {b.concept_path} — edit those, or "
+                  f"retry with:  python3 -m ambience_pipeline.cli draft {b.root}")
+        _progress(event="failed", error=str(e).splitlines()[0] if str(e) else "failed")
+        return 1
+    if stream:
+        print()
+    spent = b.manifest().get("spend", {})
+    print(f"{'revised' if revise else 'drafted'} {b.concept_path}"
+          + (f"  (kept the previous as {ca.history(b)[-1].name})" if ca.history(b) else ""))
+    print(f"  tokens so far: {spent.get('anthropic_input_tokens', 0):,} in, "
+          f"{spent.get('anthropic_output_tokens', 0):,} out")
+    notes = b.concept().get("notes")
+    if notes:
+        print(f"  notes: {notes}")
+    _print_concept(b)
+    print(f"\nReview {b.concept_path}, then:  python3 -m ambience_pipeline.cli approve {b.root}")
+    _progress(event="block", done=1, total=1)
+    _progress(event="done")
     return 0
 
 
@@ -439,12 +504,19 @@ def cmd_audition(args) -> int:
 # --------------------------------------------------------------------------- #
 
 
+def _stream_args(sp) -> None:
+    g = sp.add_mutually_exclusive_group()
+    g.add_argument("--stream", dest="stream", action="store_true", default=None,
+                   help="echo the model's reply as it arrives (default: only in a job log)")
+    g.add_argument("--no-stream", dest="stream", action="store_false")
+
+
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(prog="ambience_pipeline.cli", description=__doc__,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest="cmd", required=True)
 
-    n = sub.add_parser("new", help="make a bundle with a starter concept")
+    n = sub.add_parser("new", help="make a bundle and draft its concept (one paid call)")
     src = n.add_mutually_exclusive_group(required=True)
     src.add_argument("--scene", help="a one-off scene, in words")
     src.add_argument("--from-story", help="a story bundle: stories/<arc>/<slug>")
@@ -453,7 +525,21 @@ def main(argv=None) -> int:
     n.add_argument("--seed", type=int)
     n.add_argument("--slug")
     n.add_argument("--title")
+    n.add_argument("--starter", action="store_true",
+                   help="free: propose layers from keywords instead of calling the concept agent")
+    _stream_args(n)
     n.set_defaults(fn=cmd_new)
+
+    d = sub.add_parser("draft", help="(re)draft concept.json from the brief (one paid call)")
+    d.add_argument("bundle")
+    _stream_args(d)
+    d.set_defaults(fn=cmd_draft)
+
+    r = sub.add_parser("revise", help="revise concept.json from a note (one paid call)")
+    r.add_argument("bundle")
+    r.add_argument("--note", required=True, help="what to change, in words")
+    _stream_args(r)
+    r.set_defaults(fn=cmd_revise)
 
     a = sub.add_parser("approve", help="pass the concept gate")
     a.add_argument("bundle")
@@ -481,6 +567,12 @@ def main(argv=None) -> int:
     au.set_defaults(fn=cmd_audition)
 
     args = p.parse_args(argv)
+    try:
+        # Credentials for the concept agent, as story_pipeline.cli does it.
+        from story_pipeline import config
+        config.load_env()
+    except Exception:  # noqa: BLE001 — the free commands need no credentials
+        pass
     try:
         return args.fn(args)
     except (ValueError, FileNotFoundError, KeyError) as e:

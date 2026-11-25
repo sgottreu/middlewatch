@@ -111,7 +111,7 @@ const job = MW.jobPanel($("job"), {
   urls: () => ({ job: `/api/novella/${S}/job`, log: `/api/novella/${S}/log`,
                  cancel: `/api/novella/${S}/cancel` }),
   describe: j => {
-    const what = j.kind === "review" ? "Editor review" : "Writer draft";
+    const what = j.kind === "review" ? "Editor review" : j.kind === "outline" ? "Outliner" : "Writer draft";
     const ch = j.n ? ` · chapter ${j.n}` : "";
     return j.state === "running" ? `${what}${ch} — writing…` :
            j.state === "done" ? `${what}${ch} — saved` : `${what}${ch} — ${j.state}`;
@@ -147,7 +147,29 @@ async function showBoard() {
       </div>
       <p class="row"><button class="primary" id="nGo">Create</button>
         <span class="small muted">Free. Makes novellas/&lt;series&gt;/&lt;slug&gt;/ with an empty brief and outline.</span></p>
+    </section>
+    <section class="panel"><h2>Expand a story into a novella</h2>
+      <p class="small muted">Free. Seeds a new book from a story's outline: its title, logline, setting, cast and beats become the brief, and its bible is pinned. The story itself is not changed. Run the outliner on the new book afterwards.</p>
+      <div class="form">
+        <select id="xStory"><option value="">Loading stories…</option></select>
+        <input type="text" id="xSeries" placeholder="Series (default: the bible's)">
+        <input type="number" id="xWords" placeholder="Target words" value="30000" step="1000" min="5000">
+      </div>
+      <p><button id="xGo">Expand</button></p>
     </section>`;
+  api(`/api/novella/stories`).then(r => {
+    $("xStory").innerHTML = r.stories.length ? r.stories.map(s =>
+      `<option value="${esc(s.ref)}">${esc(s.title)} (${esc(s.ref)}${s.bible ? " · " + esc(s.bible) : ""})</option>`).join("")
+      : '<option value="">No stories with an outline</option>';
+  }).catch(e => toast(e.message, true));
+  $("xGo").onclick = async () => {
+    if (!$("xStory").value) return toast("Pick a story.", true);
+    try {
+      const r = await api(`/api/novella/expand`, { story: $("xStory").value, series: $("xSeries").value,
+        target_words: Number($("xWords").value) || null });
+      toast("Novella created from the story."); location.hash = `#/n/${r.slug}`;
+    } catch (e) { toast(e.message, true); }
+  };
   $("nGo").onclick = async () => {
     try {
       const r = await api(`/api/novella/new`, { title: $("nTitle").value, series: $("nSeries").value,
@@ -185,8 +207,30 @@ async function showBook() {
       <textarea id="brief" class="mid">${esc(b.brief)}</textarea>
       <p><button id="briefSave">Save brief</button></p></section>
     <section class="panel"><h3>Outline</h3>
+      ${b.source_story ? `<p class="small muted">Expanded from the story ${esc(b.source_story.title)} (${esc(b.source_story.arc)}/${esc(b.source_story.slug)}).</p>` : ""}
       <textarea id="outline" class="mid">${esc(b.outline)}</textarea>
-      <p><button id="outlineSave">Save outline</button></p></section>`;
+      <p><button id="outlineSave">Save outline</button></p>
+      <h3>Run the outliner</h3>
+      <p class="small muted">Plans 10–16 chapters from the brief, the bible and this outline (${esc((window._models || {}).outliner || "novella_outliner")}). Replaces the outline above, keeping it as a numbered version, and fills in chapter titles and beats; chapters already past Outlined are left alone.</p>
+      <textarea id="oNote" class="short" placeholder="Note for the outliner (optional)"></textarea>
+      <p class="row"><button id="oGo">Run outliner</button><span class="small muted">Paid. Press twice.</span></p>
+      ${b.outline_versions.length ? `<details><summary>Outline versions (${b.outline_versions.length})</summary><ul>${b.outline_versions.slice().reverse().map(v =>
+        `<li class="small"><a href="#" data-ov="${v.version}">v${v.version}</a> · ${esc(v.source)}${v.chapters ? ` · ${v.chapters} chapters` : ""} · ${fmt(v.words)} words <span class="muted">${esc(v.created)}${v.note ? " · " + esc(v.note) : ""}</span></li>`).join("")}</ul>
+        <pre class="block" id="ovText" hidden></pre></details>` : ""}
+    </section>`;
+  $("oGo").onclick = ev => armed(ev.currentTarget, "Confirm — paid call", async () => {
+    try {
+      const r = await api(`/api/novella/${S}/run-outline`, { note: $("oNote").value });
+      watchJob(r.job);
+    } catch (e) { toast(e.message, true); }
+  });
+  document.querySelectorAll("[data-ov]").forEach(a => a.onclick = async ev => {
+    ev.preventDefault();
+    try {
+      const r = await api(`/api/novella/${S}/outlines?v=` + a.dataset.ov);
+      $("ovText").hidden = false; $("ovText").textContent = `v${r.version}\n\n${r.text}`;
+    } catch (e) { toast(e.message, true); }
+  });
   $("cAdd").onclick = async () => {
     const n = Number($("cN").value);
     try {

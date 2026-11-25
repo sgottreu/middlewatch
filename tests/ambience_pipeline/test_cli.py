@@ -23,7 +23,7 @@ def only_bundle(repo_root):
 
 
 def test_new_from_a_scene(repo_root, capsys):
-    rc, out = run(capsys, "new", "--scene", "Waves on a shingle beach at night, a fire on the sand",
+    rc, out = run(capsys, "new", "--starter", "--scene", "Waves on a shingle beach at night, a fire on the sand",
                   "--hours", "3", "--seed", "9")
     assert rc == 0 and "created ambience/waves-on-a-shingle-beach-at\n" in out
     b = only_bundle(repo_root)
@@ -45,7 +45,7 @@ def test_starter_always_has_a_bed():
 
 
 def test_new_with_a_bible_pins_series_and_style(repo_root, real_bibles, capsys):
-    rc, out = run(capsys, "new", "--scene", "Rain on the library window", "--bible", "amberlight")
+    rc, out = run(capsys, "new", "--starter", "--scene", "Rain on the library window", "--bible", "amberlight")
     assert rc == 0, out
     b = only_bundle(repo_root)
     assert b.pinned("bible") == "amberlight"
@@ -54,13 +54,13 @@ def test_new_with_a_bible_pins_series_and_style(repo_root, real_bibles, capsys):
 
 
 def test_new_with_a_missing_bible_fails_for_a_scene(repo_root, capsys):
-    rc, out = run(capsys, "new", "--scene", "rain", "--bible", "nope")
+    rc, out = run(capsys, "new", "--starter", "--scene", "rain", "--bible", "nope")
     assert rc == 1 and "would not load" in out
     assert not ab.bundle_roots(repo_root / "ambience")
 
 
 def test_new_from_a_story(repo_root, fake_story, capsys):
-    rc, out = run(capsys, "new", "--from-story", str(fake_story.relative_to(repo_root)))
+    rc, out = run(capsys, "new", "--starter", "--from-story", str(fake_story.relative_to(repo_root)))
     assert rc == 0 and "skipping bible 'no-such-bible'" in out
     b = only_bundle(repo_root)
     assert b.slug == "the-salt-house-ambience"
@@ -76,19 +76,19 @@ def test_new_from_a_story(repo_root, fake_story, capsys):
 
 
 def test_new_from_the_real_story_reads_its_bible(repo_root, real_story, real_bibles, capsys):
-    rc, out = run(capsys, "new", "--from-story", "stories/amberlight/the-cracked-beam")
+    rc, out = run(capsys, "new", "--starter", "--from-story", "stories/amberlight/the-cracked-beam")
     assert rc == 0, out
     b = only_bundle(repo_root)
     assert b.pinned("bible") == "amberlight" and "## Shots from the story" in b.brief_path.read_text()
 
 
 def test_new_needs_a_real_story(repo_root, capsys):
-    rc, out = run(capsys, "new", "--from-story", "stories/nothing")
+    rc, out = run(capsys, "new", "--starter", "--from-story", "stories/nothing")
     assert rc == 1 and "not a story bundle" in out
 
 
 def _scene(capsys, repo_root):
-    run(capsys, "new", "--scene", "rain on a window", "--seed", "3")
+    run(capsys, "new", "--starter", "--scene", "rain on a window", "--seed", "3")
     return only_bundle(repo_root)
 
 

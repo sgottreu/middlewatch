@@ -53,7 +53,9 @@ skip non-story job keys.
 ## Built 2026-11-25
 
 Step 5's ambience half: steps 1–3 of "Back end first" plus the page. Step 4
-(the concept agent) and generated layers are not built.
+(the concept agent) followed the same day — see
+[Concept agent](#concept-agent-built-2026-11-25) below. Generated layers are
+not built.
 
 ```bash
 python3 -m ambience_pipeline.cli new --scene "rain on a library window, a low fire" --bible amberlight --hours 1
@@ -70,7 +72,7 @@ python3 -m pytest -q tests/ambience_pipeline
 The page is `/ambience` on the review server. `MW.PAGES` in `common.js` does
 not list it yet; add `["Ambience", "/ambience"]` there.
 
-**What `new` does without the concept agent.** It writes `brief.md` (story:
+**What `new --starter` does (and what every `new` does before the agent's reply lands).** It writes `brief.md` (story:
 outline `title`/`series`/`genre`/`logline`/`setting`, up to 12 shot prompts
 from `images/scenes.json`, the bible's canon, and the art style), and a
 *starter* `concept.json` picked from keywords (rain, sea, wind, fire; room tone
@@ -119,3 +121,60 @@ rendered mix and preview from the bundle. Roadmap item #1 (artifact links in the
 shared log pane) is not done: the marker exists, but the story page does not
 read it.
 
+## Concept agent (built 2026-11-25)
+
+Step 6's ambience half: "Back end first" step 4.
+
+```bash
+python3 -m ambience_pipeline.cli new --scene "rain on a library window, a low fire" --bible amberlight
+python3 -m ambience_pipeline.cli new --scene "…" --starter        # free keyword layers, no call
+python3 -m ambience_pipeline.cli draft ambience/<slug>            # redraft from brief.md (paid)
+python3 -m ambience_pipeline.cli revise ambience/<slug> --note "less fire, a slower wind"
+python3 -m pytest -q tests/ambience_pipeline/test_concept.py
+```
+
+- **The call.** `ambience_pipeline/concept.py` sends `brief.md`, the hours (and
+  the accent scale it implies) and the pinned bible's `prompt_block()` — skipped
+  with a note if the bible will not load — to `llm.complete_json` with
+  `models.concept` (`claude-sonnet-5`) and `max_tokens.concept` (8000). The
+  model supplies `scene`, `layers` and `notes`; slug, title, series, hours and
+  seed always come from the manifest.
+- **The prompt can't drift.** `prompts/concept.md` holds the prose; the recipe
+  catalogue (summaries, parameters, defaults, ranges), the roles and the
+  mixer's conventions (gain bounds, accent density and the hours scale, event
+  length, filters, LFO, layer limits) are filled in from `REGISTRY`,
+  `bundle.py` and `mix.py`. It says procedural only: generated layers are
+  blocked on ElevenLabs rights and the validator rejects them anyway.
+- **Ranges are new.** `Recipe.ranges` (in the `@recipe` decorator) gives each
+  parameter's listened-to range; `rain`'s surfaces moved to `RAIN_SURFACES` so
+  the choice list and the build share one table. The numbers are my reading of
+  each recipe's code, not measurements — check them by ear. They bind the agent
+  (an out-of-range parameter counts as a problem) but **not** a hand edit or
+  the gate, so a value found by ear outside a range still renders.
+- **Validation and retry.** `bundle.validate_concept` plus the ranges. A reply
+  with problems is sent back once, with the reply and its problems; a second
+  failure raises `ConceptError`, leaves `concept.json` as it was, and the CLI
+  exits 1. For `new` that leaves the starter layers in place.
+- **History and the gate.** Every agent write keeps the concept it replaces as
+  `concept.N.json` (the starter becomes `concept.1.json`), drops
+  `concept_approved` and sets the stage to `awaiting_review` — even a revision
+  that changes nothing has to be approved again. `stage_info.concept` records
+  the model and the revise note.
+- **Spend.** Each call, retry included, goes through
+  `spend.record_llm(b, "concept", …)`: token counts in the manifest's `spend`,
+  ledger rows with `pipeline=ambience`, `stage=concept`. These are the first
+  ambience rows in `ledger/costs.csv`.
+- **Page.** `POST /api/ambience/new` creates the bundle (free, starter layers)
+  and starts `cli draft` as a job keyed `ambience-<slug>`, stage `concept`,
+  unless `starter: true` (the "Starter layers (free)" checkbox). The editor has
+  a Revise box (`POST /api/ambience/<slug>/revise {note}`) and "Draft again from
+  the brief" (`POST /api/ambience/<slug>/draft`). All three are armed with
+  "Confirm — paid call, about $…", estimated from rates.json for the system
+  prompt plus a 3,000-character brief and 1,500 output tokens (`concept_estimate_usd` in
+  `GET /api/ambience`). Saving, approving and rendering are refused while a
+  concept job runs; a dead one is put back to `awaiting_review` by `release`
+  and on read. The job log shows the reply as it streams; in a terminal, pass
+  `--stream` to see it.
+- **Not done.** The one-off art-style proposal pipeline-design.md asks of this
+  agent (nothing would use it until `design` exists), and no run against the
+  real API yet — the first one is worth watching for the reply's gain balance.
