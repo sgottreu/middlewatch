@@ -1,5 +1,8 @@
 # Middle Watch Fantasy Series Bible (Working Draft)
 
+Genre: fantasy
+Series: Mapping the Broken Edges
+
 Working title: Mapping the Broken Edges (alternative: The Broken Edges; stories may be subtitled by region) Status: Early worldbuilding. Structure mirrors the Amberlight bible.
 
 ## Premise
@@ -12,6 +15,7 @@ About twenty years ago, a Cataclysm reshaped the world. Geological upheaval and 
 - Kingdoms and places have been disconnected by geological changes and possibly other causes.
 - Travellers move between the isolated regions.
 - People are documenting the changed world.
+- Some ordinary trees survived in the Glasswood, but twenty years of logging has thinned them out, and the glass trees are most of what's left.
 
 ## Open Questions
 
@@ -41,7 +45,7 @@ Travel between regions is slow and hard: on foot, by mule or cart along survivin
 
 - **The Sunken Reach:** a lowland kingdom drowned by the Cataclysm. Its people fled, and new towns grew up in the surrounding hills. Some communities are now building outward from the water's edge, with docks, piers and stilt extensions. Settlements (four or five): Hartsford, an existing pre-Cataclysm hill town near the new shoreline that refugees fled to, now the main town; its refugee camps sprawled downhill to the water and became Shoreside, an attached shoreline settlement building out on docks and stilts; Pell's Rest, a small, remote hill settlement founded after the flood by the Pell family, who ran a large ranching operation before the Cataclysm; they settled there with their employees and workers; and Floatsome, a floating boat town of fishers and salvagers. Floatsome began with old boats that still floated but could no longer work; they were lashed together into platforms, and it has grown into a hodgepodge of hulls, decks and add-ons. The drowned towns themselves stand abandoned, with old records in the streets below. What draws outsiders, including the collectors: the drowned capital, with a rumoured sealed royal vault possibly holding clues about the Cataclysm; and salvaged objects that seem magic-touched, traced to a fissure beneath the water that leaks magic. The fissure likely opened during the Cataclysm, but the generation that lived through it never bothered salvaging; it is only now being noticed as a younger generation, led by Jory Brennick, takes up salvage.
 - **The Shelf:** a city lifted onto a plateau when the land split, far too high for lifts or cables. The only links to the world below, if any, are long, winding cliff paths. Some farmland rose with it, but not enough. At first they farmed fields at the foot of the cliffs, but hauling food up the winding paths proved too hard. Out of necessity, the city became a container garden: pots, planters, terraces and rooftop beds on every spare surface. The old lower fields are now largely abandoned. Water comes from rain catchment, cisterns and a spring on the plateau. It is held in common and strictly rationed, and that shared discipline helps make the community tight-knit and wary of outsiders. It is deeply isolated, proud and inward-looking.
-- **The Glasswood:** once a major lumber region. The Cataclysm mutated the forest: its leaves now chime in the wind, and locals read the sounds as warnings. The changed wood is useless as timber, so the old lumber towns lost their trade. A new one is emerging: the leaves seem to react to the latent magic, and harvested leaves are being tried as detectors, including by documenters.
+- **The Glasswood:** once a major lumber region. The Cataclysm mutated the forest: its leaves now chime in the wind, and locals read the sounds as warnings. The changed glass trees are useless as timber. The ordinary trees that survived kept the lumber towns going for a while, but as they were cut down the sawmills closed one by one. A new one is emerging: the leaves seem to react to the latent magic, and harvested leaves are being tried as detectors, including by documenters.
 - **The Ashfall Marches:** a frontier of cooled lava and steam vents, rich in strange minerals tied to the latent magic, making it a mining region of prospectors, miners and rough camps. Some old towns were buried by lava, and miners sometimes break into their ruins. Others on the edges survived and now serve as supply towns for the camps.
 - **The Riven Plains:** once the breadbasket that fed the other regions, now split by deep chasms into a maze of broken fields and makeshift bridges. It is still farmed: when the big fields split, farmers simply worked whatever land was left on their side of the chasm. Several villages survived intact; others were split by chasms, leaving remnant halves on either side. There are usually a couple of makeshift bridges near each surviving village, since villages have the people to build them; out among the farms there may be one or two, built where good farmland lies on both sides and a group of farmers is willing to cross to work it, or simply so a farmer can cross to help a neighbour on the other side. The Plains are also the gateway to the Stillwinter: travellers heading north pass through them, which is the main reason outsiders cross the region. Weird things happen down in the chasms between the fields. A fog pools at the bottom that does not behave like normal fog: it never burns off, drifts against the wind, and on some nights creeps over the edges onto the fields, so farmers keep their animals in. It may be the Stillwinter's slowed time seeping south. That influence also reaches the northern fields and affects the crops there (possibly slow to grow, slow to rot).
 - **The Hollowmere:** a marsh whose water glows faintly at night. Before the Cataclysm it was patches of grazing land beside ordinary wetlands; the land sank, and runoff from the Glasswood and Ashfall Marches turned it all into deep marsh, drowning old farmsteads. The half-sunk farmhouses are points of interest for future stories. Their upper floors, above the water, may be nests for marsh creatures, changed or new, or camps used by alchemists gathering reagents. Documenters and mappers may find remnants of people who stayed there before. The former herders moved to the edges; on the strip of land between the Glasswood and the marsh, a few still graze cattle, including in the open woodland at the Glasswood's thinner edge. The cattle drink marsh water and are slowly changing because of it. Alchemists come for its reagents; locals are wary of anything that grows there.
@@ -99,31 +103,78 @@ Structure: a rotating cast. Each region has its own local mappers, matching the 
 
 ### Garret Marsh (Glasswood mapper)
 
-A middle-aged man, formerly a lumberjack, now mapping for the Glasswood group. He remembers the forest before the Cataclysm. He is driven by genuine curiosity about the changes as well as a need to prove the leaves are valuable and save his town.
+A middle-aged man, formerly a lumberjack, now mapping for the Glasswood group. He remembers the forest before the Cataclysm. He is driven by genuine curiosity about the changes as well as a need to prove the leaves are valuable and save his town. With ordinary timber running out, he's pushing to understand what the glass leaves and trunks can be used for, beyond the few experiments tried so far.
+
+- Gender: male
+- Age: 45
+- Station: Glasswood lumberjack and mapper
+- Appearance: broad lumberjack's build, greying beard
+- Dress: layered leather scuffed silver by the glass, cut-proof gauntlets, an eye guard, and a long saw across his back
 
 ### Wren Calloway (Shelf archivist)
 
 A young woman, born just after the Cataclysm, who keeps the Shelf's archive. She has never known the old world except through the records she guards. Sharp and proud like her city, but quietly restless and curious about what lies down the cliff paths. Her restlessness pulls against her region's isolation.
 
+- Gender: female
+- Age: 20
+- Station: Shelf archivist
+- Appearance: petite, short hair
+- Dress: wide-brimmed hat, long layered clothing for warm days and cold nights
+
 ### Maud Brennick (Floatsome hazard-charter)
 
 An older woman in her forties from Floatsome, practical rather than sentimental. She grew up in one of the drowned towns and knows its old streets, which makes her the best at charting debris and flooded homes near the surface. A snagged hull can sink a family's living, so Floatsome pays her in fish and favours to keep the channels safe. She started out fishing, then began helping keep the hazard records. Later her son, Jory Brennick, caught the salvaging bug and drew her into it, so she now salvages too. Jory, young and eager to go deeper than Maud would like, is the one whose salvage first turns up magic-touched objects, leading to the fissure beneath the water.
+
+- Gender: female
+- Age: 42
+- Station: Floatsome hazard charter and salvager
+- Appearance: auburn hair just starting to grey
+- Dress: short trousers, long sleeves, wide-brimmed hat
 
 ### Jory Brennick (Sunken Reach salvager)
 
 Maud Brennick's son, young and eager to go deeper than Maud would like. He caught the salvaging bug and drew his mother into it. His salvage is the first to turn up magic-touched objects, leading to the fissure beneath the water. He leads the younger generation now taking up salvage in the Sunken Reach, where the generation that lived through the Cataclysm never bothered.
 
+- Gender: male
+- Age: 20
+- Station: Floatsome salvager
+- Appearance: wiry, tanned, close-cropped auburn hair
+- Dress: trousers
+
 ### Bram Tolliver (Ashfall miner-surveyor)
 
-A younger man in his late twenties, a miner with a gift for reading rock. He began noting which seams held the strange minerals, and the Ashfall Mineral Survey grew out of his notebooks. Following the seams, he also noticed oddities in the neighbouring Hollowmere. Rough around the edges, he is more at home underground than at a meeting in Tollgate.
+A younger man in his late twenties, a miner with a gift for reading rock. He began noting which seams held the strange minerals, and the Ashfall Mineral Survey grew out of his notebooks. Following the seams, he also noticed oddities in the neighbouring Hollowmere. Rough around the edges, he is more at home out in the open country than around people. The Ashfall mining is open-pit, not tunnelling.
+
+- Gender: male
+- Age: 28
+- Station: Ashfall miner-surveyor
+- Appearance: long beard
+- Dress: heavy boots, heavy trousers, long-sleeved shirt, neckerchief
 
 ### The collectors: Tobias Finch and Tess Ridley
 
-A pair who travel the regions gathering records, funded by a Tollgate patron. One is a meticulous record-keeper who wants everything catalogued properly; the other is a well-travelled former trader's hand who knows the routes and the people. Method and road-sense together. The record-keeper, Tobias Finch, a man in his mid-twenties, is the patron's own bookkeeper in Tollgate, who out of curiosity copied traders' stories and rough sketch maps into personal notebooks. The patron noticed the notebooks and saw someone already doing the job unpaid. His partner, Tess Ridley, is a woman around thirty, a seasoned trader. After a couple of bad runs or an accident (deliberately left open to explore in future stories), she wants to keep travelling but is tired of the hassle of trading, and of the criminals and dangers that come with it; collecting lets her stay on the road without the cargo. The patron has traded with her before. Patron and trader see the collecting venture as a source of more profit: better knowledge of routes and regions means better trade. It starts as a profit venture; the patron is not solely focused on profit, but when profit and honest record-keeping conflict, profit wins. This creates an occasional tension between the bookkeeper and the patron: not constant, but one that can surface in different stories.
+A pair who travel the regions gathering records, funded by a Tollgate patron. One is a meticulous record-keeper who wants everything catalogued properly; the other is a well-travelled former trader's hand who knows the routes and the people. Method and road-sense together. The record-keeper, Tobias Finch, a man in his mid-twenties, is the patron's own bookkeeper in Tollgate, who out of curiosity copied traders' stories and rough sketch maps into personal notebooks. The patron noticed the notebooks and saw someone already doing the job unpaid. His partner, Tess Ridley, is a woman in her mid-thirties, a seasoned trader. After a couple of bad runs or an accident (deliberately left open to explore in future stories), she wants to keep travelling but is tired of the hassle of trading, and of the criminals and dangers that come with it; collecting lets her stay on the road without the cargo. The patron has traded with her before. Patron and trader see the collecting venture as a source of more profit: better knowledge of routes and regions means better trade. It starts as a profit venture; the patron is not solely focused on profit, but when profit and honest record-keeping conflict, profit wins. This creates an occasional tension between the bookkeeper and the patron: not constant, but one that can surface in different stories.
+
+- Gender (Tobias Finch): male
+- Age (Tobias Finch): 25
+- Station (Tobias Finch): Tollgate record-keeper and collector
+- Appearance (Tobias Finch): average size and build, hair a little long, curling around his ears
+- Dress (Tobias Finch): long road jacket against dust and rain
+- Gender (Tess Ridley): female
+- Age (Tess Ridley): 36
+- Station (Tess Ridley): trader and collector
+- Appearance (Tess Ridley): blonde hair going slightly brown, worn in a ponytail
+- Dress (Tess Ridley): neckerchief and road jacket
 
 ### Matthias Kettering (Tollgate patron)
 
 A man in his fifties, a clockwork merchant who also makes the clockwork, selling instruments from Tollgate, including those the mappers rely on. A big reason for funding the collectors: stories from traders about the magic-touched leaves of the Glasswood and minerals of the Ashfall Marches, and what they might mean for clockwork. Employs Tobias Finch and has traded with Tess Ridley.
+
+- Gender: male
+- Age: 55
+- Station: Tollgate clockwork merchant and patron
+- Appearance: moustache, sideburns, combed-back hair
+- Dress: practical clothes a step above work wear, subtle clockwork spectacles
 
 ## Minor Names Register
 
@@ -134,3 +185,4 @@ Empty.
 - 2026-11-09: Bible created. Captured the premise, the disconnection hook, travellers, and the institution versus independent documenters.
 - 2026-11-10: Set the Cataclysm at about 20 years ago, cause kept ambiguous. Replaced the central institution with regional documenting groups. Defined technology tiers (no steam), magic as alchemy and artificing, travel and trade tension, eight regions plus the Southern Teeth, map layout, working title, and cast members Garret Marsh and Wren Calloway.
 - 2026-11-11: Brought premise, open questions, chroniclers and cast notes up to date; voice casting deferred to the review UI. Sketched all remaining regions (Riven Plains, Hollowmere, Tollgate, Stillwinter, Southern Teeth), named the Sunken Reach settlements and the documenting groups, added the first collectors, and added cast members Maud and Jory Brennick, Bram Tolliver, Tobias Finch, Tess Ridley and Matthias Kettering.
+- 2026-11-23: Added Genre and Series lines, a Canon fact on the thinning ordinary Glasswood timber, Garret's motive, and Gender, Age, Station, Appearance and Dress for all eight cast members. Bram's mining is open-pit; Tess is now 36.

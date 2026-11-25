@@ -1,11 +1,13 @@
 # Middle Watch Sci-Fi Series Bible (Working Draft)
 
+Genre: scifi
+
 Working title: North Star
 Status: Early worldbuilding. Structure mirrors the Amberlight and Broken Edges bibles.
 
 ## Premise
 
-Cozy, frontier-flavoured sci-fi. Juniper, a young independent courier, flies her late mother's delivery circuit between a home station, a farming planet, a research moon and an asteroid mining base, with her old beagle Captain aboard. Each delivery is a self-contained story.
+Cozy, frontier-flavoured sci-fi. Juniper, a young independent courier, flies her late mother's delivery circuit between a home station, a farming planet, a research moon and an asteroid mining base, with her old dog Captain aboard. Each delivery is a self-contained story.
 
 ## Canon
 
@@ -13,15 +15,34 @@ Cozy, frontier-flavoured sci-fi. Juniper, a young independent courier, flies her
 - Juniper is an independent courier in her mid-twenties.
 - She took over the family route from her mother, who has died.
 - Her father is a miner at Okafor. He still works, and she sees him occasionally when her route passes by.
-- Captain is an old beagle who flies with her.
+- Captain is an old beagle–basset hound mix who flies with her.
 - Her ship is the North Star. Her father named it after her mother.
 
 ## Cast
 
-- **Juniper**: independent courier, mid-twenties. Runs her mother's old route.
-- **Captain**: old beagle, ship's companion.
-- **Juniper's father**: miner at Okafor. Unnamed.
-- **Juniper's mother**: deceased; ran the route before Juniper. Unnamed.
+### Juniper
+
+Independent courier and captain of the North Star. Runs her mother's old route. In narration she's always "Juniper", never "the Captain", and only she talks to Captain the dog.
+
+- Gender: female
+- Age: 26
+- Station: independent courier, captain of the North Star
+- Dress: general flight suit
+
+### Captain
+
+Old dog, ship's companion. Recurring; no narration voice.
+
+- Gender: male
+- Appearance: beagle–basset hound mix with big floppy ears
+
+### Marcus
+
+Juniper's father. Miner at Okafor.
+
+### Nora
+
+Juniper's mother. Deceased; ran the route before Juniper.
 
 ## Setting
 
@@ -65,7 +86,9 @@ Blends sci-fi, western and dieselpunk: frontier homesteads, Dust Bowl grit and b
 - Dorsey's official name.
 - Is "Okies" kept as a nickname? It echoes the 1930s Dust Bowl slur, which could be a deliberate frontier echo or something to avoid. If the farming planet carries Dust Bowl echoes, the nickname ties the setting together.
 - Are there still Okafors running the base?
-- Names for Juniper's parents, the farming planet and the research moon.
+- Names for the farming planet and the research moon.
+- Juniper's appearance.
+- Gender, Age, Station, Appearance and Dress for Marcus and Nora.
 - Was Captain her mother's dog?
 - How and when did her mother die?
 - The North Star itself: age, quirks, layout.
@@ -77,3 +100,7 @@ Blends sci-fi, western and dieselpunk: frontier homesteads, Dust Bowl grit and b
 
 - [North Star — Genre Tropes & Farming Planet Ideas](https://claude.ai/artifact/KJZ3seuEvjxPfitMu94Vkw): sci-fi, western and dieselpunk tropes and where they overlap.
 - [North Star — Farming Planet Biodiesel Tech](https://claude.ai/artifact/397uYQiUps5LCecrWoGQiy): canola-to-biodiesel steps, methanol and lye sourcing, story hooks.
+
+## Changelog
+
+- 2026-11-23: Added Genre line. Named Juniper's parents Marcus and Nora. Captain is now a beagle–basset hound mix. Added Juniper's gender, age (26), station and dress.
