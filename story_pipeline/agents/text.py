@@ -8,6 +8,7 @@ from datetime import datetime
 from typing import Any
 
 from .. import bibles, genres, history, lint, llm
+from .. import spend
 from ..bundle import BREAK, HONORIFICS, Bundle, ear_key, slugify
 from ..config import prompt_text
 
@@ -326,7 +327,11 @@ def build_outline(
     previous: dict | None = None,
     seed: int | None = None,
     length_min: int | None = None,
+    usage_out: list | None = None,
 ) -> dict:
+    """`usage_out`, if given, receives one `(model, usage)` per paid call, so a
+    caller holding the bundle can record the spend (there is no bundle yet when
+    a new story is ideated)."""
     bible = bibles.load(bible_name, cfg["bibles_dir"]) if bible_name else None
     if bible:
         _check_bible(bible, cfg)
@@ -396,8 +401,10 @@ def build_outline(
     # full appearance and dress, and 7,000 was set when 15 minutes was the only
     # length. The ceiling is not a charge — only tokens actually produced are
     # billed — so it costs nothing to leave room the longer settings may need.
-    outline, _ = llm.complete_json(cfg["models"]["ideator"], system, ask,
-                                   max_tokens=_ceiling(cfg, "ideator"))
+    outline, usage = llm.complete_json(cfg["models"]["ideator"], system, ask,
+                                       max_tokens=_ceiling(cfg, "ideator"))
+    if usage_out is not None:
+        usage_out.append((cfg["models"]["ideator"], usage))
     outline["genre"] = genre_name
     outline["length_min"] = spec["minutes"]
     outline.setdefault("subgenre", subgenre)
@@ -464,8 +471,10 @@ def ideate(
     bible_name: str | None = None,
     length_min: int | None = None,
 ) -> Bundle:
+    paid: list = []
     outline = build_outline(
-        cfg, genre_name, subgenre, notes, bible_name, length_min=length_min
+        cfg, genre_name, subgenre, notes, bible_name, length_min=length_min,
+        usage_out=paid,
     )
     genre = genres.load(outline["genre"])
     bible = bibles.load(bible_name, cfg["bibles_dir"]) if bible_name else None
@@ -501,6 +510,9 @@ def ideate(
         b.pin("genre_voices", voices)
     if bible:
         b.pin("bible", bible.name)
+    # Recorded after the pins: the ledger row copies its labels from them.
+    for model, usage in paid:
+        spend.record_llm(b, "ideate", model, usage, notes="outline")
     b.set_stage("ideate", "awaiting_review")
     return b
 
@@ -519,7 +531,10 @@ def revise_outline(cfg: dict, b: Bundle, feedback: str) -> dict:
         # Held to the pinned length: a revision reshapes the story, it does not
         # resize it. Changing length is `new`, not `revise`.
         length_min=b.pinned("length_min", previous.get("length_min")),
+        usage_out=(paid := []),
     )
+    for model, usage in paid:
+        spend.record_llm(b, "ideate", model, usage, notes="revise outline")
     outline["slug"] = previous["slug"]
 
     history = previous.get("revisions", [])
@@ -639,6 +654,7 @@ def ask_ideator(cfg: dict, b: Bundle, question: str,
     # back as a truncated reply. Only tokens produced are billed.
     text, usage = llm.complete(cfg["models"]["ideator"], system, user,
                                max_tokens=_ceiling(cfg, "ideator"))
+    spend.record_llm(b, "ideate", cfg["models"]["ideator"], usage, notes="ask")
     answer = text.strip()
 
     stamp = datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -806,8 +822,9 @@ def write_chapter(cfg: dict, b: Bundle, n: int, fixes: list[str] | None = None,
             + "\n".join(f"- {f}" for f in fixes)
         )
 
-    chapter, _ = llm.complete_json(cfg["models"]["writer"], SYSTEM + "\n\n" + system, ask,
-                                   max_tokens=_ceiling(cfg, "writer"))
+    chapter, usage = llm.complete_json(cfg["models"]["writer"], SYSTEM + "\n\n" + system, ask,
+                                       max_tokens=_ceiling(cfg, "writer"))
+    spend.record_llm(b, "write", cfg["models"]["writer"], usage, notes=f"chapter {n}")
     chapter["n"] = n
 
     # Keep the draft before judging it. Validation raises on a speaker that
@@ -1175,8 +1192,9 @@ def review_chapter(cfg: dict, b: Bundle, n: int) -> dict:
     # tokens easily, and a truncated verdict fails the whole chapter rather than
     # merely being terse. The ceiling is not a charge, so it costs nothing to
     # leave room the editor may not use.
-    review, _ = llm.complete_json(cfg["models"]["editor"], SYSTEM + "\n\n" + system,
-                                  ask, max_tokens=_ceiling(cfg, "editor"))
+    review, usage = llm.complete_json(cfg["models"]["editor"], SYSTEM + "\n\n" + system,
+                                      ask, max_tokens=_ceiling(cfg, "editor"))
+    spend.record_llm(b, "edit", cfg["models"]["editor"], usage, notes=f"chapter {n}")
     review["n"] = n
 
     # The linter is authoritative on its own rules. An LLM editor asked to judge

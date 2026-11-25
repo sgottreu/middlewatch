@@ -860,7 +860,9 @@ def cmd_all(args, cfg):
     text.run_text_stages(cfg, b)
     est = actor.estimate(cfg, b)
     print(f"\n{est['words']} words, ~{est['runtime_min']} min, ${est['usd']:.2f} narration")
-    actor.record_all(cfg, b, force=args.force)
+    # `all` has no review gate by design, so narration must skip the chapter
+    # gate too. This read args.force, which the `all` parser never defined.
+    actor.record_all(cfg, b, force=True)
     summary.write(b)
     designer.design_all(cfg, b)
     director.direct(cfg, b)

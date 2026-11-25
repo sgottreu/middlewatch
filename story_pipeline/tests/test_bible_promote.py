@@ -2,9 +2,8 @@
 
     python3 -m story_pipeline.tests.test_bible_promote
 
-Run from the repo root. Synthetic drafts are built in a temporary directory; the
-real drafts (broken-edges, north-star) are only ever previewed, never written,
-and amberlight is only read. Deliberately not pytest, like the ambience tests:
+Run from the repo root. Synthetic drafts are built in a temporary directory; real
+in-progress drafts are not read at all, and amberlight is only read. Deliberately not pytest, like the ambience tests:
 the repo has no test dependency and this needs none.
 """
 
@@ -251,52 +250,65 @@ def test_story_ideas_reach_ideator_only():
     assert "SEED-IDEA" not in b.prompt_block()      # designer's view
 
 
-def test_real_drafts_preview():
-    for name in ("broken-edges", "north-star"):
-        draft = bp.draft_path(name, REPO_BIBLES)
-        if not draft.exists():
-            print(f"  (skipped {name}: no draft)")
-            continue
-        sha = _sha(draft)
-        pv = bp.preview(name, {}, REPO_BIBLES)
-        d = pv.to_dict()
-        assert d["cast"], name
-        assert all(not c.get("voice") for c in d["cast"]), name
-        for p in d["problems"]:
-            if p["fatal"]:
-                assert p["fields"], f"{name}: {p['where']} has no field to fix it"
-        assert _sha(draft) == sha
-        assert not (REPO_BIBLES / name / f"{name}.md").exists()
-        assert d["series"] == {"broken-edges": "Mapping the Broken Edges",
-                               "north-star": "North Star"}[name], d["series"]
-        if name == "broken-edges":
-            assert len(d["cast"]) == 8, [c["name"] for c in d["cast"]]
-        print(f"  {name}: {len(d['canon'])} canon, {len(d['cast'])} cast, "
-              f"{sum(p['fatal'] for p in d['problems'])} error(s)")
+BROKEN = """# Test Series Bible (Working Draft)
+
+Working title: Salt Roads Status: Early worldbuilding.
+
+## Premise
+
+A coast of salt towns linked by one road that floods at spring tide.
+
+## Canon
+
+- The road floods at every spring tide.
+
+## Recurring Cast
+
+### Ada Penrose (road warden)
+
+- Gender: female
+
+Keeps the tide tables.
+
+### Ada's father
+
+A man of sixty who drives carts.
+"""
 
 
-def test_fields_clear_real_draft_errors_on_a_copy():
-    """North Star's errors, fixed only through the fields the preview offers —
-    on a temp copy, never the real draft."""
-    src = bp.draft_path("north-star", REPO_BIBLES)
-    if not src.exists():
-        print("  (skipped: no north-star draft)")
-        return
-    root = _tmp_bibles(src.read_text(), "north-star")
-    d = bp.preview("north-star", {}, root).to_dict()
+def test_synthetic_draft_preview():
+    """A promotable synthetic draft previews cleanly and writes nothing."""
+    root = _tmp_bibles(DRAFT.replace("# Test Series Bible", "# Salt Roads")
+                       .replace("## Premise", "Genre: fantasy\n\n## Premise", 1))
+    draft = bp.draft_path("salt", root)
+    sha = _sha(draft)
+    d = bp.preview("salt", {}, root).to_dict()
+    assert d["cast"] and all(not c.get("voice") for c in d["cast"])
+    for p in d["problems"]:
+        if p["fatal"]:
+            assert p["fields"], f"{p['where']} has no field to fix it"
+    assert _sha(draft) == sha
+    assert not (root / "salt" / "salt.md").exists()
+    assert d["genre"] == "fantasy" and len(d["cast"]) == 3, d["cast"]
+    print(f"  salt: {len(d['canon'])} canon, {len(d['cast'])} cast, "
+          f"{sum(p['fatal'] for p in d['problems'])} error(s)")
+
+
+def test_fields_clear_synthetic_draft_errors():
+    """A broken draft's errors, fixed only through the fields the preview offers."""
+    root = _tmp_bibles(BROKEN, "salt")
+    d = bp.preview("salt", {}, root).to_dict()
     ids = [f["id"] for p in d["problems"] if p["fatal"] for f in p["fields"]]
-    assert "genre" in ids and "cast:Juniper's father:name" in ids, ids
-    bp.fill("north-star", "genre", "scifi", root)
-    bp.fill("north-star", "cast:Juniper's father:name", "Abe Ward", root)
-    bp.fill("north-star", "cast:Juniper's mother:name", "Rosa Ward", root)
-    bp.fill("north-star", "cast:Captain:gender", "male", root)
-    d = bp.preview("north-star", {}, root).to_dict()
+    assert "genre" in ids and "cast:Ada's father:name" in ids, ids
+    bp.fill("salt", "genre", "scifi", root)
+    bp.fill("salt", "cast:Ada's father:name", "Abe Penrose", root)
+    d = bp.preview("salt", {}, root).to_dict()
     assert not d["blocked"], [p for p in d["problems"] if p["fatal"]]
-    assert d["series"] == "North Star" and d["genre"] == "scifi"
-    cap = next(c for c in d["cast"] if c["name"] == "Captain")
-    assert cap["gender"] == "male" and not cap["inferred"]
-    text = (root / "north-star" / "north-star.draft.md").read_text()
-    assert "- **Abe Ward**:" in text and "  - Gender: male" in text
+    assert d["genre"] == "scifi"
+    father = next(c for c in d["cast"] if c["name"] == "Abe Penrose")
+    assert father["gender"] == "male" and father["inferred"]
+    text = (root / "salt" / "salt.draft.md").read_text()
+    assert "Abe Penrose" in text
 
 
 def _git_sandbox(text: str) -> tuple[Path, Path]:

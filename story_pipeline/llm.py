@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 import re
-from typing import Any
+from typing import Any, Callable
 
 import anthropic
 
@@ -88,8 +88,14 @@ def complete(
     user: str,
     max_tokens: int = 8000,
     prefill: str | None = None,
+    on_text: Callable[[str], None] | None = None,
 ) -> tuple[str, dict[str, int]]:
     """Return (text, usage).
+
+    `on_text`, if given, is called with each piece of reply text as it arrives,
+    so a caller that writes to a job log (the review UI polls it) can show the
+    reply forming. The return value is the same either way: the whole text,
+    collected from the final message, not reassembled from the pieces.
 
     `prefill` puts words in the assistant's mouth so its reply continues them,
     which used to be how a bare JSON object with no preamble was guaranteed. The
@@ -110,6 +116,9 @@ def complete(
         with client().messages.stream(
             model=model, max_tokens=max_tokens, system=system, messages=messages,
         ) as stream:
+            if on_text is not None:
+                for piece in stream.text_stream:
+                    on_text(piece)
             return stream.get_final_message()
 
     try:
@@ -181,6 +190,7 @@ def complete_json(
     system: str,
     user: str,
     max_tokens: int = 8000,
+    on_text: Callable[[str], None] | None = None,
 ) -> tuple[Any, dict[str, int]]:
     """Same, but parses a JSON object out of the reply.
 
@@ -193,7 +203,8 @@ def complete_json(
     refuse and drops it automatically for any other model that does, so this
     keeps working if an older model is ever pinned in config.yaml.
     """
-    text, usage = complete(model, system, user, max_tokens, prefill="{")
+    text, usage = complete(model, system, user, max_tokens, prefill="{",
+                           on_text=on_text)
     try:
         return _parse_json(text), usage
     except ValueError as e:

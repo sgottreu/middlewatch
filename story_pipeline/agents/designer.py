@@ -22,6 +22,7 @@ from google import genai
 
 from . import text as textagent
 from .. import bibles, changelog, genres, llm
+from .. import spend
 from ..bundle import Bundle
 from ..config import prompt_text
 
@@ -270,8 +271,9 @@ def plan_shots(cfg: dict, b: Bundle, n: int) -> dict:
         f"Choose {k} shots."
     )
 
-    plan, _ = llm.complete_json(cfg["models"]["designer"], system, ask,
-                                max_tokens=textagent._ceiling(cfg, "designer"))
+    plan, usage = llm.complete_json(cfg["models"]["designer"], system, ask,
+                                    max_tokens=textagent._ceiling(cfg, "designer"))
+    spend.record_llm(b, "design", cfg["models"]["designer"], usage, notes=f"chapter {n} shots")
     plan["n"] = n
 
     # Anchor each shot to a real timestamp and clamp bad indices.

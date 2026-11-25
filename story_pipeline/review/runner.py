@@ -176,6 +176,7 @@ def start(cfg: dict, slug: str, stage: str, *, force: bool = False,
 
     meta = {
         "job_id": job_id, "slug": slug, "stage": stage, "kind": stage,
+        "pipeline": "story",
         "argv": argv, "status": "running", "started": time.time(),
         "finished": None, "exit_code": None, "pid": None, "chapter": chapter,
         "force": force, "restart": restart, "replan": replan,
@@ -184,12 +185,17 @@ def start(cfg: dict, slug: str, stage: str, *, force: bool = False,
 
 
 def start_command(key: str, stage: str, argv: list[str], busy: str | None = None,
-                  **extra) -> dict:
+                  pipeline: str | None = None, **extra) -> dict:
     """Launch an arbitrary command as a job under runs/<key>/.
 
     For work that is not a story stage — voice auditions, keyed by arc — but
     wants the same guarantees: detached, cancellable, its log and state on disk.
     One job per key at a time, as for stories.
+
+    `pipeline` ("ambience", "novella") is recorded in meta.json so the server's
+    startup recovery hands a dead job to that pipeline's releaser rather than
+    treating its stage name as a story stage. Left out, meta carries no
+    `pipeline`, which recovery reads as "story" (how jobs were before the field).
     """
     current = latest(key)
     if current and current.get("status") == "running":
@@ -207,6 +213,8 @@ def start_command(key: str, stage: str, argv: list[str], busy: str | None = None
     meta = {"job_id": job_id, "slug": key, "stage": stage, "kind": stage,
             "argv": argv, "status": "running", "started": time.time(),
             "finished": None, "exit_code": None, "pid": None, **extra}
+    if pipeline:
+        meta["pipeline"] = pipeline
     return _launch(d, argv, meta)
 
 

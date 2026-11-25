@@ -118,6 +118,13 @@ ICONS = {
     "icon-maskable-512.png": "image/png",
 }
 
+# Shared CSS and JS for the newer pages (ambience, novellas). Same rule as the
+# icons: named here, never a directory listing.
+ASSETS = {
+    "common.css": "text/css; charset=utf-8",
+    "common.js": "text/javascript; charset=utf-8",
+}
+
 # Enough for a browser to offer "install" and give the window its own icon in
 # the dock or taskbar, rather than a generic browser tile.
 MANIFEST = {
@@ -714,17 +721,34 @@ def _release_stage(cfg: dict, slug: str, stage: str) -> None:
         pass
 
 
+# How a dead job's stage is released, per pipeline. Each pipeline's API module
+# registers its own (ambience_api, novella_api); a job whose meta names a
+# pipeline with no releaser is settled in runs/ and nothing else is touched.
+# Meta written before the `pipeline` field existed is a story job.
+RELEASERS: dict = {
+    "story": lambda cfg, meta: _release_stage(cfg, meta.get("slug", ""),
+                                              meta.get("stage", "")),
+}
+
+
 def recover(cfg: dict) -> list[dict]:
     """Settle jobs that outlived the server that started them.
 
     A deploy restarts this process while the children keep running; those are
     found again by pid and left alone. The ones that are genuinely gone are
     marked failed here and their stages released, so the queue never shows work
-    that stopped hours ago.
+    that stopped hours ago. Only a story job is looked up in stories/: an
+    ambience or novella stage named `design` must not reset a story's.
     """
     settled = runner.reap_dead()
     for meta in settled:
-        _release_stage(cfg, meta.get("slug", ""), meta.get("stage", ""))
+        release = RELEASERS.get(meta.get("pipeline") or "story")
+        if release is None:
+            continue
+        try:
+            release(cfg, meta)
+        except Exception:
+            pass
     return settled
 
 
@@ -1225,6 +1249,10 @@ def _handler(cfg: dict):
                     name = path.lstrip("/")
                     self._send(200, (APP_HTML.parent / name).read_bytes(),
                                ICONS[name])
+                elif path.lstrip("/") in ASSETS:
+                    name = path.lstrip("/")
+                    self._send(200, (APP_HTML.parent / name).read_bytes(),
+                               ASSETS[name])
                 else:
                     self._json({"error": "not found"}, 404)
             except (BrokenPipeError, ConnectionResetError):

@@ -7,6 +7,7 @@ first use, so re-running months later produces the same thing.
 
 from __future__ import annotations
 
+import copy
 import os
 from pathlib import Path
 from typing import Any
@@ -165,7 +166,10 @@ def voices_path(cfg: dict | None = None) -> Path:
 
 
 def load(path: str | Path | None = None) -> dict[str, Any]:
-    cfg = dict(DEFAULTS)
+    # Deep copy: a shallow one shares the nested dicts (models, max_tokens,
+    # casting, ...) with DEFAULTS, so mutating one loaded cfg changed every
+    # later load() in the same process.
+    cfg = copy.deepcopy(DEFAULTS)
     p = Path(path) if path else Path("config.yaml")
     if p.exists():
         cfg = _deep_merge(cfg, yaml.safe_load(p.read_text()) or {})

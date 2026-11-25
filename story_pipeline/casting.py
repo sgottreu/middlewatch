@@ -211,7 +211,9 @@ def find(record: dict, voice: str) -> tuple[str, dict]:
     hits = hits or [(k, v) for k, v in record["voices"].items() if v["name"].lower().startswith(q)]
     if len(hits) != 1:
         names = ", ".join(f"{v['name']} ({k})" for k, v in hits) or "none"
-        sys.exit(f"'{voice}' matches {len(hits)} auditioned voices: {names}. Use the id.")
+        # ValueError, not sys.exit: this is also called inside the review
+        # server, where SystemExit escaped the handler and dropped the request.
+        raise ValueError(f"'{voice}' matches {len(hits)} auditioned voices: {names}. Use the id.")
     return hits[0]
 
 
@@ -435,6 +437,13 @@ def main(argv=None) -> None:
     p.add_argument("--accent")
 
     args = ap.parse_args(argv)
+    try:
+        _run(args)
+    except ValueError as e:
+        sys.exit(str(e))
+
+
+def _run(args) -> None:
     stories = Path(args.stories)
     record = load(args.arc, stories)
     if not record["voices"] and args.cmd != "show":

@@ -1,0 +1,90 @@
+/* Shared look for the review UI's newer pages (ambience, novellas).
+   The palette, buttons, header, job panel and toast are lifted from casting.html
+   so every page reads as one tool. app.html and casting.html still carry their
+   own copies; move them onto this file when they are next reworked.
+   Served at /common.css. */
+:root {
+  --bg: #14140f; --panel: #1c1c16; --line: #2e2e24; --ink: #e8e4d8;
+  --dim: #97917f; --accent: #c9a227; --danger: #d4674a; --ok: #7ea05a;
+  --btn: #25405f; --btn-hi: #2f5078; --btn-line: #5a8bc4; --btn-ink: #e6eef8;
+  --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--ink);
+       font: 15px/1.55 Charter, Georgia, serif; }
+a { color:var(--accent); }
+h1,h2,h3 { font-weight:600; line-height:1.25; margin:0; }
+
+/* Sticky page header: title, page tabs, controls. */
+header.top { position:sticky; top:0; z-index:5; background:var(--panel);
+             border-bottom:1px solid var(--line); padding:10px 24px;
+             display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; }
+header.top h1 { font-size:18px; }
+header.top label { font-family:var(--mono); font-size:11px; color:var(--dim);
+                   display:flex; align-items:center; gap:6px; text-transform:uppercase;
+                   letter-spacing:.06em; }
+.spacer { flex:1; }
+
+/* Page tabs, filled in by MW.nav(). */
+nav.pages { display:flex; gap:4px; }
+nav.pages a { font-family:var(--mono); font-size:12px; text-decoration:none;
+              color:var(--dim); border:1px solid var(--line); border-radius:5px;
+              padding:3px 10px; }
+nav.pages a:hover { color:var(--accent); }
+nav.pages a.on { color:var(--accent); border-color:var(--accent); }
+
+select, input[type=text], input[type=number], textarea {
+  font:inherit; font-size:14px; background:var(--bg); color:var(--ink);
+  border:1px solid var(--line); border-radius:5px; padding:5px 7px; }
+textarea { width:100%; line-height:1.55; }
+
+button { font:inherit; font-size:13px; padding:6px 13px; border-radius:5px; cursor:pointer;
+         border:1px solid var(--btn-line); background:var(--btn); color:var(--btn-ink);
+         box-shadow:inset 0 1px 0 rgba(255,255,255,.08), 0 1px 2px rgba(0,0,0,.45); }
+button:hover:not(:disabled) { background:var(--btn-hi); border-color:var(--accent); }
+button:disabled { box-shadow:none; background:#4a4943; border:1px dashed #8d8a7c;
+                  color:#cdc9bc; cursor:not-allowed; }
+button.primary { background:var(--ok); border-color:var(--ok); color:#0f120b; }
+button.primary:hover:not(:disabled) { background:#8db466; border-color:#8db466; }
+button.primary:disabled { background:#4d5b40; border:1px dashed #8a9c74; color:#dbe4cc; }
+/* Armed = one more click spends money. */
+button.armed, button.armed:hover:not(:disabled) { background:var(--accent); border-color:var(--accent);
+         color:#14140f; font-weight:600; box-shadow:0 0 0 2px rgba(201,162,39,.35); }
+button.sel { background:rgba(201,162,39,.15); border-color:var(--accent); color:var(--ink); }
+button.quiet { background:transparent; border-color:var(--line); color:var(--dim); box-shadow:none; }
+button.quiet:hover:not(:disabled) { color:var(--ink); background:transparent; }
+button.stop { background:rgba(212,103,74,.12); border-color:var(--danger); color:var(--danger); }
+
+main { max-width:1100px; margin:0 auto; padding:18px 24px 80px; }
+.lede { color:var(--dim); font-size:14px; margin:0 0 16px; max-width:80ch; }
+.panel { border:1px solid var(--line); border-radius:8px; background:var(--panel);
+         padding:12px 16px; margin:0 0 18px; }
+
+/* Job panel, built by MW.jobPanel(). */
+.job { display:none; border:1px solid var(--accent); background:rgba(201,162,39,.07);
+       border-radius:8px; padding:12px 14px; margin:0 0 18px; scroll-margin-top:72px; }
+.job.show { display:block; }
+.job.bad { border-color:var(--danger); background:rgba(212,103,74,.08); }
+.job.done { border-color:var(--ok); background:rgba(126,160,90,.08); }
+.job .row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+.job .what { flex:1; font-size:14px; }
+.bar { height:6px; border-radius:3px; background:var(--line); overflow:hidden; margin:9px 0 0; }
+.bar i { display:block; height:100%; width:0; background:var(--ok); transition:width .3s; }
+.job .log { font-family:var(--mono); font-size:11px; color:var(--dim); background:var(--bg);
+            border:1px solid var(--line); border-radius:6px; margin:10px 0 0; padding:8px 10px;
+            max-height:260px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+
+#toast { position:fixed; bottom:24px; right:24px; background:var(--panel);
+         border:1px solid var(--line); border-left:3px solid var(--accent);
+         padding:10px 15px; border-radius:5px; font-size:14px; opacity:0;
+         transition:opacity .18s; pointer-events:none; max-width:46ch; z-index:20; }
+#toast.show { opacity:1; }
+#toast.bad { border-left-color:var(--danger); }
+
+@media (max-width: 760px) {
+  header.top { padding:10px 14px; }
+  main { padding:14px 12px 60px; }
+  button { min-height:38px; }
+  select, input[type=text], input[type=number], textarea { font-size:16px; } /* no iOS zoom */
+  #toast { left:12px; right:12px; bottom:16px; max-width:none; }
+}

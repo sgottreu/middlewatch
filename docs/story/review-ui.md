@@ -658,6 +658,39 @@ What follows from it:
 Redraft became `cli redraft` in the process — the page needed a command to run,
 and a note worth sending is worth being able to send from a terminal.
 
+### Shared assets, and jobs from other pipelines
+
+The ambience and novella pages (planned in
+[docs/novella/plan-2026-11-24.md](../novella/plan-2026-11-24.md)) do not copy
+`app.html`. They load two shared files, served from `server.ASSETS` the same way
+the icons are served from `ICONS`: a fixed list, never a directory.
+
+- **`/common.css`**: the palette, buttons (including `armed`), the sticky
+  header, `nav.pages` tabs, the `.job` panel and `#toast`. Its colours match
+  `casting.html`, and a test fails if they drift apart.
+- **`/common.js`**: one global, `MW`:
+  - `MW.api(path, body?)`: GET, or POST when given a body. Throws an `Error`
+    whose message has had `ValueError:` stripped, and explains a bare
+    "not found" as a stale server.
+  - `MW.toast(msg, bad?)` and `MW.armed(btn, label, fn)`: the two-press
+    confirm for anything that spends money.
+  - `MW.nav(el, current)`: page tabs from `MW.PAGES`. Add a page there only
+    once its route exists; a test requests every tab.
+  - `MW.jobPanel(el, {urls, describe, onDone})`: polls `urls().job`, tails
+    `urls().log`, and has a Stop button that posts to `urls().cancel`. Returns
+    `{show, refresh, started}`.
+
+`app.html` and `casting.html` still carry their own copies. Move them onto the
+shared files when they are next reworked, not as a separate job.
+
+A job started for another pipeline passes `pipeline=` to
+`runner.start_command()`, which records it in `meta.json`. When the server
+restarts, `recover()` hands each dead job to `server.RELEASERS[pipeline]`. A
+new pipeline's API module registers its own releaser there. A job with no
+`pipeline` in its meta is a story job, which covers every job written before
+the field existed. Without the field, an ambience stage called `design` could
+reset a story's design stage.
+
 ### What revise does to the bundle
 
 **No new bundle, and no new slug.** It is the same directory throughout:

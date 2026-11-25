@@ -57,3 +57,6 @@ working/
 
 # check_voices.py --sample scratch audio
 voice-samples/
+
+# pytest
+.pytest_cache/

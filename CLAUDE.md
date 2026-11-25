@@ -73,7 +73,39 @@ Invocation is `python3 -m story_pipeline.cli <command>`.
   `series` are pinned at ideate. Build the `story` dict with
   `Bundle.ledger_story()`, never by hand. Schema changes from here go through
   `python3 -m ledger.migrate`, which reconciles the CSV to `COST_FIELDS`.
-- **Nothing calls the ledger yet.** `add_spend` writes unit counts into
-  `manifest.json`; no stage writes a costed row. `costs.csv` does not exist and
-  `report` has nothing to read. This is the largest gap in the repo.
-- No stories have been generated yet.
+- **The ledger is called for LLM spend only.** `story_pipeline/spend.py`
+  `record_llm()` runs after every Anthropic call (ideate, revise, ask, write,
+  edit, design shot planning): token counts go into `manifest.spend`, costed rows
+  into `ledger/costs.csv` via `Bundle.ledger_story()`. It never raises — a ledger
+  failure (unpriced model, manifest without `pipeline`) is a stderr warning, so a
+  paid reply is never lost. Gemini images and TTS still only write unit counts
+  to `manifest.spend`; no costed rows yet.
+- `llm.complete` / `complete_json` take an optional `on_text` callback that
+  receives the reply as it streams. Return value is unchanged.
+- Stories exist under `stories/amberlight/`; `stories/amberlight/the-cracked-beam`
+  is the reference bundle the tests copy.
+
+### Tests
+
+`python3 -m pytest` from the repo root (dev deps: `requirements-dev.txt`;
+`-m "not slow"` skips renders). Every test runs in a temp copy of the repo root
+with network blocked and fake API keys. Tests use **fake bibles** (`sample_draft`,
+`broken_draft` fixtures in `tests/conftest.py`); the only real bible they read is
+amberlight. Never point a test at the in-progress drafts in `bibles/`. Known bugs
+are strict `xfail`s with a `BUG:` reason — fixing one makes its test XPASS and
+fail, so remove the marker with the fix. Scott's `.venv` is a macOS one. A session
+working through the Linux device shell can't run it, so it uses a separate venv
+outside the repo (`python3 -m venv ~/.mwvenv`, then install `requirements.txt`
+and `requirements-dev.txt` into it). Never install into the repo or into system
+Python. The sibling `kindle-novellas` repo needs Python 3.12 or later: an
+f-string in `storyflow/store.py` won't parse on 3.10.
+
+The older script checks still run on their own:
+`python3 -m story_pipeline.tests.test_bible_promote`,
+`python3 -m ambience_pipeline.tests.test_synth`.
+
+### Plan in progress
+
+Ambience page and novellas-in-middlewatch:
+`docs/novella/plan-2026-11-24.md` and `docs/ambience/review-ui-plan-2026-11-24.md`.
+Do not promote any draft bible until Scott says so.

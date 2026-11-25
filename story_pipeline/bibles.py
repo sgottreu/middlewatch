@@ -260,7 +260,12 @@ def _parse(path: Path) -> Bible:
     raw = path.read_text()
     if not raw.startswith("---"):
         raise ValueError(f"{path} has no frontmatter block")
-    _, front, body = raw.split("---", 2)
+    # The closing fence is a line that is exactly "---". Splitting on the first
+    # "---" anywhere cut the YAML short when a value contained one.
+    m = re.match(r"---[ \t]*\r?\n(.*?)^---[ \t]*$\r?\n?(.*)\Z", raw, re.S | re.M)
+    if not m:
+        raise ValueError(f"{path} has an unterminated frontmatter block")
+    front, body = m.group(1), m.group(2)
     return Bible(name=path.stem, meta=yaml.safe_load(front) or {},
                  guide=body.strip(), path=path)
 
