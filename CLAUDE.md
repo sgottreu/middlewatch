@@ -74,13 +74,16 @@ Invocation is `python3 -m story_pipeline.cli <command>`.
   `series` are pinned at ideate. Build the `story` dict with
   `Bundle.ledger_story()`, never by hand. Schema changes from here go through
   `python3 -m ledger.migrate`, which reconciles the CSV to `COST_FIELDS`.
-- **The ledger is called for LLM spend only.** `story_pipeline/spend.py`
+- **The ledger records LLM, image and narration spend.** `story_pipeline/spend.py`
   `record_llm()` runs after every Anthropic call (ideate, revise, ask, write,
   edit, design shot planning): token counts go into `manifest.spend`, costed rows
   into `ledger/costs.csv` via `Bundle.ledger_story()`. It never raises — a ledger
   failure (unpriced model, manifest without `pipeline`) is a stderr warning, so a
-  paid reply is never lost. Gemini images and TTS still only write unit counts
-  to `manifest.spend`; no costed rows yet.
+  paid reply is never lost. Gemini images (`spend.record_images`, stage
+  `design`) and narration (`spend.record_tts`, stage `record`: ElevenLabs
+  credits, Polly characters) write ledger rows the same way. Not yet costed:
+  casting auditions and ambience SFX. A model missing from `rates.json` (e.g.
+  `eleven_v4`) gives a warning and no row, so price it before relying on reports.
 - `llm.complete` / `complete_json` take an optional `on_text` callback that
   receives the reply as it streams. Return value is unchanged.
 - Stories exist under `stories/amberlight/`; `stories/amberlight/the-cracked-beam`

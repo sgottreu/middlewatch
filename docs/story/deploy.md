@@ -237,8 +237,11 @@ sudo systemctl start mw-stories        # one pass now, to prove the key can push
 journalctl -u mw-stories -n 20 --no-pager
 ```
 
-`mw-commit-stories` commits nothing when nothing changed, and skips entirely
-while a job is in flight — the writer lands chapters one at a time over several
+`mw-commit-stories` commits `stories/` and, once it exists, `novellas/`
+(2026-11-25), and only those paths: anything else staged in the checkout is
+left alone. It commits nothing when nothing changed, and skips entirely
+while a job is in flight (`mw-write-running` reports novella outline, draft and
+review jobs too) — the writer lands chapters one at a time over several
 minutes, and a commit taken mid-run captures a bundle in a state no stage meant
 anyone to see.
 

@@ -660,14 +660,20 @@ and a note worth sending is worth being able to send from a terminal.
 
 ### Shared assets, and jobs from other pipelines
 
-The ambience and novella pages (planned in
-[docs/novella/plan-2026-11-24.md](../novella/plan-2026-11-24.md)) do not copy
-`app.html`. They load two shared files, served from `server.ASSETS` the same way
-the icons are served from `ICONS`: a fixed list, never a directory.
+Every page (stories, casting, ambience, novellas) loads two shared files,
+served from `server.ASSETS` the same way the icons are served from `ICONS`: a
+fixed list, never a directory. `watch.html` is the exception: a standalone
+player with no tabs.
 
-- **`/common.css`**: the palette, buttons (including `armed`), the sticky
-  header, `nav.pages` tabs, the `.job` panel and `#toast`. Its colours match
-  `casting.html`, and a test fails if they drift apart.
+- **`/common.css`**: the palette, base type, form fields, buttons (including
+  `armed`, `primary`, `quiet`, `stop`, `sel` and disabled), the sticky header,
+  `nav.pages` tabs, the `.job` panel with its artifact list, and `#toast`. It is
+  the only copy of the palette: a test fails if a page defines its own `:root`.
+  `casting.html` uses it as is. `app.html` is a two-pane layout with ghost
+  buttons and a raised action bar, so its `<style>` restates some common.css
+  selectors on purpose (base button, field, heading, link, `main`, `#toast`)
+  to keep its look. Those are commented as overrides; they are not duplicates
+  to delete.
 - **`/common.js`**: one global, `MW`:
   - `MW.api(path, body?)`: GET, or POST when given a body. Throws an `Error`
     whose message has had `ValueError:` stripped, and explains a bare
@@ -678,10 +684,45 @@ the icons are served from `ICONS`: a fixed list, never a directory.
     once its route exists; a test requests every tab.
   - `MW.jobPanel(el, {urls, describe, onDone})`: polls `urls().job`, tails
     `urls().log`, and has a Stop button that posts to `urls().cancel`. Returns
-    `{show, refresh, started}`.
+    `{show, refresh, started}`. When the job view carries `artifacts` it lists
+    them under the log, shown and hidden with it.
+  - `MW.artifacts(src)` and `MW.renderArtifacts(list)`: see below.
 
-`app.html` and `casting.html` still carry their own copies. Move them onto the
-shared files when they are next reworked, not as a separate job.
+`app.html` and `casting.html` take `esc`, `toast` and the rest from `MW`
+(`const { … } = MW;` at the top of each script), and show the tabs with
+`MW.nav`. Two things stay on the pages: `app.html`'s `explain()`, which is worded
+for its POST actions, and each page's own job polling, which predates
+`MW.jobPanel` and was not swapped. The tabs keep the series: `casting.html`
+points its Stories tab at `/?series=…`, and `app.html` points its Casting tab
+(id `castingTab`) at `/casting?series=…`.
+
+#### Artifacts
+
+A stage announces a file it has written with one marker line, under
+`MW_PROGRESS` like every other marker:
+
+```
+::progress {"event": "artifact", "kind": "audio", "path": "ambience/rain/audio/mix.wav"}
+```
+
+`kind` is `audio`, `image` or `file`, and `label` is optional. The ambience CLI
+emits it after a render or an audition. On the story side,
+`story_pipeline.cli.emit_artifact(path, kind=None, label=None)` writes the same
+line, guessing `kind` from the suffix, but no story stage calls it yet.
+
+The log endpoint strips marker lines, so the page cannot read them from the log.
+Instead the job view resolves them: `ambience_api.job()` adds `artifacts`, newest
+first, one entry per path, each `{kind, path, label, url}`. The `url` comes from
+`ambience_api.artifact_url()`, which returns the `/ambience-audio/` URL only if
+that route would serve the file (a finished wav under `ambience/`). Otherwise
+`url` is null. `MW.artifacts()` takes that list, a raw marker list, or raw log
+text, and returns the same shape with duplicates dropped. It only keeps a URL
+that is same-origin (`/…`) or `http(s)://`. `MW.renderArtifacts()` turns
+audio into an `<audio controls preload="none">` player, an image into a
+thumbnail that links to the full image, anything else into a link, and an
+entry with no URL into its name followed by "not served". The panel rebuilds
+the list only when it changes, so polling never restarts a player that is
+playing.
 
 A job started for another pipeline passes `pipeline=` to
 `runner.start_command()`, which records it in `meta.json`. When the server

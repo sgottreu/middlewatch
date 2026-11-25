@@ -41,6 +41,29 @@ def _progress(**fields) -> None:
         print("::progress " + json.dumps(fields), flush=True)
 
 
+_AUDIO = {".wav", ".mp3", ".m4a", ".ogg", ".flac"}
+_IMAGE = {".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg"}
+
+
+def emit_artifact(path, kind: str | None = None, label: str | None = None) -> None:
+    """Announce a file a stage has just written, for the review UI's log pane.
+
+    The same marker the ambience CLI emits:
+        ::progress {"event": "artifact", "kind": "audio", "path": "..."}
+    with "label" added when given. `kind` is "audio", "image" or "file",
+    guessed from the suffix when not given. Off unless MW_PROGRESS is set, like
+    _progress(). Nothing calls this yet; the actor and designer will, as each
+    file lands (docs/story/review-ui-roadmap.md).
+    """
+    suffix = Path(path).suffix.lower()
+    if kind is None:
+        kind = "audio" if suffix in _AUDIO else "image" if suffix in _IMAGE else "file"
+    fields = {"event": "artifact", "kind": kind, "path": str(path)}
+    if label:
+        fields["label"] = label
+    _progress(**fields)
+
+
 def _show_outline(b, outline):
     print(f"\n{outline['title']}")
     if outline.get("series"):

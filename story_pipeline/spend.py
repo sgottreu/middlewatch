@@ -1,4 +1,4 @@
-"""Record what an LLM call cost: unit counts into the manifest, rows into the ledger.
+"""Record what a paid call cost: unit counts into the manifest, rows into the ledger.
 
 One place for it, so every agent records the same way and no call site
 hand-builds the ledger's story dict (`Bundle.ledger_story()` does that).
@@ -44,3 +44,44 @@ def record_llm(b, stage: str, model: str, usage: dict[str, Any] | None,
                                 usage=usage, notes=notes)
     except Exception as e:  # noqa: BLE001
         print(f"warning: {stage} cost not written to the ledger: {e}", file=sys.stderr)
+
+
+def _ledger(stage: str, fn, **kw) -> None:
+    try:
+        from ledger import ledger
+        getattr(ledger, fn)(stage=stage, **kw)
+    except Exception as e:  # noqa: BLE001 — the image or audio is already paid for
+        print(f"warning: {stage} cost not written to the ledger: {e}", file=sys.stderr)
+
+
+def record_images(b, stage: str, model: str, images: int = 1, notes: str = "") -> None:
+    """Ledger rows for generated images. The manifest's `gemini_images` count is
+    still kept by the caller, as before. Never raises."""
+    try:
+        story = b.ledger_story()
+    except Exception as e:  # noqa: BLE001
+        print(f"warning: {stage} cost not written to the ledger: {e}", file=sys.stderr)
+        return
+    _ledger(stage, "record_gemini", story=story, model=model, images=images, notes=notes)
+
+
+def record_tts(b, stage: str, provider: str, model: str, units: float,
+               notes: str = "") -> None:
+    """Ledger rows for narration, in the unit the provider bills: ElevenLabs
+    credits, Polly characters. The manifest count is still kept by the caller.
+    An unknown provider is skipped with a warning. Never raises."""
+    if not units:
+        return
+    try:
+        story = b.ledger_story()
+    except Exception as e:  # noqa: BLE001
+        print(f"warning: {stage} cost not written to the ledger: {e}", file=sys.stderr)
+        return
+    if provider == "elevenlabs":
+        _ledger(stage, "record_elevenlabs", story=story, model=model, credits=units, notes=notes)
+    elif provider == "polly":
+        _ledger(stage, "record_polly", story=story, engine=model,
+                billed_characters=units, notes=notes)
+    else:
+        print(f"warning: {stage} cost not written to the ledger: "
+              f"no ledger mapping for TTS provider {provider!r}", file=sys.stderr)

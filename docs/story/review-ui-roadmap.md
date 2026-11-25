@@ -59,13 +59,20 @@ writes — while the stage field stays stored.
 
 ## Next, in order
 
-1. **Artifact links** — §3 of the handoff, unchanged and still right. Add
-   `emit_artifact()` beside `_progress()` in `cli.py`, emit from the actor and
-   designer as each file lands, and render markers in the log pane as an audio
-   player or a thumbnail. Do not regex the log for filenames. The path-to-URL
-   resolver is simpler here than in the handoff: files are local to the box, so
-   it is one guarded static route under `stories_dir`, with the S3 presign
-   fallback only once assets are swept off the volume.
+1. **Artifact links** — **done (2026-11-25)**, bar the story half of the
+   wiring. `emit_artifact(path, kind=None, label=None)` is in
+   `story_pipeline/cli.py` beside `_progress()` and writes the same
+   `::progress {"event": "artifact", ...}` marker the ambience CLI already
+   emits. `MW.jobPanel` in `common.js` renders a job view's `artifacts` under
+   its log: audio as a player, images as a thumbnail link, anything else as a
+   link (see [review-ui.md](review-ui.md), "Shared assets"). The ambience job
+   view resolves each path through the guarded `/ambience-audio/` route.
+   Still to do: call `emit_artifact()` from the actor and designer as each file
+   lands, add the one guarded static route under `stories_dir` that resolves
+   story paths (S3 presign only once assets are swept off the volume), and put
+   the story page's log panes on `MW.jobPanel` or `MW.renderArtifacts`. Until
+   then a story artifact would list as "not served". Do not regex the log for
+   filenames.
 2. **Auto-push on stage success** — the strongest operational argument in the
    handoff, and the reason to do it before anything cosmetic: a lost asset that
    gets regenerated writes a *second* ledger row for the same story, both rows

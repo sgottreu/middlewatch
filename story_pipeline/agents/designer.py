@@ -201,6 +201,8 @@ def build_cast_sheet(cfg: dict, b: Bundle, verbose: bool = True,
             data = _generate(client, cfg, prompt, refs=[])
         path.write_bytes(data)
         b.add_spend("gemini_images", 1)
+        spend.record_images(b, "design", cfg["gemini"]["model"],
+                            notes=f"cast portrait: {member['name']}")
         p.tick()
         p.say(f"    wrote {path.name} ({len(data) / 1e6:.1f} MB) "
               f"in {getattr(p, 'last_call', 0):.0f}s")
@@ -362,6 +364,8 @@ def render_chapter(cfg: dict, b: Bundle, n: int, sheet: dict[str, Path], verbose
         # one in flight.
         path.write_bytes(data)
         b.add_spend("gemini_images", 1)
+        spend.record_images(b, "design", cfg["gemini"]["model"],
+                            notes=f"chapter {n} shot {i + 1}")
         p.tick()
         p.say(f"    wrote {path.name} ({len(data) / 1e6:.1f} MB) "
               f"in {getattr(p, 'last_call', 0):.0f}s")

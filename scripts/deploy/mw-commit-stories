@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Commit and push story approvals. Run by mw-stories.timer every 15 minutes,
+# Commit and push story and novella approvals. Run by mw-stories.timer every 15 minutes,
 # and by mw-deploy before it pulls.
 #
 # This is the only backup of review state that exists: approvals are made on the
@@ -21,15 +21,20 @@ if [ -n "$busy" ]; then
     exit 0
 fi
 
-git add -A stories
+# novellas/ holds Scott's novella edits and approvals, the same kind of state
+# as stories/. Added only once it exists, so a box with no novellas yet is fine.
+paths=(stories)
+[ -d novellas ] && paths+=(novellas)
 
-if git diff --cached --quiet -- stories; then
+git add -A -- "${paths[@]}"
+
+if git diff --cached --quiet -- "${paths[@]}"; then
     exit 0
 fi
 
 git -c user.name='Middle Watch review' \
     -c user.email='sgottreu@gmail.com' \
-    commit -q -m "stories: review $(date -u +%Y-%m-%dT%H:%MZ)"
+    commit -q -m "stories: review $(date -u +%Y-%m-%dT%H:%MZ)" -- "${paths[@]}"
 
 git push -q origin HEAD:main
 

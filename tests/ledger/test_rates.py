@@ -129,3 +129,16 @@ def test_check_rates_draft_imports_harmlessly():
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     assert mod.CHECKS
+
+
+def test_every_tts_credit_model_has_a_rate():
+    # Credits are one pool at one plan rate; tts.CREDIT_RATE says how many
+    # credits a character costs per model. Every model it knows must be priced,
+    # or narration on it writes no ledger row.
+    import json
+    from story_pipeline import tts
+    from tests.conftest import REPO_ROOT
+    rates = json.loads((REPO_ROOT / "ledger" / "rates.json").read_text())
+    priced = rates["providers"]["elevenlabs"]["models"]
+    assert set(tts.CREDIT_RATE) <= set(priced), set(tts.CREDIT_RATE) - set(priced)
+    assert len({m["credits"] for m in priced.values()}) == 1   # one plan rate

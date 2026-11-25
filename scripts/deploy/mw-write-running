@@ -77,6 +77,27 @@ def main() -> int:
             total = job.get("to_write") or job.get("total", "?")
             print(f"{slug} ({done} of {total} chapters)")
 
+    # Novella jobs (outline, draft, review) write into novellas/, which
+    # mw-commit-stories now commits too. A server without the novella plugin
+    # answers 404 here, which counts as nothing running.
+    try:
+        board = get("/api/novella")
+    except DEAD:
+        board = {}
+    for series in board.get("series", []) or []:
+        for row in series.get("novellas", []) or []:
+            slug = row.get("slug") if isinstance(row, dict) else None
+            if not slug:
+                continue
+            try:
+                job = get("/api/novella/" + urllib.parse.quote(slug) + "/job")
+            except DEAD:
+                continue
+            if job.get("state") == "running":
+                n = job.get("chapter")
+                what = job.get("kind") or job.get("stage") or "job"
+                print(f"novella {slug} ({what}" + (f", chapter {n}" if n else "") + ")")
+
     return 0
 
 

@@ -17,6 +17,7 @@ import subprocess
 from pathlib import Path
 
 from .. import tts
+from .. import spend
 from ..bundle import BREAK, Bundle
 
 
@@ -342,6 +343,9 @@ def record_chapter(cfg: dict, b: Bundle, n: int, voices: dict, provider) -> dict
     }
     b.timeline_path(n).write_text(json.dumps(timeline, indent=2) + "\n")
     b.add_spend(f"{provider.name}_{unit_label}", billed)
+    spend.record_tts(b, "record", provider.name,
+                     getattr(provider, "model", None) or getattr(provider, "engine", ""),
+                     billed, notes=f"chapter {n}")
     return timeline
 
 

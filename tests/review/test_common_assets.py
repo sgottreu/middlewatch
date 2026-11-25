@@ -35,14 +35,24 @@ def test_near_miss_asset_paths_404(client, path):
     assert_not_found(client.get(path))
 
 
+UI_PAGES = ["app.html", "casting.html", "ambience.html", "novellas.html"]
+
+
 def test_css_defines_the_shared_palette():
     css = (REVIEW_DIR / "common.css").read_text()
     for var in ("--bg", "--panel", "--accent", "--danger", "--ok", "--btn"):
         assert re.search(rf"{var}\s*:", css), var
-    # Same palette as the existing pages, so new pages match them.
-    casting = (REVIEW_DIR / "casting.html").read_text()
-    for m in re.finditer(r"(--[\w-]+)\s*:\s*(#[0-9a-fA-F]{3,6})", css):
-        assert f"{m.group(1)}: {m.group(2)}" in casting or f"{m.group(1)}:{m.group(2)}" in casting, m.group(0)
+
+
+@pytest.mark.parametrize("name", UI_PAGES)
+def test_pages_use_the_shared_files_and_not_their_own_palette(name):
+    # common.css is the one palette: this used to compare it against
+    # casting.html's copy, which is gone now every page links the shared files.
+    text = (REVIEW_DIR / name).read_text()
+    assert '<link rel="stylesheet" href="/common.css">' in text
+    assert '<script src="/common.js"></script>' in text
+    assert not re.search(r":root\s*\{", text), "palette belongs in common.css"
+    assert "MW.nav(" in text, "every page shows the shared tabs"
 
 
 def _node(js: str) -> str:
@@ -76,7 +86,8 @@ def test_js_exports_and_pure_helpers():
       }));
     """))
     assert got["keys"] == sorted(["$", "esc", "money", "toast", "explain", "api",
-                                  "armed", "nav", "jobPanel", "PAGES"])
+                                  "armed", "nav", "jobPanel", "PAGES",
+                                  "artifacts", "renderArtifacts"])
     assert got["esc"] == "&lt;a href=&quot;x&quot;&gt;&#39;&amp;&#39;&lt;/a&gt;"
     assert got["money"] == ["$1.50", "$0.00", "$0.00"]
     assert got["explain"][0] == "bad voice" and "Restart it" in got["explain"][1]

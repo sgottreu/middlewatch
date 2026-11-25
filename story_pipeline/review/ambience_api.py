@@ -101,6 +101,34 @@ def audio_path(cfg: dict, rel: str) -> Path:
     return p
 
 
+def artifact_url(cfg: dict, path) -> str | None:
+    """The URL that serves an artifact marker's path, or None when the server
+    would refuse it: outside ambience/, not a finished wav, or gone. The same
+    guard as the /ambience-audio/ route, because that route is what answers."""
+    url = _url(cfg, Path(path))
+    if not url:
+        return None
+    try:
+        audio_path(cfg, url[len("/ambience-audio/"):])
+    except (FileNotFoundError, ValueError):
+        return None
+    return url
+
+
+def artifacts(cfg: dict, marks: list[dict]) -> list[dict]:
+    """Every artifact a job announced, newest first, one entry per path, each
+    with the URL to fetch it by (None when it isn't servable)."""
+    out, seen = [], set()
+    for m in reversed(marks):
+        if m.get("event") != "artifact" or not m.get("path") or m["path"] in seen:
+            continue
+        seen.add(m["path"])
+        out.append({"kind": m.get("kind") or "file", "path": m["path"],
+                    "label": m.get("label") or Path(m["path"]).name,
+                    "url": artifact_url(cfg, m["path"])})
+    return out
+
+
 # --------------------------------------------------------------------------- #
 # Reading
 # --------------------------------------------------------------------------- #
@@ -391,6 +419,7 @@ def job(cfg: dict, key: str) -> dict:
     j["done"] = block.get("done", 0) if plan else 0
     if art and art.get("path"):
         j["artifact"] = _url(cfg, Path(art["path"]))
+    j["artifacts"] = artifacts(cfg, marks)
     if loud:
         j["lufs"] = loud.get("lufs")
         if not loud.get("ok"):

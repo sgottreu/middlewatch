@@ -9,56 +9,12 @@
 <link rel="apple-touch-icon" href="/icon-180.png">
 <link rel="manifest" href="/manifest.webmanifest">
 <meta name="theme-color" content="#14140f">
+<link rel="stylesheet" href="/common.css">
 <style>
-  /* Same palette and button language as the review page (app.html), so the two
-     read as one tool. Dark only, for the same reason. */
-  :root {
-    --bg: #14140f; --panel: #1c1c16; --line: #2e2e24; --ink: #e8e4d8;
-    --dim: #97917f; --accent: #c9a227; --danger: #d4674a; --ok: #7ea05a;
-    --btn: #25405f; --btn-hi: #2f5078; --btn-line: #5a8bc4; --btn-ink: #e6eef8;
-    --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
-  }
-  * { box-sizing: border-box; }
-  body { margin:0; background:var(--bg); color:var(--ink);
-         font: 15px/1.55 Charter, Georgia, serif; }
-  a { color:var(--accent); }
-  h1,h2,h3 { font-weight:600; line-height:1.25; margin:0; }
-
-  header.top { position:sticky; top:0; z-index:5; background:var(--panel);
-               border-bottom:1px solid var(--line); padding:10px 24px;
-               display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; }
-  header.top h1 { font-size:18px; }
-  header.top .back { font-family:var(--mono); font-size:12px; text-decoration:none; }
-  header.top label { font-family:var(--mono); font-size:11px; color:var(--dim);
-                     display:flex; align-items:center; gap:6px; text-transform:uppercase;
-                     letter-spacing:.06em; }
-  select, input[type=text] { font:inherit; font-size:14px; background:var(--bg);
-           color:var(--ink); border:1px solid var(--line); border-radius:5px; padding:5px 7px; }
+  /* Page-only rules. Palette, base type, header, page tabs, form fields,
+     buttons (armed, primary, quiet, stop, sel, disabled), .bar and #toast are
+     common.css. */
   select { text-transform:none; letter-spacing:0; }
-  .spacer { flex:1; }
-
-  button { font:inherit; font-size:13px; padding:6px 13px; border-radius:5px; cursor:pointer;
-           border:1px solid var(--btn-line); background:var(--btn); color:var(--btn-ink);
-           box-shadow:inset 0 1px 0 rgba(255,255,255,.08), 0 1px 2px rgba(0,0,0,.45); }
-  button:hover:not(:disabled) { background:var(--btn-hi); border-color:var(--accent); }
-  button:disabled { box-shadow:none; background:#4a4943; border:1px dashed #8d8a7c;
-                    color:#cdc9bc; cursor:not-allowed; }
-  button.primary { background:var(--ok); border-color:var(--ok); color:#0f120b; }
-  button.primary:hover:not(:disabled) { background:#8db466; border-color:#8db466; }
-  /* button.primary came after button:disabled and won, so a disabled primary
-     looked live. Same muted green as the review page's disabled primaries. */
-  button.primary:disabled { background:#4d5b40; border:1px dashed #8a9c74; color:#dbe4cc; }
-  /* Armed = one more click spends money. Warning gold, bold, and a ring so it
-     can't be mistaken for the idle blue button or a hover. */
-  button.armed, button.armed:hover:not(:disabled) { background:var(--accent); border-color:var(--accent);
-           color:#14140f; font-weight:600; box-shadow:0 0 0 2px rgba(201,162,39,.35); }
-  button.sel { background:rgba(201,162,39,.15); border-color:var(--accent); color:var(--ink); }
-  button.quiet { background:transparent; border-color:var(--line); color:var(--dim); box-shadow:none; }
-  button.quiet:hover:not(:disabled) { color:var(--ink); background:transparent; }
-  button.stop { background:rgba(212,103,74,.12); border-color:var(--danger); color:var(--danger); }
-
-  main { max-width:1100px; margin:0 auto; padding:18px 24px 80px; }
-  .lede { color:var(--dim); font-size:14px; margin:0 0 16px; max-width:80ch; }
 
   /* job panel */
   /* Sits above whichever character is being auditioned (see placeJob); the
@@ -70,8 +26,6 @@
   #job.done { border-color:var(--ok); background:rgba(126,160,90,.08); }
   #job .row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
   #job .what { flex:1; font-size:14px; }
-  .bar { height:6px; border-radius:3px; background:var(--line); overflow:hidden; margin:9px 0 0; }
-  .bar i { display:block; height:100%; width:0; background:var(--ok); transition:width .3s; }
   #log { font-family:var(--mono); font-size:11px; color:var(--dim); background:var(--bg);
          border:1px solid var(--line); border-radius:6px; margin:10px 0 0; padding:8px 10px;
          max-height:200px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
@@ -180,24 +134,12 @@
   .tag { font-family:var(--mono); font-size:11px; border-radius:3px; padding:0 5px;
          border:1px solid var(--danger); color:var(--danger); white-space:nowrap; }
 
-  #toast { position:fixed; bottom:24px; right:24px; background:var(--panel);
-           border:1px solid var(--line); border-left:3px solid var(--accent);
-           padding:10px 15px; border-radius:5px; font-size:14px; opacity:0;
-           transition:opacity .18s; pointer-events:none; max-width:46ch; z-index:20; }
-  #toast.show { opacity:1; }
-  #toast.bad { border-left-color:var(--danger); }
-
   @media (max-width: 760px) {
-    header.top { padding:10px 14px; }
-    main { padding:14px 12px 60px; }
     .ent { grid-template-columns: 1fr; }
     .judge { min-width:0; }
     .take span { width:84px; }
-    button { min-height:38px; }
-    select, input[type=text] { font-size:16px; }   /* stops iOS zooming on focus */
     #pool audio { width:150px; }
     #pool .hide-sm { display:none; }
-    #toast { left:12px; right:12px; bottom:16px; max-width:none; }
     #ascrim { align-items:flex-end; }
     #apanel { width:100%; max-height:92dvh; border-radius:14px 14px 0 0;
               padding:18px 14px calc(18px + env(safe-area-inset-bottom)); }
@@ -207,8 +149,8 @@
 </head>
 <body>
 <header class="top">
-  <a class="back" id="back" href="/">‹ Review</a>
   <h1>Casting</h1>
+  <nav id="pages"></nav>
   <label>Arc <select id="arc"></select></label>
   <label title="Each character is auditioned on one of their own lines from this story">Lines from <select id="story"></select></label>
   <span class="spacer"></span>
@@ -250,52 +192,13 @@
 </div></div>
 <div id="toast"></div>
 
+<script src="/common.js"></script>
 <script>
-const $ = id => document.getElementById(id);
-const esc = s => String(s ?? "").replace(/[&<>"']/g, c =>
-  ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
-const money = n => "$" + (Number(n) || 0).toFixed(2);
+// $, esc, money, toast, explain, api and the two-press armed() are common.js.
+const { $, esc, money, toast, explain, api, armed } = MW;
+MW.nav($("pages"), "Casting");
 let S = { open: new Set(), arc: null, story: null, view: null, poll: null, logFrom: 0, wasRunning: false,
           poolGender: "" };
-
-function toast(msg, bad) {
-  const t = $("toast"); t.textContent = msg; t.classList.toggle("bad", !!bad);
-  t.classList.add("show"); clearTimeout(t._h);
-  t._h = setTimeout(() => t.classList.remove("show"), bad ? 6000 : 2600);
-}
-function explain(err) {
-  const msg = String(err || "").trim().replace(/^[A-Za-z_][\w.]*(Error|Exception):\s*/, "");
-  return /^not found$/i.test(msg)
-    ? "The review server is running older code than this page. Restart it (mw-deploy, or sudo systemctl restart mw-review) and reload."
-    : msg;
-}
-async function api(path, body) {
-  const r = await fetch(path, body ? { method: "POST", headers: { "Content-Type": "application/json" },
-                                       body: JSON.stringify(body) } : undefined);
-  const j = await r.json().catch(() => ({ error: `HTTP ${r.status}` }));
-  if (!r.ok || j.error) throw new Error(explain(j.error || `HTTP ${r.status}`));
-  return j;
-}
-
-// A paid button arms on the first press and runs on the second, so a stray tap
-// never spends money and nobody has to dismiss a dialog to get on with it.
-// The armed label says "Confirm — spend $X", never "… again": "again" reads as
-// "you already ran this", and the price is what you're deciding on.
-const disarm = b => { b.classList.remove("armed"); clearTimeout(b._t); b.textContent = b._label; };
-function armed(btn, label, fn) {
-  if (btn.classList.contains("armed")) {
-    btn.classList.remove("armed"); clearTimeout(btn._t); fn(); return;
-  }
-  document.querySelectorAll("button.armed").forEach(disarm);
-  btn._label = btn.textContent; btn.textContent = label; btn.classList.add("armed");
-  btn._t = setTimeout(() => disarm(btn), 5000);
-}
-// Clicking anywhere else, or Escape, stands it down — it never sits armed.
-document.addEventListener("click", ev => document.querySelectorAll("button.armed")
-  .forEach(b => { if (!b.contains(ev.target)) disarm(b); }), true);
-document.addEventListener("keydown", ev => {
-  if (ev.key === "Escape") document.querySelectorAll("button.armed").forEach(disarm);
-});
 
 function syncUrl() {
   const u = new URL(location.href);
@@ -306,10 +209,10 @@ function syncUrl() {
   syncBack();
 }
 
-// ‹ Review goes back to the same series the page was opened in.
+// The Stories tab goes back to the same series the page was opened in.
 function syncBack() {
   const series = new URLSearchParams(location.search).get("series");
-  $("back").href = series ? `/?series=${encodeURIComponent(series)}` : "/";
+  $("pages").querySelector('a[href^="/"]').href = series ? `/?series=${encodeURIComponent(series)}` : "/";
 }
 
 async function boot() {

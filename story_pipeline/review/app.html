@@ -16,24 +16,36 @@
 <link rel="apple-touch-icon" href="/icon-180.png">
 <link rel="manifest" href="/manifest.webmanifest">
 <meta name="theme-color" content="#14140f">
+<link rel="stylesheet" href="/common.css">
 <style>
-  :root {
-    --bg: #14140f; --panel: #1c1c16; --line: #2e2e24; --ink: #e8e4d8;
-    --dim: #97917f; --accent: #c9a227; --danger: #d4674a; --ok: #7ea05a;
-    /* Live action buttons are blue, not merely lighter: blue against grey holds
-       up under the common colour-vision deficiencies, where a shade difference
-       does not. Disabled ones are also dashed, so the cue survives without
-       colour at all. */
-    --btn: #25405f; --btn-hi: #2f5078; --btn-line: #5a8bc4; --btn-ink: #e6eef8;
-    --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
-  }
-  /* Dark only. This is a night-watch tool read in the evening, and a second
-     palette is a second thing every new piece of UI has to be checked against.
-     The light variant was never looked at; it is gone rather than left to rot. */
-  * { box-sizing: border-box; }
-  body { margin:0; height:100vh; height:100dvh; display:flex; background:var(--bg); color:var(--ink);
-         font: 15px/1.55 Charter, Georgia, serif; }
-  h1,h2,h3 { font-weight:600; line-height:1.25; }
+  /* The palette (:root), base body type, page tabs and the #toast look are
+     common.css. Live action buttons are blue, not merely lighter: blue against
+     grey holds up under the common colour-vision deficiencies, where a shade
+     difference does not. Disabled ones are also dashed, so the cue survives
+     without colour at all. Dark only: this is a night-watch tool read in the
+     evening, and a second palette is a second thing every new piece of UI has
+     to be checked against.
+
+     This page is a two-pane app, not a header-and-main page, and its buttons
+     are ghost buttons with a raised action bar. So the rules below that restate
+     a common.css selector are deliberate overrides that keep this page looking
+     as it did before it loaded common.css; don't delete them as duplicates. */
+  body { height:100vh; height:100dvh; display:flex; }
+  /* Override: common.css zeroes heading margins; this page relies on the
+     browser's, except where a rule below sets them. */
+  h1,h2,h3 { margin:revert; }
+  /* Override: common.css colours every link; here only styled links are. */
+  a { color:revert; }
+  /* Override: <main id="doc"> is a flex pane, not common.css's centred column. */
+  #doc { max-width:none; margin:0; padding:0; }
+  /* Override: dialog ledes are sized by their dialog, not capped at 80ch. */
+  .lede { max-width:none; }
+  /* Override: every field here is styled by its own dialog or editor rule;
+     undo common.css's shared field look underneath them. */
+  select, input[type=text], input[type=number], textarea {
+    font:revert; background:revert; color:revert; border:revert;
+    border-radius:revert; padding:revert; }
+  textarea { width:revert; line-height:revert; }
 
   /* queue -------------------------------------------------------------- */
   #queue { width:300px; flex:none; border-right:1px solid var(--line);
@@ -41,12 +53,9 @@
   #queue header { padding:14px 16px; border-bottom:1px solid var(--line); }
   #queue header b { display:block; font-size:15px; }
   #queue header span { color:var(--dim); font-size:12px; font-family:var(--mono); }
-  #queue .tabs { display:flex; gap:4px; margin:10px 0 8px; }
-  #queue .tab { flex:1; text-align:center; padding:6px 0; border:1px solid var(--line);
-                border-radius:6px; font-family:var(--mono); font-size:12px;
-                color:var(--dim); text-decoration:none; }
-  #queue .tab.on { color:var(--accent); border-color:var(--accent); }
-  #queue a.tab:hover { color:var(--accent); }
+  /* Page tabs (MW.nav), stretched to share the queue's width. */
+  #queue nav.pages { margin:10px 0 8px; }
+  #queue nav.pages a { flex:1; text-align:center; padding:6px 0; border-radius:6px; }
   #queue #newBtn { display:block; width:100%; margin-top:10px; padding:7px 0;
                    font-family:var(--mono); font-size:12px; cursor:pointer;
                    background:transparent; color:var(--accent);
@@ -183,12 +192,18 @@
   #bar .actions { display:flex; flex-wrap:wrap; gap:8px; }
   #bar .facts { font-family:var(--mono); font-size:11px; color:var(--dim); }
   #bar .facts:empty { display:none; }
+  /* Override: this page's base button is a ghost button, not common.css's
+     filled blue one; the fill belongs to #bar below. Each rule restates what
+     common.css's same selector would otherwise add. */
   button { font:inherit; font-size:14px; padding:7px 15px; border-radius:5px;
            border:1px solid var(--line); background:transparent; color:var(--ink);
-           cursor:pointer; }
-  button:hover:not(:disabled) { border-color:var(--accent); }
-  button:disabled { opacity:.35; cursor:default; }
+           cursor:pointer; box-shadow:none; }
+  button:hover:not(:disabled) { border-color:var(--accent); background:transparent; }
+  button:disabled { opacity:.35; cursor:default; background:transparent;
+                    border:1px solid var(--line); color:var(--ink); }
   button.primary { background:var(--ok); border-color:var(--ok); color:#0f120b; }
+  button.primary:hover:not(:disabled) { background:var(--ok); border-color:var(--accent); }
+  button.primary:disabled { background:var(--ok); border:1px solid var(--ok); color:#0f120b; }
   button.danger { border-color:var(--danger); color:var(--danger); }
   kbd { font-family:var(--mono); font-size:10px; border:1px solid var(--line);
         border-radius:3px; padding:0 4px; color:var(--dim); margin-left:5px; }
@@ -553,11 +568,8 @@
              max-width:none; }
   }
 
-  #toast { position:fixed; bottom:74px; right:34px; background:var(--panel);
-           border:1px solid var(--line); border-left:3px solid var(--accent);
-           padding:10px 15px; border-radius:5px; font-size:14px; opacity:0;
-           transition:opacity .18s; pointer-events:none; max-width:44ch; z-index:20; }
-  #toast.show { opacity:1; }
+  /* Override: common.css's #toast, placed clear of the action bar. */
+  #toast { bottom:74px; right:34px; max-width:44ch; }
 </style>
 </head>
 <body>
@@ -569,8 +581,7 @@
         id="seriesLabel">All series</span><span class="car" aria-hidden="true">▾</span></button>
       <div id="seriesMenu" role="listbox" aria-label="Series"></div>
     </div>
-    <div class="tabs"><span class="tab on" aria-current="page">Stories</span>
-      <a class="tab" id="castingTab" href="/casting">Casting ›</a></div>
+    <nav id="pages"></nav>
     <span id="count">loading…</span>
     <button type="button" id="newBtn">+ New outline</button></header>
     <div id="groups"></div></nav>
@@ -693,7 +704,14 @@
   </form></div>
   <div id="toast"></div>
 
+<script src="/common.js"></script>
 <script>
+// esc and toast are common.js; explain() stays here, worded for this page.
+const { esc, toast } = MW;
+MW.nav(document.getElementById("pages"), "Stories");
+// Casting opens on the queue's series: setSeries() keeps this link's href.
+document.getElementById("pages").querySelector('a[href="/casting"]').id = "castingTab";
+
 const GROUPS = [
   ["outlines", "Outlines awaiting review"],
   ["approved", "Approved — waiting to be written"],
@@ -717,9 +735,6 @@ function showStory(on) {
   document.body.classList.toggle("show-story", !!on);
 }
 
-const esc = s => String(s ?? "").replace(/[&<>"]/g, c =>
-  ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
-
 // app.html is re-read on every request; the Python behind it is loaded once.
 // So after a pull the page can offer a button the running server has never
 // heard of, and the server's answer is a bare "not found". Say what it means.
@@ -733,12 +748,6 @@ function explain(err) {
       "route for this action yet. Restart it (sudo systemctl restart mw-review, " +
       "or mw-deploy) and try again."
     : msg;
-}
-
-function toast(msg) {
-  const t = document.getElementById("toast");
-  t.textContent = msg; t.classList.add("show");
-  clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2600);
 }
 
 async function loadQueue(keep) {
