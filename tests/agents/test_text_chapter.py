@@ -109,8 +109,6 @@ def test_empty_segments_dropped_and_counted():
     assert c["dropped_empty_segments"] == 3
 
 
-@pytest.mark.xfail(strict=True, reason="BUG: text.py:917 break regex [*\\s\u2014\u2013-]{3,9} matches "
-                   "3-9 whitespace-only chars, so a blank segment becomes a scene break instead of being dropped")
 def test_whitespace_only_segment_is_dropped_not_turned_into_scene_break():
     c = ch(N("Real."), N("    "), N("More."))
     validate(c)

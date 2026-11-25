@@ -105,7 +105,7 @@ def test_scaffolds_still_pass():
         root = Path(tempfile.mkdtemp()) / "bibles"
         path = bibles.scaffold("demo", "fantasy", None, root, example=example)
         assert not bibles.fatal(bibles.validate(path, {})), f"example={example}"
-    text = bibles.TEMPLATE.format(series="X", genre="fantasy")
+    text = bibles.render_template(bibles.TEMPLATE, "X", "fantasy")
     for heading in ("## Premise", "## Setting", "### Technology", "### Magic",
                     "### Flora and Fauna", "### Travel and Trade", "## Regions",
                     "## Map layout", "## Institutions", "## Recurring Cast",

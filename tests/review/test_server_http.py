@@ -361,9 +361,6 @@ def test_api_casting_apply_plan_flags(client, casting_arc):
     assert "model" in j["config"] and "mode" in j["config"]
 
 
-@pytest.mark.xfail(reason="BUG: server.py _casting_get lists '' as a false flag value but parse_qs "
-                          "drops blank values, so ?v4= / ?cast= read as true (dead branch)",
-                   strict=True)
 @pytest.mark.parametrize("q,key", [("?v4=", "model"), ("?cast=", "mode")])
 def test_api_casting_apply_plan_blank_flag_is_false(client, casting_arc, q, key):
     client.post("/api/casting/verdict", {"arc": ARC, "speaker": "narrator",

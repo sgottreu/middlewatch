@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Middle Watch — novellas</title>
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon-180.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#14140f">
+<link rel="stylesheet" href="/common.css">
+<style>
+  /* Page-specific only; palette, buttons, header, job panel and toast are common.css. */
+  .crumbs { font-family:var(--mono); font-size:12px; color:var(--dim); margin:0 0 10px; }
+  .crumbs a { text-decoration:none; }
+  h2 { font-size:17px; margin:0 0 10px; }
+  h3 { font-size:15px; margin:14px 0 6px; color:var(--accent); }
+  .muted { color:var(--dim); }
+  .small { font-size:13px; }
+  .mono { font-family:var(--mono); font-size:12px; }
+  .row { display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; }
+  .grow { flex:1; min-width:0; }
+  .chip { display:inline-block; font-family:var(--mono); font-size:11px; padding:1px 8px;
+          border-radius:10px; border:1px solid var(--line); color:var(--dim); white-space:nowrap; }
+  .chip.outlined { color:var(--dim); }
+  .chip.drafted { color:var(--btn-ink); border-color:var(--btn-line); }
+  .chip.author_edited { color:var(--accent); border-color:var(--accent); }
+  .chip.editor_reviewed { color:#e0b25a; border-color:#e0b25a; background:rgba(224,178,90,.08); }
+  .chip.approved { color:var(--ok); border-color:var(--ok); }
+  .series { margin:0 0 22px; }
+  .book { border:1px solid var(--line); border-radius:8px; background:var(--panel);
+          padding:10px 14px; margin:0 0 10px; }
+  .book a.title { font-size:16px; font-weight:600; text-decoration:none; }
+  .chs { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0 0; }
+  .chs a { text-decoration:none; }
+  table.list { width:100%; border-collapse:collapse; font-size:14px; }
+  table.list td { padding:6px 4px; border-top:1px solid var(--line); vertical-align:top; }
+  table.list td.n { width:2.5em; font-family:var(--mono); color:var(--dim); }
+  .stepper { display:flex; flex-wrap:wrap; gap:4px; align-items:center; margin:0 0 14px; }
+  .stepper .chip.done { color:var(--ok); border-color:rgba(126,160,90,.5); }
+  .stepper .chip.now { color:#14140f; background:var(--accent); border-color:var(--accent); }
+  .prose { font-size:15px; line-height:1.65; max-height:70vh; overflow:auto; padding:4px 2px; }
+  .prose p { margin:0 0 .9em; }
+  .prose .brk { text-align:center; color:var(--dim); margin:1em 0; }
+  textarea.tall { min-height:55vh; font-family:Charter, Georgia, serif; font-size:15px; }
+  textarea.mid { min-height:12em; }
+  textarea.short { min-height:6em; }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .sev { border:1px solid var(--line); border-radius:6px; padding:8px 12px; margin:0 0 8px; }
+  .sev.must { border-color:var(--danger); }
+  .sev.canon { border-color:var(--accent); }
+  .sev h4 { margin:0 0 4px; font-size:14px; }
+  .finding { border-top:1px solid var(--line); padding:6px 0; font-size:13px; }
+  .finding .rule { font-family:var(--mono); font-size:11px; }
+  .finding.error .rule { color:var(--danger); }
+  .finding.warn .rule { color:var(--accent); }
+  pre.block { font-family:var(--mono); font-size:11.5px; white-space:pre-wrap; word-break:break-word;
+              background:var(--bg); border:1px solid var(--line); border-radius:6px; padding:8px 10px;
+              max-height:60vh; overflow:auto; color:var(--dim); }
+  details > summary { cursor:pointer; color:var(--dim); font-size:13px; margin:6px 0; }
+  label.check { display:flex; gap:8px; align-items:flex-start; font-size:14px; margin:4px 0; }
+  .form { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:8px; }
+  .form input, .form select { width:100%; }
+  .note { border-left:3px solid var(--accent); padding:6px 10px; color:var(--dim); font-size:14px; margin:8px 0; }
+  @media (max-width: 760px) {
+    .two { grid-template-columns:1fr; }
+    textarea.tall { min-height:60vh; }
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>Novellas</h1>
+  <nav id="pages"></nav>
+  <span class="spacer"></span>
+  <span id="spend" class="mono muted"></span>
+</header>
+<main>
+  <div id="job"></div>
+  <div id="view"><p class="muted">Loading…</p></div>
+</main>
+<script src="/common.js"></script>
+<script>
+"use strict";
+const { $, esc, api, toast, armed } = MW;
+MW.nav($("pages"), "Novellas");
+
+// Where we are: #/ (board), #/n/<slug> (book), #/n/<slug>/<n> (chapter), #/n/<slug>/canon.
+let S = null, N = null;          // current slug and chapter
+const words = t => (String(t || "").match(/\S+/g) || []).length;
+const fmt = n => (Number(n) || 0).toLocaleString();
+const chip = (stage, label) => `<span class="chip ${esc(stage)}">${esc(label || stage)}</span>`;
+
+// Just enough Markdown for prose: paragraphs, headings, scene breaks, emphasis.
+function md(text) {
+  const inline = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\*(\S.*?\S|\S)\*/g, "<i>$1</i>");
+  return String(text || "").replace(/\r\n/g, "\n").split(/\n\s*\n/).map(p => {
+    p = p.trim();
+    if (!p) return "";
+    if (/^(\*\s*){3,}$/.test(p)) return `<div class="brk">* * *</div>`;
+    const h = p.match(/^#{1,6}\s+(.*)$/);
+    if (h && !p.includes("\n")) return `<h3>${inline(h[1])}</h3>`;
+    if (/^[-*]\s/m.test(p)) return "<ul>" + p.split(/\n(?=[-*]\s)/).map(li =>
+      `<li>${inline(li.replace(/^[-*]\s+/, ""))}</li>`).join("") + "</ul>";
+    return `<p>${inline(p).replace(/\n/g, "<br>")}</p>`;
+  }).join("");
+}
+
+const job = MW.jobPanel($("job"), {
+  urls: () => ({ job: `/api/novella/${S}/job`, log: `/api/novella/${S}/log`,
+                 cancel: `/api/novella/${S}/cancel` }),
+  describe: j => {
+    const what = j.kind === "review" ? "Editor review" : "Writer draft";
+    const ch = j.n ? ` · chapter ${j.n}` : "";
+    return j.state === "running" ? `${what}${ch} — writing…` :
+           j.state === "done" ? `${what}${ch} — saved` : `${what}${ch} — ${j.state}`;
+  },
+  onDone: j => { toast(j.state === "done" ? "Saved." : "The job stopped.", j.state !== "done"); route(); },
+});
+function watchJob(j) {
+  job.started(j);
+  const logBtn = $("job").querySelector("[data-log]"), log = $("job").querySelector(".log");
+  if (log.hidden) logBtn.click();        // show the reply forming
+}
+
+// --------------------------------------------------------------- board
+
+async function showBoard() {
+  S = N = null; job.show(null);
+  const d = await api(`/api/novella`);
+  const bibleOpts = `<option value="">(none)</option>` + d.bibles.map(b => `<option>${esc(b)}</option>`).join("");
+  const series = d.series.map(s => `<section class="series"><h2>${esc(s.name || s.dir)}</h2>` +
+    s.novellas.map(b => `<div class="book">
+      <div class="row"><a class="title grow" href="#/n/${esc(b.slug)}">${esc(b.title)}</a>
+        <span class="mono muted">${fmt(b.words)} / ${fmt(b.target_words)} words</span></div>
+      <div class="small muted">bible: ${esc(b.bible || "none")} · genre: ${esc(b.genre || "none")}</div>
+      <div class="chs">${b.chapters.map(c => `<a href="#/n/${esc(b.slug)}/${c.n}" title="${esc(c.title)}">${chip(c.stage, c.n + " · " + c.label)}</a>`).join("") ||
+        '<span class="small muted">No chapters yet.</span>'}</div></div>`).join("") + `</section>`).join("");
+  $("view").innerHTML = `${series || '<p class="lede">No novellas yet.</p>'}
+    <section class="panel"><h2>New novella</h2>
+      <div class="form">
+        <input type="text" id="nTitle" placeholder="Title">
+        <input type="text" id="nSeries" placeholder="Series (default: the bible's)">
+        <select id="nBible">${bibleOpts}</select>
+        <input type="number" id="nWords" placeholder="Target words" value="30000" step="1000" min="5000">
+      </div>
+      <p class="row"><button class="primary" id="nGo">Create</button>
+        <span class="small muted">Free. Makes novellas/&lt;series&gt;/&lt;slug&gt;/ with an empty brief and outline.</span></p>
+    </section>`;
+  $("nGo").onclick = async () => {
+    try {
+      const r = await api(`/api/novella/new`, { title: $("nTitle").value, series: $("nSeries").value,
+        bible: $("nBible").value, target_words: Number($("nWords").value) || null });
+      location.hash = `#/n/${r.slug}`;
+    } catch (e) { toast(e.message, true); }
+  };
+}
+
+// --------------------------------------------------------------- book
+
+async function showBook() {
+  const b = await api(`/api/novella/${S}`);
+  job.show(b.job);
+  spendLine(b.spend);
+  const rows = b.chapters.map(c => `<tr><td class="n">${c.n}</td>
+      <td><a href="#/n/${esc(S)}/${c.n}">${esc(c.title || "Untitled")}</a>
+        <div class="small muted">${esc(c.next)} · ${fmt(c.words)} / ${fmt(c.target_words)} words</div></td>
+      <td>${chip(c.stage, c.label)}</td></tr>`).join("");
+  const next = (b.chapters.length ? Math.max(...b.chapters.map(c => c.n)) : 0) + 1;
+  $("view").innerHTML = `<div class="crumbs"><a href="#/">Novellas</a> / ${esc(b.series)}</div>
+    <div class="row"><h2 class="grow">${esc(b.title)}</h2>
+      <a href="#/n/${esc(S)}/canon" class="mono">Canon</a></div>
+    <p class="small muted">bible: ${esc(b.bible || "none")} · genre: ${esc(b.genre || "none")} · ${fmt(b.words)} of ${fmt(b.target_words)} words</p>
+    <section class="panel"><h3>Chapters</h3>
+      ${rows ? `<table class="list">${rows}</table>` : '<p class="small muted">No chapters yet. Add the first below.</p>'}
+      <div class="form" style="margin-top:10px">
+        <input type="number" id="cN" value="${next}" min="1" max="99" aria-label="Chapter number">
+        <input type="text" id="cTitle" placeholder="Chapter title">
+        <input type="number" id="cWords" value="3000" step="250" min="500" aria-label="Target words">
+      </div>
+      <p><button id="cAdd">Add chapter</button></p>
+    </section>
+    <section class="panel"><h3>Brief</h3>
+      <textarea id="brief" class="mid">${esc(b.brief)}</textarea>
+      <p><button id="briefSave">Save brief</button></p></section>
+    <section class="panel"><h3>Outline</h3>
+      <textarea id="outline" class="mid">${esc(b.outline)}</textarea>
+      <p><button id="outlineSave">Save outline</button></p></section>`;
+  $("cAdd").onclick = async () => {
+    const n = Number($("cN").value);
+    try {
+      await api(`/api/novella/${S}/chapter/${n}/beats`, { title: $("cTitle").value,
+        target_words: Number($("cWords").value) || null });
+      location.hash = `#/n/${S}/${n}`;
+    } catch (e) { toast(e.message, true); }
+  };
+  $("briefSave").onclick = async () => {
+    try { await api(`/api/novella/${S}/brief`, { text: $("brief").value }); toast("Brief saved."); }
+    catch (e) { toast(e.message, true); }
+  };
+  $("outlineSave").onclick = async () => {
+    try { await api(`/api/novella/${S}/outline`, { text: $("outline").value }); toast("Outline saved."); }
+    catch (e) { toast(e.message, true); }
+  };
+}
+
+// --------------------------------------------------------------- chapter
+
+const SEV = { "Must Fix": "must", "Canon": "canon" };
+
+function reviewHtml(r) {
+  if (!r || !r.sections) return '<p class="small muted">No review of this version yet.</p>';
+  const notes = Object.entries(r.sections).map(([name, body]) =>
+    `<div class="sev ${SEV[name] || ""}"><h4>${esc(name)}</h4><div class="small">${md(body) || "None."}</div></div>`).join("");
+  const l = r.lint || {};
+  const finds = (l.findings || []).map(f => `<div class="finding ${esc(f.severity)}">
+      <span class="rule">${esc(f.rule)}${f.paragraph >= 0 ? ` · ¶${f.paragraph + 1}` : ""}</span>
+      <div>“${esc(f.quote)}”</div><div class="muted">${esc(f.note)}</div></div>`).join("");
+  return `<p class="small muted">${esc(r.model || "")} · ${esc(r.created || "")} · reviewed ${fmt(r.reviewed_words)} words</p>
+    <div class="two"><div><h3>Editor</h3>${notes}</div>
+      <div><h3>Linter <span class="mono muted">${l.errors || 0} errors · ${l.total || 0} in all</span></h3>
+        ${finds || '<p class="small muted">Nothing flagged.</p>'}</div></div>`;
+}
+
+function promptBox(kind) {
+  return `<details data-prompt="${kind}"><summary>Preview the prompt (free)</summary><pre class="block">Loading…</pre></details>`;
+}
+function wirePrompts() {
+  document.querySelectorAll("details[data-prompt]").forEach(d => d.addEventListener("toggle", async () => {
+    if (!d.open || d._done) return;
+    const kind = d.dataset.prompt;
+    try {
+      const p = await api(`/api/novella/${S}/chapter/${N}/prompt/${kind}`);
+      d.querySelector("pre").textContent = `— system (${fmt(words(p.system))} words) —\n\n${p.system}\n\n— user —\n\n${p.user}`;
+      d._done = true;
+    } catch (e) { d.querySelector("pre").textContent = e.message; }
+  }));
+}
+
+async function showChapter() {
+  const c = await api(`/api/novella/${S}/chapter/${N}`);
+  job.show(c.job);
+  const order = ["outlined", "drafted", "author_edited", "editor_reviewed", "approved"];
+  const labels = ["Outlined", "Drafted", "Author edited", "Editor reviewed", "Approved"];
+  const at = order.indexOf(c.stage);
+  const stepper = order.map((s, i) => `<span class="chip ${i < at ? "done" : i === at ? "now" : ""}">${labels[i]}</span>`).join(" ");
+  const locked = c.stage === "approved";
+  const w = c.writer || {};
+  const sendBack = c.earlier.length ? `<span class="row"><select id="sbTo">${c.earlier.slice().reverse()
+      .map(s => `<option value="${s.value}">${esc(s.label)}</option>`).join("")}</select>
+      <button class="quiet" id="sbGo">Send back</button></span>` : "";
+  const versions = c.versions.map(v => `<li class="small">v${v.version}: draft ${fmt(v.draft_words)} words${v.edited ? `, edit ${fmt(v.edit_words)}` : ""}${v.reviewed ? ", reviewed" : ""} <span class="muted">${esc(v.created || "")}</span></li>`).join("");
+  const nav = c.chapters.map(x => x.n === N ? `<b>${x.n}</b>` : `<a href="#/n/${esc(S)}/${x.n}">${x.n}</a>`).join(" · ");
+  const suggested = c.suggested_details.map((d, i) =>
+    `<label class="check"><input type="checkbox" data-detail="${i}"> <span>${esc(d)}</span></label>`).join("");
+
+  $("view").innerHTML = `<div class="crumbs"><a href="#/">Novellas</a> / <a href="#/n/${esc(S)}">${esc(c.novella)}</a> / chapter ${nav}</div>
+    <div class="row"><h2 class="grow">${c.n}. ${esc(c.title || "Untitled")}</h2>${sendBack}</div>
+    <p class="small muted">Next: ${esc(c.next)} · ${fmt(c.words)} of ${fmt(c.target_words)} words${c.version ? ` · version ${c.version}` : ""}</p>
+    <div class="stepper">${stepper}</div>
+
+    <section class="panel"><h3>1 · Beats</h3>
+      <div class="form"><input type="text" id="bTitle" value="${esc(c.title)}" placeholder="Title" ${locked ? "disabled" : ""}>
+        <input type="number" id="bWords" value="${esc(c.target_words)}" step="250" min="500" ${locked ? "disabled" : ""} aria-label="Target words"></div>
+      <textarea id="beats" class="mid" ${locked ? "disabled" : ""}>${esc(c.beats)}</textarea>
+      <p class="row"><button id="bSave" ${locked ? "disabled" : ""}>Save beats</button>
+        ${locked ? '<span class="small muted">Approved chapters are locked. Send back to change them.</span>' : ""}</p>
+    </section>
+
+    <section class="panel"><h3>2 · Draft</h3>
+      <p class="small muted">Sends the bible, brief, outline, earlier summaries and these beats to the writer (${esc((window._models || {}).writer || "novella_writer")}).</p>
+      ${!c.can.draft && !locked && c.stage !== "outlined" ? '<div class="note">This chapter has been edited. Send it back to Outlined to redraft; your edit stays on disk as the previous version.</div>' : ""}
+      ${!c.beats.trim() ? '<div class="note">Add beats before drafting.</div>' : ""}
+      ${promptBox("draft")}
+      <textarea id="dNote" class="short" placeholder="Note for the writer (optional): what to do differently this time" ${c.can.draft ? "" : "disabled"}></textarea>
+      <p class="row"><button id="dGo" ${c.can.draft ? "" : "disabled"}>${c.version ? "Redraft chapter" : "Draft chapter"}</button>
+        <span class="small muted">Paid. Press twice.</span></p>
+      ${c.draft ? `<details><summary>Writer's draft, v${c.version} — ${fmt(words(c.draft))} words</summary><div class="prose">${md(c.draft)}</div></details>` : ""}
+      ${versions ? `<details><summary>Versions</summary><ul>${versions}</ul></details>` : ""}
+    </section>
+
+    <section class="panel"><h3>3 · Author edit</h3>
+      ${c.version ? `<div class="two"><div style="grid-column:1/-1">
+        <textarea id="edit" class="tall" ${c.can.edit ? "" : "readonly"}>${esc(c.edited)}</textarea>
+        <p class="row"><button id="eSave" class="primary" ${c.can.edit ? "" : "disabled"}>Save edit</button>
+          <span class="small muted"><span id="wc">${fmt(words(c.edited))}</span> words · target ${fmt(c.target_words)}${c.edit_saved ? "" : " · not yet saved"}</span></p></div></div>
+        <div class="two small">
+          <div><h3>Writer's flags</h3>${md(w.flags) || "None."}</div>
+          <div><h3>New details</h3>${md(w.new_details) || "None."}</div>
+        </div>` : '<p class="small muted">Draft the chapter first.</p>'}
+    </section>
+
+    <section class="panel"><h3>4 · Review</h3>
+      <p class="small muted">The editor (${esc((window._models || {}).editor || "novella_editor")}) reviews your saved edit and suggests only; the linter's AI-tell findings for the same text sit beside it.</p>
+      ${!c.can.review && !locked ? '<div class="note">Save your edit first; the editor reviews the author-edited text.</div>' : ""}
+      ${promptBox("review")}
+      <p class="row"><button id="rGo" ${c.can.review ? "" : "disabled"}>${c.review && c.review.sections ? "Run review again" : "Run review"}</button>
+        <span class="small muted">Paid. Press twice.</span></p>
+      ${reviewHtml(c.review)}
+    </section>
+
+    <section class="panel"><h3>5 · Approve</h3>
+      ${locked ? `<div class="note">Approved and locked. Its summary feeds the next chapter.</div><div class="prose">${md(c.summary)}</div>
+          ${c.approved_details ? `<h3>Details logged to the bible's changelog</h3><div class="small">${md(c.approved_details)}</div>` : ""}` :
+        !c.can.approve ? '<p class="small muted">Run the editor review before approving.</p>' :
+        `<p class="small muted">The summary is what later chapters' writer and editor are told happened here.</p>
+         <textarea id="aSummary" class="mid">${esc(c.summary)}</textarea>
+         <h3>New details for the bible's changelog</h3>
+         ${c.bible ? (suggested || '<p class="small muted">None suggested.</p>') +
+            `<textarea id="aExtra" class="short" placeholder="More details, one per line (optional)"></textarea>
+             <p class="small muted">Ticked details are appended to ${esc(c.bible)}'s changelog, not to the bible itself.</p>` :
+            '<p class="small muted">No bible, so no details are logged.</p>'}
+         <p><button class="primary" id="aGo">Approve chapter</button></p>`}
+    </section>`;
+
+  wirePrompts();
+  $("bSave").onclick = async () => {
+    try {
+      await api(`/api/novella/${S}/chapter/${N}/beats`, { title: $("bTitle").value,
+        target_words: Number($("bWords").value) || null, beats: $("beats").value });
+      toast("Beats saved."); route();
+    } catch (e) { toast(e.message, true); }
+  };
+  $("dGo").onclick = ev => armed(ev.currentTarget, "Press again to draft", async () => {
+    try {
+      const r = await api(`/api/novella/${S}/chapter/${N}/draft`, { note: $("dNote").value });
+      watchJob(r.job);
+    } catch (e) { toast(e.message, true); }
+  });
+  $("rGo").onclick = ev => armed(ev.currentTarget, "Press again to review", async () => {
+    try {
+      const r = await api(`/api/novella/${S}/chapter/${N}/review`, {});
+      watchJob(r.job);
+    } catch (e) { toast(e.message, true); }
+  });
+  if ($("edit")) {
+    $("edit").oninput = () => { $("wc").textContent = fmt(words($("edit").value)); };
+    $("eSave").onclick = async () => {
+      try {
+        const r = await api(`/api/novella/${S}/chapter/${N}`, { text: $("edit").value });
+        toast(`Edit saved · ${fmt(r.words)} words.`); route();
+      } catch (e) { toast(e.message, true); }
+    };
+  }
+  if ($("aGo")) $("aGo").onclick = async () => {
+    const picked = [...document.querySelectorAll("[data-detail]")].filter(x => x.checked)
+      .map(x => c.suggested_details[Number(x.dataset.detail)]);
+    const extra = $("aExtra") ? $("aExtra").value.split("\n").map(s => s.trim()).filter(Boolean) : [];
+    try {
+      const r = await api(`/api/novella/${S}/chapter/${N}/approve`, { summary: $("aSummary").value,
+        details: picked.concat(extra) });
+      toast(r.changelog ? `Approved · ${r.details.length} detail(s) logged.` : "Approved."); route();
+    } catch (e) { toast(e.message, true); }
+  };
+  if ($("sbGo")) $("sbGo").onclick = async () => {
+    try {
+      await api(`/api/novella/${S}/chapter/${N}/send-back`, { to: $("sbTo").value });
+      toast("Sent back."); route();
+    } catch (e) { toast(e.message, true); }
+  };
+}
+
+// --------------------------------------------------------------- canon
+
+async function showCanon() {
+  const c = await api(`/api/novella/${S}/canon`);
+  const log = c.changelog.map(e => `<div class="finding"><span class="rule">${esc(e.when)} · ${esc(e.author)} · ${esc(e.kind)}</span>
+      <div class="small">${md(e.summary)}</div></div>`).join("");
+  $("view").innerHTML = `<div class="crumbs"><a href="#/">Novellas</a> / <a href="#/n/${esc(S)}">${esc(S)}</a> / canon</div>
+    <h2>${esc(c.series || "")} <span class="mono muted">${esc(c.bible || "no bible")}</span></h2>
+    <p class="lede">Read-only: the bible exactly as the writer and editor see it. Edit the bible itself in bibles/; approved new details land in its changelog below.</p>
+    ${c.bible ? `<div class="two"><div><h3>As the agents see it</h3><pre class="block">${esc(c.prompt_block)}</pre></div>
+      <div><h3>Changelog</h3>${log || '<p class="small muted">No entries.</p>'}</div></div>` : '<p class="muted">This novella has no bible.</p>'}`;
+}
+
+// --------------------------------------------------------------- routing
+
+function spendLine(sp) {
+  const i = (sp || {}).anthropic_input_tokens || 0, o = (sp || {}).anthropic_output_tokens || 0;
+  $("spend").textContent = i || o ? `${fmt(i)} in · ${fmt(o)} out tokens` : "";
+}
+
+async function route() {
+  const parts = location.hash.replace(/^#\/?/, "").split("/").filter(Boolean);
+  try {
+    if (parts[0] === "n" && parts[1]) {
+      S = decodeURIComponent(parts[1]);
+      if (parts[2] === "canon") { N = null; await showCanon(); }
+      else if (parts[2]) { N = Number(parts[2]); await showChapter(); }
+      else { N = null; await showBook(); }
+    } else {
+      await showBoard();
+    }
+  } catch (e) {
+    $("view").innerHTML = `<p class="note">${esc(e.message)}</p><p><a href="#/">Back to the board</a></p>`;
+  }
+}
+
+window.addEventListener("hashchange", route);
+api(`/api/novella`).then(d => { window._models = d.models; }).catch(() => {}).finally(route);
+</script>
+</body>
+</html>

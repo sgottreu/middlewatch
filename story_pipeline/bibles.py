@@ -17,6 +17,7 @@ pinned in one place instead of being re-decided per story.
 
 from __future__ import annotations
 
+import json
 import re
 import shutil
 from dataclasses import dataclass
@@ -26,6 +27,9 @@ from typing import Any
 import yaml
 
 from .bundle import ear_key
+
+# Suffixes a series portrait can have: save_portrait keeps the generated file's own.
+PORTRAIT_EXTS = ("jpg", "jpeg", "png", "webp")
 
 
 @dataclass
@@ -103,7 +107,10 @@ class Bible:
             return path if path.exists() else None
         # No explicit filename: whichever format the portrait was generated in.
         # Keyed on the entry's own name, so an alias finds the same file.
-        for ext in ("jpg", "png"):
+        # Every suffix save_portrait can write: it keeps the generated file's
+        # own, and a .jpeg or .webp that is never found again is regenerated,
+        # and paid for, on every later story.
+        for ext in PORTRAIT_EXTS:
             path = self.cast_dir / f"{_slug(member['name'])}.{ext}"
             if path.exists():
                 return path
@@ -321,7 +328,7 @@ def available(bibles_dir: str | Path = "bibles") -> list[str]:
 
 
 TEMPLATE = '''---
-series: "{series}"
+series: {series_yaml}
 genre: {genre}
 
 # Facts true in every story. Keep these to things that constrain plotting —
@@ -705,7 +712,7 @@ def fatal(problems: list[Problem]) -> list[Problem]:
 # YAML shape is unambiguous and `bible check` passes on it immediately. The
 # content is deliberately generic — it is a shape to edit, not a series to keep.
 EXAMPLE = '''---
-series: "{series}"
+series: {series_yaml}
 genre: {genre}
 
 # Facts true in every story. Keep these to things a story could contradict —
@@ -781,7 +788,14 @@ def scaffold(name: str, genre: str, series: str | None, bibles_dir: str | Path,
     if path.exists():
         raise ValueError(f"{path} already exists")
     path.parent.mkdir(parents=True, exist_ok=True)
-    body = EXAMPLE if example else TEMPLATE
-    path.write_text(body.format(series=series or name.replace("-", " ").title(),
-                                genre=genre))
+    path.write_text(render_template(EXAMPLE if example else TEMPLATE,
+                                    series or name.replace("-", " ").title(), genre))
     return path
+
+
+def render_template(body: str, series: str, genre: str) -> str:
+    """Fill TEMPLATE or EXAMPLE. The frontmatter value is a YAML double-quoted
+    scalar and JSON's escaping is valid there, so a quote or backslash in the
+    series title can't break the bible; the heading gets the title as written."""
+    return body.format(series=series, genre=genre,
+                       series_yaml=json.dumps(series, ensure_ascii=False))

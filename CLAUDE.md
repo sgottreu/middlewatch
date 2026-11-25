@@ -40,7 +40,8 @@ A monorepo with two pipelines and the operations shared between them.
 | Path | What |
 |---|---|
 | `story_pipeline/` | Narrated short fiction → YouTube video. Six stages, then approve and publish (manual, `release.py`). |
-| `ambience_pipeline/` | Long-form soundscapes. Only `synth/` is built — five procedural recipes and an audition CLI, no bundle or stages yet. `docs/ambience/index.md` is the wiki. |
+| `ambience_pipeline/` | Long-form soundscapes: `synth/` recipes, `mix.py` (streamed mix, LUFS gate), `bundle.py` (`ambience/<slug>/`, gitignored), `cli.py` (`new --scene`/`--from-story`, `approve`, `sound`, `audition`). Procedural layers only; concept agent not built. Page: `/ambience`. `docs/ambience/index.md` is the wiki. |
+| `novella_pipeline/` | Kindle novellas: bundles in `novellas/<series>/<slug>/`, chapter stages ported from kindle-novellas, numbered drafts, writer/editor via `story_pipeline.llm`. Page: `/novellas`. Plan: `docs/novella/plan-2026-11-24.md`. |
 | `ledger/` | Shared spend and revenue, both pipelines. |
 | `docs/story/`, `docs/ambience/` | Documentation. `docs/story/index.md` is the wiki. |
 | `bibles/`, `stories/`, `config.yaml` | Resolve against cwd — see below. |

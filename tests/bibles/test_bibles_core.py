@@ -291,8 +291,6 @@ def test_save_portrait_suffixless_defaults_to_jpg(mk, tmp_path):
     assert b.save_portrait("Mrs Honoria Pike", img).name == "mrs-honoria-pike.jpg"
 
 
-@pytest.mark.xfail(reason="BUG: bibles.py:save_portrait saves '.jpeg'/'.webp' but portrait() only "
-                          "looks for .jpg/.png, so the face is re-saved on every story", strict=True)
 def test_save_portrait_other_suffix_is_found_again(mk, tmp_path):
     b, _ = _with_cast(mk, [{"name": "Mrs Honoria Pike"}])
     img = tmp_path / "gen.jpeg"

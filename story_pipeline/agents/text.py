@@ -931,7 +931,10 @@ def _validate_chapter(ch: dict, outline: dict) -> int:
     for s in ch["segments"]:
         if s.get("speaker") == BREAK:
             s["text"] = ""
-        elif re.fullmatch(r"[*\s\u2014\u2013-]{3,9}", s.get("text", "") or ""):
+        # At least one mark: whitespace alone is an empty segment, dropped
+        # below, not a break the writer typed.
+        elif re.fullmatch(r"(?=.*[*\u2014\u2013-])[*\s\u2014\u2013-]{3,9}",
+                          s.get("text", "") or "", re.S):
             s["speaker"], s["text"] = BREAK, ""
 
     # A performance tag is direction, not prose: `[quietly]` written into the

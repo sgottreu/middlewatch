@@ -21,13 +21,14 @@ Run every command from the repo root. Installs go into the venv —
 | [Calibration](calibration.md) | The dial, the by-ear verdicts, the measured baselines, and the four ways a metric lied. |
 | [Music](music.md) | Plan for music-forward one-offs: providers, the licensing gate, and four techniques for looping a ten-minute generated track for hours. Not built. |
 
-## State, 2026-08-28
+## State, 2026-11-25
 
 | | |
 |---|---|
 | Built | `ambience_pipeline/synth/` and its tests. Five recipes, an audition CLI, a trim-measuring script. |
-| Signed off | Nothing. Fire and wind have been through several rounds and neither is accepted; rain, ocean and room tone are unheard. |
-| Not built | Everything else: the bundle, the CLI, the mixer, the visual compositor, the concept agent, the ledger wiring, the music module. |
+| Built 2026-11-25 | The mixer (`mix.py`), the bundle and concept validator (`bundle.py`), the CLI (`cli.py`: `new`, `approve`, `sound`, `status`, `audition`), and the **Ambience** page in the review server (`story_pipeline/review/ambience.html` + `ambience_api.py`). Procedural layers only. Tests in `tests/ambience_pipeline/`. See [review-ui-plan-2026-11-24.md](review-ui-plan-2026-11-24.md#built-2026-11-25). |
+| Signed off | Nothing. Fire and wind have been through several rounds and neither is accepted; rain, ocean and room tone are unheard. No mix has been listened to. |
+| Not built | The concept agent (`new` writes a keyword starter instead), `revise`, stems and `mix.flac`, the visual compositor, `design`, `direct`, the music module, costed ledger rows. |
 | Blocked | The generated-audio half, on whether the ElevenLabs plan grants commercial rights. Same decision covers SFX accents and music. |
 
 ## I want to change… → edit this
@@ -89,15 +90,21 @@ Run every command from the repo root. Installs go into the venv —
 | `synth/wav.py` | Streaming 16-bit PCM. Stdlib only. |
 | `synth/__main__.py` | The audition CLI. |
 | `tests/test_synth.py` | Determinism, block invariance, parameter wiring, levels, tones, balance. |
+| `mix.py` | Concept layers to one stereo 16-bit wav, block-streamed; trim to −21.5 LUFS from a probe; the ffmpeg `ebur128` gate. |
+| `bundle.py` | `ambience/<slug>/`, the manifest, `HOURS`, the concept validator, approval by hash. |
+| `cli.py` | `new`, `approve`, `sound`, `status`, `audition`. |
+| `../story_pipeline/review/ambience_api.py`, `ambience.html` | The review server's Ambience page. |
+| `../tests/ambience_pipeline/` | Mixer, bundle, CLI, API and page-contract tests. |
 
-Planned, not built: `bundle.py`, `cli.py`, `mix.py`, `motion.py`, `music.py`,
-`agents/concept.py`. See [pipeline-design.md](pipeline-design.md#build-order).
+Planned, not built: `motion.py`, `music.py`, `agents/concept.py`. See
+[pipeline-design.md](pipeline-design.md#build-order).
 
 ### Output
 
 | Path | What |
 |---|---|
-| `ambience/<slug>/` | A bundle. Gitignored. Not built yet. |
+| `ambience/<slug>/` | A bundle. Gitignored. `audio/mix.wav`, `audio/preview.wav`, and `*.rejected.wav` when the loudness gate fails. |
+| `ambience/_auditions/` | Auditions started from the review page. |
 | `auditions/` | Audition renders. Gitignored — regenerable from a seed in one command. |
 | `assets/sfx_cache/` | Generated SFX, shared across projects. Gitignored deliberately; see [pipeline-design.md](pipeline-design.md). |
 

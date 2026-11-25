@@ -20,7 +20,7 @@ def rows(path):
 
 
 def test_pipelines_pinned():
-    assert L.PIPELINES == ("story", "ambience")
+    assert L.PIPELINES == ("story", "ambience", "novella")
 
 
 def test_cost_fields_pinned():

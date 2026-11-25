@@ -319,9 +319,6 @@ def test_scaffold_genre_and_series_substituted(repo_root):
     assert "genre: scifi" in text and "# Salt Roads" in text and 'series: "Salt Roads"' in text
 
 
-@pytest.mark.xfail(reason="BUG: bibles.py:scaffold writes series into a double-quoted YAML "
-                          "scalar unescaped, so a '\"' in the name yields an unparseable bible",
-                   strict=True)
 def test_scaffold_series_with_quote_is_valid_yaml(repo_root):
     path = bibles.scaffold("x", "scifi", 'The "Salt" Roads', "bibles")
     assert bibles.load("x").series == 'The "Salt" Roads'

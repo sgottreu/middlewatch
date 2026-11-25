@@ -34,7 +34,7 @@ RATES_JSON = Path(__file__).with_name("rates.json")
 # Which pipeline produced a cost event. Not derivable after the fact — an
 # ambience slug and a story slug look alike — so it is recorded, validated, and
 # never defaulted. Adding a pipeline means adding it here.
-PIPELINES = ("story", "ambience")
+PIPELINES = ("story", "ambience", "novella")
 
 COST_FIELDS = [
     "event_id",

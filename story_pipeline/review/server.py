@@ -731,6 +731,42 @@ RELEASERS: dict = {
 }
 
 
+# Pages for the other pipelines live in their own modules (ambience_api,
+# novella_api), so neither needs to edit this file's if/elif chains. A module in
+# PLUGIN_MODULES that exists is imported once, here; it registers itself by
+# defining:
+#
+#   handle_get(handler, cfg, path) -> bool     True if it answered the request
+#   handle_post(handler, cfg, path, body) -> bool
+#   PIPELINE = "ambience"; release(cfg, meta)   optional, added to RELEASERS
+#
+# `handler` is the request handler: use handler._json, handler._send and
+# handler._file. A missing module is skipped; an import error inside a module
+# that does exist is raised, so a typo can't silently remove a page.
+PLUGIN_MODULES = ("ambience_api", "novella_api")
+
+
+def _load_plugins() -> list:
+    import importlib
+    found = []
+    for name in PLUGIN_MODULES:
+        full = f"{__package__}.{name}"
+        try:
+            mod = importlib.import_module(full)
+        except ModuleNotFoundError as e:
+            if e.name == full:
+                continue
+            raise
+        found.append(mod)
+        if getattr(mod, "PIPELINE", None) and hasattr(mod, "release"):
+            RELEASERS[mod.PIPELINE] = mod.release
+    return found
+
+
+# Plugin modules must not import this one (it is still loading here).
+PLUGINS: list = _load_plugins()
+
+
 def recover(cfg: dict) -> list[dict]:
     """Settle jobs that outlived the server that started them.
 
@@ -1127,11 +1163,13 @@ def _handler(cfg: dict):
                     left -= len(chunk)
 
         def _casting_get(self, path: str) -> None:
-            q = parse_qs(urlparse(self.path).query)
+            # Blank values kept: `?v4=` has to read as off, and parse_qs drops
+            # it by default, which made the flag below read it as on.
+            q = parse_qs(urlparse(self.path).query, keep_blank_values=True)
             parts = [unquote(x) for x in path.split("/")[3:]]   # after /api/casting/
             arc = parts[0]
             if len(parts) == 1:
-                self._json(casting_api.view(cfg, arc, (q.get("story") or [None])[0]))
+                self._json(casting_api.view(cfg, arc, (q.get("story") or [None])[0] or None))
             elif parts[1:] == ["job"]:
                 self._json(casting_api.job(cfg, arc))
             elif parts[1:] == ["apply"]:
@@ -1139,7 +1177,7 @@ def _handler(cfg: dict):
                 self._json(casting_api.apply_plan(cfg, arc, use_v4=flag("v4"),
                                                   cast_mode=flag("cast")))
             elif parts[1:] == ["log"]:
-                self._json(casting_api.log(cfg, arc, int((q.get("from") or ["0"])[0])))
+                self._json(casting_api.log(cfg, arc, int((q.get("from") or ["0"])[0] or "0")))
             else:
                 self._json({"error": "not found"}, 404)
 
@@ -1253,6 +1291,9 @@ def _handler(cfg: dict):
                     name = path.lstrip("/")
                     self._send(200, (APP_HTML.parent / name).read_bytes(),
                                ASSETS[name])
+                elif any(m.handle_get(self, cfg, path) for m in PLUGINS
+                         if hasattr(m, "handle_get")):
+                    pass
                 else:
                     self._json({"error": "not found"}, 404)
             except (BrokenPipeError, ConnectionResetError):
@@ -1348,6 +1389,9 @@ def _handler(cfg: dict):
                                                      body.get("id", ""), body.get("name", ""),
                                                      body.get("note", ""),
                                                      remove=bool(body.get("remove"))))
+                elif any(m.handle_post(self, cfg, path, body) for m in PLUGINS
+                         if hasattr(m, "handle_post")):
+                    pass
                 else:
                     self._json({"error": "not found"}, 404)
             except Exception as e:

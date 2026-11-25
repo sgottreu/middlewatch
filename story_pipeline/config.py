@@ -16,6 +16,9 @@ import yaml
 
 DEFAULTS: dict[str, Any] = {
     "stories_dir": "stories",
+    # Novellas: novellas_dir/<series>/<slug>/. Never under stories_dir, whose
+    # glob would pick them up as story bundles.
+    "novellas_dir": "novellas",
     "bibles_dir": "bibles",
     # Target runtime in minutes. See LENGTHS in agents/text.py for what each
     # setting implies; --length on `new` overrides it per story, and whichever
@@ -30,6 +33,10 @@ DEFAULTS: dict[str, Any] = {
         "writer": "claude-opus-5",
         "editor": "claude-sonnet-5",
         "designer": "claude-sonnet-5",
+        # Novellas (novella_pipeline). Opus for both, as kindle-novellas ran:
+        # a review that misses a canon slip costs more than the call.
+        "novella_writer": "claude-opus-5",
+        "novella_editor": "claude-opus-5",
     },
     # Reply ceilings, per agent. A ceiling is not a charge — you pay for the
     # tokens produced, so these are only a stop on a runaway reply. They live
@@ -44,6 +51,10 @@ DEFAULTS: dict[str, Any] = {
         "writer": 8000,
         "editor": 16000,
         "designer": 8000,
+        # A novella chapter is 2.5-4k words (~5k tokens) plus its summary,
+        # new details and flags.
+        "novella_writer": 16000,
+        "novella_editor": 8000,
     },
     "max_edit_passes": 2,
     # How far a chapter may drift from its word target before it is sent back

@@ -49,7 +49,8 @@
   });
 
   // Page tabs. Add a page here when its route exists on the server.
-  const PAGES = [["Stories", "/"], ["Casting", "/casting"]];
+  const PAGES = [["Stories", "/"], ["Casting", "/casting"],
+                 ["Ambience", "/ambience"], ["Novellas", "/novellas"]];
   function nav(el, current) {
     el.classList.add("pages");
     el.innerHTML = PAGES.map(([name, href]) =>
