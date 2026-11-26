@@ -246,6 +246,7 @@
           width:min(520px, 92vw); max-height:88vh; overflow-y:auto; padding:22px 24px; }
   #newf h2 { margin:0 0 4px; font-size:19px; }
   #newf .lede { color:var(--dim); font-size:13px; margin:0 0 16px; }
+  #newf fieldset[hidden] { display:none; }
   #newf fieldset { border:1px solid var(--line); border-radius:6px; margin:0 0 14px;
                    padding:12px 14px; }
   #newf legend { font-family:var(--mono); font-size:11px; text-transform:uppercase;
@@ -609,9 +610,9 @@
   </main>
   <div id="xscrim"><form id="newf">
     <h2>New outline</h2>
-    <p class="lede">The ideator drafts an outline in the series you pick, using
+    <p class="lede" id="nlede">The ideator drafts an outline in the series you pick, using
       its bible. It lands under Outlines awaiting review.</p>
-    <fieldset><legend>Series</legend><div id="nbibles">loading…</div></fieldset>
+    <fieldset id="nseries"><legend>Series</legend><div id="nbibles">loading…</div></fieldset>
     <fieldset><legend>Length</legend><div class="lens" id="nlens"></div></fieldset>
     <fieldset><legend>Notes for the ideator</legend>
       <textarea id="nnotes" placeholder="Optional. e.g. a winter story centred on the bell-ringer."></textarea>
@@ -1642,7 +1643,7 @@ async function openNew() {
   const m = await (await fetch("/api/bibles")).json();
   ctx.menu = m; renderSeriesMenu();
   const ok = m.bibles.filter(b => !b.problems.length);
-  // The series the queue is showing, if it can take an outline; still changeable.
+  // The series the queue is showing, if it can take an outline.
   const cur = ok.some(b => b.name === ctx.series) ? ctx.series : "";
   box.innerHTML =
     m.bibles.map(b => b.problems.length
@@ -1661,6 +1662,17 @@ async function openNew() {
       `title="Preview what promoting this draft would write. Free.">Promote</button>` +
       `</div>`).join("") ||
     `<p class="empty">No bibles yet.</p>`;
+
+  // A series already chosen in the switcher is the series: no second pick here.
+  // "All series" (or a draft) still shows the list, with its Promote buttons.
+  document.getElementById("nseries").hidden = !!cur;
+  const curB = ok.find(b => b.name === cur);
+  document.getElementById("nlede").innerHTML = curB
+    ? `The ideator drafts a <b>${esc(curB.series)}</b> outline from its bible. ` +
+      `It lands under Outlines awaiting review. To use another series, switch it ` +
+      `in the series picker first.`
+    : `The ideator drafts an outline in the series you pick, using its bible. ` +
+      `It lands under Outlines awaiting review.`;
 
   const def = m.default_length ?? m.lengths[0];
   document.getElementById("nlens").innerHTML = m.lengths.map(n =>
