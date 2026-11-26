@@ -8,8 +8,8 @@
     "The cursed object"
   ],
   "bible_conflict": null,
-  "logline": "A widow hires a young salvager to recover her drowned family's sealed strongbox before a town hearing, and the lock guarding it turns out to work exactly as her ancestor promised, which is precisely the trouble.",
-  "promise": "A dive through a collapsed drowned house, a lock that costs exactly what it claims to cost, and an old document that settles a land dispute more fairly than either claimant expected.",
+  "logline": "When a Hartsford herbalist hires Jory Brennick to pull his grandmother's sealed chest from a collapsed house before the dock crew's new pilings seal it away for good, the lock guarding it opens exactly as the old stories promised, and exacts exactly the price they warned of.",
+  "promise": "A race against a building schedule through a collapsed drowned house, a lock that costs precisely what the old chant says it costs, and a recovered remedy from before the Cataclysm that proves its worth in the present.",
   "setting": "the drowned streets below Hartsford and Shoreside, Sunken Reach, early autumn, about twenty years after the Cataclysm",
   "target_words": 4500,
   "cast": [
@@ -31,140 +31,140 @@
       "age": 42,
       "gender": "female",
       "station": "Floatsome hazard charter and salvager",
-      "want": "to keep her son out of the drowned streets she knows are more dangerous than he believes",
+      "want": "to keep her son from underestimating the danger of the drowned streets she still remembers from before the flood",
       "appearance": "auburn hair just starting to grey",
       "dress": "short trousers, long sleeves, wide-brimmed hat",
       "voice_note": "dry, practical, understates danger",
       "recurring": true
     },
     {
-      "name": "Edda Moss",
+      "name": "Walter Ames",
       "role": "supporting",
-      "age": 54,
-      "gender": "female",
-      "station": "Hartsford widow, claimant to her family's old dockside grant",
-      "want": "to secure proof of her family's claim before the Shoreside hearing, to honor her ancestors' name",
-      "appearance": "A stout woman of fifty-four, silver-streaked hair pinned under a wide straw hat, deep lines from years of squinting at water.",
-      "dress": "A dark travelling cloak over a modest grey dress, a brass locket at her throat.",
-      "voice_note": "formal, careful phrasing, old-fashioned courtesy"
-    },
-    {
-      "name": "Corin Vale",
-      "role": "supporting",
-      "age": 33,
+      "age": 61,
       "gender": "male",
-      "station": "Shoreside dock-builder, head of the stilt expansion crew",
-      "want": "to claim the old dock site for new piers before winter storms, to house families still crowded on the shore",
-      "appearance": "A broad-shouldered man in his early thirties, sunburned, with calloused hands and a short cropped beard.",
-      "dress": "A canvas work coat with a carpenter's rule in the pocket, boots spattered with mud.",
-      "voice_note": "blunt, impatient but not unkind"
+      "station": "Hartsford herbalist, descendant of the drowned town's apothecary family",
+      "want": "to recover his grandmother's sealed chest of remedies before the entrance is lost, hoping its cures can ease a fever moving through Hartsford",
+      "appearance": "A stooped man of sixty-one with a close white beard and ink-stained fingers from years of grinding herbs.",
+      "dress": "A patched wool coat over a leather apron, a brass magnifying loupe on a cord at his neck.",
+      "voice_note": "soft-spoken, apologizes before asking for anything"
     },
     {
-      "name": "Rill Ashby",
+      "name": "Selah Vance",
+      "role": "supporting",
+      "age": 38,
+      "gender": "female",
+      "station": "Shoreside dock-builder, foreman of the stilt expansion crew",
+      "want": "to drive the new pilings and finish the stilt line before the first winter storm closes the harbor to construction",
+      "appearance": "A tall, broad-shouldered woman of thirty-eight with wind-cracked skin and dark hair cropped short under a canvas cap.",
+      "dress": "A heavy oiled coat and tall boots, a carpenter's plumb-line looped at her belt.",
+      "voice_note": "brisk, states facts rather than opinions"
+    },
+    {
+      "name": "Liora Quill",
       "role": "supporting",
       "age": 19,
       "gender": "female",
-      "station": "Floatsome salvager, Jory's rival and friend",
-      "want": "to make a name for herself as a salvager instead of always being mentioned beside Jory",
-      "appearance": "A wiry young woman of nineteen with cropped sandy hair and quick dark eyes.",
-      "dress": "A sleeveless diving vest and rolled trousers, a string of small salvage trinkets tied at her belt.",
-      "voice_note": "quick wit, teasing"
+      "station": "Floatsome salvager, Jory's friendly rival",
+      "want": "to land a find notable enough that people stop calling her 'Jory's partner'",
+      "appearance": "A lean young woman of nineteen with a long braid of light brown hair, bleached pale at the tips by sun and salt.",
+      "dress": "A sleeveless diving vest over rolled trousers, a string of small brass fittings tied at her belt.",
+      "voice_note": "quick, teasing, needles Jory good-naturedly"
     }
   ],
   "chapters": [
     {
       "n": 1,
-      "title": "A Box Beneath the Water",
+      "title": "Six Days Before the Pilings",
       "beats": [
-        "Jory and Rill sort the morning's salvage finds on a Floatsome platform, trading friendly jabs about who found the better haul.",
-        "Edda Moss arrives by hired boat from Hartsford, asking the dockhands specifically for Jory by name.",
-        "Edda explains she needs a sealed strongbox recovered from her family's sunken home before a hearing in six days decides who owns the old family dock.",
-        "Maud, overhearing, objects: that stretch of drowned street lies near the new fissure, a zone she has never fully charted.",
-        "Jory accepts the contract anyway, setting a six-day deadline and leaving Maud uneasy."
+        "Jory and Liora Quill sort the morning's salvage on a Floatsome platform, trading jabs about whose haul is better.",
+        "Walter Ames arrives by hired boat from Hartsford, asking the dockhands specifically for Jory by name.",
+        "Walter explains that Shoreside's dock crew will drive new pilings into his family's old street in six days, sealing the collapsed house's entrance forever, and he needs his grandmother's locked chest of remedies out before then.",
+        "Maud, overhearing, warns that stretch of street lies close to the new fissure and hasn't been checked since a tremor loosened the harbor shelf.",
+        "Jory accepts the contract over Maud's objection, setting a six-day race against the builders' schedule."
       ],
       "target_words": 560
     },
     {
       "n": 2,
-      "title": "Charts and Warnings",
+      "title": "The Foreman's Schedule",
       "beats": [
-        "Maud reluctantly brings out her old hazard chart of the drowned street, drawn years ago from memory of the town before the flood.",
-        "She marks the house's location but warns the chart hasn't been checked there since nobody salvages that deep as a rule.",
-        "Rill mentions rumors that another diver has been seen working that same street recently, unsettling Jory.",
-        "Maud lets slip one personal detail: she played near that house as a girl, and remembers the family chanting something at their door, though she doesn't finish the thought.",
-        "At dawn they reach the site and find the street doesn't match the chart at all; the house's roof has collapsed into the lane since Maud last saw it."
+        "Jory, Liora, and Maud travel to Shoreside to confirm the timeline with foreman Selah Vance.",
+        "Selah states plainly that her crew starts driving pilings into that exact street in six days, and she won't delay the work for a salvage job.",
+        "Selah adds that an early storm moving in from the coast could push her start forward to five days, or fewer.",
+        "Maud unrolls her old hazard chart of the drowned street, drawn from memory, marking the house, but admits she hasn't checked it since the tremor.",
+        "At dawn they dive to the site and find the street doesn't match the chart: the house's roof has collapsed into the lane since Maud last saw it."
       ],
       "target_words": 560
     },
     {
       "n": 3,
-      "title": "What the Chart Missed",
+      "title": "Through the Broken Window",
       "beats": [
-        "Jory and Rill pick through the collapsed rubble underwater and find the planned entrance blocked solid.",
-        "They work their way in through a broken window into the sunken parlor instead.",
-        "Inside, they notice recently cleared silt and find a dropped prying tool stamped with an unfamiliar mark.",
-        "They locate the strongbox bolted to a beam, its lock seamless and faintly warm against Jory's glove.",
-        "Unable to free or open it, they surface carrying the stranger's dropped tool as evidence someone got there first."
+        "Jory and Liora find the entrance marked on Maud's chart fully blocked by fallen roof timbers.",
+        "They find another way in, through a broken parlor window into the sunken room.",
+        "Inside, they find fresh chisel marks on a wall near the strongbox, chipped away far too recently to be from the Cataclysm.",
+        "They locate the strongbox bolted to a support beam, its lock seamless, no keyhole, faintly warm through Jory's glove.",
+        "Running low on air, they surface unable to open or free it, left wondering who else has been down there before them."
       ],
       "target_words": 560
     },
     {
       "n": 4,
-      "title": "A Nephew's Claim",
+      "title": "The Foreman's Survey",
       "beats": [
-        "Back in Shoreside, Jory shows Edda the stamped tool, and she recognizes the mark as her nephew Corin's.",
-        "Pressed, Edda admits Corin has already filed his own claim on the dock site, which will stand by default if she produces no proof.",
-        "She explains the strongbox was sealed generations ago by an ancestor using something pulled from the crack beneath the water.",
-        "Jory describes the lock's warmth and seamlessness, and Edda admits even she doesn't know how to open it, since her family's full naming tradition scattered with the flood.",
-        "Corin himself arrives at the dock and admits, without much shame, that he tried to get into the box himself to settle the matter his own way."
+        "Jory reports the fresh chisel marks to Walter, who has no idea who could have gotten inside.",
+        "Selah Vance, checking their progress at the dock, admits her own survey crew probed that exact house last week while marking piling positions, chipping at the wall to test the foundation.",
+        "Selah reveals her survey found the collapsed house sits directly where a new piling line is meant to go, meaning the piling itself could crush the box before it's ever opened.",
+        "Walter explains the box was sealed generations ago by his grandmother, an herbalist, using material drawn from the fissure, and that the lock opens only to a blood relative who speaks the household's true name three times.",
+        "He admits the old stories say the lock 'takes its own payment' for opening, though no one living has used it, and insists he must be the one to speak it himself."
       ],
       "target_words": 560
     },
     {
       "n": 5,
-      "title": "The Dock at Stake",
+      "title": "What Maud Remembers",
       "beats": [
-        "Corin explains his urgency: Shoreside's families need the old dock's foundations for new stilts before the winter storms close in.",
-        "He insists he meant only to look, not to steal, and that the legal limbo has stalled work his crews can't afford to delay.",
-        "Edda and Corin argue, and an old family rift surfaces beneath the dispute over the dock.",
-        "Jory proposes they let him finish retrieving the box properly instead of fighting over who saw it first.",
-        "Corin agrees to a three-day window only, and hands back the dropped tool, admitting he knows the lock's exact shape better than he let on."
+        "Jory relays the chant requirement and the lock's warmth to Maud back at Floatsome.",
+        "Maud realizes she once heard children chanting something at that very door as a girl, before the Cataclysm, a phrase spoken for luck at the threshold.",
+        "She recalls enough of its shape to know it named the household three times, matching what Walter described.",
+        "Maud warns that a lock drawing on fissure material might ask for more than the old stories admit, since nobody has tested one in twenty years, and insists on coming along to watch.",
+        "A runner arrives from Shoreside: the storm has moved in faster than expected, and Selah's crew now starts driving pilings in three days, not six."
       ],
       "target_words": 560
     },
     {
       "n": 6,
-      "title": "A Chant Remembered",
+      "title": "The Second Dive",
       "beats": [
-        "Jory returns to Maud and describes the lock's warmth and the way it seems to wait rather than simply resist.",
-        "Maud realizes it matches an old household charm from her childhood, a phrase families once spoke at their doors for luck before the Cataclysm.",
-        "She recalls enough of the rhyme to know it named the household three times, tying it to Edda's family name.",
-        "Maud warns that locks worked from fissure material may ask for more than words, cautioning Jory not to go in alone a second time.",
-        "They agree Edda herself must come down and speak the chant at the box, meaning a joint dive within the three days left."
+        "With three days left, Jory, Liora, Maud, and Walter take a boat out together at first light.",
+        "They guide a nervous Walter down through the collapsed house to the strongbox.",
+        "Walter speaks the remembered chant, naming his family's name three times as Maud recalls it.",
+        "The lock answers by drawing warmth through his hand, his fingers going numb and cold as the box finally opens.",
+        "Inside is not the ready chest of remedies he expected, but a slim, water-stained formulary and a separate wrapped bundle of unfamiliar mineral."
       ],
       "target_words": 560
     },
     {
       "n": 7,
-      "title": "Beneath the Broken Roof",
+      "title": "A Different Kind of Cure",
       "beats": [
-        "Jory, Rill, and Maud guide a nervous Edda down through the collapsed house to the strongbox.",
-        "Edda speaks the remembered chant, naming her family three times as Maud recalls it.",
-        "The lock answers not to the words alone but draws warmth through her hand, her fingers going faintly cold as the box finally opens.",
-        "Inside is not the deed of ownership Edda expected but an older charter, its script faded and stranger than she hoped.",
-        "She surfaces holding the document, unsure what it actually grants."
+        "Onshore, Walter's numb hand slowly warms while Maud examines the bundle, recognizing the mineral as raw fissure-glass, the same substance worked into the lock itself.",
+        "They read the water-stained formulary together, Jory sounding out passages where the ink has run, learning Walter's grandmother used tiny amounts of that mineral in her remedies decades before anyone understood what it was.",
+        "Walter admits this complicates his hope for an easy cure, since the notes call for careful, exact measures, and the mineral is costly and dangerous to handle.",
+        "Liora spots one clear page listing a measured recipe for an emergency fever draught already proven safe once before, if a sample can be matched exactly to the one in the bundle.",
+        "Walter decides to carry the formulary and the mineral straight to a Hartsford healer rather than try it himself, racing what time is left before the storm."
       ],
       "target_words": 560
     },
     {
       "n": 8,
-      "title": "Commons for All",
+      "title": "The Pilings Go In",
       "beats": [
-        "Onshore, Edda, Jory, Maud, Rill, and Corin puzzle out the faded charter together.",
-        "The old script reveals the dock was granted not to Edda's family alone but to all who fled the drowned town, as common ground.",
-        "Corin realizes neither he nor Edda owns the site outright, and the old family rift eases as Edda finds her ancestor's intent kinder than she expected.",
-        "Jory is paid for the completed contract, and Maud corrects her chart to mark the collapsed house and the fissure's reach.",
-        "Jory and Rill, pleased with the story they'll carry back to Floatsome, start eyeing the fissure itself as their next job, with Maud cautiously willing to chart the way this time."
+        "Three days later, the Hartsford healer tests the old fever draught on a patient and it eases the outbreak, using the exact measure from the grandmother's formulary.",
+        "Selah's crew drives the first pilings into the cleared street exactly on schedule, the strongbox and its contents already safely out.",
+        "Walter pays Jory the full contract fee and gives Maud a share for her memory of the chant and her corrected chart.",
+        "Maud marks the collapsed roof and the fissure's nearer reach onto her chart, so the next salvager won't be caught out as they were.",
+        "Jory and Liora, pleased with the finished job, start eyeing the fissure itself as their next contract, with Maud cautiously agreeing to chart the way this time."
       ],
       "target_words": 580
     }
@@ -173,5 +173,15 @@
   "notes": "let's look at jory in the sunken reach with either someone contracting him to find something and he discovering  a mystery.",
   "bible": "broken-edges",
   "series": "Mapping the Broken Edges",
-  "slug": "the-lock-that-kept-its-word"
+  "slug": "the-lock-that-kept-its-word",
+  "revisions": [
+    {
+      "feedback": "Keep these exactly as they are, word for word where they are text: the setting; the tropes, exactly as named; the title.\n\nReplace these wholesale rather than adjusting what is there: the logline; the promise; the cast, including their names, ages and stations; the chapters and their beats.\n\nThe new chapters must carry 4 to 5 concrete beats each \u2014 things that happen, not moods. That density is what stops the prose stretching to fill the words rather than the story getting bigger.\n\nInvent a genuinely new cast. Recurring characters from the series bible may still appear where the story needs them, copied verbatim as always, but the guest characters should be new people with new names \u2014 not the previous ones renamed.\n\nwhy would there be a land dispute over flooded land?\nI think they wouldn't fight over putting the pilings but the owner would want to find the item before the entrance was closed off",
+      "previous_title": "The Lock That Kept Its Word"
+    },
+    {
+      "feedback": "Keep these exactly as they are, word for word where they are text: the logline; the promise; the setting; the tropes, exactly as named; the title; the chapters and their beats.\n\nReplace these wholesale rather than adjusting what is there: the cast, including their names, ages and stations.\n\nInvent a genuinely new cast. Recurring characters from the series bible may still appear where the story needs them, copied verbatim as always, but the guest characters should be new people with new names \u2014 not the previous ones renamed.\n\nThe chapters are being kept, so rewrite any beat that names a character who no longer exists, keeping the event the beat describes.\n\ndessa fenwick is already mentioned and lives in the Glasswoods. so we need another character",
+      "previous_title": "The Lock That Kept Its Word"
+    }
+  ]
 }
