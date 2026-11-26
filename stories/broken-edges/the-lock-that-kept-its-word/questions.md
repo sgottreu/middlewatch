@@ -17,3 +17,21 @@ You already have the better clock sitting right in Corin's beats and haven't use
 
 To make that change you'd touch the logline and promise (drop "before a town hearing," make it "before Corin's crew drives the first pilings" or similar), Edda's want (proving her claim becomes retrieving/preserving what's hers before the site disappears under new stilts), Corin's want (keep it, it already works), and chapters 1, 4, 5 and 8, where the hearing and claim-filing language should become construction-schedule language. The charter-as-commons-land twist in chapter 8 can survive fine — it still lands as an ironic, fairer-than-expected answer — but it would resolve a practical standoff over the same ground rather than a legal verdict nobody in this world has a mechanism to hand down.
 
+## 2026-11-26 22:15
+
+**Q:** since the house is underwater, they can't speak a chant
+
+Good catch — that's a real hole, and it's in the outline as currently written.
+
+Chapter 6 has Walter dive down to the collapsed house and "speak the remembered chant, naming his family's name three times" at the strongbox underwater. Speech doesn't work underwater: no air to carry it, and a diver's mouth would be full of water or occupied by a breathing arrangement. As written, the climax of the story — the lock answering to a spoken chant — can't physically happen where the outline puts it.
+
+This touches chapter 6 directly (the dive and the speaking-the-chant beat), chapter 5 (which sets up the chant and Maud's warning, and has the characters planning to go down and do this), and arguably chapter 3 (which establishes the lock has "no keyhole" and is presumably meant to respond to sound/voice rather than a key — that mechanic needs rethinking too).
+
+A few ways to fix it, any of which keeps the folklore logic intact:
+
+- The chest itself gets raised or dragged to the surface first (perhaps the whole point of chapters 2–3's reconnaissance is to rig lines to it), and the chant is spoken in open air once it's out of the house, with the dive work being about freeing it from the beam rather than opening it on the spot.
+- The lock doesn't require speech at all but responds to something that works underwater — blood (a cut hand pressed to it, costing exactly what the chant would have cost), or a name written and sunk against it, or breath itself (bubbles blown against the mechanism, which still "costs" in the folk-tale sense of giving up air).
+- Walter speaks the chant at the surface, into some device or conduit that carries the words down — but this risks smuggling in a magic-detector gadget that isn't earned anywhere else in the story, so it's probably the weakest option.
+
+I'd lean toward the first fix: it's the smallest change, it preserves the existing beat structure (find it, can't open it, bring the right person, use the chant), and it also gives chapter 6 a stronger physical task — wrestling a bolted strongbox free and hauling it up — before the quieter, dry-land payoff of Walter speaking the words and paying the price.
+
