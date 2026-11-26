@@ -1,0 +1,134 @@
+{
+  "title": "The Silver Vein",
+  "genre": "fantasy",
+  "subgenre": "mystery",
+  "tropes": [
+    "The apprentice",
+    "The rule that must not be broken",
+    "The thing nobody has studied"
+  ],
+  "bible_conflict": null,
+  "logline": "When a trader's leaf-detector stays silent over a pocket of bad air, an apprentice and her teacher trace the silence to a desperate harvester who learned to fake the one sign their whole craft is built on.",
+  "promise": "A mentor-and-apprentice craft story that delivers a real rule, a real breach of it, and a proof scene that settles the danger for good.",
+  "setting": "Earlmere, a lumber town on the edge of the Glasswood, early autumn",
+  "target_words": 2250,
+  "cast": [
+    {
+      "name": "Garret Marsh",
+      "role": "supporting",
+      "age": 45,
+      "gender": "male",
+      "station": "Glasswood lumberjack and mapper",
+      "want": "to prove the glass leaves hold real worth before the last of the timber trade dies with him",
+      "appearance": "broad lumberjack's build, greying beard",
+      "dress": "layered leather scuffed silver by the glass, cut-proof gauntlets, an eye guard, and a long saw across his back",
+      "voice_note": "gruff, clipped, slow to praise",
+      "recurring": true
+    },
+    {
+      "name": "Elin Hargrove",
+      "role": "protagonist",
+      "age": 19,
+      "gender": "female",
+      "station": "miller's daughter now apprenticed to Garret as a leaf harvester",
+      "want": "to be trusted with real work instead of being sent home at the first sign of trouble",
+      "appearance": "A slim young woman with a short, wind-chapped braid of brown hair and ink-stained fingers.",
+      "dress": "A patched work dress tucked into mud-stiff boots, with a harvesting pouch of waxed cloth at her hip.",
+      "voice_note": "eager, quick to speak before she thinks"
+    },
+    {
+      "name": "Dessa Fenwick",
+      "role": "supporting",
+      "age": 33,
+      "gender": "female",
+      "station": "independent trader working the Ashfall-to-Tollgate route",
+      "want": "to prove her near miss on the road wasn't her own carelessness",
+      "appearance": "A sturdy woman with sun-browned skin and a long scar along one forearm from an old mule kick.",
+      "dress": "Travel-worn leathers and a wide-brimmed hat tied under her chin against the wind.",
+      "voice_note": "blunt, talks fast when rattled"
+    },
+    {
+      "name": "Jasper Lund",
+      "role": "antagonist",
+      "age": 24,
+      "gender": "male",
+      "station": "Glasswood leaf harvester under contract to Mabel Odell",
+      "want": "enough coin to keep his mother in medicine without losing the family's grove",
+      "appearance": "A lean young man with calloused palms stained faintly green from leaf sap and dark hair cut close.",
+      "dress": "A rough work tunic with dye stains at the cuffs and a satchel of harvesting shears.",
+      "voice_note": "quiet, answers only when pressed"
+    },
+    {
+      "name": "Mabel Odell",
+      "role": "supporting",
+      "age": 52,
+      "gender": "female",
+      "station": "Earlmere's leaf broker, middleman between harvesters and Tollgate's buyers",
+      "want": "to keep the leaf trade alive for the whole town, even if it means looking away from a little trouble",
+      "appearance": "A stout older woman with iron-grey hair pinned under a kerchief and ledger-ink permanently grey on her fingertips.",
+      "dress": "A heavy wool shawl over a merchant's apron with many pockets for coin and chalk.",
+      "voice_note": "brisk, talks in numbers and tallies"
+    }
+  ],
+  "chapters": [
+    {
+      "n": 1,
+      "title": "Silver Veins",
+      "beats": [
+        "In the Earlmere drying sheds, Garret teaches Elin the rule of the harvest: a glass leaf may only be cut once its central vein has turned fully silver, never before, or it will fall silent when it's needed.",
+        "Elin reaches for a borderline leaf and Garret stops her hand sharply, telling her the rule has never once failed him in all his years cutting.",
+        "Dessa Fenwick arrives at the mill shaken, carrying a dead detector bundle, and explains she nearly rode her mule straight into a hollow of bad air in the Ashfall Marches because the leaves never chimed.",
+        "Garret checks the bundle's tag against the batch number and realizes these leaves, though sold under Mabel Odell's mark, were never cut by any harvester he knows."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 2,
+      "title": "The Ledger",
+      "beats": [
+        "Garret and Elin bring the dead bundle to Mabel Odell's trading post and ask her to find the batch in her ledger.",
+        "Mabel defends her bookkeeping, showing that every harvester on her books is registered and sworn to the silver-vein rule.",
+        "Elin notices one name, Jasper Lund, has been delivering far more mature leaf than the season's thinned trees should yield.",
+        "Mabel admits, uneasy, that Jasper's mother is gravely ill and he's been desperate for coin, and agrees to let them inspect his drying racks before the next shipment leaves for Tollgate at dawn."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 3,
+      "title": "The Dye",
+      "beats": [
+        "At Jasper's homestead, Elin spots racks of leaves with bright silver veins that smear faintly when she rubs her thumb across them.",
+        "Garret confirms it is berry dye painted over unripe veins, not true silvering.",
+        "Cornered, Jasper admits the mature trees nearby are stripped bare from years of cutting, and he started painting the veins to make quota and pay for his mother's medicine.",
+        "A neighbor runs up with the news that the shipment already left before dawn, loaded onto Kettering's buyer caravan bound for Tollgate, a full day's lead ahead of them."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 4,
+      "title": "The Road",
+      "beats": [
+        "Garret, Elin, and Dessa saddle up to chase the caravan, with Dessa guiding them along a shortcut she knows from the trading route.",
+        "Elin worries aloud that even catching the caravan won't help, since the painted veins look convincing to anyone without Garret's eye.",
+        "Elin remembers something no one has ever tested: a true mature leaf stays faintly warm against a breath, holding a trace of the tree's magic, while an unripe one stays cold no matter how long it's held, and she tries it on a leaf taken from Jasper's rack.",
+        "The test confirms the leaf is unripe, and they reach the crossing at Tollgate just as the caravan driver is handing the bundles over to Kettering's buyer."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 5,
+      "title": "The Test",
+      "beats": [
+        "Garret halts the exchange, and Elin demonstrates the breath test publicly, showing the cold, painted leaf against a true silvered one.",
+        "The buyer refuses the tainted shipment, and the furious caravan driver blames Mabel, who must now make the loss good out of her own trade credit.",
+        "Back in Earlmere, the town's anger falls on Jasper, but Garret proposes he work off the debt properly under supervision, learning to cut the rule right instead of losing his family's grove.",
+        "Garret names Elin his apprentice before the Glasswood Society, with the breath test recorded as the first proven way to tell a leaf's true age, closing the season's danger for good."
+      ],
+      "target_words": 450
+    }
+  ],
+  "length_min": 15,
+  "bible": "broken-edges",
+  "series": "Mapping the Broken Edges",
+  "slug": "the-silver-vein"
+}

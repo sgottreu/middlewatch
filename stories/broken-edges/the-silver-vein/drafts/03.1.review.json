@@ -1,0 +1,62 @@
+{
+  "n": 3,
+  "pass": true,
+  "score": 7,
+  "beats": [
+    {
+      "beat": "At Jasper's homestead, Elin spots racks of leaves with bright silver veins that smear faintly when she rubs her thumb across them.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Garret confirms it is berry dye painted over unripe veins, not true silvering.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Cornered, Jasper admits the mature trees nearby are stripped bare from years of cutting, and he started painting the veins to make quota and pay for his mother's medicine.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "A neighbor runs up with the news that the shipment already left before dawn, loaded onto Kettering's buyer caravan bound for Tollgate, a full day's lead ahead of them.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Chapter ends on the caravan's full-day head start, forcing an immediate chase that sets up chapter 4."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": [
+      "A narrator segment reads only 'said Elin.' immediately after a segment already tagged speaker Elin Hargrove, duplicating the attribution for no reason.",
+      "'Jasper Lund stood in it with a bucket in one hand' leaves 'it' ambiguous between the lifted sack and the doorway it reveals; a listener cannot resolve this on the fly."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [
+    "The redundant 'said Elin.' narrator line after an already-tagged Elin segment is dead weight and should be cut or merged into the preceding line.",
+    "'Jasper Lund stood in it' has an unclear antecedent for 'it' (sack vs. doorway); rewrite as 'Jasper Lund stood in the gap' or similar."
+  ],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Serves the apprentice (Elin's thumb test) and the rule that must not be broken (Jasper's dyed veins) directly; the thing nobody has studied is reserved for chapter 4 as planned, so no fourth trope creeps in here.",
+  "length_note": null,
+  "fixes": [
+    "Cut the stray narrator segment 'said Elin.' following the already-tagged Elin Hargrove line; it duplicates the attribution and adds nothing.",
+    "Rewrite 'Jasper Lund stood in it with a bucket in one hand' so 'it' clearly names the doorway or gap, not the lifted sack.",
+    "Consider trimming one of the two consecutive Jasper speeches ('There isn't a tree old enough...' and 'Nine doesn't pay a carter...') to tighten the confession, since both make the same point about insufficient yield."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "chapter_hash": "354c9586221a7027"
+}

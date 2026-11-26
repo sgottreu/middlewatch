@@ -1,0 +1,69 @@
+{
+  "n": 5,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Garret halts the exchange, and Elin demonstrates the breath test publicly, showing the cold, painted leaf against a true silvered one.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "The buyer refuses the tainted shipment, and the furious caravan driver blames Mabel, who must now make the loss good out of her own trade credit.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Back in Earlmere, the town's anger falls on Jasper, but Garret proposes he work off the debt properly under supervision, learning to cut the rule right instead of losing his family's grove.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Garret names Elin his apprentice before the Glasswood Society, with the breath test recorded as the first proven way to tell a leaf's true age, closing the season's danger for good.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "As the closing chapter, the turn is the handover of authorship to Elin, a satisfying close of the apprentice arc rather than a hook forward."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": [
+      "\"Sell the grove and you've a man with nothing, and nothing is what paints a leaf.\" chains three clauses that change grammatical shape (imperative, then subject 'you', then subject 'nothing'); split after 'with nothing.'"
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [
+    "\"Sell the grove and you've a man with nothing, and nothing is what paints a leaf.\" is a clause chain that shifts subject twice; split into two sentences."
+  ],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "All three tropes land here: the vein rule is upheld and vindicated, the apprentice is formally named, and the breath test closes out the thing nobody had studied; no fourth trope introduced.",
+  "length_note": null,
+  "fixes": [
+    "Split \"Sell the grove and you've a man with nothing, and nothing is what paints a leaf.\" into two sentences at 'with nothing' to keep one clause shape per sentence.",
+    "Consider trimming the embedded driver quotation (\"Odell's mark,\" he said, \"so Odell stands the loss...\") to a cleaner single attribution, since it is the only line in the chapter not given its own segment and reads oddly against the script's consistent per-line format."
+  ],
+  "lint": {
+    "total": 1,
+    "errors": 0,
+    "by_rule": {
+      "clause_chain": 1
+    },
+    "findings": [
+      {
+        "rule": "clause_chain",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "\"Odell's mark,\" he said, \"so Odell stands the loss, down to the last cord, and she can hear it from me.\" The bundles went back up the hill u...",
+        "note": "3 clauses coordinated in 38 words. Heard once, the last one lands with the subject of the first already gone. Split after the first clause, or make every member the same grammatical shape so the ear can follow the pattern."
+      }
+    ]
+  },
+  "chapter_hash": "b48e6e577bc3b0ef"
+}

@@ -1,0 +1,81 @@
+{
+  "n": 3,
+  "pass": false,
+  "score": 7,
+  "beats": [
+    {
+      "beat": "Elin spots racks of leaves with bright silver veins that smear faintly when she rubs her thumb across them.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Garret confirms it is berry dye painted over unripe veins, not true silvering.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Cornered, Jasper admits the mature trees nearby are stripped bare and he started painting veins for quota and his mother's medicine.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "A neighbor runs up with news the shipment already left before dawn on Kettering's caravan, a full day's lead.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Ends on the news of the caravan's full-day lead, forcing a chase and reintroducing Dessa, which sets up chapter 4 directly."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [
+    "'The fullers grey wool with it.' uses 'grey' as a verb mid-sentence, which a listener may parse as an adjective first; reword to 'The fullers use it to dye wool grey.'"
+  ],
+  "generic_prose": [
+    {
+      "quote": "he did not pretend to be surprised to see them",
+      "replace_with": "show his foreknowledge concretely, e.g. he is already holding the dye-crock rather than a bucket of water"
+    },
+    {
+      "quote": "He looked at the racks rather than at either of them.",
+      "replace_with": "a specific guilty gesture \u2014 coiling a cord, wiping a thumbnail \u2014 rather than a generic avoidance beat"
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Serves the rule-that-must-not-be-broken and the apprentice tropes directly through the dye reveal and Elin's unsanctioned rub-test; the thing-nobody-has-studied trope is held back for chapter 4's breath test, which is correct pacing.",
+  "length_note": null,
+  "fixes": [
+    "Chapter runs noticeably over its 450-word target; cut the redundant beat 'He set the bucket down and stayed where he was.' since the bucket was already established the line before.",
+    "Replace 'and he did not pretend to be surprised to see them' with a concrete physical tell rather than a stated absence of surprise.",
+    "Replace 'He looked at the racks rather than at either of them.' with a specific guilty gesture unique to Jasper.",
+    "Reword 'The fullers grey wool with it' for clarity on listen-through, e.g. 'The fullers use it to dye wool grey.'",
+    "Consider compressing the two narrator paragraphs after the break (cart's early departure and the caravan's schedule) into one to recover word count without losing the beat."
+  ],
+  "lint": {
+    "total": 1,
+    "errors": 0,
+    "by_rule": {
+      "break_unanchored": 1
+    },
+    "findings": [
+      {
+        "rule": "break_unanchored",
+        "severity": "warn",
+        "segment": 22,
+        "quote": "The sky had gone grey over the stumps before anybody spoke about what to do.",
+        "note": "The sentence after a scene break has to say when or where we now are \u2014 it is the only cue a listener gets that time has passed."
+      }
+    ]
+  },
+  "chapter_hash": "de51bc2605ef3db3",
+  "length_over": 559,
+  "length_target": 450
+}

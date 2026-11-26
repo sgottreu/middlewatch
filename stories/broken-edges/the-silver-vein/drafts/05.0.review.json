@@ -1,0 +1,80 @@
+{
+  "n": 5,
+  "pass": false,
+  "score": 7,
+  "beats": [
+    {
+      "beat": "Garret halts the exchange, and Elin demonstrates the breath test publicly, showing the cold, painted leaf against a true silvered one.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "The buyer refuses the tainted shipment, and the furious caravan driver blames Mabel, who must now make the loss good out of her own trade credit.",
+      "covered": true,
+      "note": "The driver is shown restraining himself rather than being furious or voicing blame; only Dessa's question and the narrator's summary assign the loss to Mabel."
+    },
+    {
+      "beat": "Back in Earlmere, the town's anger falls on Jasper, but Garret proposes he work off the debt properly under supervision, learning to cut the rule right instead of losing his family's grove.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Garret names Elin his apprentice before the Glasswood Society, with the breath test recorded as the first proven way to tell a leaf's true age, closing the season's danger for good.",
+      "covered": true,
+      "note": "The 'closing the danger for good' is implied by the forty-trial record rather than stated outright, which is acceptable."
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "The chapter closes on Garret handing the breath-test finding and the apprenticeship to Elin, a clear forward-looking resolution for the series' recurring-cast arc."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": [
+      "'which was the nearest thing to restraint anyone saw that afternoon' is a trailing analytic clause telling the listener what the driver's action meant rather than letting it stand.",
+      "'Elin opened her mouth and, for once in her life, shut it again' is a stock phrase rather than a concrete gesture.",
+      "The driver's fury toward Mabel, required by the outline, is undercut by the narration's claim of restraint; the blame lands only through Dessa's question and summary narration."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [
+    "The isolated 'tag': '[dryly]' field on one narrator line has no precedent in earlier chapters and is inconsistent with the established segment format."
+  ],
+  "generic_prose": [
+    {
+      "quote": "which was the nearest thing to restraint anyone saw that afternoon",
+      "replace_with": "Cut the clause; let the driver's swearing stand alone, or give him a line directly blaming Mabel."
+    },
+    {
+      "quote": "Carters and a bridge warden drifted over from the ford to watch, the way men do when somebody stops a cart.",
+      "replace_with": "Keep the carters and warden; drop the generalizing clause about what men do."
+    },
+    {
+      "quote": "Elin opened her mouth and, for once in her life, shut it again.",
+      "replace_with": "Replace with a specific physical beat \u2014 she sets the leaf down, or looks at Garret instead of speaking."
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "All three tropes land straight here: the rule is vindicated by proof, the apprentice is named outright, and the untested breath test is formally recorded \u2014 a clean, non-inverted close.",
+  "length_note": null,
+  "fixes": [
+    "Cut the trailing clause in 'which was the nearest thing to restraint anyone saw that afternoon' and instead give the driver a short line of blame aimed at Mabel, to satisfy 'furious caravan driver blames Mabel' more directly.",
+    "Trim the ford confrontation's procedural back-and-forth (the 'paid for at the loading' exchange and the crowd-gathering sentence) \u2014 this section can lose 60-80 words without losing the beat.",
+    "Cut 'the way men do when somebody stops a cart' as a generic aside.",
+    "Replace 'Elin opened her mouth and, for once in her life, shut it again' with a concrete action.",
+    "Remove the standalone '[dryly]' tag field, which has no precedent in chapters 1-4's format.",
+    "Overall word count runs well past the 450-word target (roughly 625 words); trim the Tollgate ford scene and the town-anger scene rather than the Society scene, which carries the chapter's turn."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "chapter_hash": "fd3022cb5578a7ee",
+  "length_over": 635,
+  "length_target": 450
+}

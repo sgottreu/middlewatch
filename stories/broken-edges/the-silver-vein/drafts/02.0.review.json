@@ -1,0 +1,56 @@
+{
+  "n": 2,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Garret and Elin bring the dead bundle to Mabel Odell's trading post and ask her to find the batch in her ledger.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mabel defends her bookkeeping, showing that every harvester on her books is registered and sworn to the silver-vein rule.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Elin notices one name, Jasper Lund, has been delivering far more mature leaf than the season's thinned trees should yield.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mabel admits, uneasy, that Jasper's mother is gravely ill and he's been desperate for coin, and agrees to let them inspect his drying racks before the next shipment leaves for Tollgate at dawn.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Ends on the discovery that Jasper's bundles are already loaded for a first-light departure, forcing the night inspection that drives chapter three."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Serves the rule-that-must-not-be-broken by having Mabel restate the sworn vow, and seeds the apprentice trope through Elin's ledger literacy solving what Garret's craft-eye alone could not.",
+  "length_note": "Reads somewhat short of the 450-word target, but all four assigned beats land; the shortness could be addressed by giving Elin's ledger discovery a beat more physical detail rather than adding new content.",
+  "fixes": [
+    "Mabel's speech beginning 'His mother has been abed since the spring' runs five sentences in one block; break it with a half-beat of narration (her hands on the ledger, a pause) so the listener can place the shift from excuse to admission.",
+    "To recover the missing word count without padding, show Elin's hand moving down the ledger column as she counts Jasper's deliveries, rather than stating her conclusion directly \u2014 this gives the discovery beat more weight on the page and on the ear.",
+    "Consider trimming 'and a column of weights read to her the way the wood read to Garret' slightly, as it risks feeling like an aside rather than action; keep it only if it earns its place by paying off later in the apprentice arc."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "chapter_hash": "d7e050f0b42e2848"
+}

@@ -1,0 +1,56 @@
+{
+  "n": 4,
+  "pass": true,
+  "score": 7,
+  "beats": [
+    {
+      "beat": "Garret, Elin, and Dessa saddle up to chase the caravan, with Dessa guiding them along a shortcut she knows from the trading route.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Elin worries aloud that even catching the caravan won't help, since the painted veins look convincing to anyone without Garret's eye.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Elin remembers something no one has ever tested: a true mature leaf stays faintly warm against a breath, while an unripe one stays cold, and she tries it on a leaf from Jasper's rack.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "The test confirms the leaf is unripe, and they reach the crossing at Tollgate just as the caravan driver is handing the bundles over to Kettering's buyer.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Ends on Elin asking to demonstrate the breath test publicly rather than let Garret argue it, setting up the confrontation of chapter 5."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": false,
+    "irony_in_dialogue": true,
+    "problems": [
+      "No instance of free indirect discourse appears; narration stays externally observational throughout (e.g. 'Garret said nothing for a while. The mare picked her way over loose stone.') rather than dipping into a character's filtered perception as chapter 1 did with 'which she thought was a considerable act of discipline.'"
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Directly advances 'the thing nobody has studied' (the breath test is explicitly named as untested) and 'the apprentice' (Elin supplies the breakthrough); 'the rule that must not be broken' stays in the background as the standard the new test will support, not contradicted or diluted.",
+  "length_note": null,
+  "fixes": [
+    "Add one line of narration that filters an observation through Elin's perspective without a 'she thought' tag, to restore the free indirect discourse the earlier chapters established as part of this story's voice \u2014 for instance, coloring her view of the buyer's grey coat or the driver's haste with her own anxiety rather than reporting it neutrally."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "chapter_hash": "f6e0743f834b4346"
+}

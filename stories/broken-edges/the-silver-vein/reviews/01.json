@@ -1,0 +1,63 @@
+{
+  "n": 1,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "In the Earlmere drying sheds, Garret teaches Elin the rule of the harvest: a glass leaf may only be cut once its central vein has turned fully silver, never before, or it will fall silent when it's needed.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Elin reaches for a borderline leaf and Garret stops her hand sharply, telling her the rule has never once failed him in all his years cutting.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Dessa Fenwick arrives at the mill shaken, carrying a dead detector bundle, and explains she nearly rode her mule straight into a hollow of bad air in the Ashfall Marches because the leaves never chimed.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Garret checks the bundle's tag against the batch number and realizes these leaves, though sold under Mabel Odell's mark, were never cut by any harvester he knows.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Garret's line 'Nobody I know cut these' reframes the dead bundle from an accident into a mystery of forged harvest, setting up chapter 2's investigation."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [
+    "Dessa's line 'my mule stopped at the lip of a hollow and would not go down, and I kicked her on, because these were on my saddle and these were quiet' shifts subject from mule to I to these across four clauses; split into two sentences.",
+    "'Odell's mark. Batch eleven, this autumn's cut.' uses 'eleven' as a batch number, which is fine, but confirm no larger digit strings appear elsewhere in the series for this batch."
+  ],
+  "generic_prose": [
+    {
+      "quote": "which she thought was a considerable act of discipline",
+      "replace_with": "name the specific thing she does instead \u2014 bites the inside of her cheek, counts the leaves on the tray \u2014 rather than naming the restraint as a feeling"
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Delivers the rule-that-must-not-be-broken straight (the silver-vein rule stated and enforced on page) and opens the apprentice thread through Elin's eagerness; the thing-nobody-has-studied trope is only hinted via the silent detector, appropriately held back for a later chapter.",
+  "length_note": null,
+  "fixes": [
+    "Split Dessa's run-on sentence ('my mule stopped... because these were on my saddle and these were quiet') at 'and I kicked her on' so the subject doesn't drift from mule to narrator to leaves within one sentence.",
+    "Replace 'which she thought was a considerable act of discipline' with a concrete physical action that shows the restraint rather than naming it."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "chapter_hash": "323df43956f0c65c"
+}
