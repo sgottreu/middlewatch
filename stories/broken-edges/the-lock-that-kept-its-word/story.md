@@ -2,7 +2,7 @@
 
 fantasy / slice_of_life · Mapping the Broken Edges
 
-> When a Hartsford herbalist hires Jory Brennick to pull his grandmother's sealed chest from a collapsed house before the dock crew's new pilings seal it away for good, the lock guarding it opens exactly as the old stories promised, and exacts exactly the price they warned of.
+> When a Hartsford herbalist hires Jory Brennick to haul his grandmother's locked chest out of a collapsing drowned house before new pilings seal its only entrance, the chest surfaces safely only for its lock to take the one payment the old rhyme promised: the family name spoken to open it.
 
 ## Length
 
@@ -22,11 +22,11 @@ fantasy / slice_of_life · Mapping the Broken Edges
 | 1 | Six Days Before the Pilings | 5 | 560 | — | — |
 | 2 | The Foreman's Schedule | 5 | 560 | — | — |
 | 3 | Through the Broken Window | 5 | 560 | — | — |
-| 4 | The Foreman's Survey | 5 | 560 | — | — |
+| 4 | A Name Spoken in Air | 5 | 560 | — | — |
 | 5 | What Maud Remembers | 5 | 560 | — | — |
-| 6 | The Second Dive | 5 | 560 | — | — |
-| 7 | A Different Kind of Cure | 5 | 560 | — | — |
-| 8 | The Pilings Go In | 5 | 580 | — | — |
+| 6 | Raising the Box | 5 | 560 | — | — |
+| 7 | The Price | 5 | 560 | — | — |
+| 8 | What the Chest Was For | 5 | 580 | — | — |
 
 ## Cast
 
@@ -59,8 +59,8 @@ fantasy / slice_of_life · Mapping the Broken Edges
 
 | Spend | |
 |---|---|
-| anthropic_input_tokens | 77465.0 |
-| anthropic_output_tokens | 43621.0 |
+| anthropic_input_tokens | 110310.0 |
+| anthropic_output_tokens | 57389.0 |
 
 ---
 

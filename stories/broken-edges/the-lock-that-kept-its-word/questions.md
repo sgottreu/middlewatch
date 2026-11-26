@@ -35,3 +35,13 @@ A few ways to fix it, any of which keeps the folklore logic intact:
 
 I'd lean toward the first fix: it's the smallest change, it preserves the existing beat structure (find it, can't open it, bring the right person, use the chant), and it also gives chapter 6 a stronger physical task — wrestling a bolted strongbox free and hauling it up — before the quieter, dry-land payoff of Walter speaking the words and paying the price.
 
+## 2026-11-26 22:29
+
+**Q:** if the fissure happend during the cataclysm, how would items be found and found in a box sealed before it happened
+
+Good catch — this doesn't line up with the bible. The fissure is explicitly a Cataclysm-era feature ("likely opened during the Cataclysm… only now being noticed"), so fissure-glass as a material has existed for at most twenty years. But the outline has Walter's grandmother sealing the chest with fissure material before the Cataclysm, and chapter 7 has Maud concluding the formulary's remedies were "tested against it generations ago." Both of those put the mineral's use further back than the world allows. A box sealed with fissure-glass has to postdate the Cataclysm, full stop.
+
+The fix is to move the sealing inside the twenty-year window rather than before it. The grandmother can still be the one who did it — she simply did it after the flood, perhaps not long before her death, using fissure-glass that salvagers or alchemists had only recently started pulling up, which also gives a reason the lock is untested ("no one living has tested it" already in your beats fits this better than the "generations ago" framing). The remedies in the formulary would then be her own recent experiments, written up in the years since the Cataclysm, not an old-world cure rediscovered.
+
+This touches: the promise line ("a water-stained remedy from before the Cataclysm that proves itself against a real fever in the present") — the remedy itself can predate the Cataclysm, but its pairing with the fissure mineral and the sealed lock cannot; chapter 4's beat about the grandmother sealing the box with fissure material (fine if reworded to post-Cataclysm); and chapter 7's beat claiming the remedies were tested against the mineral "generations ago" (needs to become within living memory — her lifetime, twenty years back at most).
+
