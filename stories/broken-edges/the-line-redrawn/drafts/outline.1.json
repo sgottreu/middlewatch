@@ -1,0 +1,124 @@
+{
+  "title": "The Line Redrawn",
+  "genre": "fantasy",
+  "subgenre": "romance",
+  "tropes": [
+    "the hedge-witch",
+    "the rule that must not be broken",
+    "the unmagical protagonist"
+  ],
+  "bible_conflict": null,
+  "logline": "A miner bonded by debt to stake a rich new seam and the hedge-witch sworn never to charm past the boundary stones both need the same scrap of marsh ground to save, and neither can afford to pay what it costs.",
+  "promise": "A hedge-witch's craft is shown doing real, respected work with a real price, and the prohibition laid down at the start is honored rather than broken, by a cleverer road than anyone expects.",
+  "setting": "the grazing common between the Glasswood and the Hollowmere, in the Ashfall Marches, as the season turns toward the first hard frost",
+  "target_words": 2250,
+  "cast": [
+    {
+      "name": "Bram Tolliver",
+      "role": "protagonist",
+      "age": 28,
+      "gender": "male",
+      "station": "Ashfall miner-surveyor",
+      "want": "to clear his debt by staking a workable claim before the solstice deadline, without anyone on the common paying the price for it",
+      "appearance": "long beard",
+      "dress": "heavy boots, heavy trousers, long-sleeved shirt, neckerchief",
+      "voice_note": "plain and direct, slow to explain himself, quicker with his hands than his words",
+      "recurring": true
+    },
+    {
+      "name": "Hazel Fenn",
+      "role": "love_interest",
+      "age": 27,
+      "gender": "female",
+      "station": "hedge-witch to the grazing common, charming livestock and births for payment in kind",
+      "want": "to keep the common's cattle safe and her neighbours' trust without paying her teacher's price for breaking the rule",
+      "appearance": "a woman of twenty-seven with weather-reddened cheeks, a thick braid of light brown hair, and calloused hands",
+      "dress": "a wool shawl pinned over a patched herder's dress, with a pouch of charm-herbs tied at her belt",
+      "voice_note": "blunt and watchful, warms slowly, drops into old formulas of speech when she charms"
+    },
+    {
+      "name": "Aldous Pike",
+      "role": "antagonist",
+      "age": 52,
+      "gender": "male",
+      "station": "Ashfall camp foreman, holds Bram's tool-debt and answers to the Survey's own creditors",
+      "want": "to show a profitable claim staked before the solstice, whatever it costs anyone else",
+      "appearance": "a heavyset man of fifty-two with a grey beard and ink-stained fingers from years of ledgers",
+      "dress": "a long oilskin coat over a merchant's waistcoat, boots kept too polished for a mining camp",
+      "voice_note": "brisk, transactional, talks in numbers and deadlines"
+    },
+    {
+      "name": "Senna Loft",
+      "role": "supporting",
+      "age": 63,
+      "gender": "female",
+      "station": "elder holding the grazing rights to the common",
+      "want": "to keep the common and its herd safe, and to see old grudges against Hazel finally settled",
+      "appearance": "a stooped woman of sixty-three with white hair knotted at her neck and deep lines from sun and wind",
+      "dress": "a heavy wool cloak and a shepherd's crook she carries everywhere, worn smooth at the handle",
+      "voice_note": "dry, matter-of-fact, long memory for exactly who did what and when"
+    }
+  ],
+  "chapters": [
+    {
+      "n": 1,
+      "title": "The Seam Under the Common",
+      "beats": [
+        "Bram surveys a rich new mineral seam at the edge of the Hollowmere, where the common's cattle graze between the Glasswood and the marsh.",
+        "He is bonded by a tool-debt to Aldous Pike, who fronted him new gear after a rockfall injury, and Pike wants a staked claim before the solstice or the debt comes due in coin Bram doesn't have.",
+        "At the common he meets Hazel Fenn tending a calf whose hide has begun to glow faintly under the ribs, and she tells him the seam lies past the old boundary stones, on marsh ground by her reckoning.",
+        "Hazel states her teacher's rule plainly, that no one charms past those stones, since her own teacher lost all feeling in her charming hand the one time she tried; she refuses to help him map further and warns him off, but Bram, with his deadline looming, goes anyway."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 2,
+      "title": "Past the Stones",
+      "beats": [
+        "Bram crosses the boundary stones alone and confirms the seam is rich enough to clear his whole debt and more.",
+        "Returning, he finds a second calf sickening fast, its hide gone translucent at the ribs far quicker than Hazel has ever seen, and Senna Loft blames the mining talk itself for stirring the marsh.",
+        "Hazel examines the calf and traces the sickness back toward Bram's staked claim, accusing him of having disturbed something by surveying it.",
+        "Pike arrives delighted at Bram's numbers and moves the digging timetable up to three days hence, leaving Bram to decide what his report will say before the crew breaks ground."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 3,
+      "title": "What the Rock Carries",
+      "beats": [
+        "Bram and Hazel compare notes and find his reading of the stone shows the seam running unbroken from deep marsh ground straight toward the common, a channel rather than an ordinary deposit.",
+        "They test it together, Hazel letting her charm-sense follow the stone's grain, and feel the marsh's quiet pulling along it exactly where Bram's instruments show the ore running.",
+        "Bram realizes the vein is carrying the marsh's change outward, and blasting it open would be like cutting a dike, putting the whole common within the marsh's reach within a season.",
+        "Hazel says the only way she knows to stop it without digging is to charm the ground around the vein closed, but that ground sits past the stones and she won't pay her teacher's price; Bram proposes something neither has tried, moving the stones themselves."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 4,
+      "title": "The Line Redrawn",
+      "beats": [
+        "Hazel objects that moving the stones is cheating the rule rather than keeping it, and Bram argues the rule was never about their old position, only about where the line sits.",
+        "Senna Loft, told of the plan, admits a flood shifted one of the stones long before the Cataclysm and nobody minded then, which loosens Hazel's resolve.",
+        "They agree to try it that night before Pike's crew arrives, using winches and levers from Bram's kit to shift the two nearest stones a few yards, bringing the sick calf and the vein's throat inside the redrawn line.",
+        "Pike sends word he has moved the crew's start time up again, to first light instead of midday, leaving them only the dark hours to finish."
+      ],
+      "target_words": 450
+    },
+    {
+      "n": 5,
+      "title": "First Light",
+      "beats": [
+        "Working through the night, Bram levers the stones into their new places while Hazel keeps the frightened calf calm, finishing the line just as the sky greys.",
+        "Within the new boundary Hazel charms the ground and the calf together, and the glow fades and the marsh's pull along the vein goes quiet, the cost paid as nothing worse than a night without sleep, since the work is honestly inside the line now.",
+        "At first light Pike's crew arrives ready to dig, but Bram hands him a report naming the seam a hazard rather than ore, and offers to sell the finding to the joint Hollowmere survey the Glasswood and Ashfall groups keep, clearing his debt in credit instead.",
+        "Pike takes the deal rather than lose face over nothing to show; Senna tells the common the glow is gone and the old grudge against Hazel eases; Bram asks to help her reset proper markers along the whole line as the season's first true frost settles over the common."
+      ],
+      "target_words": 450
+    }
+  ],
+  "length_min": 15,
+  "notes": "Set this story with the miner",
+  "bible": "broken-edges",
+  "series": "Mapping the Broken Edges",
+  "slug": "the-line-redrawn"
+}
