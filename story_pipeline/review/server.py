@@ -13,6 +13,8 @@ Routes:
                                that cannot yet; free
     POST /api/new              {"bible", "length"?, "notes"?} ideate a new
                                outline in that series — a paid call
+    GET  /api/bibles/<name>/view       the draft and the bible as the agents see
+                                       it, and whether a promote would change it
     GET  /api/bibles/<name>/job        the promote preview's state and result
     GET  /api/bibles/<name>/log        its output; ?from=<byte offset>
     GET  /api/bibles/<name>/apply      what Apply would write and commit, and
@@ -1260,6 +1262,8 @@ def _handler(cfg: dict):
                         self._json(bible_api.job(cfg, name))
                     elif what == "apply":
                         self._json(bible_api.apply_plan(cfg, name))
+                    elif what == "view":
+                        self._json(bible_api.view(cfg, name))
                     elif what == "log":
                         q = parse_qs(urlparse(self.path).query)
                         self._json(bible_api.log(cfg, name,

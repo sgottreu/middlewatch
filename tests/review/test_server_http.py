@@ -412,6 +412,12 @@ def test_api_bibles_job_apply_log(client, real_bibles, sample_draft):
     assert client.get("/api/bibles/salt/log?from=5").json["offset"] == 0
 
 
+def test_api_bibles_view(client, real_bibles, sample_draft):
+    v = client.get("/api/bibles/salt/view").json
+    assert v["name"] == "salt" and v["draft"] and v["agents"] is None
+    assert client.get("/api/bibles/amberlight/view").json["agents"]
+
+
 def test_api_bibles_get_errors(client, real_bibles, sample_draft):
     assert_not_found(client.get("/api/bibles/salt/other"))
     assert_not_found(client.get("/api/bibles/salt"))

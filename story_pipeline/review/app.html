@@ -72,6 +72,12 @@
   #queue #seriesBtn span { color:inherit; font-size:inherit; }
   #queue #seriesBtn #seriesLabel { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   #queue #seriesBtn .car { flex:none; color:var(--dim); }
+  /* Bible: the selected series' bible in the reading pane. Disabled on All. */
+  #queue #bibleBtn { flex:none; padding:7px 10px; cursor:pointer; background:transparent;
+                     color:var(--ink); font-family:var(--mono); font-size:12px;
+                     border:1px solid var(--line); border-radius:6px; }
+  #queue #bibleBtn:hover:not(:disabled) { border-color:var(--accent); color:var(--accent); }
+  #queue #bibleBtn:disabled { color:var(--dim); cursor:default; opacity:.55; }
   #seriesMenu { display:none; position:absolute; top:calc(100% + 4px); left:0; right:0;
                 z-index:15; background:var(--panel); border:1px solid var(--line);
                 border-radius:6px; padding:4px 0; max-height:60vh; overflow-y:auto;
@@ -105,6 +111,23 @@
   .dot { display:inline-block; width:6px; height:6px; border-radius:50%;
          vertical-align:middle; margin-left:6px; }
   .dot.danger { background:var(--danger); } .dot.warn { background:var(--accent); }
+
+  /* bible view --------------------------------------------------------- */
+  .btabs { display:flex; gap:6px; margin:4px 0 16px; }
+  .btabs button { font-family:var(--mono); font-size:12px; padding:5px 12px; cursor:pointer;
+                  background:transparent; color:var(--dim); border:1px solid var(--line);
+                  border-radius:6px; }
+  .btabs button[aria-selected="true"] { color:var(--ink); border-color:var(--accent); }
+  .btabs button:disabled { opacity:.45; cursor:default; }
+  .bmd h1 { font-size:22px; margin:26px 0 6px; }
+  .bmd h1:first-child { margin-top:0; }
+  .bmd h2 { font-size:18px; margin:24px 0 6px; border-top:1px solid var(--line); padding-top:14px; }
+  .bmd h3 { font-size:15px; margin:18px 0 4px; }
+  .bmd h4 { font-size:14px; margin:14px 0 4px; color:var(--dim); }
+  .bmd p { margin:0 0 10px; line-height:1.55; }
+  .bmd ul { margin:0 0 10px 18px; padding:0; line-height:1.5; }
+  .bmd li { margin:3px 0; }
+  .bmd code { font-family:var(--mono); font-size:12px; }
 
   /* document ----------------------------------------------------------- */
   #doc { flex:1; display:flex; flex-direction:column; min-width:0; }
@@ -580,6 +603,8 @@
       <button type="button" id="seriesBtn" aria-haspopup="listbox" aria-expanded="false"
         aria-controls="seriesMenu" title="Show one series in the queue, or all of them"><span
         id="seriesLabel">All series</span><span class="car" aria-hidden="true">▾</span></button>
+      <button type="button" id="bibleBtn" disabled
+        title="Choose a series to read its bible">Bible</button>
       <div id="seriesMenu" role="listbox" aria-label="Series"></div>
     </div>
     <nav id="pages"></nav>
@@ -1556,6 +1581,10 @@ function setSeries(name) {
   document.getElementById("castingTab").href =
     name ? `/casting?series=${encodeURIComponent(name)}` : "/casting";
   document.getElementById("seriesBtn").title = (seriesInfo(name) || {}).label || "";
+  const bb = document.getElementById("bibleBtn");
+  bb.disabled = !name;
+  bb.title = name ? `Read the ${(seriesInfo(name) || {}).label || name} bible. Free.`
+                  : "Choose a series to read its bible";
   renderSeriesMenu();
 }
 
@@ -1620,6 +1649,102 @@ document.addEventListener("click", e => {
 document.getElementById("groups").addEventListener("click", e => {
   const b = e.target.closest("button.promote");
   if (b) { pfrom = "panel"; openPromote(b.dataset.draft); }
+});
+
+// --- bible view ----------------------------------------------------------
+// The selected series' bible, in the reading pane. Two tabs: the draft as you
+// wrote it, and the promoted bible as the agents receive it (the ideator's
+// view, with the genre settings that become its subgenre and trope menu).
+// Read-only; selecting a story replaces it like any other document.
+const bview = { name: null, data: null, tab: "agents" };
+
+function mdInline(t) {
+  return esc(t)
+    .replace(/`([^`]+)`/g, "<code>$1</code>")
+    .replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>")
+    .replace(/(^|[^*\w])\*([^*\s][^*]*)\*(?!\w)/g, "$1<i>$2</i>");
+}
+
+// Enough markdown for a bible: headings, nested bullets, paragraphs, bold,
+// italics and code. Anything else shows as plain text, never as markup.
+function mdToHtml(src) {
+  const out = []; let para = []; const stack = [];
+  // Lines keep their breaks: a draft's preamble is a stack of `Label: value` lines.
+  const flushPara = () => { if (para.length) { out.push(`<p>${para.map(mdInline).join("<br>")}</p>`); para = []; } };
+  const closeTo = depth => { while (stack.length > depth) { out.push("</li></ul>"); stack.pop(); } };
+  for (const raw of src.replace(/\r/g, "").split("\n")) {
+    const h = raw.match(/^(#{1,4})\s+(.*)$/);
+    const li = raw.match(/^(\s*)[-*]\s+(.*)$/);
+    if (h) { flushPara(); closeTo(0); out.push(`<h${h[1].length}>${mdInline(h[2])}</h${h[1].length}>`); }
+    else if (li) {
+      flushPara();
+      const depth = Math.floor(li[1].replace(/\t/g, "  ").length / 2) + 1;
+      if (depth > stack.length) { while (stack.length < depth) { out.push("<ul><li>"); stack.push(1); } }
+      else { closeTo(depth); out.push("</li><li>"); }
+      out.push(mdInline(li[2]));
+    }
+    else if (!raw.trim()) { flushPara(); closeTo(0); }
+    else if (stack.length && /^\s+/.test(raw)) out.push(" " + mdInline(raw.trim()));
+    else { closeTo(0); para.push(raw.trim()); }
+  }
+  flushPara(); closeTo(0);
+  return out.join("");
+}
+
+async function showBible(name) {
+  state.sel = null; state.detail = null; state.editing = null;
+  document.querySelectorAll(".row").forEach(r => r.setAttribute("aria-selected", "false"));
+  setActions(null);
+  const body = document.getElementById("docbody");
+  document.getElementById("docwhat").textContent = "Bible";
+  body.innerHTML = `<p class="empty">Loading the bible…</p>`;
+  showStory(true);
+  let d;
+  try { d = await (await fetch(`/api/bibles/${encodeURIComponent(name)}/view`)).json(); }
+  catch (err) { d = { error: String(err) }; }
+  if (d.error) { body.innerHTML = `<p class="empty">${esc(explain(d.error))}</p>`; return; }
+  bview.name = name; bview.data = d;
+  if (!d.agents) bview.tab = "draft"; else if (!d.draft) bview.tab = "agents";
+  document.getElementById("docwhat").textContent = `Bible · ${d.series}`;
+  renderBible();
+  body.scrollTop = 0;
+}
+
+function renderBible() {
+  const d = bview.data, tab = bview.tab;
+  const tabBtn = (id, label, has) =>
+    `<button type="button" data-btab="${id}" aria-selected="${tab === id}"` +
+    `${has ? "" : " disabled"}>${label}</button>`;
+  let note = "";
+  if (!d.agents) note = `<div class="flag warn">Not promoted yet, so no agent sees this series. ` +
+    `<span class="n">Promote the draft to use it for New outline.</span></div>`;
+  else if (d.stale) note = `<div class="flag warn">The draft has changes the agents don't see yet. ` +
+    `<span class="n">Promote it to bring the bible up to date.</span></div>`;
+  const probs = (d.problems || []).map(p => `<div class="flag danger">${esc(p)}</div>`).join("");
+  const promote = d.draft
+    ? `<button type="button" class="promote" data-draft="${esc(d.name)}" ` +
+      `title="Preview what promoting this draft would write. Free.">Promote…</button>` : "";
+  document.getElementById("docbody").innerHTML =
+    `<h1>${esc(d.series)}</h1>` +
+    `<div class="sub">${esc(d.name)} · ${tab === "draft" ? `${esc(d.name)}.draft.md, as written`
+      : "what the agents receive (the ideator's view)"}</div>` +
+    `<div class="btabs" role="tablist">` +
+      tabBtn("agents", "What the agents see", !!d.agents) +
+      tabBtn("draft", "Draft", !!d.draft) +
+      `<span style="flex:1"></span>${promote}</div>` +
+    note + probs +
+    `<div class="bmd">${mdToHtml((tab === "draft" ? d.draft : d.agents) || "")}</div>`;
+}
+
+document.getElementById("bibleBtn").onclick = () => { if (ctx.series) showBible(ctx.series); };
+document.getElementById("docbody").addEventListener("click", e => {
+  const t = e.target.closest("[data-btab]");
+  if (t && bview.data && !t.disabled) {
+    bview.tab = t.dataset.btab; renderBible();
+    document.getElementById("docbody").scrollTop = 0; return;
+  }
+  const p = e.target.closest("button.promote");
+  if (p && bview.data) { pfrom = "panel"; openPromote(p.dataset.draft); }
 });
 
 // --- new outline dialog --------------------------------------------------

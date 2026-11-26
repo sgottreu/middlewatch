@@ -301,3 +301,47 @@ def test_push_waiting_promote_error_becomes_value_error(cfg, real_bibles, monkey
     monkeypatch.setattr(bp, "push_waiting", boom)
     with pytest.raises(ValueError, match="no upstream"):
         bible_api.push_waiting(cfg, NORTH)
+
+
+# --- view: the Bible button --------------------------------------------------
+
+
+def test_view_draft_only(cfg, real_bibles):
+    v = bible_api.view(cfg, NORTH)
+    assert v["name"] == "salt" and v["agents"] is None and v["stale"] is True
+    assert v["draft"].startswith("# Salt Roads (Working Draft)")
+
+
+def test_view_promoted_shows_agents_view_and_staleness(cfg, real_bibles):
+    bp.promote(NORTH, {}, author="t")
+    v = bible_api.view(cfg, NORTH)
+    assert v["series"] == "Salt Roads" and v["stale"] is False and v["problems"] == []
+    assert v["agents"].startswith("# Genre settings\n")
+    assert "- **Subgenres:** romance, mystery" in v["agents"]        # whole genre, noted
+    assert "New outline uses the first" in v["agents"]
+    assert "# Series bible:" not in v["agents"]                       # one title, not two
+    assert "## Story ideas" in v["agents"]                            # the ideator's view
+    draft_file().write_text(draft_file().read_text() + "\n## Extra\n\nMore.\n")
+    assert bible_api.view(cfg, NORTH)["stale"] is True
+
+
+def test_view_shows_series_genre_settings(cfg, real_bibles):
+    draft_file().write_text(draft_file().read_text().replace(
+        "Series: Salt Roads\n",
+        "Series: Salt Roads\nSubgenres: mystery\nExclude tropes: The hedge-witch\n"))
+    bp.promote(NORTH, {}, author="t")
+    a = bible_api.view(cfg, NORTH)["agents"]
+    assert "- **Subgenres:** mystery\n" in a
+    assert "- **Excluded tropes:** The hedge-witch" in a and "14 tropes" in a
+
+
+def test_view_bible_without_draft(cfg, real_bibles):
+    v = bible_api.view(cfg, "amberlight")
+    assert v["draft"] is None and v["stale"] is None and v["agents"]
+
+
+def test_view_unknown_and_bad_names(cfg, real_bibles):
+    with pytest.raises(ValueError, match="no bible or draft"):
+        bible_api.view(cfg, "nope")
+    with pytest.raises(Exception):
+        bible_api.view(cfg, "../etc")

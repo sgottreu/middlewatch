@@ -108,3 +108,66 @@ def apply(cfg: dict, name: str, commit: bool = True, push: bool = True,
                         bibles_dir=_root(cfg))
     except bp.PromoteError as e:
         raise ValueError(str(e))
+
+
+def view(cfg: dict, name: str) -> dict:
+    """Everything the Bible view shows, for a series or a draft. Free, writes
+    nothing.
+
+    `draft` is the working draft as written. `agents` is the promoted bible as
+    the agents receive it — the ideator's view, Story Ideas included — headed by
+    the series' genre settings, which reach the ideator as its subgenre and
+    trope menu rather than as prose. `stale` says whether promoting now would
+    change the bible, so a draft edited since its last promote is visible.
+    """
+    from .. import bibles, genres  # local: keep this module's imports as they were
+
+    bp.check_name(name)
+    root = _root(cfg)
+    dpath, bpath = bp.draft_path(name, root), bp.bible_path(name, root)
+    if not dpath.exists() and not bpath.exists():
+        raise ValueError(f"no bible or draft named {name!r} in {root}/")
+    out: dict = {"name": name, "series": name,
+                 "draft": dpath.read_text() if dpath.exists() else None,
+                 "agents": None, "stale": None, "problems": []}
+    if bpath.exists():
+        try:
+            b = bibles.load(name, root)
+            out["series"] = b.series
+            block = b.prompt_block(ideator=True)
+            # "# Series bible: X" then the guide's own "# X": one title is enough here.
+            head, _, rest = block.partition("\n")
+            if rest.lstrip().startswith("# "):
+                block = rest.lstrip()
+            out["agents"] = _settings_block(b, genres) + block
+            out["problems"] = [str(p).strip() for p in bibles.validate(b.path, cfg)
+                               if p.fatal]
+        except Exception as e:  # a bible that will not parse still gets its draft shown
+            out["problems"] = [str(e)]
+    if dpath.exists():
+        try:
+            out["stale"] = bp.build(name, root).changed
+        except Exception:
+            out["stale"] = None
+    return out
+
+
+def _settings_block(b, genres) -> str:
+    genre_name = b.meta.get("genre", "")
+    lines = ["# Genre settings", ""]
+    if genre_name not in genres.available():
+        return "\n".join(lines + [f"- Genre: {genre_name or 'not declared'}", "", ""])
+    g = genres.load(genre_name)
+    view = g.for_series(b.meta)
+    lines.append(f"- **Genre:** {genre_name}")
+    note = "" if b.meta.get("subgenres") else " (the whole genre; New outline uses the first)"
+    lines.append(f"- **Subgenres:** {', '.join(view.subgenres)}{note}")
+    if b.meta.get("exclude_tropes"):
+        lines.append("- **Excluded tropes:** " + ", ".join(map(str, b.meta["exclude_tropes"])))
+    if b.meta.get("series_tropes"):
+        lines.append("- **Series tropes:**")
+        lines += [f"  - **{t['name']}:** {t.get('note', '')}"
+                  for t in b.meta["series_tropes"] if isinstance(t, dict) and t.get("name")]
+    lines.append(f"- **Trope menu:** {len(view.tropes)} tropes, a sample of which "
+                 "is offered each outline")
+    return "\n".join(lines) + "\n\n"
