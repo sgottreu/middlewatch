@@ -1,0 +1,177 @@
+{
+  "title": "The Lock That Kept Its Word",
+  "genre": "fantasy",
+  "subgenre": "slice_of_life",
+  "tropes": [
+    "The map is wrong",
+    "What the old world knew",
+    "The cursed object"
+  ],
+  "bible_conflict": null,
+  "logline": "A widow hires a young salvager to recover her drowned family's sealed strongbox before a town hearing, and the lock guarding it turns out to work exactly as her ancestor promised, which is precisely the trouble.",
+  "promise": "A dive through a collapsed drowned house, a lock that costs exactly what it claims to cost, and an old document that settles a land dispute more fairly than either claimant expected.",
+  "setting": "the drowned streets below Hartsford and Shoreside, Sunken Reach, early autumn, about twenty years after the Cataclysm",
+  "target_words": 4500,
+  "cast": [
+    {
+      "name": "Jory Brennick",
+      "role": "protagonist",
+      "age": 20,
+      "gender": "male",
+      "station": "Floatsome salvager",
+      "want": "to prove himself a salvager worth hiring on his own name, not just as Maud's son",
+      "appearance": "wiry, tanned, close-cropped auburn hair",
+      "dress": "trousers",
+      "voice_note": "eager, talks fast when excited",
+      "recurring": true
+    },
+    {
+      "name": "Maud Brennick",
+      "role": "supporting",
+      "age": 42,
+      "gender": "female",
+      "station": "Floatsome hazard charter and salvager",
+      "want": "to keep her son out of the drowned streets she knows are more dangerous than he believes",
+      "appearance": "auburn hair just starting to grey",
+      "dress": "short trousers, long sleeves, wide-brimmed hat",
+      "voice_note": "dry, practical, understates danger",
+      "recurring": true
+    },
+    {
+      "name": "Edda Moss",
+      "role": "supporting",
+      "age": 54,
+      "gender": "female",
+      "station": "Hartsford widow, claimant to her family's old dockside grant",
+      "want": "to secure proof of her family's claim before the Shoreside hearing, to honor her ancestors' name",
+      "appearance": "A stout woman of fifty-four, silver-streaked hair pinned under a wide straw hat, deep lines from years of squinting at water.",
+      "dress": "A dark travelling cloak over a modest grey dress, a brass locket at her throat.",
+      "voice_note": "formal, careful phrasing, old-fashioned courtesy"
+    },
+    {
+      "name": "Corin Vale",
+      "role": "supporting",
+      "age": 33,
+      "gender": "male",
+      "station": "Shoreside dock-builder, head of the stilt expansion crew",
+      "want": "to claim the old dock site for new piers before winter storms, to house families still crowded on the shore",
+      "appearance": "A broad-shouldered man in his early thirties, sunburned, with calloused hands and a short cropped beard.",
+      "dress": "A canvas work coat with a carpenter's rule in the pocket, boots spattered with mud.",
+      "voice_note": "blunt, impatient but not unkind"
+    },
+    {
+      "name": "Rill Ashby",
+      "role": "supporting",
+      "age": 19,
+      "gender": "female",
+      "station": "Floatsome salvager, Jory's rival and friend",
+      "want": "to make a name for herself as a salvager instead of always being mentioned beside Jory",
+      "appearance": "A wiry young woman of nineteen with cropped sandy hair and quick dark eyes.",
+      "dress": "A sleeveless diving vest and rolled trousers, a string of small salvage trinkets tied at her belt.",
+      "voice_note": "quick wit, teasing"
+    }
+  ],
+  "chapters": [
+    {
+      "n": 1,
+      "title": "A Box Beneath the Water",
+      "beats": [
+        "Jory and Rill sort the morning's salvage finds on a Floatsome platform, trading friendly jabs about who found the better haul.",
+        "Edda Moss arrives by hired boat from Hartsford, asking the dockhands specifically for Jory by name.",
+        "Edda explains she needs a sealed strongbox recovered from her family's sunken home before a hearing in six days decides who owns the old family dock.",
+        "Maud, overhearing, objects: that stretch of drowned street lies near the new fissure, a zone she has never fully charted.",
+        "Jory accepts the contract anyway, setting a six-day deadline and leaving Maud uneasy."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 2,
+      "title": "Charts and Warnings",
+      "beats": [
+        "Maud reluctantly brings out her old hazard chart of the drowned street, drawn years ago from memory of the town before the flood.",
+        "She marks the house's location but warns the chart hasn't been checked there since nobody salvages that deep as a rule.",
+        "Rill mentions rumors that another diver has been seen working that same street recently, unsettling Jory.",
+        "Maud lets slip one personal detail: she played near that house as a girl, and remembers the family chanting something at their door, though she doesn't finish the thought.",
+        "At dawn they reach the site and find the street doesn't match the chart at all; the house's roof has collapsed into the lane since Maud last saw it."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 3,
+      "title": "What the Chart Missed",
+      "beats": [
+        "Jory and Rill pick through the collapsed rubble underwater and find the planned entrance blocked solid.",
+        "They work their way in through a broken window into the sunken parlor instead.",
+        "Inside, they notice recently cleared silt and find a dropped prying tool stamped with an unfamiliar mark.",
+        "They locate the strongbox bolted to a beam, its lock seamless and faintly warm against Jory's glove.",
+        "Unable to free or open it, they surface carrying the stranger's dropped tool as evidence someone got there first."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 4,
+      "title": "A Nephew's Claim",
+      "beats": [
+        "Back in Shoreside, Jory shows Edda the stamped tool, and she recognizes the mark as her nephew Corin's.",
+        "Pressed, Edda admits Corin has already filed his own claim on the dock site, which will stand by default if she produces no proof.",
+        "She explains the strongbox was sealed generations ago by an ancestor using something pulled from the crack beneath the water.",
+        "Jory describes the lock's warmth and seamlessness, and Edda admits even she doesn't know how to open it, since her family's full naming tradition scattered with the flood.",
+        "Corin himself arrives at the dock and admits, without much shame, that he tried to get into the box himself to settle the matter his own way."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 5,
+      "title": "The Dock at Stake",
+      "beats": [
+        "Corin explains his urgency: Shoreside's families need the old dock's foundations for new stilts before the winter storms close in.",
+        "He insists he meant only to look, not to steal, and that the legal limbo has stalled work his crews can't afford to delay.",
+        "Edda and Corin argue, and an old family rift surfaces beneath the dispute over the dock.",
+        "Jory proposes they let him finish retrieving the box properly instead of fighting over who saw it first.",
+        "Corin agrees to a three-day window only, and hands back the dropped tool, admitting he knows the lock's exact shape better than he let on."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 6,
+      "title": "A Chant Remembered",
+      "beats": [
+        "Jory returns to Maud and describes the lock's warmth and the way it seems to wait rather than simply resist.",
+        "Maud realizes it matches an old household charm from her childhood, a phrase families once spoke at their doors for luck before the Cataclysm.",
+        "She recalls enough of the rhyme to know it named the household three times, tying it to Edda's family name.",
+        "Maud warns that locks worked from fissure material may ask for more than words, cautioning Jory not to go in alone a second time.",
+        "They agree Edda herself must come down and speak the chant at the box, meaning a joint dive within the three days left."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 7,
+      "title": "Beneath the Broken Roof",
+      "beats": [
+        "Jory, Rill, and Maud guide a nervous Edda down through the collapsed house to the strongbox.",
+        "Edda speaks the remembered chant, naming her family three times as Maud recalls it.",
+        "The lock answers not to the words alone but draws warmth through her hand, her fingers going faintly cold as the box finally opens.",
+        "Inside is not the deed of ownership Edda expected but an older charter, its script faded and stranger than she hoped.",
+        "She surfaces holding the document, unsure what it actually grants."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 8,
+      "title": "Commons for All",
+      "beats": [
+        "Onshore, Edda, Jory, Maud, Rill, and Corin puzzle out the faded charter together.",
+        "The old script reveals the dock was granted not to Edda's family alone but to all who fled the drowned town, as common ground.",
+        "Corin realizes neither he nor Edda owns the site outright, and the old family rift eases as Edda finds her ancestor's intent kinder than she expected.",
+        "Jory is paid for the completed contract, and Maud corrects her chart to mark the collapsed house and the fissure's reach.",
+        "Jory and Rill, pleased with the story they'll carry back to Floatsome, start eyeing the fissure itself as their next job, with Maud cautiously willing to chart the way this time."
+      ],
+      "target_words": 580
+    }
+  ],
+  "length_min": 30,
+  "notes": "let's look at jory in the sunken reach with either someone contracting him to find something and he discovering  a mystery.",
+  "bible": "broken-edges",
+  "series": "Mapping the Broken Edges",
+  "slug": "the-lock-that-kept-its-word"
+}
