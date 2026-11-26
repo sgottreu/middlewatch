@@ -1,0 +1,60 @@
+{
+  "n": 5,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Back at Floatsome, Jory relays the open-air rule and the warm lock to Maud.",
+      "covered": true,
+      "note": "Jory repeats the rule to himself and discusses the warm plate with Maud, though Maud was present for this in chapter 4, making the relay mildly redundant."
+    },
+    {
+      "beat": "Maud recalls, as a girl in the unsettled years right after the flood, watching an old woman row out alone to that half-drowned shop and work by lantern long after neighbors had given up on the street.",
+      "covered": true,
+      "note": "Maud gives her age as two-and-twenty rather than a girl, which correctly preserves the bible's age of 42 for her now; the substance of the memory is delivered in full."
+    },
+    {
+      "beat": "Maud recalls townsfolk whispering the old woman had cured a fever nobody else could touch, then stopped coming around before anyone learned how she'd done it.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Maud warns that a lock worked from fissure stone that soon after the Cataclysm was never tested twice, so whatever it costs, nobody living has seen it paid.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "A runner arrives from Shoreside: the storm has turned faster than forecast, and pilings now go in two days.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Maud's decision to dive at first light with just the three of them, leaving Walter behind, resets the plan under a two-day deadline and sets the next chapter's shape."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "The cursed object and what the old world knew both advance here through Maud's memory of the cure and the lock's untested price; the map is wrong is dormant this chapter but was carried last chapter and will resume on the dive.",
+  "length_note": null,
+  "fixes": [
+    "Open with the content of the rule rather than a dangling pronoun: 'That evening, Jory Brennick coiled dive line and repeated the letter's rule to himself: the household name, three times, in open air, never under the water' resolves 'said it over to himself again' within one sentence instead of two.",
+    "Consider trimming the embedded quote from the unnamed Shoreside boy slightly, since it is the only line in the chapter spoken by someone outside the five named cast and briefly reads like a sixth voice; attributing it plainly as 'the boy said' before the quote would anchor it."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "chapter_hash": "21b262f9903b7592"
+}

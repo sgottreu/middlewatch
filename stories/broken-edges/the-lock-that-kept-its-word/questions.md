@@ -45,3 +45,28 @@ The fix is to move the sealing inside the twenty-year window rather than before 
 
 This touches: the promise line ("a water-stained remedy from before the Cataclysm that proves itself against a real fever in the present") — the remedy itself can predate the Cataclysm, but its pairing with the fissure mineral and the sealed lock cannot; chapter 4's beat about the grandmother sealing the box with fissure material (fine if reworded to post-Cataclysm); and chapter 7's beat claiming the remedies were tested against the mineral "generations ago" (needs to become within living memory — her lifetime, twenty years back at most).
 
+## 2026-11-26 22:32
+
+**Q:** if the fissure happend during the cataclysm, how would items be found and found in a box sealed before it happened
+i doubt the grandmother would put a box in a home near early flooding
+
+Good catch, and it points at a real contradiction the outline currently glosses over.
+
+Per the bible, the fissure "likely opened during the Cataclysm," and the Sunken Reach's magic-touched salvage is traced to material leaking from it since then — Jory's whole storyline is built on *recently* salvaged objects turning out to be magic-touched, discovered only now because the post-Cataclysm generation never bothered looking. That means fissure-glass as a material shouldn't exist, or be workable into a lock, *before* the Cataclysm. But the outline's chapter 7 has the grandmother sealing the box with fissure material and chapter 8 has the formulary testing remedies "against that same mineral... generations ago" — both of which require the fissure, or at least its material reaching the surface world, to predate the flood. That's the contradiction you're flagging: a grandmother, living in a town that was dry land until the Cataclysm drowned it, could not have packed a box with a mineral that only started leaking out of a fissure the Cataclysm itself opened.
+
+The fix touches the logline, the promise, and chapters 7–8. The cleanest change: make the lock and its "price" not about pre-Cataclysm fissure-glass at all, but something the grandmother plausibly had access to before the flood — an ordinary heirloom lock with old folk rules attached (name spoken three times, etc.), and let the fissure-glass angle apply only to what's inside the box (the formulary's remedies) rather than to the lock's construction. Alternatively, if you want to keep fissure material as the mechanism of the lock, you'd need to move the sealing to *after* the Cataclysm — someone in the family returning to seal the box once the fissure was known, which changes "his grandmother" to a more recent relative, or changes the backstory beat in chapter 4 where Walter explains his grandmother sealed it. Either way, chapter 7's reveal and chapter 4's explanation need to agree on when the sealing happened and what material was available at that time, and the logline's claim about "the old rhyme" should match whichever timeline you pick.
+
+## 2026-11-26 22:37
+
+**Q:** if the fissure happend during the cataclysm, how would items be found and found in a box sealed before it happened
+i doubt the grandmother would put a box in a home near early flooding
+it sounds like they knew this material could be used in a cure, that couldn't occur before the cataclysm either
+
+Good catch — this is a real timeline contradiction in the outline, and it traces back to chapter 7's beat about the formulary's remedies being "tested against it generations ago."
+
+The series bible is specific about the fissure: it's a crack beneath the water that leaks magic, and it "likely opened during the Cataclysm" — the same event that drowned the capital. Fissure-glass, as a magic-touched material, can't predate the Cataclysm. So a box sealed by the grandmother before the flood can't contain fissure-glass, and a formulary measuring remedies against that mineral can't have been written "generations ago" — nobody had seen the stuff yet. Worse, if the grandmother sealed the box with fissure material herself (as chapter 4 has Walter claim), she'd have had to do it after the Cataclysm, in a house that was already underwater — which doesn't work either, unless she sealed it in the chaotic period right after the flood but before full abandonment, which the outline never establishes and would need to.
+
+This touches a few connected spots: the chapter 4 beat where Walter says "his grandmother sealed the box with material from the fissure," the chapter 7 beat where Maud identifies the mineral as fissure-glass and concludes "the formulary's remedies were tested against it generations ago," and the chapter 8 beat where the fever draught is matched to "old measures." All three assume a pre-Cataclysm origin for a post-Cataclysm substance.
+
+The fix is to move the chest's sealing to after the Cataclysm, within the ~20-year window, and drop the "generations ago" framing entirely. That also answers your other worry: why would the grandmother keep a box of valuables in a house near early flooding? She likely wouldn't, unless she returned deliberately — perhaps as one of the first to salvage fissure-glass, testing its medicinal use herself in the chaotic years after the flood, then sealing the chest and losing access when the waters rose further or she fled. That reframes Walter's grandmother as an early experimenter rather than a pre-Cataclysm apothecary, which also sharpens the mystery: the chest isn't an heirloom recovered from the old world, it's recent, hidden knowledge almost lost in twenty years rather than lore from before.
+

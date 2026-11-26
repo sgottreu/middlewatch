@@ -1,0 +1,88 @@
+{
+  "n": 3,
+  "pass": false,
+  "score": 9,
+  "beats": [
+    {
+      "beat": "Jory and Liora squeeze through the unmapped gap into a flooded back room.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Inside, they find a cluttered workbench of cracked glass vessels and corroded tools, not the furnishings of an ordinary household cellar.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Fresh-looking chisel marks scar the wall near a strongbox bolted to a support post, far too clean to be twenty years old.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "The strongbox lock has no keyhole, only raised letters shaped like a name, faintly warm through Jory's glove despite the cold water.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Running low on air, they surface, debating who else could have cut those marks, and when.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Maud's closing line redirects the investigation back to Walter and his letter, reframing the mystery as one the herbalist himself hasn't finished reading, which sets up chapter 4."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Serves the cursed object (the warm, keyhole-less lock bearing a name) and extends the map is wrong trope (fresh chisel marks on an unmapped stretch); does not introduce a fourth trope.",
+  "length_note": null,
+  "fixes": [
+    "Consider trimming 'which made no sense at all, the water being what it was' \u2014 it restates the warmth already dramatized a sentence earlier and could end at 'glove' instead.",
+    "The near-triplet 'There was no keyhole. There was no slot, no hasp, no shackle' is this chapter's one allowed negative-parallelism instance; do not add another elsewhere in the story."
+  ],
+  "lint": {
+    "total": 3,
+    "errors": 0,
+    "by_rule": {
+      "spaced_em_dash": 1,
+      "clause_chain": 1,
+      "break_unanchored": 1
+    },
+    "findings": [
+      {
+        "rule": "spaced_em_dash",
+        "severity": "warn",
+        "segment": 5,
+        "quote": "...t. The stone there was scarred \u2014 four or five short bites of a...",
+        "note": "Spaced dash reads as modern punch-up. Close it up or use a comma."
+      },
+      {
+        "rule": "clause_chain",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "A stone mortar sat at the end of the bench, and it was the size of a wash basin, and it had not moved since the water came.",
+        "note": "3 clauses coordinated in 28 words. Heard once, the last one lands with the subject of the first already gone. Split after the first clause, or make every member the same grammatical shape so the ear can follow the pattern."
+      },
+      {
+        "rule": "break_unanchored",
+        "severity": "warn",
+        "segment": 10,
+        "quote": "They came up ten feet apart and Maud Brennick had the boat between them before either had finished the first breath.",
+        "note": "The sentence after a scene break has to say when or where we now are \u2014 it is the only cue a listener gets that time has passed."
+      }
+    ]
+  },
+  "chapter_hash": "471935073336fc75",
+  "length_over": 684,
+  "length_target": 560
+}

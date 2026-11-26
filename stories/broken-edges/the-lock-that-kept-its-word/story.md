@@ -2,7 +2,7 @@
 
 fantasy / slice_of_life · Mapping the Broken Edges
 
-> When a Hartsford herbalist hires Jory Brennick to haul his grandmother's locked chest out of a collapsing drowned house before new pilings seal its only entrance, the chest surfaces safely only for its lock to take the one payment the old rhyme promised: the family name spoken to open it.
+> When a Hartsford herbalist hires Jory Brennick to pull his dead grandmother's strongbox from a half-collapsed drowned shop before new pilings seal the only way in, the lock she fused from raw fissure stone in the chaos after the Cataclysm takes exactly the payment her own letter warned it would: the family name needed to speak for what she found.
 
 ## Length
 
@@ -10,7 +10,7 @@ fantasy / slice_of_life · Mapping the Broken Edges
 |---|---|---|
 | Target (30 min) | 4,500 | 30:00 |
 | Planned | 4,500 | 30:00 |
-| Written | *not yet written* | |
+| Written | 4,945 | 32:58 |
 | **Narrated** | | *not yet recorded* |
 
 ## Chapters
@@ -19,14 +19,14 @@ fantasy / slice_of_life · Mapping the Broken Edges
 
 | # | Title | Beats | Target | Written | Narrated |
 |---|---|---|---|---|---|
-| 1 | Six Days Before the Pilings | 5 | 560 | — | — |
-| 2 | The Foreman's Schedule | 5 | 560 | — | — |
-| 3 | Through the Broken Window | 5 | 560 | — | — |
-| 4 | A Name Spoken in Air | 5 | 560 | — | — |
-| 5 | What Maud Remembers | 5 | 560 | — | — |
-| 6 | Raising the Box | 5 | 560 | — | — |
-| 7 | The Price | 5 | 560 | — | — |
-| 8 | What the Chest Was For | 5 | 580 | — | — |
+| 1 | Six Days Before the Pilings | 5 | 560 | 563 | — |
+| 2 | The Foreman's Schedule | 5 | 560 | 608 (+9%) | — |
+| 3 | Through the Broken Wall | 5 | 560 | 614 (+10%) | — |
+| 4 | The Grandmother's Letter | 5 | 570 | 678 (+19%) | — |
+| 5 | What Maud Remembers | 5 | 560 | 584 (+4%) | — |
+| 6 | Raising the Box | 5 | 560 | 611 (+9%) | — |
+| 7 | The Price | 5 | 560 | 598 (+7%) | — |
+| 8 | What the Chest Was For | 5 | 570 | 689 (+21%) | — |
 
 ## Cast
 
@@ -48,7 +48,7 @@ fantasy / slice_of_life · Mapping the Broken Edges
 
 | Stage | |
 |---|---|
-| ideate | awaiting_review |
+| ideate | approved |
 | write | pending |
 | edit | pending |
 | record | pending |
@@ -59,8 +59,8 @@ fantasy / slice_of_life · Mapping the Broken Edges
 
 | Spend | |
 |---|---|
-| anthropic_input_tokens | 110310.0 |
-| anthropic_output_tokens | 57389.0 |
+| anthropic_input_tokens | 798739.0 |
+| anthropic_output_tokens | 218442.0 |
 
 ---
 

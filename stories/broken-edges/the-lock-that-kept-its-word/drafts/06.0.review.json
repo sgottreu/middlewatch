@@ -1,0 +1,115 @@
+{
+  "n": 6,
+  "pass": false,
+  "score": 5,
+  "beats": [
+    {
+      "beat": "With two days left, Jory, Liora, and Maud dive together to the strongbox.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "They work the corroded bolts loose with a pry bar, careful not to crack the post and bring down more of the roof.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "They rig a line and float the strongbox up through the gap in the wall.",
+      "covered": true,
+      "note": "Realized as a lashed, buoyant cask rather than a bare line, which satisfies the intent."
+    },
+    {
+      "beat": "They break the surface, and Walter hauls the dripping box onto the boat deck, into open air, exactly as the letter requires.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Walter draws breath to begin the chant and notices the raised letters on the lock have gone smooth, as if waiting.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Ends on the smoothed, waiting lock plate and Walter's line, setting up the price in chapter 7."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": false,
+    "problems": [
+      "Three separate sentences chain three independent clauses across shifting subjects, losing the thread by the third clause (see fixes).",
+      "Opening sentence relies on the pronoun 'They' and 'all three of them' without naming Jory, Liora, and Maud, forcing the listener back to chapter 5's last line."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [
+    "Clause chain, subject shifts He/crust/bolt: 'He shifted his grip and leaned again, and the orange crust came away in a cloud, and the bolt turned a quarter and stopped.'",
+    "Clause chain, subject shifts cask/box/three of them: 'The cask took the weight and the box came up off the silt, swaying, and the three of them walked it through the black water towards the green smear of the gap.'",
+    "Clause chain, subject shifts He/Maud/strongbox: 'He got both arms over the side and his hands under the cask, and Maud came up on the other side to counter him, and between them the strongbox came over the gunwale...'",
+    "Opening sentence: 'They went over the side at first light with two days left, all three of them, and Walter Ames sat in the stern...' leaves 'they' unnamed at the point a listener needs it."
+  ],
+  "generic_prose": [
+    {
+      "quote": "heavier than he had let himself expect",
+      "replace_with": "name the actual weight shift or sound, e.g. the box dragging his shoulder down against the line"
+    },
+    {
+      "quote": "in a way that would have worried his neighbours",
+      "replace_with": "a concrete image of Walter's scramble, e.g. one knee cracking the gunwale as he went"
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Serves the cursed object directly with the smoothed, waiting lock plate; the map is wrong and what the old world knew sit dormant this chapter, which is acceptable given the prior setup.",
+  "length_note": null,
+  "fixes": [
+    "Split 'He shifted his grip and leaned again, and the orange crust came away in a cloud, and the bolt turned a quarter and stopped' after 'again' into two sentences, one per new subject.",
+    "Split 'The cask took the weight and the box came up off the silt, swaying, and the three of them walked it...' into two sentences: one for the cask/box, one for the three of them walking it.",
+    "Split 'He got both arms over the side and his hands under the cask, and Maud came up... and between them the strongbox came over the gunwale...' into two sentences, breaking after 'to counter him.'",
+    "Rewrite the opening sentence to name Jory, Liora, and Maud explicitly rather than leaning on 'They... all three of them.'",
+    "Replace 'heavier than he had let himself expect' with a concrete physical detail of the weight.",
+    "Replace 'in a way that would have worried his neighbours' with a specific action."
+  ],
+  "lint": {
+    "total": 4,
+    "errors": 1,
+    "by_rule": {
+      "copula_dodge": 1,
+      "clause_chain": 1,
+      "long_sentence": 1,
+      "break_unanchored": 1
+    },
+    "findings": [
+      {
+        "rule": "copula_dodge",
+        "severity": "error",
+        "segment": 1,
+        "quote": "...d overnight. The bench of cracked glass stood as they had left it, and the strongbox hun...",
+        "note": "Use a plain copula: was, had, is."
+      },
+      {
+        "rule": "clause_chain",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "Jory turned it on its corner, scraping stone, and then it went, and the pull of the cask took it up the face of the wall faster than any of...",
+        "note": "3 clauses coordinated in 33 words. Heard once, the last one lands with the subject of the first already gone. Split after the first clause, or make every member the same grammatical shape so the ear can follow the pattern."
+      },
+      {
+        "rule": "long_sentence",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "He got both arms over the side and his hands under the cask, and Maud came up on the other side to counter him, and between them the strongb...",
+        "note": "49 words in one sentence. A listener cannot re-read it. Split it, or cut it to under 40."
+      },
+      {
+        "rule": "break_unanchored",
+        "severity": "warn",
+        "segment": 6,
+        "quote": "They surfaced to breathe and went straight back down with the cask.",
+        "note": "The sentence after a scene break has to say when or where we now are \u2014 it is the only cue a listener gets that time has passed."
+      }
+    ]
+  },
+  "chapter_hash": "e43aae1ff54e9028"
+}

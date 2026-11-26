@@ -1,0 +1,74 @@
+{
+  "n": 6,
+  "pass": true,
+  "score": 7,
+  "beats": [
+    {
+      "beat": "With two days left, Jory, Liora, and Maud dive together to the strongbox.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "They work the corroded bolts loose with a pry bar, careful not to crack the post and bring down more of the roof.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "They rig a line and float the strongbox up through the gap in the wall.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "They break the surface, and Walter hauls the dripping box onto the boat deck, into open air, exactly as the letter requires.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Walter draws breath to begin the chant and notices the raised letters on the lock have gone smooth, as if waiting.",
+      "covered": true,
+      "note": "Draft has letters vanish entirely rather than merely flattening, a slight but acceptable paraphrase of the beat."
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "The lock's plate going smooth and Walter's quiet 'It knows it's out' changes the next chapter from recovery to payment."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [
+    "\"That's air. That's what she wanted. Nothing above it and nothing round it.\" has no preceding narration naming Jory as speaker, and four people are present at that moment.",
+    "\"Yes.\" follows with no textual cue identifying Walter before the quote; it is inferable only by content, not by ear."
+  ],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Serves the cursed object directly (the lock's letters changing as it readies to take payment); the map-is-wrong and old-world-knew tropes are dormant this chapter, which is fine given the beat focus on recovery.",
+  "length_note": null,
+  "fixes": [
+    "Before 'That's air. That's what she wanted. Nothing above it and nothing round it,' add a narrator clause naming Jory, e.g. 'Jory wiped his hands on his trousers and said:' so the listener isn't guessing among four people present.",
+    "Before Walter's 'Yes,' add a brief dialogue tag or gesture, e.g. 'Walter did not look up. \"Yes.\"' to anchor the response to him rather than leaving it to inference.",
+    "Consider making the letters' disappearance read closer to the beat's 'gone smooth' rather than fully vanished, to keep the physical detail legible for a reader comparing to chapter 7's lock description."
+  ],
+  "lint": {
+    "total": 1,
+    "errors": 0,
+    "by_rule": {
+      "clause_chain": 1
+    },
+    "findings": [
+      {
+        "rule": "clause_chain",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "The box dropped two inches and he had it, and it went down through his arms like a wet sack of grain, and the post stood where it was.",
+        "note": "3 clauses coordinated in 29 words. Heard once, the last one lands with the subject of the first already gone. Split after the first clause, or make every member the same grammatical shape so the ear can follow the pattern."
+      }
+    ]
+  },
+  "chapter_hash": "0e7e5eeac03058da"
+}

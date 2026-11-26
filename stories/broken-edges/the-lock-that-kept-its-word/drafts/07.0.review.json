@@ -1,0 +1,82 @@
+{
+  "n": 7,
+  "pass": false,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Walter speaks the household's true name three times on the open deck, as the letter instructs.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "The lock answers, drawing a visible chill through his hand as it clicks open, his fingers going numb and pale.",
+      "covered": true,
+      "note": "No audible click is described, but the chill, numbness, and the lid lifting are all present."
+    },
+    {
+      "beat": "Inside is not finished medicine but his grandmother's own formulary, water-stained, and a wrapped lump of raw fissure stone matching the lock.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Trying afterward to say his family name aloud for the record, Walter finds the word will not come; the lock has taken the name itself as payment.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Maud recognizes the wrapped stone as the same material salvagers now pull from near the fissure, meaning the grandmother's remedy was tested against the very substance still turning up today.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Maud's closing line reframes the formulary as a tested remedy for the very stone still being salvaged today, setting up the healer test in chapter 8."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [
+    {
+      "quote": "he had begun to cry a little in the way old men do, without changing his face",
+      "replace_with": "name a specific physical detail unique to Walter \u2014 a tremor in his jaw, a hand gripping the loupe cord \u2014 rather than a generalization about 'old men'"
+    },
+    {
+      "quote": "the sound that should have been his name was not in him, the way a step is not there in the dark",
+      "replace_with": "ground the image in something from this scene \u2014 the silence where the name should sit against the harbour sounds \u2014 rather than an abstract simile about a missing step"
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Delivers the cursed object straight (the lock takes exactly the stated price) and advances what the old world knew by tying the grandmother's remedy to the stone salvagers still pull today.",
+  "length_note": null,
+  "fixes": [
+    "Revise 'he had begun to cry a little in the way old men do, without changing his face' to a concrete, Walter-specific detail instead of a generic claim about old men.",
+    "Consider adding a brief sensory beat (a click, a scrape) when the lid moves, to match the outline's 'clicks open' and give the unlocking an audible marker.",
+    "Tighten 'Not wet-dark. The other way, the way a coal goes when the fire has finished with it' slightly \u2014 the repeated 'way...way' is a small snag for the ear."
+  ],
+  "lint": {
+    "total": 1,
+    "errors": 0,
+    "by_rule": {
+      "clause_chain": 1
+    },
+    "findings": [
+      {
+        "rule": "clause_chain",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "Walter was looking at the book, and at his own fingers, and he had begun to cry a little in the way old men do, without changing his face.",
+        "note": "3 clauses coordinated in 29 words. Heard once, the last one lands with the subject of the first already gone. Split after the first clause, or make every member the same grammatical shape so the ear can follow the pattern."
+      }
+    ]
+  },
+  "chapter_hash": "3f2458b5bf5dc586",
+  "length_over": 688,
+  "length_target": 560
+}

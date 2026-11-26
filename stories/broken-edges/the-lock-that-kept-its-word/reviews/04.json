@@ -1,0 +1,82 @@
+{
+  "n": 4,
+  "pass": true,
+  "score": 7,
+  "beats": [
+    {
+      "beat": "Jory reports the workbench, the chisel marks, and the warm lock to Walter.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Walter reads further in the letter: stone that bleeds light, gathered from the new crack in the seabed after the Cataclysm, tested as medicine during the resettling fever.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Walter explains the lock's rule: household's true name, spoken three times, in open air, never underwater, takes its own payment.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Selah arrives, admits her survey crew chipped the same wall marking piling positions.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Selah adds the storm has pushed the schedule forward to four days.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Selah's flat 'Pilings go in four days. Not six.' re-shortens the clock and ends the chapter on a concrete reversal."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": false,
+    "irony_in_dialogue": true,
+    "problems": [
+      "No passage renders a character's thought in their own idiom through the narration; everything is reported from outside (e.g. 'Walter's hand had gone up to the loupe at his throat without his noticing it' is close but stays observational, not internal)."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [
+    "'There was a fever in the camps that first winter, up where people were putting roofs on the hill, and she lost a good many of them and could do nothing.' shifts from an existential 'there was' clause to a personal subject across two more 'and' coordinations and loses its shape partway; split after 'on the hill.'"
+  ],
+  "generic_prose": [
+    {
+      "quote": "something sharp underneath",
+      "replace_with": "name the actual smell competing with bay and dust \u2014 vinegar, scorched resin, crushed root \u2014 something the shop would plausibly hold"
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Serves The cursed object (payment rule stated twice, underwater prohibition addressed directly) and What the old world knew (fever cure, grandmother's experiments); The map is wrong is dormant this chapter, which is acceptable since it carried chapters 1-2.",
+  "length_note": null,
+  "fixes": [
+    "Chapter runs well over its ~570-word target (roughly 690+ words); trim the opening narrator recap of the workbench items, which restates chapter 3 almost in full, down to a single clause.",
+    "Tighten Walter's long speech about the fever and the burned measures (segment 10) \u2014 cut 'up where people were putting roofs on the hill' and let the sentence end at 'that first winter.'",
+    "Split 'There was a fever in the camps that first winter, up where people were putting roofs on the hill, and she lost a good many of them and could do nothing.' into two sentences at 'that first winter.'",
+    "Replace 'something sharp underneath' with a named, concrete smell specific to an herbalist's shop.",
+    "Add one moment of free indirect discourse \u2014 let Walter's unspoken doubt about the price surface in narration phrased in his own register, not just reported action."
+  ],
+  "lint": {
+    "total": 1,
+    "errors": 0,
+    "by_rule": {
+      "long_sentence": 1
+    },
+    "findings": [
+      {
+        "rule": "long_sentence",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "He swept a row of herb bundles off the counter to make room for four pairs of elbows, and he listened while Jory Brennick told it in order:...",
+        "note": "56 words in one sentence. A listener cannot re-read it. Split it, or cut it to under 40."
+      }
+    ]
+  },
+  "chapter_hash": "75c75180e325d213"
+}

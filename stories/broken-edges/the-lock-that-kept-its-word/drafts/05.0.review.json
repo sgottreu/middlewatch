@@ -1,0 +1,87 @@
+{
+  "n": 5,
+  "pass": false,
+  "score": 4,
+  "beats": [
+    {
+      "beat": "Back at Floatsome, Jory relays the open-air rule and the warm lock to Maud.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Maud recalls, as a girl in the unsettled years right after the flood, watching an old woman row out alone to that half-drowned shop and work by lantern long after neighbors had given up on the street.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Maud recalls townsfolk whispering the old woman had cured a fever nobody else could touch, then stopped coming around before anyone learned how she'd done it.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Maud warns that a lock worked from fissure stone that soon after the Cataclysm was never tested twice, so whatever it costs, nobody living has seen it paid.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "A runner arrives from Shoreside: the storm has turned faster than forecast, and pilings now go in two days.",
+      "covered": true,
+      "note": "The boy's message is only inferred through Jory's 'Two days,' never heard directly, a minor softening of the beat."
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Maud's decision to go at first light with the herbalist left behind sets the next chapter's dive in motion."
+  },
+  "continuity": [
+    "Maud says 'I was eleven the autumn after the flood,' but the bible fixes her age at 42 and the setting is 'about twenty years after the Cataclysm' \u2014 the flood she describes is the Cataclysm's own flooding, so she would have been roughly twenty-two at that time, not eleven. This also contradicts the bible's 'she grew up in one of the drowned towns,' which implies an adult relationship to the old streets, not a child's."
+  ],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": [
+      "The clause chain 'One season she was rowing out, and the next she wasn't, and people had roofs to put on' shifts subject from 'she' to 'people' across its three members and loses its thread by the end."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Serves 'what the old world knew' (the fever cure, the grandmother's work) and 'the cursed object' (the lock's unknown, unpaid price) well; 'the map is wrong' is absent here, which is acceptable since it was carried by earlier chapters.",
+  "length_note": null,
+  "fixes": [
+    "Fix the age math: rewrite 'I was eleven the autumn after the flood' to make Maud an adult at the time, consistent with her being 42 now and the flood being the Cataclysm itself, e.g. 'I was two-and-twenty the autumn after the flood.'",
+    "Trim toward 560 words: cut the frame sentence restating the open-air rule already fully delivered in chapter 4, and cut one of the paired 'shuttle set down / shuttle picked back up' bookending actions as redundant.",
+    "Split the clause chain: 'One season she was rowing out, and the next she wasn't, and people had roofs to put on' into two sentences, e.g. 'One season she was rowing out. The next, she wasn't \u2014 people had roofs of their own to put on by then.'",
+    "Rewrite the opening sentence so it names the rule itself rather than relying on a bare 'the rule,' e.g. open on 'said the name-three-times rule aloud again' instead of deferring the content to the next line.",
+    "Consider giving the Shoreside boy's actual relayed words rather than only Jory's summarized 'Two days,' so the turn lands on a spoken line instead of an inference."
+  ],
+  "lint": {
+    "total": 2,
+    "errors": 0,
+    "by_rule": {
+      "long_sentence": 1,
+      "clause_chain": 1
+    },
+    "findings": [
+      {
+        "rule": "long_sentence",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "That evening Jory Brennick sat on the Floatsome platform coiling dive line by the last of the light, and said the rule out loud again, becau...",
+        "note": "41 words in one sentence. A listener cannot re-read it. Split it, or cut it to under 40."
+      },
+      {
+        "rule": "clause_chain",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "The talk was that there was a draught going round, and that it came off an old woman from the drowned town, and that children who'd gone gre...",
+        "note": "3 clauses coordinated in 37 words. Heard once, the last one lands with the subject of the first already gone. Split after the first clause, or make every member the same grammatical shape so the ear can follow the pattern."
+      }
+    ]
+  },
+  "chapter_hash": "3760824f10a9793d",
+  "length_over": 680,
+  "length_target": 560
+}
