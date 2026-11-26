@@ -390,6 +390,16 @@ recurring_cast: []
 # art_style: >
 # voices:
 #   narrator: Charlotte
+
+# Optional. Narrows the genre to what this series is. Without these, a series
+# gets the whole genre: every subgenre (the first is the default) and every
+# trope on the menu, including ones its world rules out.
+# subgenres: [mystery, slice_of_life]    # the genre's own; least-used goes first
+# exclude_tropes:                        # names exactly as in the genre file
+#   - The hedge-witch
+# series_tropes:                         # tropes only this series offers
+#   - name: The map is wrong
+#     note: A chart everyone trusts turns out to be out of date, and someone is relying on it.
 #
 # Working notes — Open Questions, the Minor Names Register — belong in
 # <name>.draft.md, not here. Everything below this block is given to the agents
@@ -403,6 +413,18 @@ recurring_cast: []
 Two or three paragraphs on what this series is. What ties the stories together —
 a place, an institution, a family, a season. What a viewer who has seen three of
 them would recognize on the fourth.
+
+## Story Engine
+
+What every story in this series turns on, in one short paragraph: who goes
+after what, and what is at stake for them. The ideator builds each outline
+around this, whatever subgenre and tropes it was handed.
+
+## Not This Series
+
+What this series is not, as a short list. The stock moves of its genre that its
+world rules out — a kind of magic user, a kind of plot, a social order that does
+not exist here. The bible outranks the genre guide, so this is where to say so.
 
 ## Setting
 
@@ -527,6 +549,39 @@ def validate(path: Path, cfg: dict | None = None) -> list[Problem]:
     elif bible.meta["genre"] not in installed:
         err("genre", f"{bible.meta['genre']!r} is not installed",
             f"Installed: {', '.join(installed)}")
+
+    # --- the series' view of its genre (genres.Genre.for_series) ----------
+    g = (genres.load(bible.meta["genre"])
+         if bible.meta.get("genre") in installed else None)
+    for key in ("subgenres", "exclude_tropes", "series_tropes"):
+        val = bible.meta.get(key)
+        if val is not None and not isinstance(val, list):
+            err(key, "must be a list")
+    if g and isinstance(bible.meta.get("subgenres"), list):
+        for s in bible.meta["subgenres"]:
+            if s not in g.subgenres:
+                err("subgenres", f"{s!r} is not a {g.name} subgenre",
+                    f"Available: {', '.join(g.subgenres)}")
+    if g and isinstance(bible.meta.get("exclude_tropes"), list):
+        names = {t["name"].lower() for t in g.tropes}
+        for t in bible.meta["exclude_tropes"]:
+            if str(t).strip().lower() not in names:
+                warn("exclude_tropes", f"{t!r} is not a {g.name} trope, so excluding it does nothing",
+                     "Match the name in the genre file exactly; `cli genres --tropes` "
+                     "lists them.")
+    seen_tropes: set[str] = set()
+    for i, t in enumerate(bible.meta.get("series_tropes") or []
+                          if isinstance(bible.meta.get("series_tropes"), list) else []):
+        if not isinstance(t, dict) or not str(t.get("name") or "").strip():
+            err(f"series_tropes[{i}]", "needs a `name`")
+            continue
+        if not str(t.get("note") or "").strip():
+            warn(f"series_tropes[{i}]", f"{t['name']!r} has no note",
+                 "The note is all the ideator sees of what the trope means.")
+        key = str(t["name"]).strip().lower()
+        if key in seen_tropes:
+            err(f"series_tropes[{i}]", f"{t['name']!r} is listed twice")
+        seen_tropes.add(key)
 
     if "series" not in bible.meta:
         warn("series", f"not set; will display as {bible.name!r}",

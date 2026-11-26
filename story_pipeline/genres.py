@@ -74,6 +74,39 @@ class Genre:
                 items = rng.sample(items, sample)
         return "\n".join(f"- **{t['name']}** — {t['note']}" for t in items)
 
+    def for_series(self, meta: dict | None) -> "Genre":
+        """This genre as one series sees it.
+
+        A bible can narrow its genre (`subgenres`: which of the genre's
+        subgenres the series uses, in order of preference; `exclude_tropes`:
+        genre tropes that break the series' world) and extend it
+        (`series_tropes`: `{name, note}` entries only this series uses). Without
+        this, a series inherits the whole genre: Broken Edges was handed
+        fantasy's first subgenre, a debt romance, and a hedge-witch trope in a
+        world where nobody casts spells.
+
+        Returns a new Genre; the voice guide is untouched. An unknown subgenre
+        or excluded trope is ignored here — `bibles.validate` reports it.
+        """
+        if not meta:
+            return self
+        allowed = [str(s) for s in meta.get("subgenres") or []]
+        drop = {str(t).strip().lower() for t in meta.get("exclude_tropes") or []}
+        extra = [{"name": str(t["name"]).strip(), "note": str(t.get("note") or "").strip()}
+                 for t in meta.get("series_tropes") or []
+                 if isinstance(t, dict) and str(t.get("name") or "").strip()]
+        if not (allowed or drop or extra):
+            return self
+        m = dict(self.meta)
+        known = self.meta.get("subgenres", {})
+        narrowed = {s: known[s] for s in allowed if s in known}
+        if narrowed:
+            m["subgenres"] = narrowed
+        taken = {t["name"].lower() for t in extra}
+        m["tropes"] = ([t for t in self.tropes
+                        if t["name"].lower() not in drop | taken] + extra)
+        return Genre(name=self.name, meta=m, guide=self.guide)
+
     def validate_subgenre(self, subgenre: str | None) -> str | None:
         if subgenre and subgenre not in self.subgenres:
             raise ValueError(

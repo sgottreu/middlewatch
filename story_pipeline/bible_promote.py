@@ -52,13 +52,20 @@ class PromoteError(RuntimeError):
 CANON_KEYS = ("canon", "established facts")
 CAST_KEYS = ("recurring cast", "cast")
 REGION_KEYS = ("regions",)
+# `**Name:** note` bullets that add tropes to this series' menu only. They go to
+# the frontmatter (`series_tropes`), not the prose: the ideator sees them in its
+# trope menu, which is the one place a trope can be chosen from.
+SERIES_TROPE_KEYS = ("series tropes",)
 
 # Labels a draft may put on a line of its own. Under a character they set that
 # field; before the first `##` they set the series-level one.
 CAST_FIELDS = {"age": "age", "gender": "gender", "station": "station",
                "role": "role", "region": "region", "appearance": "appearance",
                "dress": "dress", "aliases": "aliases"}
-TOP_FIELDS = {"genre": "genre", "series": "series", "anchor year": "anchor_year"}
+TOP_FIELDS = {"genre": "genre", "series": "series", "anchor year": "anchor_year",
+              "subgenres": "subgenres", "exclude tropes": "exclude_tropes"}
+# Top-level fields written as a comma-separated list on one line.
+TOP_LISTS = ("subgenres", "exclude_tropes")
 
 # `- Gender: male`, `**Age:** 45`, `Gender (Tess Ridley): female`. The optional
 # bracket names the character when one `###` holds two of them.
@@ -448,6 +455,12 @@ def build(name: str, bibles_dir: str | Path = "bibles") -> Preview:
     genre = draft.top.get("genre") or draft.front.get("genre") or old_meta.get("genre")
     if genre:
         meta["genre"] = genre
+    for key in TOP_LISTS:
+        val = draft.top.get(key) or draft.front.get(key)
+        if isinstance(val, str):
+            val = [v.strip() for v in val.split(",") if v.strip()]
+        if val:
+            meta[key] = val
     anchor = draft.top.get("anchor_year") or draft.front.get("anchor_year")
     if anchor is not None:
         meta["anchor_year"] = anchor
@@ -483,6 +496,17 @@ def build(name: str, bibles_dir: str | Path = "bibles") -> Preview:
                          "count": len(draft.cast)})
             if draft.cast_intro.strip():
                 body += ["## Recurring Cast", "", draft.cast_intro.strip(), ""]
+            continue
+        if key in SERIES_TROPE_KEYS:
+            tropes = []
+            for b in _bullets(lines):
+                m = re.match(r"^\*\*(.+?):?\*\*:?\s*(.*)$", b)
+                if m:
+                    tropes.append({"name": m.group(1).strip().rstrip(":"),
+                                   "note": m.group(2).strip()})
+            if tropes:
+                meta["series_tropes"] = tropes
+            kept.append({"title": title, "as": "series_tropes", "count": len(tropes)})
             continue
         if key in REGION_KEYS:
             for b in _bullets(lines):

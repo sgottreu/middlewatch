@@ -94,6 +94,27 @@ the prose body is fine; the split has already happened by then.
 | `minor_names` | no | List of strings: one-story characters a finished story has used. Shown to the ideator as *Names already used* so a new character does not reuse a name. Not cast — no face, no voice. |
 | `art_style` | no | Overrides the genre's art direction. Pinned per story at creation. |
 | `voices` | no | Overrides the genre's casting, e.g. `narrator:`. Pinned per story at creation. |
+| `subgenres` | no | Which of the genre's subgenres this series uses, in order of preference. New outline picks the one this series has used least (ties go to list order) instead of the genre's first. An explicit `--subgenre` outside the list is refused before any model call. |
+| `exclude_tropes` | no | Genre tropes this series' world rules out, named exactly as in the genre file. Removed from the ideator's menu and from the outline check. |
+| `series_tropes` | no | `{name, note}` entries added to this series' trope menu only. The note is all the ideator sees of what the trope means. |
+
+### Narrowing the genre
+
+A series inherits its whole genre unless it says otherwise, and a genre is
+broad. Fantasy's first subgenre is a debt romance and its menu has a hedge-witch;
+a series whose world has no spellcasters and no peerage gets both anyway. Three
+things keep an ideator inside the series:
+
+1. **`subgenres`, `exclude_tropes`, `series_tropes`** (above). In a draft these are
+   `Subgenres: mystery, slice_of_life` and `Exclude tropes: The hedge-witch, Magical debt`
+   under the title, and a `## Series Tropes` section of `**Name:** note` bullets.
+   `cli genres --tropes` lists the genre's names. `bible check` flags a subgenre or
+   trope that doesn't exist.
+2. **`## Story Engine`**: one paragraph on what every story turns on: who goes
+   after what, and what's at stake. Prose, so every agent reads it.
+3. **`## Not This Series`**: a short list of the genre's stock moves this world rules
+   out. `house.md` tells every agent that the bible outranks the genre guide, so
+   this is where to say it.
 
 ### Writing canon
 

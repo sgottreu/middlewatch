@@ -34,6 +34,13 @@ If one heading covers two people, name who each line is for: `- Gender (Tess Rid
 - [ ] **Premise** section (`## Premise`): what the series is, in a short paragraph.
 - [ ] **Story Ideas** section (`## Story Ideas`): bullets of story seeds. These go to the ideator only, so New outline can draw on them.
 
+- [ ] **Story Engine** section (`## Story Engine`): what every story turns on, in one paragraph. Every agent reads it.
+- [ ] **Not This Series** section (`## Not This Series`): the genre's stock moves this world rules out. The bible outranks the genre guide.
+- [ ] **Narrow the genre**, under the title next to `Genre:`:
+  `Subgenres: mystery, slice_of_life` (which of the genre's subgenres fit; New outline rotates through them) and
+  `Exclude tropes: The hedge-witch, Magical debt` (names exactly as in the genre file; `cli genres --tropes` lists them).
+- [ ] Optional **Series Tropes** section (`## Series Tropes`): `- **Name:** note` bullets, added to this series' trope menu only.
+
 ## Part 3: Optional structure
 
 - [ ] `- Role: ` and `- Region: ` per character (fantasy series especially).

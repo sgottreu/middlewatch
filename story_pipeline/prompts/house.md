@@ -78,3 +78,14 @@ else.
 - Content boundaries: `boundaries.md`. Absolute, all genres.
 - Machine register: `ai-tells.md`. Enforced by a linter as well as by the editor.
 - Voice, diction, period, and the trope menu: the genre file.
+- What this series is: the series bible, when there is one.
+
+## When the series bible and the genre disagree
+
+The bible wins. A genre file describes the genre at large; a bible describes
+one world inside it, and that world may have narrowed it on purpose — no
+spellcasters, no titled nobility, magic that lives only in materials. Where the
+genre guide's advice or a trope's usual shape would break a bible's canon, its
+Story Engine or its Not This Series section, follow the bible and bend the
+trope to fit, or pick a different one. Content boundaries are the one exception:
+they bind every series.

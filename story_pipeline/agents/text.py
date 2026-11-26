@@ -272,6 +272,20 @@ def _render(
     return out
 
 
+def _default_subgenre(genre: genres.Genre, bible, past) -> str:
+    """The subgenre when none was asked for.
+
+    Without a bible, or with a bible that leaves subgenres to the genre, the
+    genre's first — unchanged. With a bible that lists its own, the one this
+    series has used least, ties going to the bible's order, so "New outline"
+    rotates through the series' flavours instead of repeating the first.
+    """
+    if not (bible and bible.meta.get("subgenres")):
+        return genre.subgenres[0]
+    order = genre.subgenres
+    return min(order, key=lambda s: (past.subgenres.get(s, 0), order.index(s)))
+
+
 def _genre_of(b: Bundle) -> genres.Genre:
     return genres.load(b.outline()["genre"])
 
@@ -350,13 +364,21 @@ def build_outline(
     if not genre_name:
         raise ValueError("need a --genre, or a --bible that declares one")
 
-    genre = genres.load(genre_name)
-    subgenre = genre.validate_subgenre(subgenre) or genre.subgenres[0]
+    # The genre as this series sees it: its subgenres, minus the tropes it
+    # excludes, plus its own. Everything below — menu, default subgenre and the
+    # outline check — uses this view, so they cannot disagree.
+    genre = genres.load(genre_name).for_series(bible.meta if bible else None)
 
     # What has already been approved, so this outline can avoid rhyming with it.
     # Scoped to the bible when there is one — Amberlight's repetitions say
     # nothing about what a different series should do next.
     past = history.scan(cfg["stories_dir"], bible=bible.name if bible else None)
+
+    # A revision of an outline written before the series narrowed its
+    # subgenres re-picks rather than failing on its old one.
+    if previous is not None and subgenre and subgenre not in genre.subgenres:
+        subgenre = None
+    subgenre = genre.validate_subgenre(subgenre) or _default_subgenre(genre, bible, past)
     trope_weights = {t["name"].lower(): past.weight(t["name"]) for t in genre.tropes}
 
     system = _render(
@@ -396,6 +418,15 @@ def build_outline(
             "chapters, replace them wholesale rather than adjusting what is "
             "there. Return the JSON object."
         )
+        known = {t["name"].lower() for t in genre.tropes}
+        stale = [t for t in previous.get("tropes", []) if str(t).lower() not in known]
+        if stale:
+            ask += ("\n\nThese tropes are no longer available for this series and "
+                    "must be replaced from the list you were given: "
+                    + ", ".join(stale) + ".")
+        if previous.get("subgenre") and previous["subgenre"] != subgenre:
+            ask += (f"\n\nThe subgenre is now {subgenre}, not "
+                    f"{previous['subgenre']}. Reshape the story to fit it.")
 
     # A 30-minute outline is nine chapters of beats plus seven cast members with
     # full appearance and dress, and 7,000 was set when 15 minutes was the only
@@ -407,7 +438,8 @@ def build_outline(
         usage_out.append((cfg["models"]["ideator"], usage))
     outline["genre"] = genre_name
     outline["length_min"] = spec["minutes"]
-    outline.setdefault("subgenre", subgenre)
+    if outline.get("subgenre") not in genre.subgenres:
+        outline["subgenre"] = subgenre
     if notes:
         outline["notes"] = notes
     if bible:

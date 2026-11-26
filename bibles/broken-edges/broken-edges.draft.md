@@ -2,12 +2,27 @@
 
 Genre: fantasy
 Series: Mapping the Broken Edges
+Subgenres: mystery, slice_of_life, portal
+Exclude tropes: The hedge-witch, Magical debt, The bargain, Seasonal court, The misread prophecy
 
 Working title: Mapping the Broken Edges (alternative: The Broken Edges; stories may be subtitled by region) Status: Early worldbuilding. Structure mirrors the Amberlight bible.
 
 ## Premise
 
 About twenty years ago, a Cataclysm reshaped the world. Geological upheaval and other forces cut kingdoms and regions off from one another. The stories are set in the aftermath, as people begin crossing the gaps and documenting what has changed.
+
+## Story Engine
+
+Every story turns on a question about the changed world: what something is, whether it can be used, whether a route is safe, what was lost, or what the old world knew. A mapper, archivist, salvager, surveyor or collector goes after the answer, and someone local depends on it: a town that needs a new trade, a trader who needs a route, a family that needs to know whether to stay. The answer is found by going and looking, measuring, testing and comparing records, and it is usually partial: it settles this story's question and leaves the world a little better mapped. Romance can be a thread between people, never the engine of the plot.
+
+## Not This Series
+
+- No spellcasters. Nobody casts spells, chants or brews magic by will: no witches, wizards, mages, hedge-witches or wise women with powers. Magic lives in changed materials and is worked by alchemists and artificers, experimentally and with uncertain results.
+- No courts, peerages or estates. The old kingdoms' nobility mostly fell apart in the Cataclysm; society runs on towns, trade, households and young documenting groups. No marriages arranged to pay off debts or join houses.
+- No chosen ones, prophecies, dark lords or quests to save the world. The stakes are local: a town, a route, a trade, a record.
+- No bargains with spirits or fey, and no magic taken on credit. Strange creatures are changed or new animals, not bargaining powers.
+- No steam power or anything beyond late-medieval technology and rare precision clockwork.
+- No answer to what caused the Cataclysm. Characters can hold theories; no story settles it.
 
 ## Canon
 
@@ -92,10 +107,17 @@ For now, the independent chroniclers are simply traders and the stories they car
 
 ## Story Ideas
 
-- **The Glasswood leaves:** a documenter investigates whether the leaves or trees can truly be used, as magic detectors, in potions, or as spell components, while a struggling former lumber town hopes the answer is yes.
+- **The Glasswood leaves:** a documenter investigates whether the leaves or trees can truly be used, as magic detectors, as alchemical reagents, or as parts for artificers' instruments, while a struggling former lumber town hopes the answer is yes.
 - **Into the Stillwinter:** drawn by stories of a place where time runs slow, a party sets out from Tollgate to investigate whether the rumours are true.
 - **The settled sediment:** on the way east, Tobias and Tess notice where the magic sediment settles out of the westward rivers, a stretch nobody has studied because people only pass through, and begin to suspect it is worth something.
 - **Sunken Reach seeds (parked):** Hartsford and Shoreside disputing who owns salvage and the drowned land; Floatsome navigating by the spires and towers still above the water; salvagers finding a sealed building still dry inside after 20 years.
+
+## Series Tropes
+
+- **The map is wrong:** a chart or route everyone relies on is out of date since the last tremor, flood or fog shift, and someone is about to trust it.
+- **Contract versus honest record:** a paying client, whether a trader, a patron or a town, wants the record shaded: a route made to seem safer, a find kept quiet. The documenter has to decide what goes in the book.
+- **The thing nobody has studied:** something everyone passes every day turns out to matter, and the first person to look closely has to prove it to people who never bothered.
+- **What the old world knew:** a record, a ruin or an elder's memory from before the Cataclysm answers a question about the changed world, or makes it harder.
 
 ## Recurring Cast
 
@@ -186,3 +208,4 @@ Empty.
 - 2026-11-10: Set the Cataclysm at about 20 years ago, cause kept ambiguous. Replaced the central institution with regional documenting groups. Defined technology tiers (no steam), magic as alchemy and artificing, travel and trade tension, eight regions plus the Southern Teeth, map layout, working title, and cast members Garret Marsh and Wren Calloway.
 - 2026-11-11: Brought premise, open questions, chroniclers and cast notes up to date; voice casting deferred to the review UI. Sketched all remaining regions (Riven Plains, Hollowmere, Tollgate, Stillwinter, Southern Teeth), named the Sunken Reach settlements and the documenting groups, added the first collectors, and added cast members Maud and Jory Brennick, Bram Tolliver, Tobias Finch, Tess Ridley and Matthias Kettering.
 - 2026-11-23: Added Genre and Series lines, a Canon fact on the thinning ordinary Glasswood timber, Garret's motive, and Gender, Age, Station, Appearance and Dress for all eight cast members. Bram's mining is open-pit; Tess is now 36.
+- 2026-11-26: Narrowed the genre: Subgenres (mystery, slice of life, portal) and Exclude tropes lines, plus a Series Tropes section. Added Story Engine and Not This Series after outlines drifted into a debt-marriage romance and a hedge-witch. Changed "spell components" in the Glasswood leaves seed to reagents and artificers' parts, to match Magic.
