@@ -5,9 +5,28 @@
 
 series: Mapping the Broken Edges
 genre: fantasy
+subgenres:
+  - mystery
+  - slice_of_life
+  - portal
+exclude_tropes:
+  - The hedge-witch
+  - Magical debt
+  - The bargain
+  - Seasonal court
+  - The misread prophecy
 assets:
   map: broken-edges.map.jpg
   layout: broken-edges.layout.png
+series_tropes:
+  - name: The map is wrong
+    note: a chart or route everyone relies on is out of date since the last tremor, flood or fog shift, and someone is about to trust it.
+  - name: Contract versus honest record
+    note: 'a paying client, whether a trader, a patron or a town, wants the record shaded: a route made to seem safer, a find kept quiet. The documenter has to decide what goes in the book.'
+  - name: The thing nobody has studied
+    note: something everyone passes every day turns out to matter, and the first person to look closely has to prove it to people who never bothered.
+  - name: What the old world knew
+    note: a record, a ruin or an elder's memory from before the Cataclysm answers a question about the changed world, or makes it harder.
 canon:
   - A Cataclysm occurred. It happened about 20 years ago, within living memory. Its cause is deliberately kept ambiguous in-world; characters and documenters may hold competing theories.
   - Kingdoms and places have been disconnected by geological changes and possibly other causes.
@@ -106,6 +125,19 @@ regions:
 
 About twenty years ago, a Cataclysm reshaped the world. Geological upheaval and other forces cut kingdoms and regions off from one another. The stories are set in the aftermath, as people begin crossing the gaps and documenting what has changed.
 
+## Story Engine
+
+Every story turns on a question about the changed world: what something is, whether it can be used, whether a route is safe, what was lost, or what the old world knew. A mapper, archivist, salvager, surveyor or collector goes after the answer, and someone local depends on it: a town that needs a new trade, a trader who needs a route, a family that needs to know whether to stay. The answer is found by going and looking, measuring, testing and comparing records, and it is usually partial: it settles this story's question and leaves the world a little better mapped. Romance can be a thread between people, never the engine of the plot.
+
+## Not This Series
+
+- No spellcasters. Nobody casts spells, chants or brews magic by will: no witches, wizards, mages, hedge-witches or wise women with powers. Magic lives in changed materials and is worked by alchemists and artificers, experimentally and with uncertain results.
+- No courts, peerages or estates. The old kingdoms' nobility mostly fell apart in the Cataclysm; society runs on towns, trade, households and young documenting groups. No marriages arranged to pay off debts or join houses.
+- No chosen ones, prophecies, dark lords or quests to save the world. The stakes are local: a town, a route, a trade, a record.
+- No bargains with spirits or fey, and no magic taken on credit. Strange creatures are changed or new animals, not bargaining powers.
+- No steam power or anything beyond late-medieval technology and rare precision clockwork.
+- No answer to what caused the Cataclysm. Characters can hold theories; no story settles it.
+
 ## Setting
 
 The world is broken into isolated pockets. Each one can have its own flavour, customs and history since the Cataclysm. That suits the linked-standalone format: every story can open in a new place and still stand on its own.
@@ -177,7 +209,7 @@ For now, the independent chroniclers are simply traders and the stories they car
 
 ## Story Ideas
 
-- **The Glasswood leaves:** a documenter investigates whether the leaves or trees can truly be used, as magic detectors, in potions, or as spell components, while a struggling former lumber town hopes the answer is yes.
+- **The Glasswood leaves:** a documenter investigates whether the leaves or trees can truly be used, as magic detectors, as alchemical reagents, or as parts for artificers' instruments, while a struggling former lumber town hopes the answer is yes.
 - **Into the Stillwinter:** drawn by stories of a place where time runs slow, a party sets out from Tollgate to investigate whether the rumours are true.
 - **The settled sediment:** on the way east, Tobias and Tess notice where the magic sediment settles out of the westward rivers, a stretch nobody has studied because people only pass through, and begin to suspect it is worth something.
 - **Sunken Reach seeds (parked):** Hartsford and Shoreside disputing who owns salvage and the drowned land; Floatsome navigating by the spires and towers still above the water; salvagers finding a sealed building still dry inside after 20 years.

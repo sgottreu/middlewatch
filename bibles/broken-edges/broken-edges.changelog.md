@@ -12,6 +12,10 @@ story that caused them.
 
 ---
 
+## 2026-11-26 11:24 · Scott Gottreu · promote · sha=1ae00e2d
+
+Promoted from broken-edges.draft.md: 5 canon fact(s), 8 recurring cast. Left in the draft: Open Questions, Minor Names Register, Changelog.
+
 ## 2026-11-26 15:12 · Scott Gottreu · promote · sha=9963fbef
 
 Promoted from broken-edges.draft.md: 5 canon fact(s), 8 recurring cast. Left in the draft: Open Questions, Minor Names Register, Changelog.
