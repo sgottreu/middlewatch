@@ -1,0 +1,195 @@
+{
+  "title": "The Lock That Kept Its Word",
+  "genre": "fantasy",
+  "subgenre": "slice_of_life",
+  "tropes": [
+    "The map is wrong",
+    "What the old world knew",
+    "The cursed object"
+  ],
+  "bible_conflict": null,
+  "logline": "When a Hartsford herbalist hires Jory Brennick to pull his dead grandmother's strongbox from a half-collapsed drowned shop before new pilings seal the only way in, the lock she fused from raw fissure stone in the chaos after the Cataclysm takes exactly the payment her own letter warned it would: the family name needed to speak for what she found.",
+  "promise": "A race against a dock crew's piling schedule through a collapsed drowned shop, a lock that costs exactly what an old letter says it costs, and a dead apothecary's wartime experiments proving a real fever remedy in the present.",
+  "setting": "the drowned streets below Hartsford and Shoreside, Sunken Reach, early autumn, about twenty years after the Cataclysm",
+  "target_words": 4500,
+  "cast": [
+    {
+      "name": "Jory Brennick",
+      "role": "protagonist",
+      "age": 20,
+      "gender": "male",
+      "station": "Floatsome salvager",
+      "want": "to prove himself a salvager worth hiring on his own name, not just as Maud's son",
+      "appearance": "wiry, tanned, close-cropped auburn hair",
+      "dress": "trousers",
+      "voice_note": "eager, talks fast when excited",
+      "recurring": true
+    },
+    {
+      "name": "Maud Brennick",
+      "role": "supporting",
+      "age": 42,
+      "gender": "female",
+      "station": "Floatsome hazard charter and salvager",
+      "want": "to keep her son from underestimating the danger of the drowned streets she still remembers from before the flood",
+      "appearance": "auburn hair just starting to grey",
+      "dress": "short trousers, long sleeves, wide-brimmed hat",
+      "voice_note": "dry, practical, understates danger",
+      "recurring": true
+    },
+    {
+      "name": "Walter Ames",
+      "role": "supporting",
+      "age": 61,
+      "gender": "male",
+      "station": "Hartsford herbalist, descendant of the drowned town's apothecary family",
+      "want": "to recover his grandmother's sealed chest of remedies before the entrance is lost, hoping its cures can ease a fever moving through Hartsford",
+      "appearance": "A stooped man of sixty-one with a close white beard and ink-stained fingers from years of grinding herbs.",
+      "dress": "A patched wool coat over a leather apron, a brass magnifying loupe on a cord at his neck.",
+      "voice_note": "soft-spoken, apologizes before asking for anything"
+    },
+    {
+      "name": "Selah Vance",
+      "role": "supporting",
+      "age": 38,
+      "gender": "female",
+      "station": "Shoreside dock-builder, foreman of the stilt expansion crew",
+      "want": "to drive the new pilings and finish the stilt line before the first winter storm closes the harbor to construction",
+      "appearance": "A tall, broad-shouldered woman of thirty-eight with wind-cracked skin and dark hair cropped short under a canvas cap.",
+      "dress": "A heavy oiled coat and tall boots, a carpenter's plumb-line looped at her belt.",
+      "voice_note": "brisk, states facts rather than opinions"
+    },
+    {
+      "name": "Liora Quill",
+      "role": "supporting",
+      "age": 19,
+      "gender": "female",
+      "station": "Floatsome salvager, Jory's friendly rival",
+      "want": "to land a find notable enough that people stop calling her 'Jory's partner'",
+      "appearance": "A lean young woman of nineteen with a long braid of light brown hair, bleached pale at the tips by sun and salt.",
+      "dress": "A sleeveless diving vest over rolled trousers, a string of small brass fittings tied at her belt.",
+      "voice_note": "quick, teasing, needles Jory good-naturedly"
+    }
+  ],
+  "chapters": [
+    {
+      "n": 1,
+      "title": "Six Days Before the Pilings",
+      "beats": [
+        "Jory and Liora sort the morning's salvage on a Floatsome platform, trading friendly jabs about whose haul is better.",
+        "Walter Ames arrives by hired boat, asking the dockhands specifically for Jory by name, a water-stained letter in hand.",
+        "Walter explains the letter is his grandmother's own, written in the unsettled years right after the Cataclysm, saying she had hidden something precious in the cellar of the family shop before the water closed over it for good, and that he only found the letter last month sorting a dead aunt's effects.",
+        "He adds that Shoreside's crew plans to drive new pilings into that very street in six days, which will bury the cellar entrance forever.",
+        "Maud, overhearing, warns the street lies near the fissure and hasn't been surveyed since a tremor loosened the harbor shelf years back; Jory takes the contract anyway, and Maud insists on coming since her chart predates that tremor."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 2,
+      "title": "The Foreman's Schedule",
+      "beats": [
+        "Jory, Liora, and Maud travel to Shoreside to confirm the timeline with foreman Selah Vance.",
+        "Selah states plainly her crew starts driving pilings into that street in six days, and could start sooner if a storm building offshore arrives early.",
+        "Maud unrolls her old chart, marking the shop, and admits she hasn't dived that stretch since the tremor.",
+        "At dawn they dive to the site and find the chart wrong: the entrance it marks is now buried under a fallen roof.",
+        "Searching the rubble, they spot a second, unmapped gap in the cellar wall that nobody's chart shows."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 3,
+      "title": "Through the Broken Wall",
+      "beats": [
+        "Jory and Liora squeeze through the unmapped gap into a flooded back room.",
+        "Inside, they find a cluttered workbench of cracked glass vessels and corroded tools, not the furnishings of an ordinary household cellar.",
+        "Fresh-looking chisel marks scar the wall near a strongbox bolted to a support post, far too clean to be twenty years old.",
+        "The strongbox lock has no keyhole, only raised letters shaped like a name, faintly warm through Jory's glove despite the cold water.",
+        "Running low on air, they surface, debating who else could have cut those marks, and when."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 4,
+      "title": "The Grandmother's Letter",
+      "beats": [
+        "Jory reports the workbench, the chisel marks, and the warm lock to Walter.",
+        "Walter reads further in the letter: his grandmother wrote of grinding 'stone that bleeds light,' gathered from the new crack in the seabed in the months after the Cataclysm, and testing it as medicine during a fever that struck the resettling town.",
+        "Walter explains the letter's warning: she sealed her notes and a sample behind a lock worked from that same stone, which answers only to the household's true name, spoken three times in open air, never underwater, and takes a payment of its own for the answer.",
+        "Selah arrives to check progress and admits her own survey crew chipped that same wall last week while marking piling positions, clearing up the mystery of the chisel marks.",
+        "Selah adds that the storm has pushed her schedule forward: pilings go in four days, not six."
+      ],
+      "target_words": 570
+    },
+    {
+      "n": 5,
+      "title": "What Maud Remembers",
+      "beats": [
+        "Back at Floatsome, Jory relays the open-air rule and the warm lock to Maud.",
+        "Maud recalls, as a girl in the unsettled years right after the flood, watching an old woman row out alone to that half-drowned shop and work by lantern long after neighbors had given up on the street.",
+        "Maud recalls townsfolk whispering the old woman had cured a fever nobody else could touch, then stopped coming around before anyone learned how she'd done it.",
+        "Maud warns that a lock worked from fissure stone that soon after the Cataclysm was never tested twice, so whatever it costs, nobody living has seen it paid.",
+        "A runner arrives from Shoreside: the storm has turned faster than forecast, and pilings now go in two days."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 6,
+      "title": "Raising the Box",
+      "beats": [
+        "With two days left, Jory, Liora, and Maud dive together to the strongbox.",
+        "They work the corroded bolts loose with a pry bar, careful not to crack the post and bring down more of the roof.",
+        "They rig a line and float the strongbox up through the gap in the wall.",
+        "They break the surface, and Walter hauls the dripping box onto the boat deck, into open air, exactly as the letter requires.",
+        "Walter draws breath to begin the chant and notices the raised letters on the lock have gone smooth, as if waiting."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 7,
+      "title": "The Price",
+      "beats": [
+        "Walter speaks the household's true name three times on the open deck, as the letter instructs.",
+        "The lock answers, drawing a visible chill through his hand as it clicks open, his fingers going numb and pale.",
+        "Inside is not finished medicine but his grandmother's own formulary, water-stained, and a wrapped lump of raw fissure stone matching the lock.",
+        "Trying afterward to say his family name aloud for the record, Walter finds the word will not come; the lock has taken the name itself as payment.",
+        "Maud recognizes the wrapped stone as the same material salvagers now pull from near the fissure, meaning the grandmother's remedy was tested against the very substance still turning up today."
+      ],
+      "target_words": 560
+    },
+    {
+      "n": 8,
+      "title": "What the Chest Was For",
+      "beats": [
+        "Onshore, they read the formulary together, Jory sounding out water-smudged measures matching a fever draught to the stone.",
+        "Walter decides to carry the formulary and the stone to a Hartsford healer rather than test it himself, since the measures must be exact and the stone is dangerous to mishandle.",
+        "At the healer's door, Walter tries to speak his family name to youch for the remedy's origin and cannot; he presents the letter itself as proof instead.",
+        "Three days later, word returns that the healer's draught, matched to the old measures, has eased the fever moving through Hartsford.",
+        "Selah's crew drives the first pilings into the cleared street on schedule, Walter pays Jory in full with a share for Maud's memory, and Jory and Liora start eyeing the fissure itself as their next contract, with Maud agreeing to chart the way first this time."
+      ],
+      "target_words": 570
+    }
+  ],
+  "length_min": 30,
+  "notes": "let's look at jory in the sunken reach with either someone contracting him to find something and he discovering  a mystery.",
+  "bible": "broken-edges",
+  "series": "Mapping the Broken Edges",
+  "slug": "the-lock-that-kept-its-word",
+  "revisions": [
+    {
+      "feedback": "Keep these exactly as they are, word for word where they are text: the setting; the tropes, exactly as named; the title.\n\nReplace these wholesale rather than adjusting what is there: the logline; the promise; the cast, including their names, ages and stations; the chapters and their beats.\n\nThe new chapters must carry 4 to 5 concrete beats each \u2014 things that happen, not moods. That density is what stops the prose stretching to fill the words rather than the story getting bigger.\n\nInvent a genuinely new cast. Recurring characters from the series bible may still appear where the story needs them, copied verbatim as always, but the guest characters should be new people with new names \u2014 not the previous ones renamed.\n\nwhy would there be a land dispute over flooded land?\nI think they wouldn't fight over putting the pilings but the owner would want to find the item before the entrance was closed off",
+      "previous_title": "The Lock That Kept Its Word"
+    },
+    {
+      "feedback": "Keep these exactly as they are, word for word where they are text: the logline; the promise; the setting; the tropes, exactly as named; the title; the chapters and their beats.\n\nReplace these wholesale rather than adjusting what is there: the cast, including their names, ages and stations.\n\nInvent a genuinely new cast. Recurring characters from the series bible may still appear where the story needs them, copied verbatim as always, but the guest characters should be new people with new names \u2014 not the previous ones renamed.\n\nThe chapters are being kept, so rewrite any beat that names a character who no longer exists, keeping the event the beat describes.\n\ndessa fenwick is already mentioned and lives in the Glasswoods. so we need another character",
+      "previous_title": "The Lock That Kept Its Word"
+    },
+    {
+      "feedback": "Keep these exactly as they are, word for word where they are text: the setting; the tropes, exactly as named; the title; the cast, including their names, ages and stations.\n\nReplace these wholesale rather than adjusting what is there: the logline; the promise; the chapters and their beats.\n\nThe new chapters must carry 4 to 5 concrete beats each \u2014 things that happen, not moods. That density is what stops the prose stretching to fill the words rather than the story getting bigger.\n\nsince the house is underwater, they can't speak a chant",
+      "previous_title": "The Lock That Kept Its Word"
+    },
+    {
+      "feedback": "Keep these exactly as they are, word for word where they are text: the setting; the tropes, exactly as named; the title; the cast, including their names, ages and stations.\n\nReplace these wholesale rather than adjusting what is there: the logline; the promise; the chapters and their beats.\n\nThe new chapters must carry 4 to 5 concrete beats each \u2014 things that happen, not moods. That density is what stops the prose stretching to fill the words rather than the story getting bigger.\n\nif the fissure happend during the cataclysm, how would items be found and found in a box sealed before it happened\ni doubt the grandmother would put a box in a home near early flooding\nit sounds like they knew this material could be used in a cure, that couldn't occur before the cataclysm either",
+      "previous_title": "The Lock That Kept Its Word"
+    }
+  ]
+}

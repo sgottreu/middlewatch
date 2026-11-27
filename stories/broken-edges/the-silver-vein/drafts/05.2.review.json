@@ -1,0 +1,71 @@
+{
+  "n": 5,
+  "pass": true,
+  "score": 7,
+  "beats": [
+    {
+      "beat": "Garret halts the exchange, and Elin demonstrates the breath test publicly, showing the cold, painted leaf against a true silvered one.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "The buyer refuses the tainted shipment, and the furious caravan driver blames Mabel, who must now make the loss good out of her own trade credit.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Back in Earlmere, the town's anger falls on Jasper, but Garret proposes he work off the debt properly under supervision, learning to cut the rule right instead of losing his family's grove.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Garret names Elin his apprentice before the Glasswood Society, with the breath test recorded as the first proven way to tell a leaf's true age, closing the season's danger for good.",
+      "covered": true,
+      "note": "The naming and the recording both happen, but the gathering is only 'everybody in Earlmere who cuts glass or writes down what is cut' \u2014 the bible's named institution, the Glasswood Society, is never invoked, losing the tie to the series' documenting groups."
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Garret hands the written record to Elin's own hand, closing the mentor/apprentice arc and settling the season's danger \u2014 a fitting final-chapter close rather than a forward hook, which is appropriate here."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": false,
+    "irony_in_dialogue": true,
+    "problems": [
+      "No instance of free indirect discourse appears in this chapter; every passage is either flat narration of action or direct dialogue, with no moment where a character's perception colors the narrator's sentence."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [
+    "The narrator segment embeds the driver's dialogue inline with quotation marks ('he said, \"so Odell stands the loss...\"') rather than as its own speaker turn, breaking the format every other exchange in this story uses."
+  ],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "All three tropes land here: the apprentice is formally named, the broken rule is proven broken and repaired, and the untested breath test is proposed, tried, and recorded as settled fact \u2014 no fourth trope has crept in.",
+  "length_note": null,
+  "fixes": [
+    "Name the 'Glasswood Society' explicitly in the closing scene, since the outline specifies Elin is named apprentice before that body, not before an unnamed local gathering.",
+    "Add one beat of free indirect discourse, e.g. render Elin's reaction to being named apprentice through narration filtered by her own relief or disbelief rather than only through dialogue and flat action.",
+    "Convert 'The driver did not need to read it. \"Odell's mark,\" he said, \"so Odell stands the loss...\"' into a separate speaker segment attributed to the driver, matching the rest of the chapter's format."
+  ],
+  "lint": {
+    "total": 1,
+    "errors": 0,
+    "by_rule": {
+      "clause_chain": 1
+    },
+    "findings": [
+      {
+        "rule": "clause_chain",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "\"Odell's mark,\" he said, \"so Odell stands the loss, down to the last cord, and she can hear it from me.\" The bundles went back up the hill u...",
+        "note": "3 clauses coordinated in 38 words. Heard once, the last one lands with the subject of the first already gone. Split after the first clause, or make every member the same grammatical shape so the ear can follow the pattern."
+      }
+    ]
+  },
+  "chapter_hash": "aa5643652386939a",
+  "writer_note": "I don\u2019t think this small town has something so fancy sounding as class for society just called glasses skill, something like that"
+}

@@ -26,7 +26,7 @@
   ],
   "turn": {
     "present": true,
-    "note": "Ends on the discovery that Jasper's bundles are already loaded for a first-light departure, forcing the night inspection that drives chapter three."
+    "note": "Mabel's reveal that the shipment already sits loaded for first light converts the inspection from routine to a race against dawn, setting up chapter 3's urgency."
   },
   "continuity": [],
   "style": {
@@ -36,15 +36,22 @@
   },
   "anachronisms": [],
   "borrowed_text": [],
-  "listenability": [],
-  "generic_prose": [],
+  "listenability": [
+    "The number 'eleven' is reused three times for different referents in quick succession ('batch eleven', 'eleven deliveries', 'Eleven years I've kept this book') \u2014 vary at least one to keep them distinguishable by ear."
+  ],
+  "generic_prose": [
+    {
+      "quote": "For a moment the only sound was the fire.",
+      "replace_with": "Name a specific sound of Mabel's shop instead \u2014 the scrape of her chalk box, or the hiss of a damp log \u2014 to keep the beat concrete rather than stock quiet-room atmosphere."
+    }
+  ],
   "boundary_breaches": [],
-  "trope_note": "Serves the rule-that-must-not-be-broken by having Mabel restate the sworn vow, and seeds the apprentice trope through Elin's ledger literacy solving what Garret's craft-eye alone could not.",
-  "length_note": "Reads somewhat short of the 450-word target, but all four assigned beats land; the shortness could be addressed by giving Elin's ledger discovery a beat more physical detail rather than adding new content.",
+  "trope_note": "Serves the apprentice straight through Elin's ledger-reading catching what Garret missed, and sets up the rule-breach without yet confirming it; the untested breath-test trope stays correctly unused until chapter 4.",
+  "length_note": null,
   "fixes": [
-    "Mabel's speech beginning 'His mother has been abed since the spring' runs five sentences in one block; break it with a half-beat of narration (her hands on the ledger, a pause) so the listener can place the shift from excuse to admission.",
-    "To recover the missing word count without padding, show Elin's hand moving down the ledger column as she counts Jasper's deliveries, rather than stating her conclusion directly \u2014 this gives the discovery beat more weight on the page and on the ear.",
-    "Consider trimming 'and a column of weights read to her the way the wood read to Garret' slightly, as it risks feeling like an aside rather than action; keep it only if it earns its place by paying off later in the apprentice arc."
+    "Cut 'For a moment the only sound was the fire.' \u2014 generic filler that also trims toward the 450-word target.",
+    "Vary the repeated number 'eleven' (batch number vs. years vs. deliveries) so a listener doesn't conflate the three distinct facts.",
+    "Consider trimming 'She looked at the column a while longer before she said the rest of it.' as a redundant beat before Mabel's confession line, which already carries the hesitation."
   ],
   "lint": {
     "total": 0,
@@ -52,5 +59,6 @@
     "by_rule": {},
     "findings": []
   },
-  "chapter_hash": "d7e050f0b42e2848"
+  "chapter_hash": "0ca49f8cc7947481",
+  "writer_note": "Make Garrett\u2019s and Maude\u2019s interaction a little less agressive. He knows Maude and just wants to get to the bottom of this so people are safe their reputation/trade isn\u2019t questioned"
 }

@@ -1,0 +1,75 @@
+{
+  "n": 8,
+  "pass": false,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Onshore, they read the formulary together, Jory sounding out water-smudged measures matching a fever draught to the stone.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Walter decides to carry the formulary and the stone to a Hartsford healer rather than test it himself, since the measures must be exact and the stone is dangerous to mishandle.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "At the healer's door, Walter tries to speak his family name to vouch for the remedy's origin and cannot; he presents the letter itself as proof instead.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Three days later, word returns that the healer's draught, matched to the old measures, has eased the fever moving through Hartsford.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Selah's crew drives the first pilings into the cleared street on schedule, Walter pays Jory in full with a share for Maud's memory, and Jory and Liora start eyeing the fissure itself as their next contract, with Maud agreeing to chart the way first this time.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Closes the central mystery and payment while opening the fissure itself as the next job, with Maud's condition (chart first) giving the series its next shape."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [
+    "The paragraph beginning 'Three days after that, a girl came down to Floatsome' jumps three days with no break mark, though the sentence does name the new time."
+  ],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Delivers all three: the cursed object's payment resolves exactly as the letter warned, the old-world remedy is proven true in the present, and Maud's insistence on redrawing the chart closes out the mapping-error thread without adding a fourth trope.",
+  "length_note": null,
+  "fixes": [
+    "Insert a `break` segment before 'Three days after that, a girl came down to Floatsome with a note for Jory' to mark the time jump cleanly, since the house rule treats a jump without a mark as a fault even when the following sentence names the time.",
+    "Open with 'Walter Ames dried his grandmother's formulary' rather than 'the black-bound book,' so a listener who has just heard chapter 7 is anchored by the object's name rather than its description alone.",
+    "Consider giving Maud a beat of visible reaction to being paid for her memory beyond 'I'd take it' \u2014 a short physical action would land the moment without more dialogue."
+  ],
+  "lint": {
+    "total": 1,
+    "errors": 0,
+    "by_rule": {
+      "break_unanchored": 1
+    },
+    "findings": [
+      {
+        "rule": "break_unanchored",
+        "severity": "warn",
+        "segment": 14,
+        "quote": "They came to the door on Dunnock Lane with an hour of daylight left.",
+        "note": "The sentence after a scene break has to say when or where we now are \u2014 it is the only cue a listener gets that time has passed."
+      }
+    ]
+  },
+  "chapter_hash": "d0adafd75e6c4ad2",
+  "length_over": 712,
+  "length_target": 570
+}

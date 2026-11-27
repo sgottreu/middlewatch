@@ -1,0 +1,78 @@
+{
+  "n": 2,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Jory, Liora, and Maud travel to Shoreside to confirm the timeline with foreman Selah Vance.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Selah states plainly her crew starts driving pilings into that street in six days, and could start sooner if a storm building offshore arrives early.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Maud unrolls her old chart, marking the shop, and admits she hasn't dived that stretch since the tremor.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "At dawn they dive to the site and find the chart wrong: the entrance it marks is now buried under a fallen roof.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Searching the rubble, they spot a second, unmapped gap in the cellar wall that nobody's chart shows.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "The unmapped gap in the cellar wall reframes the whole job and sends the next chapter through it; Maud's closing line names the stakes plainly."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": [
+      "One clause chain shifts grammatical shape mid-sentence: see fixes.",
+      "One narratorial generalization reads as a stock truism rather than a specific observation: see generic_prose."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [
+    {
+      "quote": "the way people look at something they are not going to argue with",
+      "replace_with": "a concrete Selah gesture \u2014 she taps the corner of the chart once and lets it go, or refolds it without comment"
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "The map is wrong is delivered straight and well here: the old chart is proven wrong on the page, in front of the characters, with a concrete consequence (the found gap).",
+  "length_note": null,
+  "fixes": [
+    "Split the chain: 'The whole slate pitch of the house next door had come off its beams and slid into the lane, and it lay over the shop door at an angle, and everything beneath it was dark and tight and twenty years settled.' Break after 'into the lane.' and let the description of the dark, settled space stand as its own sentence \u2014 the clause shifts from action (came off, slid) to state (lay, was dark) and a listener loses the subject partway through.",
+    "Replace 'the way people look at something they are not going to argue with' with a specific physical beat for Selah \u2014 a hand placed flat on the chart, a glance at the mallet, anything that is hers rather than a general truth about people."
+  ],
+  "lint": {
+    "total": 1,
+    "errors": 0,
+    "by_rule": {
+      "long_sentence": 1
+    },
+    "findings": [
+      {
+        "rule": "long_sentence",
+        "severity": "warn",
+        "segment": -1,
+        "quote": "The whole slate pitch of the house next door had come off its beams and slid into the lane, and it lay over the shop door at an angle, and e...",
+        "note": "41 words in one sentence. A listener cannot re-read it. Split it, or cut it to under 40."
+      }
+    ]
+  },
+  "chapter_hash": "897ca55c0ff0da3c"
+}

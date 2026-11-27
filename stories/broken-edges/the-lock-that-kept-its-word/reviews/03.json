@@ -1,0 +1,68 @@
+{
+  "n": 3,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Jory and Liora squeeze through the unmapped gap into a flooded back room.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Inside, they find a cluttered workbench of cracked glass vessels and corroded tools, not the furnishings of an ordinary household cellar.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Fresh-looking chisel marks scar the wall near a strongbox bolted to a support post, far too clean to be twenty years old.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "The strongbox lock has no keyhole, only raised letters shaped like a name, faintly warm through Jory's glove despite the cold water.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Running low on air, they surface, debating who else could have cut those marks, and when.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Maud's redirect toward hearing the whole letter sets up chapter 4's scene with Walter directly."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": false,
+    "problems": [
+      "\"There was no keyhole. There was no slot, no hasp, no shackle.\" is a triple-plus list that reads as the rule-of-three tic rather than a deliberate accumulating period; trim to two items."
+    ]
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [
+    {
+      "quote": "Maud sat back on the thwart and looked at the water as if it owed her an explanation.",
+      "replace_with": "ground it in a concrete action Maud actually takes with the chart or the boat, rather than a mood-simile about the water"
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Serves the cursed object (lock's warmth, raised name) and what the old world knew (glass vessels, mortar) well; the map is wrong is carried over from ch2 rather than advanced here, which is fine since it isn't a beat for this chapter.",
+  "length_note": null,
+  "fixes": [
+    "Trim 'There was no keyhole. There was no slot, no hasp, no shackle.' to two items so it doesn't read as a stock triple.",
+    "The chapter runs noticeably over target; cut redundancy in the warmth passage (the dog-simile sentence largely restates the line just before it) to tighten pacing.",
+    "Consider shortening the glass-vessel inventory ('Rows of it, racked and fallen...') by one clause \u2014 the mortar detail alone already does the work of signalling 'not a household cellar.'"
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "chapter_hash": "9504ee37b97b74cf"
+}

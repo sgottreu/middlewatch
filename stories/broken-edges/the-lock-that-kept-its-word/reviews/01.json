@@ -1,0 +1,59 @@
+{
+  "n": 1,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Jory and Liora sort the morning's salvage on a Floatsome platform, trading friendly jabs about whose haul is better.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Walter Ames arrives by hired boat, asking the dockhands specifically for Jory by name, a water-stained letter in hand.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Walter explains the letter is his grandmother's own, written in the unsettled years right after the Cataclysm, saying she had hidden something precious in the cellar of the family shop before the water closed over it for good, and that he only found the letter last month sorting a dead aunt's effects.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "He adds that Shoreside's crew plans to drive new pilings into that very street in six days, which will bury the cellar entrance forever.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Maud, overhearing, warns the street lies near the fissure and hasn't been surveyed since a tremor loosened the harbor shelf years back; Jory takes the contract anyway, and Maud insists on coming since her chart predates that tremor.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Jory accepts the contract and Maud commits to joining, setting up the dive and survey of chapter 2."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Serves 'the map is wrong' directly through Maud's warning about the chart predating the tremor; 'what the old world knew' is seeded through the grandmother's letter; the cursed object has not yet appeared, which is correct for a first chapter.",
+  "length_note": null,
+  "fixes": [
+    "Split 'The paper had been wet once and dried badly, and the ink had bloomed at the folds' \u2014 the subject shifts from paper to ink mid-sentence; make it two sentences."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "chapter_hash": "bc25840fe8008c06"
+}

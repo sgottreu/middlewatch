@@ -1,0 +1,56 @@
+{
+  "n": 1,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "In the Earlmere drying sheds, Garret teaches Elin the rule of the harvest: a glass leaf may only be cut once its central vein has turned fully silver, never before, or it will fall silent when it's needed.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Elin reaches for a borderline leaf and Garret stops her hand sharply, telling her the rule has never once failed him in all his years cutting.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Dessa Fenwick arrives at the mill shaken, carrying a dead detector bundle, and explains she nearly rode her mule straight into a hollow of bad air in the Ashfall Marches because the leaves never chimed.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Garret checks the bundle's tag against the batch number and realizes these leaves, though sold under Mabel Odell's mark, were never cut by any harvester he knows.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Garret's line 'Nobody I know cut these' reframes a safety lesson into a mystery about forged provenance, setting up chapter 2's trip to Mabel's ledger."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Delivers the apprentice and the rule-that-must-not-be-broken straight and clean; the thing-nobody-has-studied trope is rightly withheld for a later chapter.",
+  "length_note": null,
+  "fixes": [
+    "Chapter runs long against its 450-word target; trim the narrator paragraph restating the rule ('The rule was older than the trade it fed...') since the dialogue just before it already demonstrates the rule in action.",
+    "Consider tightening Dessa's first speech ('Dessa Fenwick. I run Ashfall to Tollgate...') by cutting one clause, as the near-miss is already vivid without the full sentence count."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "chapter_hash": "10652df025e4f9c5",
+  "writer_note": "Have Garrett push elin hand down to stop her instead of grabbing her wrist"
+}

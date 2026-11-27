@@ -1,0 +1,60 @@
+{
+  "n": 7,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Walter speaks the household's true name three times on the open deck, as the letter instructs.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "The lock answers, drawing a visible chill through his hand as it clicks open, his fingers going numb and pale.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Inside is not finished medicine but his grandmother's own formulary, water-stained, and a wrapped lump of raw fissure stone matching the lock.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Trying afterward to say his family name aloud for the record, Walter finds the word will not come; the lock has taken the name itself as payment.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Maud recognizes the wrapped stone as the same material salvagers now pull from near the fissure, meaning the grandmother's remedy was tested against the very substance still turning up today.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Maud's closing line ties the recovered formulary to stone still being salvaged today, setting up a test of the remedy against the present-day substance."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "The cursed object pays off straight here (the lock's exact, stated price), and what the old world knew lands cleanly through the formulary and matching stone; no fourth trope introduced.",
+  "length_note": null,
+  "fixes": [
+    "Trim slightly for length: 'He opened and closed them, and they came back slowly, and not all the way.' can lose its final clause without losing the image.",
+    "Consider cutting the repeated cold imagery across 'Then the cold came up out of it...' and the following sentence about candle-wax fingers; one is enough."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "chapter_hash": "3f65b6d5dd36b69f"
+}
