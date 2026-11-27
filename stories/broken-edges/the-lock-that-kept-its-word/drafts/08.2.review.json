@@ -1,0 +1,65 @@
+{
+  "n": 8,
+  "pass": true,
+  "score": 7,
+  "beats": [
+    {
+      "beat": "Onshore, they read the formulary together, Jory sounding out water-smudged measures matching a fever draught to the stone.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Walter decides to carry the formulary and the stone to a Hartsford healer rather than test it himself, since the measures must be exact and the stone is dangerous to mishandle.",
+      "covered": true,
+      "note": "danger is implied through 'the second trial was stronger and did harm' rather than stated outright, but this is adequate."
+    },
+    {
+      "beat": "At the healer's door, Walter tries to speak his family name to vouch for the remedy's origin and cannot; he presents the letter itself as proof instead.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Three days later, word returns that the healer's draught, matched to the old measures, has eased the fever moving through Hartsford.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Selah's crew drives the first pilings on schedule, Walter pays Jory in full with a share for Maud's memory, and Jory and Liora eye the fissure as their next contract, with Maud agreeing to chart first.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Maud's insistence on charting the fissure before the next dive closes the story on a decision rather than a cliffhanger, appropriate for a final chapter."
+  },
+  "continuity": [
+    "Chapter 5's runner states 'Pilings go in two days' the evening before the dive; chapter 6 opens the dive 'with two days left.' Chapter 8 has the formulary dried and the healer visited that same dive day, then the pilings go in 'the next morning' \u2014 only one day later, not two. The tight countdown established across chapters 1, 2, 4, and 5 is the story's clock, and this chapter quietly shortens it by a day."
+  ],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Closes 'What the old world knew' (the remedy validated) and 'The cursed object' (name paid, now settled), and gives 'The map is wrong' a clean final beat with Maud's resolve to chart before diving; no fourth trope introduced.",
+  "length_note": null,
+  "fixes": [
+    "Tighten the dive-day timeline: either compress the formulary-reading and healer visit so the piling morning lands two days after the raising, or have the runner's 'two days' already mean 'the day after tomorrow' explicitly, so the countdown that drove chapters 1-5 pays off exactly.",
+    "The chapter runs well over its 570-word target; trim the exchange from 'Walter had the loupe to his eye...' through 'The book goes to her, and the stone with it, wrapped as it is' \u2014 it restates the exactness concern (first established in ch4's 'burned the first three sets of measures') more than it adds.",
+    "Consider cutting 'He said it flatly, which was not how he said most things, and set the loupe down' \u2014 the contrast with his usual manner is clear enough from the blunt 'No' itself."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "chapter_hash": "57bd72af294a97b4",
+  "length_over": 716,
+  "length_target": 570
+}

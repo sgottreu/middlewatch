@@ -1,0 +1,82 @@
+{
+  "n": 8,
+  "pass": false,
+  "score": 7,
+  "beats": [
+    {
+      "beat": "Onshore, they read the formulary together, Jory sounding out water-smudged measures matching a fever draught to the stone.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Walter decides to carry the formulary and the stone to a Hartsford healer rather than test it himself, since the measures must be exact and the stone is dangerous to mishandle.",
+      "covered": true,
+      "note": "Exactness is stated outright; the stone's danger is only implied by 'wrapped as it is,' not stated."
+    },
+    {
+      "beat": "At the healer's door, Walter tries to speak his family name to vouch for the remedy's origin and cannot; he presents the letter itself as proof instead.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Three days later, word returns that the healer's draught, matched to the old measures, has eased the fever moving through Hartsford.",
+      "covered": true,
+      "note": "Shown via two test households rather than the whole town, a reasonable narrowing."
+    },
+    {
+      "beat": "Selah's crew drives the first pilings into the cleared street on schedule, Walter pays Jory in full with a share for Maud's memory, and Jory and Liora start eyeing the fissure itself as their next contract, with Maud agreeing to chart the way first this time.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Maud's condition that she chart the fissure before any dive sets the shape of the next contract and withholds Jory and Liora's eagerness."
+  },
+  "continuity": [
+    "Chapter 5 fixes the piling deadline at two days from the dive in Chapter 6. Chapter 8 has the book dry, the healer visit happen, and then 'Three days later' pass before the pilings are driven 'on the day she had said it' \u2014 that arithmetic puts the piling day a day past the established deadline with no explanation of the schedule holding or slipping again."
+  ],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [
+    {
+      "quote": "Jory Brennick had never read a thing so slowly in his life.",
+      "replace_with": "Name the specific word or figure he has to reread, not the general claim of slowness."
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Serves 'What the old world knew' directly through the formulary's vindication and continues 'The cursed object' through the lost name; 'The map is wrong' is only echoed secondhand in Maud's closing line rather than enacted in this chapter, which is appropriate since the map beat already resolved in Chapter 2.",
+  "length_note": null,
+  "fixes": [
+    "Cut the redundant recap in 'unfolded the letter on the healer's own table, both pages, the bloomed ink and the signature at the foot of it' \u2014 the ink bloom was established in Chapters 1 and 4; keep only 'the signature at the foot of it.'",
+    "Trim the healer's entrance description ('she looked first at the book, then at the sailcloth bundle, then at the four of them standing in her entry like a delegation') to one clause; it restates the scene's blocking rather than adding information.",
+    "Replace 'Jory Brennick had never read a thing so slowly in his life' with a concrete stumble over a specific smudged figure \u2014 ties the sentence to this book rather than reading in general.",
+    "Resolve the timeline so 'Three days later' does not land after the two-day piling deadline set in Chapter 5 \u2014 either move the note's arrival earlier or have Selah state the schedule held an extra day.",
+    "Trim 'looking out past the hulls to where the harbour went dark green and then dark' for length; it adds mood without new information this late in the chapter."
+  ],
+  "lint": {
+    "total": 1,
+    "errors": 0,
+    "by_rule": {
+      "break_unanchored": 1
+    },
+    "findings": [
+      {
+        "rule": "break_unanchored",
+        "severity": "warn",
+        "segment": 14,
+        "quote": "They walked up to Dunnock Lane before the light went.",
+        "note": "The sentence after a scene break has to say when or where we now are \u2014 it is the only cue a listener gets that time has passed."
+      }
+    ]
+  },
+  "chapter_hash": "366a07990b9f4998",
+  "length_over": 825,
+  "length_target": 570
+}

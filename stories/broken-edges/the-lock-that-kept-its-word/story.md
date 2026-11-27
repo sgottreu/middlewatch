@@ -10,7 +10,7 @@ fantasy / slice_of_life · Mapping the Broken Edges
 |---|---|---|
 | Target (30 min) | 4,500 | 30:00 |
 | Planned | 4,500 | 30:00 |
-| Written | 4,945 | 32:58 |
+| Written | 4,972 | 33:09 |
 | **Narrated** | | *not yet recorded* |
 
 ## Chapters
@@ -26,7 +26,7 @@ fantasy / slice_of_life · Mapping the Broken Edges
 | 5 | What Maud Remembers | 5 | 560 | 584 (+4%) | — |
 | 6 | Raising the Box | 5 | 560 | 611 (+9%) | — |
 | 7 | The Price | 5 | 560 | 598 (+7%) | — |
-| 8 | What the Chest Was For | 5 | 570 | 689 (+21%) | — |
+| 8 | What the Chest Was For | 5 | 570 | 716 (+26%) | — |
 
 ## Cast
 
@@ -49,8 +49,8 @@ fantasy / slice_of_life · Mapping the Broken Edges
 | Stage | |
 |---|---|
 | ideate | approved |
-| write | pending |
-| edit | pending |
+| write | done |
+| edit | awaiting_review |
 | record | pending |
 | design | pending |
 | direct | pending |
@@ -59,8 +59,8 @@ fantasy / slice_of_life · Mapping the Broken Edges
 
 | Spend | |
 |---|---|
-| anthropic_input_tokens | 798739.0 |
-| anthropic_output_tokens | 218442.0 |
+| anthropic_input_tokens | 992307.0 |
+| anthropic_output_tokens | 265532.0 |
 
 ---
 

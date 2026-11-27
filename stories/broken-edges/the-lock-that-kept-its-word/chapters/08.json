@@ -4,43 +4,75 @@
   "segments": [
     {
       "speaker": "narrator",
-      "text": "They laid the black-bound book open on the counter in Walter Ames's shop that afternoon, with the wrapped stone set at the far end where nobody's sleeve would reach it. Walter's right hand was bound in flannel and no use to him. So Jory Brennick turned the pages, and read out the lines the tide-mark had spared."
+      "text": "Walter Ames dried his grandmother's formulary on his shop counter, between two bowls of sand, with the shutters open to the afternoon. The tide-mark ran across the bottom third of every page. Jory Brennick spent a quarter of an hour on one smudged figure before he would say it aloud."
     },
     {
       "speaker": "Jory Brennick",
-      "text": "Fourth trial. Stone ground to a flour, and the weight of it is gone, that's all brown. Then to the pint of water off the boil. Steep until cold. A spoon at the turn of the fever and a spoon at dawn."
+      "text": "Fourth trial. Ground stone, one part in forty. Water boiled and stood till cold. Three spoons at the turn of each watch."
     },
     {
       "speaker": "narrator",
-      "text": "He pressed the page flat with the side of his hand."
+      "text": "He looked up."
     },
     {
       "speaker": "Jory Brennick",
-      "text": "She wrote the weight out again in the margin. Three times over, in three different inks."
+      "text": "One part in forty. That's a thumbnail in a bucket."
     },
     {
       "speaker": "Walter Ames",
-      "text": "She burned three sets of measures before this one. She wouldn't trust her own hand on a wet morning."
+      "text": "That's why she burned the first three sets."
+    },
+    {
+      "speaker": "narrator",
+      "text": "Walter had the loupe to his eye and a strip of paper under the line, moving it down a word at a time."
+    },
+    {
+      "speaker": "Walter Ames",
+      "text": "She writes that the second trial was stronger and did harm. She does not say how much. She was not writing for me."
     },
     {
       "speaker": "Liora Quill",
-      "text": "Can you read it or can't you?"
-    },
-    {
-      "speaker": "Jory Brennick",
-      "text": "I can read it. It's a hair under the weight on the page before. A hair, and she's underlined the hair."
+      "text": "So you make it up in your back room and try it on somebody."
     },
     {
       "speaker": "Walter Ames",
-      "text": "Then it matters."
+      "text": "No."
     },
     {
       "speaker": "narrator",
-      "text": "Walter shut the book with his left hand and kept it shut."
+      "text": "He said it flatly, which was not how he said most things, and set the loupe down."
     },
     {
       "speaker": "Walter Ames",
-      "text": "I've ground herbs forty years and no one has ever asked me to be true to a grain. The woman at the fever house above the cistern has scales that will weigh a gnat. She gets the book, and she gets the stone, and she handles both. I'd sooner be the man who carried it than the man who spoiled it."
+      "text": "I sell bay and camomile and a salve for chilblains. I have never weighed out a part in forty, and I'd be guessing at the grinding. There's a healer on Dunnock Lane with a balance and brass weights the size of peas. The book goes to her, and the stone with it, wrapped as it is."
+    },
+    {
+      "speaker": "Maud Brennick",
+      "text": "You've waited twenty years to hold that book."
+    },
+    {
+      "speaker": "Walter Ames",
+      "text": "And my grandmother waited a winter to get the measures right. I'd not spoil her work in an afternoon to say I'd done it myself."
+    },
+    {
+      "speaker": "narrator",
+      "text": "They walked up to Dunnock Lane before the light went. The healer took the formulary in both hands and stood aside for them. Walter began to tell her where it came from."
+    },
+    {
+      "speaker": "Walter Ames",
+      "text": "It was written by my grandmother. She kept the apothecary's shop on Kettle Row, down in the old town, and her family name was \u2014"
+    },
+    {
+      "speaker": "narrator",
+      "text": "He stopped. He tried once more, and the word was not there to try with. Then he reached into his coat and unfolded the letter on the healer's own table, with the signature at the foot of it."
+    },
+    {
+      "speaker": "Walter Ames",
+      "text": "There. That's her hand, and that's the name on it. I find I can't say it aloud any more. Read the second page before you decide what to make of that."
+    },
+    {
+      "speaker": "narrator",
+      "text": "The healer read the second page standing up, and then sat down and read it again."
     },
     {
       "speaker": "break",
@@ -48,19 +80,15 @@
     },
     {
       "speaker": "narrator",
-      "text": "In the morning Jory walked up Cutler Street with him and stood at the fever house door while Walter knocked. A woman in a grey apron opened it with her sleeves pushed past the elbow. Walter set the book and the sailcloth bundle on her step and began to say where they had come from."
+      "text": "The hammer frame went out over Kettle Row the next morning, an hour after the tide turned, on the day Selah Vance had said it would. Jory stood on the Shoreside walkway and watched the first piling drop into the water above the dyers' yard."
     },
     {
-      "speaker": "Walter Ames",
-      "text": "These were my grandmother's. She kept the apothecary's shop on Kettle Row, under the water now, and her name was\u2014"
+      "speaker": "Selah Vance",
+      "text": "Clear below?"
     },
     {
-      "speaker": "narrator",
-      "text": "He stopped. He tried once more, and the word was not in him. Jory watched a man of sixty-one stand on a doorstep with his mouth open and nothing coming out of it."
-    },
-    {
-      "speaker": "Walter Ames",
-      "text": "I can't. I'm sorry. Read her letter. It's her hand, and she signs it, and that's better proof than my saying so."
+      "speaker": "Jory Brennick",
+      "text": "Clear. Nothing down there now but a post with four empty holes in it."
     },
     {
       "speaker": "break",
@@ -68,55 +96,59 @@
     },
     {
       "speaker": "narrator",
-      "text": "Three days later a girl came down to the Floatsome landing with a message and a basket of pears. Eleven in the fever house had taken the draught, measured against the old book. Nine were sitting up. The woman in the grey apron wanted more of the stone and wanted to know who had pulled it off the bottom."
+      "text": "Three days after that, a girl came down to Floatsome with a note for Jory. The healer had made up the draught to the fourth set of measures and tried it on two households off Cutler Street, where the fever had been worst. Both had kept their food down by the second morning. She wanted more of the stone, and she wanted it weighed by her and nobody else."
     },
     {
       "speaker": "narrator",
-      "text": "That same morning Selah Vance set her hammer frame over Kettle Row and drove the first piling into the cleared street, on her schedule, with the weather still out past the point. Jory heard it from the platform. It came across the water like somebody beating a drum under a blanket."
-    },
-    {
-      "speaker": "narrator",
-      "text": "Walter Ames paid him that evening, in coin, counted out on the boards."
+      "text": "Walter Ames paid him on the platform that evening, counted out full, and then pushed a second sum across the boards."
     },
     {
       "speaker": "Walter Ames",
-      "text": "That's your full rate. This other is for your mother, for remembering a lantern that didn't move. Nobody else did."
-    },
-    {
-      "speaker": "Maud Brennick",
-      "text": "I'll take it. I've been paid in fish for nine years."
+      "text": "That's for the woman who remembered a lantern that didn't move."
     },
     {
       "speaker": "narrator",
-      "text": "Liora Quill sat on the edge of the platform with her heels over the water, turning one of the pears."
+      "text": "Maud looked at the coins for a while before she put her hand flat over them and drew them in."
     },
     {
-      "speaker": "Liora Quill",
-      "text": "She wants more of the stone. Out past the dyers' yard, where the floor's cracked open."
-    },
-    {
-      "speaker": "Jory Brennick",
-      "text": "Two hundred paces off Kettle Row. I was that close to it on Tuesday."
-    },
-    {
-      "speaker": "Liora Quill",
-      "text": "And nobody's ever dived it."
+      "speaker": "Maud Brennick",
+      "text": "I'd have told you for nothing. I'll take it."
     },
     {
       "speaker": "narrator",
-      "text": "Maud said nothing for a while. She had her chart of Kettle Row across her knees, the one that had been honest and wrong, and she was inking the gap in the wall where no gap had been drawn."
+      "text": "Liora Quill sat on the edge of the boards with her heels in the water."
     },
     {
-      "speaker": "Maud Brennick",
-      "text": "Not this time. You went down a street I'd charted and the street had moved. That crack has never been charted at all."
+      "speaker": "Liora Quill",
+      "text": "She wants more stone."
     },
     {
       "speaker": "Jory Brennick",
-      "text": "So you'll say no."
+      "text": "Off the crack itself. Out past the dyers, where the floor opened."
+    },
+    {
+      "speaker": "Liora Quill",
+      "text": "Then that's our next contract, and I'm not being called your partner on it."
+    },
+    {
+      "speaker": "Jory Brennick",
+      "text": "Co-signed. Both names on the paper."
+    },
+    {
+      "speaker": "narrator",
+      "text": "Maud got up and went for her chart case."
     },
     {
       "speaker": "Maud Brennick",
-      "text": "I'll say I go first, with a line and a slate, and I draw it before either of you so much as wets a glove. Then you can take the contract on your own name."
+      "text": "Not until I've been over that ground with a line and drawn it properly. We went down Kettle Row on a chart four years out of date, and it nearly cost us the only door that shop had."
+    },
+    {
+      "speaker": "Jory Brennick",
+      "text": "And if the drawing takes a month?"
+    },
+    {
+      "speaker": "Maud Brennick",
+      "text": "Then the fissure's been there twenty years and it'll keep a month. This time we map it first."
     }
   ]
 }
