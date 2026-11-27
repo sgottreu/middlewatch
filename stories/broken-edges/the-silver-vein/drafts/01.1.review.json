@@ -1,0 +1,60 @@
+{
+  "n": 1,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Garret teaches Elin the rule of the harvest: a glass leaf may only be cut once its central vein has turned fully silver, never before, or it will fall silent when it's needed.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Elin reaches for a borderline leaf and Garret stops her hand sharply, telling her the rule has never once failed him in all his years cutting.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Dessa Fenwick arrives at the mill shaken, carrying a dead detector bundle, and explains she nearly rode her mule straight into a hollow of bad air in the Ashfall Marches because the leaves never chimed.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Garret checks the bundle's tag against the batch number and realizes these leaves, though sold under Mabel Odell's mark, were never cut by any harvester he knows.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Garret's flat declaration that nobody he knows cut the batch reframes the mystery and sets up the next chapter's trip to Mabel's ledger."
+  },
+  "continuity": [
+    "Outline lists Dessa's want as 'to prove her near miss on the road wasn't her own carelessness,' but her line here, 'I'd like to be told it was my own carelessness. I'd honestly rather hear that,' states the opposite preference. Worth a small adjustment so her first words don't undercut the motive the character sheet gives her."
+  ],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [
+    "'set the tag down carefully, as though it might go off' leans on a firearm idiom in a world without guns; a phrase tied to the story's own hazards (a hollow, a silence) would sit better."
+  ],
+  "borrowed_text": [],
+  "listenability": [],
+  "generic_prose": [],
+  "boundary_breaches": [],
+  "trope_note": "Sets up The rule that must not be broken cleanly and plants The apprentice through the teaching scene; The thing nobody has studied is not yet due and correctly absent.",
+  "length_note": null,
+  "fixes": [
+    "Revise Dessa's 'I'd honestly rather hear that' line so it reads as wanting exoneration rather than wanting blame, to match her stated want in the outline.",
+    "Consider replacing 'as though it might go off' with an image drawn from the leaf's own vocabulary (silence, stillness) rather than a firearm idiom."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "chapter_hash": "f4d68e595f9df342",
+  "writer_note": "I don\u2019t anyone would burst into Garrett\u2019s shed. Maybe they are working out front where dessert could walk up and ask her questions \n\nAlso Elon\u2019s statement, \u201c Somebody in Earlmere stood in a shed like this one and strung them.\u201d Just says the same thing Garrett says in the next sentence. Also makes notes to limit the extraneous statements"
+}

@@ -4,7 +4,7 @@
   "segments": [
     {
       "speaker": "narrator",
-      "text": "The drying shed behind the Hargrove mill smelled of hot wire and candle wax. Garret Marsh lifted a glass leaf off the rack with two fingers and held it up against the lamp so Elin could see the vein running down its middle."
+      "text": "Behind the Hargrove mill the drying racks stood out in the open yard, under a slant roof with no walls, so the wind could get at the leaves. Garret Marsh lifted one off its cord with two fingers and held it up to the light for Elin to see the vein running down the middle of it."
     },
     {
       "speaker": "Garret Marsh",
@@ -20,11 +20,11 @@
     },
     {
       "speaker": "narrator",
-      "text": "He laid it in the counting tray. The rule was older than the trade it fed, and it was only one sentence long. A glass leaf is cut when the centre vein has gone silver the whole way, and never a day sooner. Cut it green and it still looks like a leaf. It still hangs on a cord at a traveller's saddle. It simply never sounds."
+      "text": "He laid it in the counting tray. The rule was older than the trade it fed, and it ran to a single sentence. A glass leaf is cut when the centre vein has gone silver the whole way, and never a day sooner. Cut green, it still looks like a leaf. It still hangs on a cord at a traveller's saddle. It simply never sounds."
     },
     {
       "speaker": "narrator",
-      "text": "Elin reached for the next one along, where the silver stopped two thirds down and went to grey. Garret caught her wrist before her fingers closed."
+      "text": "Elin reached for the next one along, where the silver stopped two thirds down and went grey. Garret put his palm over the back of her hand and pushed it down to the bench."
     },
     {
       "speaker": "Garret Marsh",
@@ -32,32 +32,32 @@
     },
     {
       "speaker": "Elin Hargrove",
-      "text": "It's nearly there. Another week of hanging and nobody could tell the difference."
+      "text": "It's nearly there. Another week hanging and nobody could tell."
     },
     {
       "speaker": "Garret Marsh",
-      "text": "Nearly is no good to a man in a hollow of bad air. Twenty-two years I've cut in this wood, and the rule has not failed me once. Not one time. An early leaf lies to you quietly, and you only find out the once.",
+      "text": "Nearly is no good to a man standing in a hollow of bad air. Twenty-two years I've cut in this wood, and the rule has not failed me once. An early leaf lies to you quietly. You find out the one time you needed it.",
       "tag": "[flat]"
     },
     {
       "speaker": "narrator",
-      "text": "He let go of her wrist and went back to sorting. Elin rubbed the place where his glove had gripped and said nothing, which she thought was a considerable act of discipline."
+      "text": "He lifted his hand away and went back to sorting. Elin left hers where he had put it and said nothing, which she thought a considerable act of discipline."
     },
     {
       "speaker": "narrator",
-      "text": "Then boots came fast across the yard, and a woman put her shoulder against the shed door without knocking. Her hat was still tied under her chin and her hands were shaking."
+      "text": "A mule came up the lane at a walk and stopped at the gate. The woman leading it did not tie it off. She crossed the yard with her hat still knotted under her chin and a bundle of leaves in her fist."
     },
     {
       "speaker": "Dessa Fenwick",
-      "text": "Which of you two knows these?"
+      "text": "Which of you knows these?"
     },
     {
       "speaker": "narrator",
-      "text": "She dropped a bundle on the bench. Six leaves strung on a cord, travel-stained, with a wooden tag at the knot. Garret put a hand flat on it."
+      "text": "She put them down on the sorting bench. Six leaves strung on a cord, travel-stained, with a wooden tag at the knot."
     },
     {
       "speaker": "Dessa Fenwick",
-      "text": "Dessa Fenwick. I run Ashfall to Tollgate. Day before yesterday my mule stopped at the lip of a hollow and would not go down, and I kicked her on, because these were on my saddle and these were quiet. Three steps in and the ground tipped. She hauled me back up the slope by my own reins."
+      "text": "Dessa Fenwick. I run Ashfall to Tollgate. Day before yesterday my mule stopped at the lip of a hollow and would not go down. I kicked her on, because these were hanging off my saddle and these were quiet. Three steps in and the ground tipped under me. She hauled me back up the slope by my own reins."
     },
     {
       "speaker": "Garret Marsh",
@@ -65,11 +65,11 @@
     },
     {
       "speaker": "Dessa Fenwick",
-      "text": "Not a whisper. I want to be told it was my own carelessness. I'd honestly rather hear it."
+      "text": "Not a whisper. I'd like to be told it was my own carelessness. I'd honestly rather hear that."
     },
     {
       "speaker": "narrator",
-      "text": "Garret shook the bundle beside his ear. Nothing came off it at all. He turned the tag over to the burned mark on its back."
+      "text": "Garret shook the bundle beside his ear. Nothing came off it at all. He turned the tag over to the mark burned into the back of it."
     },
     {
       "speaker": "Garret Marsh",
@@ -77,15 +77,15 @@
     },
     {
       "speaker": "Elin Hargrove",
-      "text": "Then they're ours. Somebody in Earlmere stood in a shed like this one and strung them."
+      "text": "Who cut eleven?"
     },
     {
       "speaker": "narrator",
-      "text": "Garret read the number twice and set the tag down very carefully, as though it might go off."
+      "text": "Garret read the number twice and set the tag down carefully, as though it might go off."
     },
     {
       "speaker": "Garret Marsh",
-      "text": "Every harvester on this side of the wood cuts under Mabel or under me, and I know every hand of them by their shears. Nobody I know cut these."
+      "text": "Every harvester this side of the wood cuts under Mabel Odell or under me, and I know each one of them by their shears. Nobody I know cut these."
     }
   ]
 }

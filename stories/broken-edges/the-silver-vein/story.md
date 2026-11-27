@@ -10,7 +10,7 @@ fantasy / mystery · Mapping the Broken Edges
 |---|---|---|
 | Target (15 min) | 2,250 | 15:00 |
 | Planned | 2,250 | 15:00 |
-| Written | 2,409 | 16:04 |
+| Written | 2,417 | 16:07 |
 | **Narrated** | | *not yet recorded* |
 
 ## Chapters
@@ -19,7 +19,7 @@ fantasy / mystery · Mapping the Broken Edges
 
 | # | Title | Beats | Target | Written | Narrated |
 |---|---|---|---|---|---|
-| 1 | Silver Veins | 4 | 450 | 490 (+9%) | — |
+| 1 | Silver Veins | 4 | 450 | 498 (+11%) | — |
 | 2 | The Ledger | 4 | 450 | 454 | — |
 | 3 | The Dye | 4 | 450 | 487 (+8%) | — |
 | 4 | The Road | 4 | 450 | 494 (+10%) | — |
@@ -56,8 +56,8 @@ fantasy / mystery · Mapping the Broken Edges
 
 | Spend | |
 |---|---|
-| anthropic_input_tokens | 383377.0 |
-| anthropic_output_tokens | 110554.0 |
+| anthropic_input_tokens | 467415.0 |
+| anthropic_output_tokens | 131311.0 |
 
 ---
 
