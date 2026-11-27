@@ -1,7 +1,7 @@
 {
   "n": 5,
   "pass": true,
-  "score": 8,
+  "score": 7,
   "beats": [
     {
       "beat": "Garret halts the exchange, and Elin demonstrates the breath test publicly, showing the cold, painted leaf against a true silvered one.",
@@ -21,33 +21,34 @@
     {
       "beat": "Garret names Elin his apprentice before the Glasswood Society, with the breath test recorded as the first proven way to tell a leaf's true age, closing the season's danger for good.",
       "covered": true,
-      "note": ""
+      "note": "The naming and the recording both happen, but the gathering is only 'everybody in Earlmere who cuts glass or writes down what is cut' \u2014 the bible's named institution, the Glasswood Society, is never invoked, losing the tie to the series' documenting groups."
     }
   ],
   "turn": {
     "present": true,
-    "note": "As the closing chapter, the turn is the handover of authorship to Elin, a satisfying close of the apprentice arc rather than a hook forward."
+    "note": "Garret hands the written record to Elin's own hand, closing the mentor/apprentice arc and settling the season's danger \u2014 a fitting final-chapter close rather than a forward hook, which is appropriate here."
   },
   "continuity": [],
   "style": {
-    "free_indirect_discourse": true,
+    "free_indirect_discourse": false,
     "irony_in_dialogue": true,
     "problems": [
-      "\"Sell the grove and you've a man with nothing, and nothing is what paints a leaf.\" chains three clauses that change grammatical shape (imperative, then subject 'you', then subject 'nothing'); split after 'with nothing.'"
+      "No instance of free indirect discourse appears in this chapter; every passage is either flat narration of action or direct dialogue, with no moment where a character's perception colors the narrator's sentence."
     ]
   },
   "anachronisms": [],
   "borrowed_text": [],
   "listenability": [
-    "\"Sell the grove and you've a man with nothing, and nothing is what paints a leaf.\" is a clause chain that shifts subject twice; split into two sentences."
+    "The narrator segment embeds the driver's dialogue inline with quotation marks ('he said, \"so Odell stands the loss...\"') rather than as its own speaker turn, breaking the format every other exchange in this story uses."
   ],
   "generic_prose": [],
   "boundary_breaches": [],
-  "trope_note": "All three tropes land here: the vein rule is upheld and vindicated, the apprentice is formally named, and the breath test closes out the thing nobody had studied; no fourth trope introduced.",
+  "trope_note": "All three tropes land here: the apprentice is formally named, the broken rule is proven broken and repaired, and the untested breath test is proposed, tried, and recorded as settled fact \u2014 no fourth trope has crept in.",
   "length_note": null,
   "fixes": [
-    "Split \"Sell the grove and you've a man with nothing, and nothing is what paints a leaf.\" into two sentences at 'with nothing' to keep one clause shape per sentence.",
-    "Consider trimming the embedded driver quotation (\"Odell's mark,\" he said, \"so Odell stands the loss...\") to a cleaner single attribution, since it is the only line in the chapter not given its own segment and reads oddly against the script's consistent per-line format."
+    "Name the 'Glasswood Society' explicitly in the closing scene, since the outline specifies Elin is named apprentice before that body, not before an unnamed local gathering.",
+    "Add one beat of free indirect discourse, e.g. render Elin's reaction to being named apprentice through narration filtered by her own relief or disbelief rather than only through dialogue and flat action.",
+    "Convert 'The driver did not need to read it. \"Odell's mark,\" he said, \"so Odell stands the loss...\"' into a separate speaker segment attributed to the driver, matching the rest of the chapter's format."
   ],
   "lint": {
     "total": 1,
@@ -65,5 +66,6 @@
       }
     ]
   },
-  "chapter_hash": "b48e6e577bc3b0ef"
+  "chapter_hash": "aa5643652386939a",
+  "writer_note": "I don\u2019t think this small town has something so fancy sounding as class for society just called glasses skill, something like that"
 }

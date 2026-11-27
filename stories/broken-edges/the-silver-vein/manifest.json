@@ -5,7 +5,7 @@
   "stages": {
     "ideate": "approved",
     "write": "done",
-    "edit": "awaiting_review",
+    "edit": "approved",
     "record": "pending",
     "design": "pending",
     "direct": "pending",
@@ -13,8 +13,8 @@
     "publish": "pending"
   },
   "spend": {
-    "anthropic_input_tokens": 511358.0,
-    "anthropic_output_tokens": 142653.0
+    "anthropic_input_tokens": 561919.0,
+    "anthropic_output_tokens": 152767.0
   },
   "pinned": {
     "art_style": "Illustrated in the manner of golden-age storybook plates \u2014 ink line with layered watercolour wash. Deep forest green, ochre, iron grey and candle gold. Decorative flattened perspective, strong silhouettes, light that comes from fire or from an overcast sky. No airbrush, no lens effects.",
@@ -49,6 +49,8 @@
   "chapter_approvals": {
     "1": "10652df025e4f9c5",
     "2": "0ca49f8cc7947481",
-    "3": "354c9586221a7027"
+    "3": "354c9586221a7027",
+    "4": "f6e0743f834b4346",
+    "5": "aa5643652386939a"
   }
 }
