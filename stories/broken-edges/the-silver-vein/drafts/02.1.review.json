@@ -1,0 +1,64 @@
+{
+  "n": 2,
+  "pass": true,
+  "score": 8,
+  "beats": [
+    {
+      "beat": "Garret and Elin bring the dead bundle to Mabel Odell's trading post and ask her to find the batch in her ledger.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mabel defends her bookkeeping, showing that every harvester on her books is registered and sworn to the silver-vein rule.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Elin notices one name, Jasper Lund, has been delivering far more mature leaf than the season's thinned trees should yield.",
+      "covered": true,
+      "note": ""
+    },
+    {
+      "beat": "Mabel admits, uneasy, that Jasper's mother is gravely ill and he's been desperate for coin, and agrees to let them inspect his drying racks before the next shipment leaves for Tollgate at dawn.",
+      "covered": true,
+      "note": ""
+    }
+  ],
+  "turn": {
+    "present": true,
+    "note": "Mabel's reveal that the shipment already sits loaded for first light converts the inspection from routine to a race against dawn, setting up chapter 3's urgency."
+  },
+  "continuity": [],
+  "style": {
+    "free_indirect_discourse": true,
+    "irony_in_dialogue": true,
+    "problems": []
+  },
+  "anachronisms": [],
+  "borrowed_text": [],
+  "listenability": [
+    "The number 'eleven' is reused three times for different referents in quick succession ('batch eleven', 'eleven deliveries', 'Eleven years I've kept this book') \u2014 vary at least one to keep them distinguishable by ear."
+  ],
+  "generic_prose": [
+    {
+      "quote": "For a moment the only sound was the fire.",
+      "replace_with": "Name a specific sound of Mabel's shop instead \u2014 the scrape of her chalk box, or the hiss of a damp log \u2014 to keep the beat concrete rather than stock quiet-room atmosphere."
+    }
+  ],
+  "boundary_breaches": [],
+  "trope_note": "Serves the apprentice straight through Elin's ledger-reading catching what Garret missed, and sets up the rule-breach without yet confirming it; the untested breath-test trope stays correctly unused until chapter 4.",
+  "length_note": null,
+  "fixes": [
+    "Cut 'For a moment the only sound was the fire.' \u2014 generic filler that also trims toward the 450-word target.",
+    "Vary the repeated number 'eleven' (batch number vs. years vs. deliveries) so a listener doesn't conflate the three distinct facts.",
+    "Consider trimming 'She looked at the column a while longer before she said the rest of it.' as a redundant beat before Mabel's confession line, which already carries the hesitation."
+  ],
+  "lint": {
+    "total": 0,
+    "errors": 0,
+    "by_rule": {},
+    "findings": []
+  },
+  "chapter_hash": "0ca49f8cc7947481",
+  "writer_note": "Make Garrett\u2019s and Maude\u2019s interaction a little less agressive. He knows Maude and just wants to get to the bottom of this so people are safe their reputation/trade isn\u2019t questioned"
+}

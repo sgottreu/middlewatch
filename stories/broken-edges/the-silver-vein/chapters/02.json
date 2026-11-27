@@ -8,23 +8,27 @@
     },
     {
       "speaker": "Garret Marsh",
-      "text": "Batch eleven. Your mark on the tag. I want to see it in your book."
+      "text": "Mabel. Your mark's on that tag, batch eleven. I'd take it kindly if you'd open your book for me."
     },
     {
       "speaker": "Mabel Odell",
-      "text": "You want to see it, or you want to tell me my book is wrong?"
+      "text": "You've been talking to the Fenwick woman, then. She came past here with her hat still on."
     },
     {
       "speaker": "narrator",
-      "text": "She fetched the ledger down all the same and turned it to face them. Nine names in the autumn column, each with a burned mark copied beside it in her own hand."
+      "text": "She fetched the ledger down and turned it to face them herself. Nine names in the autumn column, each with a burned mark copied beside it in her own hand."
     },
     {
       "speaker": "Mabel Odell",
-      "text": "Nine harvesters cutting for me, and every one of them sworn in this room with my hand on their shears. Silver the whole way or they bring me nothing. I have never taken a green leaf across this counter in eleven years, Garret, and I have never once been short on a tally."
+      "text": "Nine harvesters cutting for me, and every one sworn in this room with my hand on their shears. Silver the whole way or they bring me nothing. Eleven years I've kept this book, Garret, and I've never once been short on a tally."
     },
     {
       "speaker": "Garret Marsh",
-      "text": "Somebody's leaves went quiet over a hollow of bad air in the Marches, and a trader walked out of it by luck. Luck, Mabel."
+      "text": "I know it. I'm not here to tell you your sums are wrong. I'm here because a bundle with your mark hung quiet over a hollow of bad air in the Marches, and the woman carrying it got out by her mule's good sense."
+    },
+    {
+      "speaker": "Mabel Odell",
+      "text": "Then we'd both like to know how."
     },
     {
       "speaker": "narrator",
@@ -52,19 +56,27 @@
     },
     {
       "speaker": "Garret Marsh",
-      "text": "That is not an answer to the weights."
+      "text": "I'd say the same of him. But the weights, Mabel."
     },
     {
       "speaker": "Mabel Odell",
-      "text": "His mother has been abed since the spring. The apothecary at Tollgate sends the draught up with the carters and he wants paying in coin, not in fish or favours. Jasper has the grove to keep as well. I knew the sums were good. I did not ask him how."
+      "text": "His mother has been abed since the spring. The apothecary at Tollgate sends the draught up with the carters and he wants paying in coin, not in fish or favours. Jasper has the grove to keep as well."
+    },
+    {
+      "speaker": "narrator",
+      "text": "She looked at the column a while longer before she said the rest of it."
+    },
+    {
+      "speaker": "Mabel Odell",
+      "text": "I saw the sums were good. I was glad of them, and I didn't ask him how."
     },
     {
       "speaker": "Garret Marsh",
-      "text": "No. You didn't."
+      "text": "There's not a broker in the wood who'd have asked. I'd sooner we found out ourselves than have Tollgate find out for us."
     },
     {
       "speaker": "Mabel Odell",
-      "text": "Half this town eats off what I send to Tollgate, and you can look at me like that in your own time."
+      "text": "If word gets down there that a leaf out of Earlmere stayed quiet, there'll be no trade left for either of us to argue over."
     },
     {
       "speaker": "narrator",
@@ -72,7 +84,7 @@
     },
     {
       "speaker": "Mabel Odell",
-      "text": "Go and see his drying racks. Both of you, and I'll say I sent you. But you go tonight."
+      "text": "Go and see his drying racks. Both of you, and say I sent you. But you go tonight."
     },
     {
       "speaker": "Elin Hargrove",
