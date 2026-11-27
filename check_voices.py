@@ -237,7 +237,8 @@ def build_auditions(args, cfg, configured, voices, by_id, key, baseline):
     print(f"\nAudition cast for {args.story}:")
     shared = {}
     for speaker, vname in cast.items():
-        shared.setdefault(vname, []).append(speaker)
+        if vname:
+            shared.setdefault(vname, []).append(speaker)
     for vname, who in shared.items():
         if len(who) > 1:
             print(f"  note: {', '.join(who)} share {vname} — give each a voice of their own.")
@@ -263,6 +264,8 @@ def build_auditions(args, cfg, configured, voices, by_id, key, baseline):
 
         if speaker in overrides:
             picks, why = overrides[speaker], "your pick"
+        elif not vname:
+            picks, why = [], "not cast yet — add a candidate to audition one"
         elif vname in REPLACEMENTS:
             picks, why = [REPLACEMENTS[vname]], f"replaces Default '{vname}'"
         elif speaker != "narrator" and vname == narrator_voice:
@@ -271,7 +274,7 @@ def build_auditions(args, cfg, configured, voices, by_id, key, baseline):
             picks, why = [], "not a Default; kept"
 
         tag = " [Default, expires 2026-12-31]" if is_default else ""
-        print(f"  {speaker:<22} now {vname}  [{cur_id or 'no id'}]{tag}")
+        print(f"  {speaker:<22} now {vname or '(not cast yet)'}  [{cur_id or 'no id'}]{tag}")
         if not picks:
             print(f"  {'':<22} try -  ({why})")
 
@@ -281,7 +284,7 @@ def build_auditions(args, cfg, configured, voices, by_id, key, baseline):
             for model, label in ((baseline, f"{vname} @ {baseline}"), (V4, f"{vname} @ {V4}")):
                 jobs.append((row, label, cur_id, model, text, f"{base}__now__{model}.mp3",
                              {"speaker": speaker, "source": "current"}))
-        elif not cur_id:
+        elif vname and not cur_id:
             print(f"  {'':<22} ! {vname} isn't in voices.yaml — current takes skipped")
 
         seen = {cur_id}

@@ -99,10 +99,34 @@ def test_story_lines_sorted_chapters_and_blank_segments():
     assert lines["a"] == ["first", "second"]
 
 
-def test_story_lines_no_voices_map():
-    d = make_story(voices={"x": "y"})
-    with pytest.raises(ValueError, match="No voices map"):
-        casting.story_lines(d)
+def test_story_lines_before_recording_proposes_cast():
+    # A new story has no pinned voices until it is recorded. Casting must still
+    # open it, so new characters can be auditioned before any audio is paid for.
+    d = make_story(extra={"pinned": {"genre_voices": {"narrator": "Daniel"}}}, chapters={"01": [
+        ("narrator", "It began."), ("Selah", "Hello."), ("break", "* * *"),
+        ("Walter", "Evening."), (None, "Orphan line.")]})
+    (d / "outline.json").write_text(json.dumps({"cast": [{"name": "Walter", "voice": "George"}]}))
+    cast, lines = casting.story_lines(d)
+    # Narrator from the genre pin, a hand-set outline voice kept, everyone else uncast.
+    assert cast == {"narrator": "Daniel", "Walter": "George", "Selah": None}
+    assert lines["Selah"] == ["Hello."]
+
+
+def test_story_lines_before_recording_without_genre_voices():
+    d = make_story(extra={"pinned": {}}, chapters={"01": [("narrator", "x"), ("Mrs Hale", "y")]})
+    cast, _ = casting.story_lines(d)
+    assert cast == {"narrator": None, "Mrs Hale": None}
+
+
+def test_arc_view_lists_speakers_of_unrecorded_story():
+    make_story(extra={"pinned": {"genre_voices": {"narrator": "Daniel"}}}, chapters={"01": [
+        ("narrator", "It began."), ("Selah", "Hello there, stranger.")]})
+    v = casting.arc_view("arc", "one")
+    assert v["story"] == "one"
+    by = {s["speaker"]: s for s in v["speakers"]}
+    assert set(by) == {"narrator", "Selah"}
+    assert by["Selah"]["current"] is None and by["Selah"]["line"] == "Hello there, stranger."
+    assert by["narrator"]["current"] == "Daniel"
 
 
 def test_pick_line():
@@ -379,13 +403,15 @@ def test_arc_view_empty_arc():
     assert v["story"] is None and v["stories"] == [] and v["speakers"] == [] and v["pool"] == []
 
 
-def test_arc_view_skips_stories_without_voice_map():
+def test_arc_view_counts_unrecorded_stories():
+    # A story with no voice map yet (not recorded) still counts as one a
+    # character appears in — it used to be skipped, which hid new stories.
     _arc()
     make_story("arc", "three", voices={"x": "y"})
     v = casting.arc_view("arc")
     assert "three" in v["stories"]
     hale = next(s for s in v["speakers"] if s["speaker"] == "Mrs Hale")
-    assert hale["in_stories"] == ["one"]
+    assert hale["in_stories"] == ["one", "three"]
 
 
 # --- CLI ----------------------------------------------------------------------------------

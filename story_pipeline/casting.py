@@ -82,19 +82,34 @@ def find_cast(obj):
     return None
 
 
+def proposed_cast(manifest: dict, outline: dict, speakers) -> dict:
+    """Speaker -> voice for a story that hasn't been recorded, so has no pinned
+    voices yet. The narrator comes from the genre pin and a character from a
+    voice set by hand in the outline (both are what recording will honour);
+    everyone else is None — not cast yet, which is what auditioning is for."""
+    gv = (manifest.get("pinned") or {}).get("genre_voices") or {}
+    by_hand = {c.get("name"): c.get("voice") for c in outline.get("cast", []) if c.get("voice")}
+    cast = {"narrator": gv.get("narrator")}
+    for sp in speakers:
+        if sp and sp not in cast and sp != "break":
+            cast[sp] = by_hand.get(sp)
+    return cast
+
+
 def story_lines(story_dir) -> tuple[dict, dict]:
-    """(speaker -> current voice name, speaker -> every line they speak)."""
+    """(speaker -> current voice name or None if uncast, speaker -> every line they speak)."""
     d = Path(story_dir)
     manifest = json.loads((d / "manifest.json").read_text())
-    cast = find_cast(manifest)
-    if not cast:
-        raise ValueError(f"No voices map (with a narrator) in {d / 'manifest.json'}.")
     lines: dict = {}
     for f in sorted((d / "chapters").glob("*.json")):
         for seg in json.loads(f.read_text()).get("segments", []):
             t = (seg.get("text") or "").strip()
-            if t:
+            if t and seg.get("speaker") != "break":
                 lines.setdefault(seg.get("speaker"), []).append(t)
+    cast = find_cast(manifest)
+    if not cast:
+        o = d / "outline.json"
+        cast = proposed_cast(manifest, json.loads(o.read_text()) if o.exists() else {}, lines)
     return cast, lines
 
 
