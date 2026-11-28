@@ -64,6 +64,8 @@ Routes:
 
     GET  /casting                     the page
     GET  /api/casting                 arcs, with audition counts
+    GET  /api/casting/voices          the account's voices for the Add dropdown;
+                                      ?refresh=1 skips the 10-minute cache
     GET  /api/casting/<arc>?story=    speakers, candidates, takes, verdicts, pool,
                                       and what running the rest would cost
     GET  /api/casting/<arc>/job       the audition job's progress
@@ -1230,6 +1232,9 @@ def _handler(cfg: dict):
                     self._send(200, CASTING_HTML.read_bytes(), "text/html; charset=utf-8")
                 elif path == "/api/casting":
                     self._json(casting_api.index(cfg))
+                elif path == "/api/casting/voices":
+                    q = parse_qs(urlparse(self.path).query)
+                    self._json(casting_api.voices(cfg, refresh=(q.get("refresh") or ["0"])[0] == "1"))
                 elif path.startswith("/api/casting/"):
                     self._casting_get(path)
                 elif path.startswith("/casting-audio/"):

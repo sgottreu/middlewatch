@@ -92,6 +92,9 @@
   .add input { flex:1 1 140px; }
   .add .idf { flex:1 1 210px; font-family:var(--mono); font-size:13px; }
   .add .t { font-family:var(--mono); font-size:11px; color:var(--dim); flex-basis:100%; }
+  .add .pick { flex:1 1 100%; font-size:13px; }
+  .add .desc { flex-basis:100%; font-size:13px; color:var(--ink); font-style:italic; }
+  .add .desc:empty { display:none; }
 
   /* pool */
   #pool table { width:100%; border-collapse:collapse; font-size:13px; }
@@ -198,7 +201,7 @@
 const { $, esc, money, toast, explain, api, armed } = MW;
 MW.nav($("pages"), "Casting");
 let S = { open: new Set(), arc: null, story: null, view: null, poll: null, logFrom: 0, wasRunning: false,
-          poolGender: "" };
+          poolGender: "", voices: null };
 
 function syncUrl() {
   const u = new URL(location.href);
@@ -219,6 +222,7 @@ async function boot() {
   const q = new URLSearchParams(location.search);
   syncBack();
   const series = q.get("series");
+  loadVoices();
   const { arcs } = await api("/api/casting");
   if (!arcs.length) { $("lede").textContent = "No arcs with stories yet."; return; }
   $("arc").innerHTML = arcs.map(a =>
@@ -330,6 +334,8 @@ function speakerHtml(sp, cost, running) {
     ${sp.entries.map(e => entryHtml(sp, e, running)).join("") ||
       `<p class="line none">No candidates yet — add a voice below.</p>`}
     <form class="add" data-add="${esc(sp.speaker)}">
+      ${voicePicker(sp)}
+      <span class="desc"></span>
       <input class="idf" name="id" type="text" placeholder="Voice id (20 characters)" autocomplete="off" spellcheck="false">
       <input name="name" type="text" placeholder="Name">
       <input name="note" type="text" placeholder="Note (optional)">
@@ -464,6 +470,42 @@ document.addEventListener("change", async ev => {
                                         verdict: on.dataset.verdict, note: i.value });
     toast("Note saved.");
   } catch (e) { toast(e.message, true); }
+});
+
+// The account's voices, for the dropdown on every Add form. Free; fetched once
+// in the background so the page doesn't wait on ElevenLabs.
+async function loadVoices() {
+  try { S.voices = await api("/api/casting/voices"); } catch (e) { S.voices = null; return; }
+  if (S.view) render();
+}
+
+function voicePicker(sp) {
+  const vs = S.voices && S.voices.voices;
+  if (!vs || !vs.length) return "";
+  const listed = new Set((sp.entries || []).map(e => e.id).filter(Boolean));
+  const where = { account: "your ElevenLabs account", saved: "the saved account list",
+                  "voices.yaml": "voices.yaml (account unreachable)" }[S.voices.source] || "the account";
+  const groups = [["female", "Female"], ["male", "Male"], ["", "Other"]];
+  const opt = v => `<option value="${esc(v.id)}"${listed.has(v.id) ? " disabled" : ""}>` +
+    esc(v.short + (v.traits ? " — " + v.traits : "") + (listed.has(v.id) ? " (already listed)" : "")) +
+    `</option>`;
+  return `<select class="pick" data-pick aria-label="Choose a voice for ${esc(sp.speaker)}">
+      <option value="">Choose from ${esc(where)} (${vs.length})…</option>
+      ${groups.map(([g, label]) => {
+        const in_ = vs.filter(v => g ? v.gender === g : !["female", "male"].includes(v.gender));
+        return in_.length ? `<optgroup label="${label}">${in_.map(opt).join("")}</optgroup>` : "";
+      }).join("")}
+    </select>`;
+}
+
+document.addEventListener("change", ev => {
+  const sel = ev.target.closest("select[data-pick]");
+  if (!sel) return;
+  const f = sel.closest("form[data-add]");
+  const v = (S.voices.voices || []).find(x => x.id === sel.value);
+  f.elements.id.value = v ? v.id : "";
+  f.elements.name.value = v ? v.short : "";
+  f.querySelector(".desc").textContent = v ? (v.description || "No description on ElevenLabs.") : "";
 });
 
 document.addEventListener("submit", async ev => {

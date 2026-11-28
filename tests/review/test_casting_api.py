@@ -539,3 +539,47 @@ def test_apply_unknown_arc_never_reaches_applier(cfg, arc, monkeypatch):
     monkeypatch.setattr(casting_apply, "apply", lambda *a, **k: pytest.fail("called"))
     with pytest.raises(ValueError):
         casting_api.apply(cfg, "zzz")
+
+
+# --- the voice dropdown ------------------------------------------------------
+
+ACCOUNT = [
+    {"voice_id": "wScwPA1qCkWo5R2dmlS8", "name": "Charlotte - Storytelling & Narration",
+     "category": "premade", "description": "Calm Australian.",
+     "labels": {"gender": "female", "age": "middle_aged", "accent": "australian"}},
+    {"voice_id": "onwK4e9ZLuTAKqWW03F9", "name": "Daniel - Steady Broadcaster",
+     "category": "premade", "labels": {"gender": "male"}},
+]
+
+
+def test_voices_from_the_account(cfg):
+    out = casting_api.voices(cfg, list_fn=lambda: ACCOUNT)
+    assert out["source"] == "account" and out["warning"] is None
+    c = out["voices"][0]
+    assert (c["id"], c["short"], c["gender"]) == ("wScwPA1qCkWo5R2dmlS8", "Charlotte", "female")
+    assert c["traits"] == "female · middle aged · australian"
+    assert c["description"] == "Calm Australian."
+    assert [v["short"] for v in out["voices"]] == ["Charlotte", "Daniel"]
+
+
+def test_voices_falls_back_to_saved_listing(cfg):
+    from pathlib import Path
+    Path("voices-account.json").write_text(json.dumps({"voices": ACCOUNT[:1]}))
+
+    def boom():
+        raise RuntimeError("no network")
+    out = casting_api.voices(cfg, list_fn=boom)
+    assert out["source"] == "saved" and "no network" in out["warning"]
+    assert [v["short"] for v in out["voices"]] == ["Charlotte"]
+
+
+def test_voices_falls_back_to_voices_yaml_names(cfg):
+    cfg.setdefault("elevenlabs", {})["voice_library"] = {"Zed": "ZEDxxxxxxxxxxxxxxxxx"}
+
+    def boom():
+        raise RuntimeError("no network")
+    out = casting_api.voices(cfg, list_fn=boom)
+    assert out["source"] == "voices.yaml"
+    assert out["voices"] == [{"id": "ZEDxxxxxxxxxxxxxxxxx", "name": "Zed", "short": "Zed",
+                              "gender": "", "traits": "", "use_case": "", "description": "",
+                              "category": "", "preview": "", "pipeline_names": ["Zed"]}]

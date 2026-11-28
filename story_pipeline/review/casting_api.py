@@ -208,6 +208,52 @@ def verdict(cfg: dict, arc: str, speaker: str, voice_id: str, verdict: str | Non
     return {"ok": True}
 
 
+# Listing voices is free, but it is a round trip to ElevenLabs on every page
+# load, so a good answer is kept for a while. Failures aren't cached.
+VOICES_TTL = 600
+_voices_cache: dict = {"at": 0.0, "data": None}
+
+
+def voices(cfg: dict, list_fn=None, refresh: bool = False) -> dict:
+    """Every voice on the account, for the dropdown on each character's Add form.
+
+    Falls back to the listing saved by `scripts/voices-doc.py --save-json
+    voices-account.json`, then to the names in voices.yaml (no descriptions),
+    so the dropdown still works offline. Free: no credits are spent.
+    """
+    import time
+
+    from .. import voice_catalog
+
+    cached = list_fn is None
+    if cached and not refresh and _voices_cache["data"] and time.time() - _voices_cache["at"] < VOICES_TTL:
+        return _voices_cache["data"]
+    library = _voice_ids(cfg)
+    if list_fn is None:
+        def list_fn():
+            from .. import config as cfgmod, tts
+            cfgmod.load_env()
+            provider = tts.build(cfg)
+            if not hasattr(provider, "list_voices"):
+                raise RuntimeError(f"{provider.name} cannot list voices")
+            return provider.list_voices()
+    try:
+        out = {"source": "account", "warning": None,
+               "voices": voice_catalog.entries(list_fn(), library)}
+        if cached:
+            _voices_cache.update(at=time.time(), data=out)
+        return out
+    except Exception as e:
+        err = f"Couldn't list the ElevenLabs account ({e})."
+    saved = Path("voices-account.json")
+    if saved.exists():
+        return {"source": "saved", "warning": err,
+                "voices": voice_catalog.entries(voice_catalog.load_rows(saved), library)}
+    return {"source": "voices.yaml", "warning": err,
+            "voices": voice_catalog.entries(
+                [{"voice_id": vid, "name": n} for n, vid in sorted(library.items()) if vid], library)}
+
+
 def candidate(cfg: dict, arc: str, speaker: str, voice_id: str, name: str = "",
               note: str = "", remove: bool = False) -> dict:
     if not (speaker or "").strip():

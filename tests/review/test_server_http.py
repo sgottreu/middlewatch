@@ -794,3 +794,10 @@ def test_inflight_counter_returns_to_zero(client, real_story):
             break
         time.sleep(0.05)
     assert server._inflight_count == 0
+
+
+def test_api_casting_voices_route_is_not_an_arc(client, repo_root):
+    # Network is blocked in tests, so the account listing fails and it falls back.
+    j = client.get("/api/casting/voices").json
+    assert j["warning"] and j["source"] in ("saved", "voices.yaml")
+    assert isinstance(j["voices"], list)
