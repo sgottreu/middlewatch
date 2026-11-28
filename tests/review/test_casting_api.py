@@ -581,5 +581,28 @@ def test_voices_falls_back_to_voices_yaml_names(cfg):
     out = casting_api.voices(cfg, list_fn=boom)
     assert out["source"] == "voices.yaml"
     assert out["voices"] == [{"id": "ZEDxxxxxxxxxxxxxxxxx", "name": "Zed", "short": "Zed",
-                              "gender": "", "traits": "", "use_case": "", "description": "",
+                              "gender": "", "age": "", "traits": "", "use_case": "", "description": "",
                               "category": "", "preview": "", "pipeline_names": ["Zed"]}]
+
+
+@pytest.mark.parametrize("age,band", [
+    (19, "young"), (34, "young"), ("20", "young"), ("teenage", "young"), ("in her twenties", "young"),
+    (35, "middle aged"), (42, "middle aged"), (59, "middle aged"), ("late forties", "middle aged"),
+    ("middle-aged", "middle aged"), ("40s", "middle aged"),
+    (60, "old"), (61, "old"), ("elderly", "old"), ("late sixties", "old"), ("old", "old"),
+    (None, ""), ("", ""), ("ageless", ""),
+])
+def test_age_band(age, band):
+    assert casting_api.age_band(age) == band
+
+
+def test_guess_from_character_profile():
+    sp = {"speaker": "Selah Vance", "bible": {"age": 38, "gender": "Female"}}
+    assert casting_api.guess(sp) == {"gender": "female", "age": "middle aged"}
+    assert casting_api.guess({"speaker": "narrator", "bible": None}) == {"gender": "", "age": ""}
+    assert casting_api.guess({"speaker": "x", "bible": {"gender": "non-binary"}}) == {"gender": "", "age": ""}
+
+
+def test_view_attaches_guess_to_every_speaker(cfg, arc, runs_dir):
+    v = casting_api.view(cfg, ARC)
+    assert all(set(sp["guess"]) == {"gender", "age"} for sp in v["speakers"])

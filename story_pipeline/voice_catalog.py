@@ -46,6 +46,7 @@ def entries(rows: list[dict], library: dict) -> list[dict]:
             "short": name.split(" - ")[0].strip(),
             "category": v.get("category") or "",
             "gender": _words(lb.get("gender")),
+            "age": _words(lb.get("age")),
             "traits": " · ".join(_words(lb.get(k)) for k in ("gender", "age", "accent", "descriptive")
                                  if lb.get(k)),
             "use_case": _words(lb.get("use_case")),

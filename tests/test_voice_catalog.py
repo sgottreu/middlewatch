@@ -28,6 +28,7 @@ def test_entries_merge_library_names_and_labels():
     c = es["wScwPA1qCkWo5R2dmlS8"]
     assert c["short"] == "Charlotte" and c["pipeline_names"] == ["Charlotte", "Narrator"]
     assert c["traits"] == "female · middle aged · australian · calm"
+    assert c["age"] == "middle aged" and es["AXdMgz6evoL7OPd7eU12"]["age"] == ""
     assert c["use_case"] == "narrative story"
     assert c["description"] == "A calm Australian voice, warm for narration."   # whitespace folded
     assert es["onwK4e9ZLuTAKqWW03F9"]["description"] == ""

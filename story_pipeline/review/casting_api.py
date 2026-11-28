@@ -11,6 +11,7 @@ spends ElevenLabs credits. The page shows the estimate before it asks.
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -140,6 +141,37 @@ def _attach_bible(cfg: dict, v: dict) -> None:
             hit = {**{k: story_cast[name].get(k) for k in ("want", "voice_note")}, **hit}
         sp["bible"] = ({"source": src, **{k: hit[k] for k in _PROFILE if hit.get(k)}}
                        if hit else None)
+        sp["guess"] = guess(sp)
+
+
+# ElevenLabs labels a voice's age young, middle_aged or old. A character's age
+# (a number in the outline and bible, sometimes words) is mapped onto those so
+# the voice dropdown can start filtered to plausible voices. A guess: the page
+# lets you change it, and a voice with no age label is never filtered out.
+_AGE_WORDS = (("young", ("teen", "twent", "thirt", "young", "child", "girl", "boy", "youth")),
+              ("middle aged", ("middle", "fort", "fift")),
+              ("old", ("sixt", "sevent", "eight", "ninet", "elder", "old", "aged", "senior")))
+
+
+def age_band(age) -> str:
+    """'young' (under 35), 'middle aged' (35-59), 'old' (60+), or '' if unknown."""
+    if isinstance(age, (int, float)) and not isinstance(age, bool):
+        n = int(age)
+    else:
+        text = str(age or "").strip().lower()
+        m = re.search(r"\d+", text)
+        if not m:
+            return next((band for band, stems in _AGE_WORDS
+                         if any(st in text for st in stems)), "")
+        n = int(m.group())
+    return "young" if n < 35 else "middle aged" if n < 60 else "old"
+
+
+def guess(sp: dict) -> dict:
+    """The voice filter to start from for a speaker, from their character entry."""
+    b = sp.get("bible") or {}
+    g = str(b.get("gender") or "").strip().lower()
+    return {"gender": g if g in ("female", "male") else "", "age": age_band(b.get("age"))}
 
 
 def job(cfg: dict, arc: str) -> dict:

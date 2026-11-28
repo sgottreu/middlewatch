@@ -93,6 +93,9 @@
   .add .idf { flex:1 1 210px; font-family:var(--mono); font-size:13px; }
   .add .t { font-family:var(--mono); font-size:11px; color:var(--dim); flex-basis:100%; }
   .add .pick { flex:1 1 100%; font-size:13px; }
+  .add .filters { display:flex; flex-wrap:wrap; gap:6px 14px; flex-basis:100%; align-items:center;
+                  font-family:var(--mono); font-size:11px; color:var(--dim); }
+  .add .filters select { font-size:12px; padding:2px 6px; margin-left:4px; }
   .add .desc { flex-basis:100%; font-size:13px; color:var(--ink); font-style:italic; }
   .add .desc:empty { display:none; }
 
@@ -201,7 +204,7 @@
 const { $, esc, money, toast, explain, api, armed } = MW;
 MW.nav($("pages"), "Casting");
 let S = { open: new Set(), arc: null, story: null, view: null, poll: null, logFrom: 0, wasRunning: false,
-          poolGender: "", voices: null };
+          poolGender: "", voices: null, filt: {} };
 
 function syncUrl() {
   const u = new URL(location.href);
@@ -479,9 +482,33 @@ async function loadVoices() {
   if (S.view) render();
 }
 
+// Gender and age filters for one speaker's dropdown. They start from a guess
+// off the character's profile (age 38 -> middle aged) and keep your changes
+// across redraws. A voice ElevenLabs hasn't labelled always shows.
+function filt(sp) {
+  return S.filt[sp.speaker] ||= { gender: "", age: "", ...(sp.guess || {}) };
+}
+
 function voicePicker(sp) {
   const vs = S.voices && S.voices.voices;
   if (!vs || !vs.length) return "";
+  const f = filt(sp), b = sp.bible || {};
+  const sel = (attr, cur, opts) => `<select ${attr}="${esc(sp.speaker)}">` + opts.map(([v, l]) =>
+    `<option value="${v}"${v === cur ? " selected" : ""}>${l}</option>`).join("") + `</select>`;
+  const why = sp.guess && (sp.guess.gender || sp.guess.age)
+    ? `guessed from ${esc(sp.speaker)}: ${esc([b.gender, b.age].filter(x => x !== undefined && x !== "").join(", "))}` : "";
+  return `<span class="filters">
+      <label>Gender${sel("data-fgender", f.gender, [["", "Any"], ["female", "Female"], ["male", "Male"]])}</label>
+      <label>Age${sel("data-fage", f.age, [["", "Any"], ["young", "Young"], ["middle aged", "Middle aged"], ["old", "Old"]])}</label>
+      <span>${why}</span>
+    </span>
+    ${pickSelect(sp)}`;
+}
+
+function pickSelect(sp) {
+  const all = S.voices.voices, f = filt(sp);
+  const vs = all.filter(v => (!f.gender || !v.gender || v.gender === f.gender) &&
+                             (!f.age || !v.age || v.age === f.age));
   const listed = new Set((sp.entries || []).map(e => e.id).filter(Boolean));
   const where = { account: "your ElevenLabs account", saved: "the saved account list",
                   "voices.yaml": "voices.yaml (account unreachable)" }[S.voices.source] || "the account";
@@ -490,7 +517,7 @@ function voicePicker(sp) {
     esc(v.short + (v.traits ? " — " + v.traits : "") + (listed.has(v.id) ? " (already listed)" : "")) +
     `</option>`;
   return `<select class="pick" data-pick aria-label="Choose a voice for ${esc(sp.speaker)}">
-      <option value="">Choose from ${esc(where)} (${vs.length})…</option>
+      <option value="">Choose from ${esc(where)} (${vs.length === all.length ? all.length : vs.length + " of " + all.length})…</option>
       ${groups.map(([g, label]) => {
         const in_ = vs.filter(v => g ? v.gender === g : !["female", "male"].includes(v.gender));
         return in_.length ? `<optgroup label="${label}">${in_.map(opt).join("")}</optgroup>` : "";
@@ -499,6 +526,15 @@ function voicePicker(sp) {
 }
 
 document.addEventListener("change", ev => {
+  const fs = ev.target.closest("select[data-fgender], select[data-fage]");
+  if (fs) {
+    const name = fs.dataset.fgender ?? fs.dataset.fage;
+    const sp = S.view.speakers.find(x => x.speaker === name);
+    filt(sp)[fs.dataset.fgender !== undefined ? "gender" : "age"] = fs.value;
+    const f = fs.closest("form[data-add]");
+    f.querySelector("select[data-pick]").outerHTML = pickSelect(sp);
+    return;
+  }
   const sel = ev.target.closest("select[data-pick]");
   if (!sel) return;
   const f = sel.closest("form[data-add]");
